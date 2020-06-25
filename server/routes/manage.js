@@ -4,9 +4,6 @@ const express = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc
 
-// var db = require('../module/db');
-// var user = require('../module/manager');
-
 router.post('/teacherList', async(req, res) => {
     console.log("yyy")
   let sql = `CALL PROC_TEA_LIST(?)`
