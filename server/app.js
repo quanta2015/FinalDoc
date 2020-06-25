@@ -1,57 +1,34 @@
-// var createError = require('http-errors');
-// var express = require('express');
-// var path = require('path');
-// var cookieParser = require('cookie-parser');
-// var logger = require('morgan');
-
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
-
-// var app = express();
-
-// // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
-// app.use(logger('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-// module.exports = app;
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = 8080;
+const formidable = require('formidable')
+const moment = require('moment')
+const compression = require('compression')
+const https = require('https')
+const db = require('./util/db')
+const utils = require('./util')
+const callProc = require('./util').callProc
+const manage = require('./routes/manage');
 
-app.use(cors());  /* 解决跨域问题 */
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
 
-app.use('/manage', require('./routes/manage'));
 
+app.use(compression())
+app.use(cors())
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
+app.use(express.static(__dirname + '/'))
+const port = 8090;
+app.use('/manage',manage);
+
+
+app.get('/UserList', async function (req, res) {
+	let sql = `CALL PROC_USER_LIST`
+
+	callProc(sql, {}, res, (r) => {
+		res.status(200).json({code: 200, data: r})
+	})
+})
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
