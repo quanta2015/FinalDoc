@@ -3,7 +3,14 @@ import { Router } from 'preact-router';
 import AsyncRoute from 'preact-async-route';
 import { createHashHistory } from 'history';
 
-import Nav from './component/Nav'
+import NavT from './component/NavT'
+import NavS from './component/NavS'
+import './style.scss'
+
+var usr = {
+  name:'教师',
+  role:0    // 0: teacher 1:student 2: manage
+}
 
 class App extends Component {
   constructor(props) {
@@ -13,11 +20,13 @@ class App extends Component {
   render() {
     return (
       <div id="app">
-        <Nav/>
+        { (usr.role==0) && <NavT/>}
+        { (usr.role==1) && <NavS/>}
         <Router >
-          <AsyncRoute path='/'      getComponent={ () => import('./app/home').then(module => module.default) } />
-          <AsyncRoute path='/login' getComponent={ () => import('./app/login').then(module => module.default) } />
-          <AsyncRoute path='/proj'  getComponent={ () => import('./app/proj').then(module => module.default) }/>
+          <AsyncRoute path='/t_manage'  getComponent={ () => import('./app/t/manage').then(module => module.default) } />
+          <AsyncRoute path='/t_auditTP' getComponent={ () => import('./app/t/auditTP').then(module => module.default) } />
+          <AsyncRoute path='/t_auditOP' getComponent={ () => import('./app/t/auditOP').then(module => module.default) }/>   
+          <AsyncRoute path='/t_auditFD' getComponent={ () => import('./app/t/auditFD').then(module => module.default) }/>   
         </Router>
       </div>
     )

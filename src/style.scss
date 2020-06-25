@@ -3,4 +3,13 @@ html, body {
 	font-weight: 400;
   margin: 0;
   padding: 0;
+  background: #eee!important;
+}
+
+#app {
+  display: flex;
+  width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  background: #fff;
 }
