@@ -9,7 +9,7 @@ import './style.scss'
 
 var usr = {
   name:'教师',
-  role:0    // 0: teacher 1:student 2: manage
+  role: 1    // 0: teacher 1:student 2: manage
 }
 
 class App extends Component {
