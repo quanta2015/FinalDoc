@@ -1,9 +1,16 @@
 .g-home {
-	display: flex;
+  display: flex;
   flex-direction: column;
-
+  width: 1080px;
+  
   .m-list {
     display: flex;
     flex-direction: column;
   }
+
+}
+
+
+.t1{
+  color: white;
 }
