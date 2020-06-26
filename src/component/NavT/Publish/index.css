@@ -1,7 +1,7 @@
 .publish-block{
     width: 100%;
     overflow-y: auto;
-    padding: 30px 60px;
+    padding: 30px 80px;
     font-size: 18px;
 }
 
@@ -15,7 +15,10 @@
 }
 
 .input-left{
-    width: 150px;
+    width: 120px;
+    margin-right: 60px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .input-right>input{
@@ -30,8 +33,4 @@
 .have-placehoder::placeholder{
     color: #bbb; 
     font-size: 18px;
-}
-
-.ant-transfer{
-    padding-left: 175px
 }

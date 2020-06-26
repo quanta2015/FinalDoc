@@ -9,3 +9,12 @@ export const API_SYS_XXXXXX = API_SERVER + '/sysXXXXXX'
 
 
 export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
+
+// 获取选择了自己的学生的列表
+export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/getCheckedStuList';
+//获取自己要审核的选题列表
+export const API_SYS_GET_EXAMINE_LIST = API_SERVER + '/getExamineList';
+//提交选题信息
+export const API_SYS_POST_TOPIC_INFO = API_SERVER + '/postTopicInfo';
+//通过学号模糊查询
+export const API_SYS_GET_STU_BY_LIKEID = API_SERVER + '/getStuInfoByLikeID'

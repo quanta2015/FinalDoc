@@ -2,7 +2,6 @@ import { Component } from 'preact';
 import { inject } from 'mobx-react'
 import { route } from 'preact-router';
 import './index.scss'
-import more from './more.svg'
 import { MENU_MAIN_T } from '../../constant/data'
 
 
@@ -11,7 +10,7 @@ class NavT extends Component {
 		super(props)
 
     this.state = {
-      cur: 0,
+      cur: 0
     }
 	}
 
