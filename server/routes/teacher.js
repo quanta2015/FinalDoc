@@ -36,7 +36,6 @@ router.get('/getStuInfoByLikeID', async(req, res) => {
         var status1 = 1;
         var status2 = 2;
         var status3 = 3;
-        var result = r[0];
         if (result["sel"] == 0) {
             r[0].status = status0;
         } else if(result["sugg"] == null) {
@@ -52,7 +51,12 @@ router.get('/getStuInfoByLikeID', async(req, res) => {
 
   // 由课题pid获取课题内容（课题名称，课题类别，课题简介，学生id，学生名字）
   router.get('/getTopicFullInfo', async(req, res) => {
-    let sql = `CALL PROC_`
+    let sql = `CALL PROC_PID_GET_TOPIC_INFO(?)`;
+    var data = url.parse(req.url, true).query;
+    let params = {pid: data.pid};
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '通过课题id课题查询成功，返回课题内容'});
+    })
   })
 
   module.exports = router;
