@@ -1,0 +1,39 @@
+.g-nav {
+  width: 250px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #333;
+  color: #fff;
+  align-items: center;
+
+  .g-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    .m-info {
+      margin: 30px 15px;
+    }
+    
+    .m-menuItem {
+      width: 100%;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: .3s;
+
+      &.active {
+        background: #336699!important;
+      }
+
+      & span {
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+

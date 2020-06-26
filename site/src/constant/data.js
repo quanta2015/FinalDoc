@@ -12,6 +12,15 @@ export var MENU_MAIN_T =
     { title:'中期开题审核', path: '/t_auditOP', icon:home },
     { title:'终期论文审核', path: '/t_auditFD', icon:home }]
 
+<<<<<<< HEAD:src/constant/data.js
 export var STU_ST_STATUS = 
    [{ name: '未通过', color: 'red' },
     { name: '待审核', color: 'blue' }]
+=======
+export var MENU_MAIN_S = 
+   [{ title:'毕业设计管理', path: '/t_manage' , icon:home }]
+
+export var STU_ST_STATUS =
+   [{ name: '未通过', color: 'red' },
+   { name: '待审核', color: 'blue' }]
+>>>>>>> e3299e93aaef18a5451d97c80b991f38106b28b1:site/src/constant/data.js
