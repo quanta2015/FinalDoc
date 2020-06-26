@@ -12,6 +12,8 @@ const callProc = require('./util').callProc
 
 
 const manage = require('./routes/manage');
+const student = require('./routes/student');
+const topic = require('./routes/topic');
 
 
 app.use(compression())
@@ -19,9 +21,11 @@ app.use(cors())
 app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 app.use(express.static(__dirname + '/'))
+
+
 app.use('/manage',manage);
-
-
+app.use('/student',student);
+app.use('/topic',topic);
 
 const port = 8090;
 
