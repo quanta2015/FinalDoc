@@ -11,3 +11,7 @@ export var MENU_MAIN_T =
     { title:'初期命题审核', path: '/t_auditTP', icon:home },
     { title:'中期开题审核', path: '/t_auditOP', icon:home },
     { title:'终期论文审核', path: '/t_auditFD', icon:home }]
+
+export var STU_ST_STATUS = 
+   [{ name: '未通过', color: 'red' },
+    { name: '待审核', color: 'blue' }]

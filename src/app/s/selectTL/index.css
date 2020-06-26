@@ -1,0 +1,36 @@
+.g-table {
+	width: 940px;
+	margin: 0 auto;
+	padding: 30px 20px;
+}
+.m-title {
+	/* font-size: large; */
+	font-weight: 550;
+}
+/* .table{
+    width: 50%;    
+} */
+.ant-table-tbody {
+	display: flex;
+	flex-direction: column;
+	width: 900px;
+}
+
+.ant-table-thead {
+	width: 600px;
+}
+table {
+	table-layout: fixed;
+}
+
+.ant-spin-nested-loading {
+	width: 900px;
+}
+
+.ant-table-tbody > tr > td {
+	width: 200px;
+}
+.ant-table-cell {
+	text-align: center;
+	margin: 0 auto;
+}
