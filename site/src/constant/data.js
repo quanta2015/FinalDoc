@@ -12,5 +12,5 @@ export var MENU_MAIN_T =
     { title:'中期开题审核', path: '/t_auditOP', icon:home },
     { title:'终期论文审核', path: '/t_auditFD', icon:home }]
 
-export var MENU_MAIN_S = 
-   [{ title:'毕业设计管理', path: '/t_manage' , icon:home }]
+export var MENU_MAIN_M = 
+   [{ title:'分配审核选题', path: '/m_distributeTopic' , icon:home }]
