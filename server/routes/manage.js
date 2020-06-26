@@ -1,4 +1,5 @@
 const express = require('express');
+const { json } = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
 
@@ -34,4 +35,5 @@ router.post('/checkList', async(req, res) => {
 	});
 });
 
+// var json=JSON.stringify({teacher_id:"20021317",topic_id:""})
 module.exports = router
