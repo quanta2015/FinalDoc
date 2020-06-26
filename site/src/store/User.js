@@ -5,6 +5,15 @@ import * as urls from '../constant/urls'
 
 
 class User extends BaseActions {
+  @observable
+  usr = {
+    name: '学生',
+    uid: '2018212213466',
+    dep: '杭州国际服务工程学院',
+    maj: '计算机科学与技术',
+    cls: '计算机183',
+    role: 1    // 0: teacher 1:student 2: manage
+  }
 
   @action
   async getProjList() {

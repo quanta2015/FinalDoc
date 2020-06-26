@@ -19,3 +19,11 @@
 .m-cardItem {
     margin-bottom: 25px;
 }
+
+.g-topic .m-line{
+     display: flex;
+ }
+
+.g-topic .linespace {
+    margin: 0 15px;
+}

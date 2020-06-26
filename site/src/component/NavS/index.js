@@ -5,19 +5,24 @@ import { route } from 'preact-router';
 import { PushpinOutlined } from '@ant-design/icons';
 import './index.scss'
 
-@inject('studentStore')
+@inject('userStore', 'studentStore')
 @observer
 class NavS extends Component {
 
   @computed
+  get topInfo() {
+    return this.props.studentStore.topInfo;
+  }
+
+  @computed
   get usr() {
-    return this.props.studentStore.usr;
+    return this.props.userStore.usr;
   }
 
   componentDidMount() {
-    this.props.studentStore.getStuInfo()
+    this.props.studentStore.getTopInfo(this.usr.id)
       .then(r => {
-        if (!this.usr.isSelected) {
+        if (!this.topInfo.teaName) {
           route('/s_selectTL');
         } else {
           route('/s_topicPG');
@@ -32,11 +37,12 @@ class NavS extends Component {
           <div className="m-info">
             {this.usr.name && <p>姓名：{this.usr.name}</p>}
             {this.usr.uid && <p>学号：{this.usr.uid}</p>}
-            {this.usr.class && <p>班级：{this.usr.class}</p>}
-            {this.usr.collage && <p>学院：{this.usr.collage}</p>}
-            {this.usr.isSelected && <p>指导老师：{this.usr.teaName}</p>}
+            {this.usr.cls && <p>班级：{this.usr.cls}</p>}
+            {this.usr.maj && <p>专业：{this.usr.maj}</p>}
+            {this.usr.dep && <p>学院：{this.usr.dep}</p>}
+            {this.topInfo.teaName && <p>指导老师：{this.topInfo.teaName}</p>}
           </div>
-          {!this.usr.isSelected &&
+          {!this.topInfo.teaName &&
             <div className='m-menuItem active'>
               <PushpinOutlined />
               <span>选择课题</span>
