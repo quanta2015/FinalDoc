@@ -1,0 +1,25 @@
+.g-home {
+  display: flex;
+  flex-direction: column;
+  width: 1080px;
+  overflow: scroll;
+  
+  .m-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
+.t1{
+  color: white;
+}
+
+.btn_group{
+  float: right;
+  margin-bottom: 10px;
+}
+
+.btn_yes{
+  margin-right: 5px;
+}
