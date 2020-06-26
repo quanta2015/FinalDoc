@@ -12,15 +12,15 @@ const callProc = require('./util').callProc
 const manage = require('./routes/manage');
 
 
-
 app.use(compression())
 app.use(cors())
 app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 app.use(express.static(__dirname + '/'))
+// const port = 8090;
+
 const port = 8090;
 app.use('/manage',manage);
-
 
 app.get('/UserList', async function (req, res) {
 	let sql = `CALL PROC_USER_LIST`
