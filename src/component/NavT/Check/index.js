@@ -1,4 +1,4 @@
-import { Collapse, Select } from 'antd';
+import { Collapse, Select,Button } from 'antd';
 import { Component } from 'preact';
 import { SettingOutlined } from '@ant-design/icons';
 import style from './index.css'
@@ -25,9 +25,9 @@ class Check extends Component {
 
   toplist=[
     {id:"1",name:"JAVA程序设计",status:0},
-    {id:"2",name:".NET程序设计",status:0},
-    {id:"3",name:"WEB程序设计",status:0},
-    {id:"4",name:"JSP程序设计",status:0}
+    {id:"2",name:".NET程序设计",status:1},
+    {id:"3",name:"WEB程序设计",status:2},
+    {id:"4",name:"JSP程序设计",status:3},
   ]
 
   state = {
@@ -48,12 +48,20 @@ class Check extends Component {
             this.toplist.map(
               (t)=>
                 <Panel header={t.name} key={t.id} extra={StateExtra(t.status)}>
-                  <div className="stu">这里是测试代码</div>
+                  <div className="stu">
+                    {t.status==0 && <span>您的课题{t.name}正在等待教务处分配</span>}
+                    {t.status==1 && <span>您的课题{t.name}正在等待教师审核</span>}
+                    {t.status==2 && <span>您的课题{t.name}审核未通过</span>}
+                    {t.status==3 && <span>您的课题{t.name}审核已通过</span>}
+                  </div>
                 </Panel>
               
             )
           }
         </Collapse>
+        {this.toplist.length<8&&
+          <Button type="primary" style="margin:20px 0" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
+        }
       </div>
     );
   }

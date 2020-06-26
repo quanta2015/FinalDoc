@@ -39,8 +39,15 @@ class Publish extends BaseActions {
     super(props)
   }
 
+  async componentDidMount(){
+    if(!!this.props.tid){
+      let data = await this.get(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,this.props.tid);
+      //TODO
+      this.name.value = data.name;
+    }
+  }
+
   clear = e => {
-    console.log(this.name.value);
     this.name.value = "";
     this.note.setState({ value: "" })
     this.type.base.textContent = "";
@@ -92,6 +99,7 @@ class Publish extends BaseActions {
       }
     }
     await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
+    this.props.change();
   }
 
   render() {

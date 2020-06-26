@@ -8,17 +8,35 @@ import style from './style.scss'
 
 @inject('userStore')
 export default class Home extends Component {
+  tid=null;
   state = {
-    proj: [],
+    succ:true
   }
 
-	render(_,{ proj }) {
+  changePage = (tid)=>{
+    let s = !this.state.succ;
+    if(!!tid){
+      this.tid=tid
+    }else{
+      this.tid=null;
+    }
+    this.setState({succ:s})
+  }
+
+	render() {
+    console.log(this.state.succ);
 		return (
-			<div className="g-home">
+      <div className="g-home">
         <NavBar/>
-        {/* <CheckBlock/> */}
-        <PublishBlock/>
-			</div>
+        {this.state.succ&&
+          <CheckBlock change={this.changePage.bind(this)}/>
+        }
+        {
+          !this.state.succ&&
+          <PublishBlock tid={this.tid} change={this.changePage.bind(this)}/>
+        }
+		
+      </div>
 		);
 	}
 }
