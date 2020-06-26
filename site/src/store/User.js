@@ -7,8 +7,8 @@ import * as urls from '../constant/urls'
 class User extends BaseActions {
   @observable
   usr = {
-    name: '学生',
-    uid: '2018212213466',
+    name: '张三',
+    uid: '20172106010',
     dep: '杭州国际服务工程学院',
     maj: '计算机科学与技术',
     cls: '计算机183',
@@ -17,7 +17,7 @@ class User extends BaseActions {
 
   @action
   async getProjList() {
-    return await this.get(urls.API_SYS_GET_PROJLIST,null)
+    return await this.get(urls.API_SYS_GET_PROJLIST, null)
   }
 
 }

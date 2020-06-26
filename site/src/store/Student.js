@@ -1,22 +1,21 @@
 import BaseActions from '../component/BaseActions'
 import { observable, action, runInAction } from 'mobx'
 import * as urls from '../constant/urls'
+import { message } from 'antd'
 
 class Student extends BaseActions {
     @observable
-    // topInfo = {}
-    topInfo = {
-        teaName: '张三',
-        topicName: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试'
-    }
+    topInfo = {}
 
     @action
-    async getTopInfo(id) {
-        const r = await this.get(urls.API_SYS_GET_STUINFO, id);
-        if (r && r.status === 200) {
+    async getTopInfo(params) {
+        const r = await this.post(urls.API_SYS_GET_STUINFO, params);
+        if (r && r.code === 200) {
             runInAction(() => {
-                this.topInfo = r.data.data
+                this.topInfo = r.data[0]
             })
+        } else {
+            message.error("网络错误")
         }
         return r;
     }

@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
+import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 import { PushpinOutlined } from '@ant-design/icons';
 import './index.scss'
@@ -11,7 +11,7 @@ class NavS extends Component {
 
   @computed
   get topInfo() {
-    return this.props.studentStore.topInfo;
+    return toJS(this.props.studentStore.topInfo);
   }
 
   @computed
@@ -20,9 +20,9 @@ class NavS extends Component {
   }
 
   componentDidMount() {
-    this.props.studentStore.getTopInfo(this.usr.id)
+    this.props.studentStore.getTopInfo({ uid: this.usr.uid })
       .then(r => {
-        if (!this.topInfo.teaName) {
+        if (!this.topInfo) {
           route('/s_selectTL');
         } else {
           route('/s_topicPG');
@@ -40,9 +40,9 @@ class NavS extends Component {
             {this.usr.cls && <p>班级：{this.usr.cls}</p>}
             {this.usr.maj && <p>专业：{this.usr.maj}</p>}
             {this.usr.dep && <p>学院：{this.usr.dep}</p>}
-            {this.topInfo.teaName && <p>指导老师：{this.topInfo.teaName}</p>}
+            {this.topInfo && <p>指导老师：{this.topInfo.name}</p>}
           </div>
-          {!this.topInfo.teaName &&
+          {!this.topInfo &&
             <div className='m-menuItem active'>
               <PushpinOutlined />
               <span>选择课题</span>

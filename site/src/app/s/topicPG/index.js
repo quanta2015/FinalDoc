@@ -49,10 +49,12 @@ export default class TopicPG extends Component {
             processStatus: []
         }
     }
+
     @computed
     get topInfo() {
         return this.props.studentStore.topInfo;
     }
+
     componentDidMount() {
         //获得学生完成各文件的状态
         const r = {
@@ -83,10 +85,12 @@ export default class TopicPG extends Component {
             current: current
         })
     }
+
     onChange = current => {
         console.log('onChange:', current);
         this.setState({ current: current });
     };
+
     //提交开题报告
     handleSumbitST = () => {
         console.log('submit');
@@ -99,7 +103,7 @@ export default class TopicPG extends Component {
             <div className="g-topic">
                 <h3 className="bold">选题信息</h3>
                 <div className="m-topicInfo">
-                    <p>课题：{this.topInfo.topicName}</p>
+                    <p>课题：{this.topInfo.topic}</p>
                 </div>
                 <Steps
                     type="navigation"
@@ -147,7 +151,6 @@ export default class TopicPG extends Component {
                         </div>
                     </div>
                 }
-
                 {current === 1 &&
                     <div className="m-card">
                         <div className="m-cardItem">
