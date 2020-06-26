@@ -9,6 +9,8 @@ const https = require('https')
 const db = require('./util/db')
 const utils = require('./util')
 const callProc = require('./util').callProc
+
+
 const manage = require('./routes/manage');
 
 
@@ -18,8 +20,11 @@ app.use(cors())
 app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 app.use(express.static(__dirname + '/'))
-const port = 8090;
 app.use('/manage',manage);
+
+
+
+const port = 8090;
 
 
 app.get('/UserList', async function (req, res) {
