@@ -1,4 +1,5 @@
 @url=http://localhost:8090
+@urlweb=http://www.hanhuikrkr.com:8090
 @json=Content-Type: application/json
 ###
 post {{url}}/login
@@ -21,3 +22,11 @@ post {{url}}/register
 ###
 get {{url}}/UserList
 {{json}}
+
+###
+post {{url}}/student/getStuTopicStatus
+{{json}}
+
+{
+    "uid":"20172106101"
+}
