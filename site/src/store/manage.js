@@ -12,6 +12,19 @@ class manager extends BaseActions {
     role:2    // 0: teacher 1:student 2: manage
   }
 
+  @action
+  async getTeaList() {
+    return await this.post(urls.API_MAN_GET_TEALIST,null)
+  }
+  @action
+  async getTopicList() {
+    return await this.post(urls.API_MAN_GET_TOPICLIST,null)
+  }
+  @action
+  async allocateTopic(param) {
+    return await this.post(urls.API_MAN_POST_ALLOCATETOPIC,param)
+  }
+
 }
 
 export default new manager()

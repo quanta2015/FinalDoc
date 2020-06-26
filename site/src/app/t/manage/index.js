@@ -14,7 +14,7 @@ export default class Home extends Component {
   async componentDidMount() {
     let r = await this.props.userStore.getProjList()
     let p = r.filter((item,i)=>{ return item&&(i<10) })
-    this.setState({ proj: p },()=>{ message.info("ok") });
+    this.setState({ proj: p },()=>{ message.info("ok") })
   }
 
 	render(_,{ proj }) {

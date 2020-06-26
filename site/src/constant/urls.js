@@ -9,3 +9,8 @@ export const API_SYS_XXXXXX = API_SERVER + '/sysXXXXXX'
 
 
 export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
+
+// 专业负责人接口声明
+export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'
+export const API_MAN_GET_TOPICLIST = API_SERVER + '/manage/topicList'
+export const API_MAN_POST_ALLOCATETOPIC = API_SERVER + '/manage/checkAllocate'

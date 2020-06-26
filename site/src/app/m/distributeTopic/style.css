@@ -1,19 +1,30 @@
 .main {
     margin: 30px;
+    box-sizing: border-box;
+    width: 950px;
 }
 
-.choose {
-    margin: 10px;
+.detail {
+    text-align: right;
 }
+
+/* .choose {
+    margin: 10px;
+} */
 
 .title {
     font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    /* font-weight: bold; */
+    /* margin-bottom: 10px; */
+    line-height: 32px;
+    width: 200px;
+    text-align: right;
+    margin-right: 30px;
 }
 
-.checkTeacher,.checknum,.checkTopic {
+.checkTeacher,.checknum,.checkTopic,.choose {
     margin-bottom: 20px;
+    display: flex;
 }
 
 .ant-btn {
@@ -27,4 +38,18 @@
 .num {
     line-height: 32px;
     margin-left: 10px;
+}
+
+.topicNum {
+    font-size: 16px;
+}
+
+.topicNum span {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.btn {
+    text-align: center;
 }
