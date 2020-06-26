@@ -16,6 +16,7 @@ const student = require('./routes/student');
 const topic = require('./routes/topic');
 
 
+
 app.use(compression())
 app.use(cors())
 app.use(bodyParser.json({limit: '10mb', extended: true}))
