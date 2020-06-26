@@ -53,3 +53,48 @@
 .btn {
     text-align: center;
 }
+
+/* 数据详情 */
+ .ant-table-tbody{
+	 display: flex;
+	 flex-direction: column;
+	  width: 810px;
+	  
+ }
+ .ant-table-content{
+	 padding-left: 100px;
+	 padding-top:40px
+ }
+ 
+.ant-spin-nested-loading{
+	width: 900px;
+}
+
+.ant-table-tbody > tr > td{
+	width: 200px;
+
+}
+.ant-table-cell{
+	text-align: center;
+	
+}
+
+.ant-modal-content{
+	width: 900px;
+	margin-left :-170px;
+}
+
+.ant-descriptions-item-label{
+	width: 120px;
+}
+
+.back{
+    text-align: center;
+}
+
+.detail-title{
+    font-weight: 800;
+    font-size: 24px;
+    padding-left:90px;
+    padding-top:30px
+}

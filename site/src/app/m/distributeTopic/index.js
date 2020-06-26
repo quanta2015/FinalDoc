@@ -162,7 +162,7 @@ export default class Home extends Component {
         return (
             <div className="main">
                 <div className="topicNum">还有<span>{this.state.topic_name.length}篇</span>课题未分配审核</div>
-                <div className="detail"><Button type="primary">查看审核详情</Button></div>
+                <div className="detail"><Button type="primary" href="./m_distributeTopic_detail">查看审核详情</Button></div>
                 <div className="choose">
                     <div class="title">分配方式</div>
                     <Radio.Group onChange={this.onChange} value={this.state.value}>

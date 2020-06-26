@@ -25,6 +25,11 @@ class manager extends BaseActions {
     return await this.post(urls.API_MAN_POST_ALLOCATETOPIC,param)
   }
 
+  @action
+  async getCheckList() {
+    return await this.post(urls.API_MAN_POST_CHECKLIST, null)
+  }
+
 }
 
 export default new manager()
