@@ -14,3 +14,7 @@ export var MENU_MAIN_T =
 
 export var MENU_MAIN_S = 
    [{ title:'毕业设计管理', path: '/t_manage' , icon:home }]
+
+export var STU_ST_STATUS =
+   [{ name: '未通过', color: 'red' },
+   { name: '待审核', color: 'blue' }]

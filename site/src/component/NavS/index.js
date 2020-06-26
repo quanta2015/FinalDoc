@@ -1,35 +1,47 @@
 import { Component } from 'preact';
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react';
+import { computed } from 'mobx';
 import { route } from 'preact-router';
+import { PushpinOutlined } from '@ant-design/icons';
 import './index.scss'
-import more from './more.svg'
-import { MENU_MAIN_S } from '../../constant/data'
 
-
+@inject('studentStore')
+@observer
 class NavS extends Component {
-  constructor(props) {
-    super(props)
 
-    this.state = {
-      cur: 0,
-    }
+  @computed
+  get usr() {
+    return this.props.studentStore.usr;
   }
 
-  doMenu = (path,i)=>{
-    this.setState({cur:i},()=>{ 
-      route(path)
-    })
+  componentDidMount() {
+    this.props.studentStore.getStuInfo()
+      .then(r => {
+        if (!this.usr.isSelected) {
+          route('/s_selectTL');
+        } else {
+          route('/s_topicPG');
+        }
+      })
   }
 
-  render(_,{ cur }) {
+  render() {
     return (
       <div className="g-nav">
         <div className="g-menu">
-          {MENU_MAIN_S.map((item,i)=>
-            <div className={(cur==i)?'m-menu-item active':'m-menu-item'} key={i} onClick={this.doMenu.bind(this,item.path,i)}>
-              <img src={item.icon} /><span>{item.title}</span> 
+          <div className="m-info">
+            {this.usr.name && <p>姓名：{this.usr.name}</p>}
+            {this.usr.uid && <p>学号：{this.usr.uid}</p>}
+            {this.usr.class && <p>班级：{this.usr.class}</p>}
+            {this.usr.collage && <p>学院：{this.usr.collage}</p>}
+            {this.usr.isSelected && <p>指导老师：{this.usr.teaName}</p>}
+          </div>
+          {!this.usr.isSelected &&
+            <div className='m-menuItem active'>
+              <PushpinOutlined />
+              <span>选择课题</span>
             </div>
-          )}
+          }
         </div>
       </div>
     )

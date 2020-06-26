@@ -1,0 +1,21 @@
+.g-topic {
+    padding: 30px 20px;
+    width: 950px;
+}
+
+.bold {
+    font-weight: 550;
+}
+
+.m-topicInfo {
+    border-top: 1px solid #eee;
+    padding: 18px 0;
+}
+
+.m-card {
+    margin-top: 25px;
+}
+
+.m-cardItem {
+    margin-bottom: 25px;
+}

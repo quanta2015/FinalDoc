@@ -9,3 +9,4 @@ export const API_SYS_XXXXXX = API_SERVER + '/sysXXXXXX'
 
 
 export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
+export const API_SYS_GET_STUINFO = API_SERVER + '/getStuInfo'
