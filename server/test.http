@@ -1,0 +1,32 @@
+@url=http://localhost:8090
+@urlweb=http://www.hanhuikrkr.com:8090
+@json=Content-Type: application/json
+###
+post {{url}}/login
+{{json}}
+
+{
+    "email" : "quanta2006@163.com",
+    "pwd" : "qq"
+}
+
+###
+post {{url}}/register
+{{json}}
+
+{
+    "username":"user1",
+    "password":"123456"
+}
+
+###
+get {{url}}/UserList
+{{json}}
+
+###
+post {{url}}/student/getStuTopicStatus
+{{json}}
+
+{
+    "uid":"20172106101"
+}

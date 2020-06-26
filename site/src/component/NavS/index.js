@@ -22,7 +22,7 @@ class NavS extends Component {
   componentDidMount() {
     this.props.studentStore.getTopInfo({ uid: this.usr.uid })
       .then(r => {
-        if (!this.topInfo) {
+        if (!r.data.length) {
           route('/s_selectTL');
         } else {
           route('/s_topicPG');

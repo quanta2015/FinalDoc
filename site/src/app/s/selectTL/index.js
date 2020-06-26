@@ -3,47 +3,61 @@ import { inject, observer } from 'mobx-react';
 import { Tag, Button, Table } from 'antd';
 import { STU_ST_STATUS } from '../../../constant/data';
 import './index.css';
+import { computed, toJS } from 'mobx';
 
-const data = [
-    {
-        key: 0,
-        topic: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试',
-        category: '论文类',
-        instructor: '赵六',
-        status: '——', // 0被拒绝 1待审核 2已通过
-    },
-    {
-        key: 1,
-        topic: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试',
-        category: '理论研究类',
-        instructor: '赵四',
-        status: '——',
-    }, {
-        key: 2,
-        topic: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试',
-        category: '论文类',
-        instructor: '赵六',
-        status: '——',
+// const data = [
+//     {
+//         key: 0,
+//         topic: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试',
+//         category: '论文类',
+//         instructor: '赵六',
+//         status: '——', // 0被拒绝 1待审核 2已通过
+//     },
+//     {
+//         key: 1,
+//         topic: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试',
+//         category: '理论研究类',
+//         instructor: '赵四',
+//         status: '——',
+//     }, {
+//         key: 2,
+//         topic: '基于快速区域卷积神经网络胰腺癌增强CT自动识别系统的建立及临床测试',
+//         category: '论文类',
+//         instructor: '赵六',
+//         status: '——',
 
-    }
-];
+//     }
+// ];
 var num = []
 var del = []
 var cha = []
 
-for (let i = 0; i < data.length; i++) {
-    num.push(false);
-    del.push("primary")
-    cha.push("选定")
-}
-
-
+@inject('studentStore')
+@observer
 export default class TopicList extends Component {
     state = {
         filteredInfo: null,
         selectedRowKeys: [],
+        topicList: []
         // sortedInfo: null,
     }
+    @computed
+    get topicList() {
+        return toJS(this.props.studentStore.topicList);
+    }
+
+    componentDidMount() {
+        this.props.studentStore.getTopicList()
+            .then(r => {
+                if (r.length) {
+                    this.setState({
+                        topicList: r
+                    })
+                }
+            })
+
+    }
+
     handleChange = (pagination, filters, sorter) => {
         this.setState({
             filteredInfo: filters,
@@ -51,9 +65,10 @@ export default class TopicList extends Component {
     }
     handleClick = (record) => {
         const selectedRowKeys = [...this.state.selectedRowKeys];
+        let { topicList } = this.state;
         if (selectedRowKeys.indexOf(record.key) >= 0) {
             selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1);
-            data[record.key].status = '——';
+            topicList[record.key].status = '——';
             for (let i = 0; i < num.length; i++) {
                 num[i] = false
                 cha[i] = "选定"
@@ -64,7 +79,7 @@ export default class TopicList extends Component {
             selectedRowKeys.push(record.key);
             cha[record.key] = "取消"
             del[record.key] = "text"
-            data[record.key].status = 1;
+            topicList[record.key].status = 1;
             for (let i = 0; i < num.length; i++) {
                 if (i !== Number.parseInt(record.key)) {
                     num[i] = true
@@ -75,9 +90,20 @@ export default class TopicList extends Component {
         this.setState({ selectedRowKeys });
     }
 
-    render(_, { selectedRowKeys, filteredInfo }) {
-        console.log(selectedRowKeys)
+    render() {
+
+        let { selectedRowKeys, filteredInfo, topicList } = this.state;
+
+        for (let i = 0; i < topicList.length; i++) {
+            num.push(false);
+            del.push("primary")
+            cha.push("选定")
+            topicList[i].status = '——';
+        }
         filteredInfo = filteredInfo || {}
+        const paginationProps = {
+            pageSize: 6
+        }
         const columns = [
             {
                 title: '课题名称',
@@ -92,10 +118,10 @@ export default class TopicList extends Component {
                     { text: '理论研究类', value: '理论研究类' },
                     { text: '论文类', value: '论文类' }
                 ],
-
+                filterMultiple: false,
                 filteredValue: filteredInfo.category || null,
                 onFilter: (value, record) => (record.category === value),
-
+                // render: 
             },
             {
                 title: '指导教师',
@@ -135,9 +161,11 @@ export default class TopicList extends Component {
                 <Table
                     tableLayout="fixed"
                     columns={columns}
-                    dataSource={data}
+                    dataSource={this.state.topicList}
+                    // dataSource={data}
                     onChange={this.handleChange}
                     rowKey={item => item.id}
+                    pagination={paginationProps}
                 />
             </div>
         )

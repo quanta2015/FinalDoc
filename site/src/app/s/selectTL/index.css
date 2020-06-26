@@ -34,3 +34,6 @@ table {
 	text-align: center;
 	margin: 0 auto;
 }
+.ant-table-wrapper {
+	max-height: 800px;
+}
