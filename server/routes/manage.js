@@ -3,6 +3,7 @@ const { json } = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
 
+
 router.post('/teacherList', async(req, res) => {
   let sql = `CALL PROC_TEA_LIST_M`;
   let params = req.body;
@@ -21,30 +22,33 @@ router.post('/topicList', async(req, res) => {
 
 
 router.post('/randAllocate',async(req,res) => {
-  // let count = 5;
-  // let teacherId = "2020782";  //等待数据格式
-  let topicIdArr=[];
-  let result;
-  let sql = `CALL PROC_TOPIC_LIST_M`;
-
-  callProc(sql, {}, res, (r) => {
-		for(i of r){
-      topicIdArr.push(i);
-    }    
-    for(let i=0;i<count;i++){
-      let temp = topicIdArr[topicIdArr.length-1].tid;
-      if(temp==teacherId){
-        i--;
+  // let tt=[5,"20170056","2020782"]; //等待数据格式
+  
+  let count = tt[0];
+  for(let k=1;k<tt.length;k++){
+    let teacherId = tt[k]; 
+    let topicIdArr=[];
+    let result;
+    let sql = `CALL PROC_TOPIC_LIST_M`;
+    callProc(sql, {}, res, (r) => {
+      for(i of r){
+        topicIdArr.push(i);
+      }    
+      for(let i=0;i<count;i++){
+        let temp = topicIdArr[topicIdArr.length-1];
+        if(temp.tid == teacherId){
+          i--;
+        }
+        else{
+          let sql = `CALL PROC_CHECK_INSERT_M(?)`;
+          result = {teacher_id:teacherId,topic_id:temp.id};
+          topicIdArr.pop(); 
+          callProc(sql, result, res, (r) => {});
+        }
       }
-      else{
-        let sql = `CALL PROC_CHECK_INSERT_M(?)`;
-        result={teacher_id:teacherId,topic_id:topicIdArr[topicIdArr.length-1].id};
-        topicIdArr.pop(); 
-        callProc(sql, result, res, (r) => {});
-      }
-    }
-    res.status(200).json({code: 200, msg: '自动课题审核分配信息'})
-	});
+    });
+  }
+  res.status(200).json({code: 200, msg: '自动课题审核分配信息'})
 });
 
 
@@ -66,6 +70,15 @@ router.post('/checkList', async(req, res) => {
 	callProc(sql, {}, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取审核列表信息'})
 	});
+});
+
+
+router.post('/checkUpdate', async(req, res) => {
+  let sql = `CALL PROC_CHECK_UPDATE_M(?)`;
+  let params = req.body;
+  callProc(sql, params, res, (r) => {
+    res.status(200).json({code: 200, data: r, msg: '取审核列表信息'})
+  });
 });
 
 module.exports = router
