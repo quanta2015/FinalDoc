@@ -34,9 +34,9 @@ export default class Home extends Component {
       <div className="g-home">
         <NavBar/>
         <CheckBlock change={this.changePage.bind(this)}/>
-        <PublishBlock path='/t_manage/publish'/>
+        {/* <PublishBlock path='/t_manage/publish'/> */}
         <Router>
-          <PublishBlock path='/t_manage/publish'/>
+          <Home path='/t_manage/publish'/>
         </Router>
       </div>
 		);

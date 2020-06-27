@@ -20,3 +20,5 @@ export const API_SYS_POST_TOPIC_INFO = API_SERVER + '/teacher/postTopicInfo';
 export const API_SYS_GET_STU_BY_LIKEID = API_SERVER + '/teacher/getStuInfoByLikeID';
 //通过topicID查询完整信息
 export const API_SYS_GET_FUUL_TOPIC_BY_ID = API_SERVER + '/teacher/getStuInfoByLikeID';
+//通过教师id获取topic内容
+export const API_SYS_GET_TOPIC_BY_TEACHER_ID = API_SERVER + '/teacher/getTidgetTopic'; 

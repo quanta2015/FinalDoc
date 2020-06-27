@@ -1,55 +1,76 @@
-import { Collapse, Select,Button } from 'antd';
-import { Component } from 'preact';
+import { Collapse,Button, Table } from 'antd';
 import { UserOutlined  } from '@ant-design/icons';
 import style from './index.css'
+import BaseActions from '../../BaseActions';
 const { Panel } = Collapse;
+import * as urls from '../../../constant/urls'
+import DeleteSpan from '../../../component/ContentT/Icons/Delete'
+import ReWrite from '../../../component/ContentT/Icons/ReWrite'
+import Watch from '../../../component/ContentT/Icons/Watch'
 
-
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+let me = {
+  tea_id : '20127018'
+}
 
 const StateExtra = (s) => (
-  <div>
-    {s==3 && <div style="color:green">通过</div>}
-    {s==1 && <div style="color:orange">待审核</div>}
-    {s==2 && <div style="color:red">失败</div>}
-    {s==0 && <div style="color:orange">待分配</div>}
+  <div className="state-extra">
+    {s==3 &&<span style="color:green">已通过</span>}
+    {s==1 && <span style="color:orange">待审核</span>}
+    {s==2 && <span style="color:red">未通过</span>}
+    {s==0 && <span style="color:orange">待分配</span>}
+    <div className="icons">
+      {
+        (s==0||s==1||s==2)&&<span><DeleteSpan/></span>
+      }
+      {
+        (s==2||s==0)&&<span><ReWrite/></span>
+      }
+      {
+        (s==2)&&<span><Watch/></span>
+      }
+      
+      
+    </div>
+    
   </div>
 );
-class Check extends Component {
+class Check extends BaseActions {
 
-  toplist=[
-    {id:"1",name:"JAVA程序设计",status:0,stu:null},
-    {id:"2",name:".NET程序设计",status:1,stu:null},
-    {id:"3",name:"WEB程序设计",status:2,stu:null},
-    {id:"4",name:"JSP程序设计",status:3,
-      stu:{
-        name:"李兆荣",
-        uid:2017212212294
-      }
-    },
-    {id:"5",name:"C++程序设计",status:3,
-      stu:null
-    },
-  ]
-
+  constructor(props){
+    super(props);
+  }
+ 
   state = {
-    
+    toplist:[
+      {key:3,id:"3",name:"WEB程序设计",status:2,stu:null},
+      {key:4,id:"4",name:"JSP程序设计",status:3,
+        stu:{
+          name:"李兆荣",
+          uid:2017212212294
+        }
+      },
+      {key:4,id:"5",name:"C++程序设计",status:3,stu:null},
+      {key:1,id:"1",name:"JAVA程序设计",status:0,stu:null},
+      {key:2,id:"2",name:".NET程序设计",status:1,stu:null},
+      
+    ]
   };
+
+  async componentDidMount(){
+    let data = await this.get(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID,{tea_id:me.tea_id})
+    console.log(data)
+  }
 
   render() {
     return (
       <div className="check-block">
         <div className="title">我的课题</div>
-        <Collapse
+        <Collapse 
           defaultActiveKey={[]}
           expandIconPosition={'left'}
         >
           {
-            this.toplist.map(
+            this.state.toplist.map(
               (t)=>
                 <Panel header={t.name} key={t.id} extra={StateExtra(t.status)}>
                   <div className="stu">
@@ -85,8 +106,8 @@ class Check extends Component {
             )
           }
         </Collapse>
-        {this.toplist.length<8&&
-          <Button type="primary" style="margin:20px 0" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
+        {this.state.  toplist.length<8&&
+          <Button type="primary" style="margin:20px 0" >发布新课题</Button>
         }
       </div>
     );

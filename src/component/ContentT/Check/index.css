@@ -40,3 +40,44 @@
   display: flex;
   justify-content: space-between;
 }
+
+.ant-table-tbody{
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+}
+
+table {
+  table-layout: fixed;
+}
+
+.ant-spin-nested-loading{
+  width: 1000px;
+}
+
+.ant-table-tbody > tr > td{
+  width: 250px;
+}
+
+.ant-collapse > .ant-collapse-item > .ant-collapse-header{
+  cursor: auto;
+}
+
+.ant-collapse > .ant-collapse-item > .ant-collapse-header>span{
+  cursor: pointer;
+}
+
+.state-extra{
+  display: flex;
+}
+
+.icons{
+  width: 100px;
+  margin: 0 20px 0 50px ;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.icons>span{
+  cursor: pointer;
+}
