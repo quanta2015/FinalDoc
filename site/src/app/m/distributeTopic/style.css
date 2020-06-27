@@ -50,16 +50,16 @@
  .ant-table-tbody{
 	 display: flex;
 	 flex-direction: column;
-	  width: 810px;
+	  width: 800px;
 	  
  }
  .ant-table-content{
-	 padding-left: 100px;
+	 padding-left: 80px;
 	 padding-top:40px
  }
  
 .ant-spin-nested-loading{
-	width: 900px;
+	width: 880px;
 }
 
 .ant-table-tbody > tr > td{
@@ -87,6 +87,6 @@
 .detail-title{
     font-weight: 800;
     font-size: 24px;
-    padding-left:90px;
+    padding-left:80px;
     padding-top:30px
 }
