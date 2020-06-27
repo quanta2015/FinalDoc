@@ -128,7 +128,8 @@ var del = async (table, where, cb)=>{
 var add = async (table, params, cb)=>{
   pool.getConnection((err, conn)=>{
     if (err) {
-      console.log('Connect error', err )
+      console.log('Connect error', err );
+      cb(err, { code: -1, msg: '连接失败！' });
     } else {
       let fieldList = []
       let valList = []
@@ -148,6 +149,24 @@ var add = async (table, params, cb)=>{
   })
 };
 
+var querySql = async (sql, cb) => {
+  pool.getConnection((err, conn) => {
+      if (err) {
+          console.log('Connect error', err);
+          cb(err, {code: -1, msg:'连接失败！'});
+      } else {
+          conn.query(sql, (err, rows) => {
+              if (err) {
+                  console.log('SQL error', err);
+                  cb(err, { code: 0, msg: '数据获取失败！' })
+              } else {
+                  cb(err, { code: 1, msg: '数据获取成功！', rows: rows })
+              }
+              conn.release();
+          })
+      }
+  })
+};
 
 var querySQL = async (sql, cb)=>{
   var conn = mysql.createConnection(config);
@@ -175,9 +194,6 @@ var procedureSQL = async (sql, params, cb)=>{
   });
 };
 
-
-
-
 var vertifyUser = async (params, cb) => {
 
   let where = `where email='${params.email}' and pwd='${params.pwd}'`
@@ -190,7 +206,27 @@ var vertifyUser = async (params, cb) => {
   })
 }
 
-
+//同步方式
+var Query = function( sql, values ) {
+  // 返回一个 Promise
+  return new Promise(( resolve, reject ) => {
+    pool.getConnection(function(err, connection) {
+      if (err) {
+        reject( err )
+      } else {
+        connection.query(sql, values, ( err, rows) => {
+          if ( err ) {
+            reject( err )
+          } else {
+            resolve( rows )
+          }
+          // 结束会话
+          connection.release()
+        })
+      }
+    })
+  })
+}
 
 exports.select     = select;
 exports.selectSP     = selectSP;
@@ -198,7 +234,10 @@ exports.selectAll  = selectAll;
 exports.selectPage = selectPage;
 exports.querySQL   = querySQL;
 exports.add        = add;
-exports.procedureSQL     = procedureSQL;
+exports.procedureSQL = procedureSQL;
 exports.del        = del;
 exports.prepareParm= prepareParm;
 exports.vertifyUser= vertifyUser;
+
+exports.querySql   = querySql;
+exports.Query      = Query;
