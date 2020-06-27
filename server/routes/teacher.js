@@ -6,7 +6,7 @@ const router = express.Router();
 const callProc = require('../util').callProc
 
 // 由不完整学号得到学生列表（学号和姓名）：模糊查询
-router.get('/getStuInfoByLikeID', async(req, res) => {
+router.post('/getStuInfoByLikeID', async(req, res) => {
     let sql = `CALL PROC_STUID_INFO_FUZZY(?)`;
     var data = url.parse(req.url, true).query;
     let params = {num: data.num};
@@ -27,7 +27,7 @@ router.get('/getStuInfoByLikeID', async(req, res) => {
   })
 
   // 由教师id获取topic内容（课题id，课题状态）
-  router.get('/getTidgetTopic', async(req, res) => {
+  router.post('/getTidgetTopic', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STATUS(?)`;
     var data = url.parse(req.url, true).query;
     let params = {tea_id: data.tea_id};
@@ -36,10 +36,10 @@ router.get('/getStuInfoByLikeID', async(req, res) => {
         var status1 = 1;
         var status2 = 2;
         var status3 = 3;
-        if (result["sel"] == 0) {
+        if (r[0]["sel"] == 0) {
             r[0].status = status0;
-        } else if(result["result"] == 0) {
-            if (result["sugg"] == null) {
+        } else if(r[0]["result"] == 0) {
+            if (r[0]["sugg"] == null) {
                 r[0].status = status1;
             } else {
                 r[0].status = status2;
@@ -52,7 +52,7 @@ router.get('/getStuInfoByLikeID', async(req, res) => {
   })
 
   // 由课题pid获取课题内容（课题名称，课题类别，课题简介，学生id，学生名字）
-  router.get('/getTopicFullInfo', async(req, res) => {
+  router.post('/getTopicFullInfo', async(req, res) => {
     let sql = `CALL PROC_PID_GET_TOPIC_INFO(?)`;
     var data = url.parse(req.url, true).query;
     let params = {pid: data.pid};
