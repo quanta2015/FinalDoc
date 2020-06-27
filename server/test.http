@@ -24,9 +24,9 @@ get {{url}}/UserList
 {{json}}
 
 ###
-post {{url}}/student/getStuTopicStatus
+post {{url}}/auditTp/getTopicList
 {{json}}
 
 {
-    "uid":"20172106101"
+    "uid":"20120027"
 }
