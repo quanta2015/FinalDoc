@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc
 router.post('/getTopicList', async (req, res) => {
-    let sql = `CALL PROC_CAL_ONE_TEACHER_TOPIC_UNCHECKED(?)`;
+    let sql = `CALL PROC_CAL_UNCHECKED_TASK(?)`;
     let params = req.body;
     console.log(params)
     callProc(sql, params, res, (r) => {
@@ -10,7 +10,7 @@ router.post('/getTopicList', async (req, res) => {
     });
 });
 router.post('/getTopicTypes', async (req, res) => {
-    let sql = `CALL PROC_CAL_ONE_TEACHER_TOPIC_TYPE(?)`;
+    let sql = `CALL PROC_CAL_TASK_TOPIC_TYPE(?)`;
     let params = req.body;
     console.log(params)
     callProc(sql, params, res, (r) => {
