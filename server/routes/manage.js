@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../util/db');
 const callProc = require('../util').callProc;
-// const Query = require('../util/db');
 
-const mysql = require('mysql');
-const config = require("../util/conf.js")
-const pool = mysql.createPool(config); 
+// const mysql = require('mysql');
+// const config = require("../util/conf.js")
+// const pool = mysql.createPool(config); 
 
 router.post('/teacherList', async(req, res) => {
   let sql = `CALL PROC_TEA_LIST_M`;
@@ -47,21 +46,17 @@ router.post('/randAllocate',async(req,res) => {
     for(let i=0;i<count;i++){
       let index = Math.floor(Math.random()*topicIdArr.length);
       let temp = topicIdArr[index];
-      // let temp = topicIdArr[topicIdArr.length-1];
       if(temp.tid == teacherId){
         i--;
       }
       else{
         result = {teacher_id:teacherId,topic_id:temp.id};
-        // console.log(JSON.stringify(result))
-        // topicIdArr.pop(); 
         topicIdArr.splice(index,1);
-        // console.log(topicIdArr.length)
         const add = await db.Query(`CALL PROC_CHECK_INSERT_M(?)`,[JSON.stringify(result)]);
       }
     }
   }
-  return res.status(200).json({code: 200, msg: '取审核列表信息'})
+  return res.status(200).json({code: 200, msg: '自动课题审核分配'})
 });
 
 
