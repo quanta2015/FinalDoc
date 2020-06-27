@@ -1,5 +1,4 @@
 const express = require('express');
-const { json } = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
 
@@ -62,7 +61,6 @@ router.post('/randAllocate',(req,res) => {
       return res.status(200).json({code: 200, msg: '自动课题审核分配信息'})
     });
   }
-  // res.status(200).json({code: 200, msg: '自动课题审核分配信息'})
 });
 
 
@@ -78,14 +76,20 @@ router.post('/checkAllocate', async(req, res) => {
 });
 
 
-
-
-
-router.post('/checkUpdate', async(req, res) => {
-  let sql = `CALL PROC_CHECK_UPDATE_M(?)`;
+router.post('/checkUpdateYes', async(req, res) => {
+  let sql = `CALL PROC_CHECK_UPDATE_YES_M(?)`;
   let params = req.body;
   callProc(sql, params, res, (r) => {
-    res.status(200).json({code: 200, data: r, msg: '取审核列表信息'})
+    res.status(200).json({code: 200, data: r, msg: '审核方通过该课题'})
+  });
+});
+
+
+router.post('/checkUpdateNo', async(req, res) => {
+  let sql = `CALL PROC_CHECK_UPDATE_NO_M(?)`;
+  let params = req.body;
+  callProc(sql, params, res, (r) => {
+    res.status(200).json({code: 200, data: r, msg: '审核方打回该课题'})
   });
 });
 
