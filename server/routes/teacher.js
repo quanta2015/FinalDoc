@@ -38,10 +38,12 @@ router.get('/getStuInfoByLikeID', async(req, res) => {
         var status3 = 3;
         if (result["sel"] == 0) {
             r[0].status = status0;
-        } else if(result["sugg"] == null) {
-            r[0].status = status1;
         } else if(result["result"] == 0) {
-            r[0].status = status2;
+            if (result["sugg"] == null) {
+                r[0].status = status1;
+            } else {
+                r[0].status = status2;
+            }
         } else {
             r[0].status = status3;
         }

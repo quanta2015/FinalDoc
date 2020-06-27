@@ -15,7 +15,8 @@ const callProc = require('./util').callProc
 const manage = require('./routes/manage');
 const student = require('./routes/student');
 const topic = require('./routes/topic');
-const teacher = require('./routes/teacher'); 
+const auditTp = require('./routes/auditTp'); 
+const teacher = require('./routes/teacher')
 
 
 app.use(compression())
@@ -28,8 +29,8 @@ app.use(express.static(__dirname + '/'))
 app.use('/manage',manage);
 app.use('/student',student);
 app.use('/topic',topic);
-app.use('/teacher',teacher);
-
+app.use('/auditTp',auditTp);
+app.use('/teacher',teacher)
 
 
 const port = 8090;
