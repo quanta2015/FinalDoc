@@ -36,16 +36,18 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
         var status1 = 1;
         var status2 = 2;
         var status3 = 3;
-        if (r[0]["sel"] == 0) {
-            r[0].status = status0;
-        } else if(r[0]["result"] == 0) {
-            if (r[0]["sugg"] == null) {
-                r[0].status = status1;
+        for (let index = 0; index < r.length; index++) {
+            if (r[index].sel == 0) {
+                r[index].status = status0;
+            } else if(r[index].result == 0) {
+                if (r[index].sugg == null) {
+                    r[index].status = status1;
+                } else {
+                    r[index].status = status2;
+                }
             } else {
-                r[0].status = status2;
+                r[index].status = status3;
             }
-        } else {
-            r[0].status = status3;
         }
         res.status(200).json({code: 200, data: r, msg: '课题查询成功，返回课题列表'});
     })
