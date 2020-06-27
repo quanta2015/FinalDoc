@@ -35,3 +35,8 @@
   color: #bbb; 
   font-size: 18px;
 }
+
+.fail-block{
+  display: flex;
+  justify-content: space-between;
+}

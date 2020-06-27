@@ -1,26 +1,31 @@
 import { Component, h } from 'preact'
 import { inject } from 'mobx-react'
 import NavBar from '../../../component/NavBar';
-import PublishBlock from '../../../component/NavT/Publish';
-import CheckBlock from '../../../component/NavT/Check';
+import PublishBlock from '../../../component/ContentT/Publish';
+import CheckBlock from '../../../component/ContentT/Check';
 import style from './style.scss'
+import Router, { route } from 'preact-router';
+import { Switch, Button } from 'antd';
 
 
 @inject('userStore')
 export default class Home extends Component {
   tid=null;
-  state = {
-    succ:true
-  }
+  succ=true;
 
   changePage = (tid)=>{
-    let s = !this.state.succ;
+    this.succ = !this.succ;
     if(!!tid){
       this.tid=tid
     }else{
       this.tid=null;
     }
-    this.setState({succ:s})
+    console.log(this.succ)
+    if(this.succ){
+      route("/t_manage/check")
+    }else{
+      route("/t_manage/publish")
+    }
   }
 
 	render() {
@@ -28,14 +33,11 @@ export default class Home extends Component {
 		return (
       <div className="g-home">
         <NavBar/>
-        {this.state.succ&&
-          <CheckBlock change={this.changePage.bind(this)}/>
-        }
-        {
-          !this.state.succ&&
-          <PublishBlock tid={this.tid} change={this.changePage.bind(this)}/>
-        }
-		
+        <CheckBlock change={this.changePage.bind(this)}/>
+        <PublishBlock path='/t_manage/publish'/>
+        <Router>
+          <PublishBlock path='/t_manage/publish'/>
+        </Router>
       </div>
 		);
 	}

@@ -1,11 +1,9 @@
 import { Collapse, Select,Button } from 'antd';
 import { Component } from 'preact';
-import { SettingOutlined } from '@ant-design/icons';
+import { UserOutlined  } from '@ant-design/icons';
 import style from './index.css'
 const { Panel } = Collapse;
-function callback(key) {
-  console.log(key);
-}
+
 
 const text = `
   A dog is a type of domesticated animal.
@@ -24,10 +22,18 @@ const StateExtra = (s) => (
 class Check extends Component {
 
   toplist=[
-    {id:"1",name:"JAVA程序设计",status:0},
-    {id:"2",name:".NET程序设计",status:1},
-    {id:"3",name:"WEB程序设计",status:2},
-    {id:"4",name:"JSP程序设计",status:3},
+    {id:"1",name:"JAVA程序设计",status:0,stu:null},
+    {id:"2",name:".NET程序设计",status:1,stu:null},
+    {id:"3",name:"WEB程序设计",status:2,stu:null},
+    {id:"4",name:"JSP程序设计",status:3,
+      stu:{
+        name:"李兆荣",
+        uid:2017212212294
+      }
+    },
+    {id:"5",name:"C++程序设计",status:3,
+      stu:null
+    },
   ]
 
   state = {
@@ -35,13 +41,11 @@ class Check extends Component {
   };
 
   render() {
-    console.log(this.toplist)
     return (
       <div className="check-block">
         <div className="title">我的课题</div>
         <Collapse
-          defaultActiveKey={['1']}
-          onChange={callback}
+          defaultActiveKey={[]}
           expandIconPosition={'left'}
         >
           {
@@ -51,8 +55,30 @@ class Check extends Component {
                   <div className="stu">
                     {t.status==0 && <span>您的课题{t.name}正在等待教务处分配</span>}
                     {t.status==1 && <span>您的课题{t.name}正在等待教师审核</span>}
-                    {t.status==2 && <span>您的课题{t.name}审核未通过</span>}
-                    {t.status==3 && <span>您的课题{t.name}审核已通过</span>}
+                    {t.status==2 && 
+                      <div className="fail-block">
+                        <span>您的课题{t.name}审核未通过</span>
+                        <div>
+                          <Button onClick={()=>{console.log("查看意见")}}>查看意见</Button>
+                          <Button type="primary" onClick={()=>{this.props.change(null)}}>去修改</Button>
+                        </div>
+                        
+                      </div>
+                    }
+                    {t.status==3 &&
+                      <>
+                        {t.stu!=null&&
+                          <div className="stu-block">
+                          <span style="margin-right:10px"><UserOutlined /></span>
+                          课题学生：{t.stu.name}
+                        </div>
+                        }
+                        {t.stu==null&&
+                          <span>您的课题{t.name}还没有学生选择</span>
+                        }
+                      </>
+                    
+                    }
                   </div>
                 </Panel>
               
