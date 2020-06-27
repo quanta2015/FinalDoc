@@ -39,7 +39,8 @@ class App extends Component {
           <AsyncRoute path='/t_auditOP' getComponent={ () => import('./app/t/auditOP').then(module => module.default) }/>   
           <AsyncRoute path='/t_auditFD' getComponent={ () => import('./app/t/auditFD').then(module => module.default) }/>
           <AsyncRoute path='/m_distributeTopic' getComponent={ () => import('./app/m/distributeTopic').then(module => module.default) }/>
-          <AsyncRoute path='/m_distributeTopic_detail' getComponent={ () => import('./app/m/distributeTopic/detail').then(module => module.default) }/>   
+          <AsyncRoute path='/m_distributeTopic_detail' getComponent={ () => import('./app/m/distributeTopic/detail').then(module => module.default) }/> 
+          <AsyncRoute path='/m_organizeOpendefence' getComponent={ () => import('./app/m/organizeOpendefence').then(module => module.default) }/>     
         </Router>
       </div>
     )

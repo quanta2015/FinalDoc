@@ -13,4 +13,5 @@ export var MENU_MAIN_T =
     { title:'终期论文审核', path: '/t_auditFD', icon:home }]
 
 export var MENU_MAIN_M = 
-   [{ title:'分配审核选题', path: '/m_distributeTopic' , icon:home }]
+   [{ title:'分配审核选题', path: '/m_distributeTopic' , icon:home },
+    { title:'组织开题答辩', path: '/m_organizeOpendefence' , icon:home }]

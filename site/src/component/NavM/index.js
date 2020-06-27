@@ -29,7 +29,7 @@ class NavM extends Component {
           <div>姓名：李四</div>
           <div>工号：04080901</div>
           <div>所在系：计算机科学与技术</div>
-          <div>所在学院：杭州国际服务工程学院</div>
+          {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
           {MENU_MAIN_M.map((item,i)=>

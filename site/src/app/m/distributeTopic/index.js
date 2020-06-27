@@ -18,22 +18,24 @@ export default class Home extends Component {
         // id,tid,topic
         topic_name: [],
         // 手动的老师id
-        one_tea_name: "",
+        one_tea_name: "123",
+        //已选择的老师
         select_teacher: [],
+        //已选择的课题
         select_topic: [],
         // 最大可分配课题数目
         maxNum: 10,
         // 分配数目
         num: 0,
-        flag:true,
+        // flag:true,
         temp:0,
-        allTopic:[]
+        // allTopic:[]
     }
     // }
 
     async componentDidMount() {
         let tea = await this.props.manageStore.getTeaList()
-        console.log(this.state)
+        // console.log(this.state)
         let topic = await this.props.manageStore.getTopicList()
         let teaName = []
         tea.data.map((item) =>
@@ -43,13 +45,14 @@ export default class Home extends Component {
         this.setState({ tea_name_2: teaName, topic_name: topic.data }, () => { message.info("ok") });
     }
 
-    // Option = Select;
-
+    // 切换自动手动单选框
     onChange = e => {
         this.setState({
             value: e.target.value,
             select_teacher: [],
-            select_topic: []
+            select_topic: [],
+            one_tea_name: "",
+            num: 0
         });
     };
 
@@ -65,7 +68,6 @@ export default class Home extends Component {
         this.setState({
             select_topic: value
         }, () => { console.log(this.state.select_topic) })
-        // console.log(this.ref.topic)
     }
 
     // 提交自动分配
@@ -79,26 +81,8 @@ export default class Home extends Component {
         this.state.select_teacher.map((item)=>
             tea_id.push(item.split(" ")[0])
         )
-        console.log("***"+this.state.topic_name)
-        for(let i=0;i<tea_id.length;i++){
-            let item = {"tea_id":tea_id[i],"topic_id":this.distributeTopic(tea_id,this.state.num)}
-            result.push(item)
-        }
-        console.log(result)
-    }
-
-    distributeTopic = (teaid,num) => {
-        let topic = [];
-        let newAllTopic = this.state.select_topic;
-        let i = 0;
-        while(topic.length <= num){
-            if(newAllTopic[i].tid !== teaid){
-                topic.push(parseInt(newAllTopic[i].id))
-                newAllTopic.splice(i);
-            }
-            i++;
-        }
-        return topic;
+        
+        // this.forceUpdate()
     }
 
     // 提交手动分配
@@ -117,22 +101,29 @@ export default class Home extends Component {
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
             this.message.info("分配成功！")
-            let topic = await this.props.manageStore.getTopicList()
-            this.setState({
-                topic_name: topic.data,
+            // let topic = await this.props.manageStore.getTopicList()
+            // this.setState({
+            //     topic_name: topic.data,
                 
-            })
+            // })
+            // this.forceUpdate()
         }
-
+        // this.forceUpdate()
         this.setState({
             one_tea_name: "",
             select_topic: [],
         })
+        // console.log(this.name)
+        // this.name.inputValue = undefined;
         // console.log(this.ref.topic)
-        this.forceUpdate()
+        // this.forceUpdate()
+        // console.log(this.select)
+        // console.log(this.select_no)
+
     } 
 
     selectOnlyTea = (value) => {
+        // console.log(this.name.inputValue)
         let id
         if (value !== "" && value !== undefined) {
             id = value.split(" ")[0];
@@ -142,7 +133,6 @@ export default class Home extends Component {
         this.setState({
             one_tea_name: id
         }, () => { console.log(this.state.one_tea_name) })
-        console.log(this.name)
     }
 
     maxNum = (value) => {
@@ -206,7 +196,7 @@ export default class Home extends Component {
                             <div class="checkTeacher">
                                 <div class="title">选择审核教师</div>
                                 <AutoComplete
-                                    // ref="name"
+                                    // defaultValue={this.state.select_topic}
                                     ref={name => this.name = name}
                                     style={{ width: 300 }}
                                     options={this.state.tea_name_2}
@@ -229,6 +219,7 @@ export default class Home extends Component {
                                             placeholder="请选择要审核的课题"
                                             allowClear
                                             onChange={this.addSelectTopic}
+                                            ref={select => this.select = select}
                                         >
                                             {/* 该老师的课题不能出现在其需要审核的课题中 */}
                                             {this.state.topic_name.map((item, i) => 
@@ -244,6 +235,7 @@ export default class Home extends Component {
                                             style={{ width: 300 }}
                                             placeholder="请先选择审核老师"
                                             disabled
+                                            ref={select_no => this.select_no = select_no}
                                         >
                                         </Select>
                                     }
