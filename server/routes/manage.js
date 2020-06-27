@@ -22,11 +22,9 @@ router.post('/topicList', async(req, res) => {
 
 
 router.post('/randAllocate',async(req,res) => {
-  // let tt=[5,"20170056","2020782"]; //等待数据格式
-  
-  let count = tt[0];
-  for(let k=1;k<tt.length;k++){
-    let teacherId = tt[k]; 
+  let count = req.body[0];
+  for(let k=1;k<req.body.length;k++){
+    let teacherId = req.body[k];
     let topicIdArr=[];
     let result;
     let sql = `CALL PROC_TOPIC_LIST_M`;
