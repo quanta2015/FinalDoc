@@ -149,6 +149,7 @@ var add = async (table, params, cb)=>{
   })
 };
 
+
 var querySql = async (sql, cb) => {
   pool.getConnection((err, conn) => {
       if (err) {
@@ -192,6 +193,45 @@ var procedureSQL = async (sql, params, cb)=>{
     }
     conn.end();
   });
+};
+//多参数传出，传出数据冗余较大，建议处理后发给前端
+var  procSQL_MutiCB= async (sql, params, Callbacknum,cb)=>{
+  var conn = mysql.createConnection(config);
+  conn.query(sql, params, function (err, ret, fields) {
+    if ( err ) {
+      console.log('SQL error', err )
+      cb( err, ret )
+    } else {
+      let newRet=[];
+      ret.map((item,index)=>{
+        if(index<Callbacknum)
+        newRet.push(item);
+        });
+      cb( err, newRet)
+    }
+    conn.end();
+  });
+};
+//循环加入表，按照json数组传入[{"table:"插入的表单","fieldList":要插入的数据属性列表（比如["type"，"name"，"id"]）,"valLsit":[与属性列表对应的数据列表]}]
+var easyadd = async (table,fieldList,valList, cb)=>{
+  pool.getConnection((err, conn)=>{
+    if (err) {
+      console.log('Connect error', err );
+      cb(err, { code: -1, msg: '连接失败！' });
+    } else {
+      sql = `insert into ${table} (${fieldList.join(',')}) values(${valList.join(',')})`;
+      console.log(sql)
+      conn.query(sql, ( err, rows) => {
+        if ( err ) {
+          console.log('SQL error', err )
+          cb( err, { code: 1, msg: '数据添加失败！' } )
+        } else {
+          cb( err, { code: 0, msg: '数据添加成功！', rows:rows} )
+        }
+        conn.release()
+      })
+    }
+  })
 };
 
 var vertifyUser = async (params, cb) => {
@@ -238,6 +278,7 @@ exports.procedureSQL = procedureSQL;
 exports.del        = del;
 exports.prepareParm= prepareParm;
 exports.vertifyUser= vertifyUser;
-
+exports.procSQL_MutiCB=procSQL_MutiCB;
+exports.easyadd =easyadd;
 exports.querySql   = querySql;
 exports.Query      = Query;
