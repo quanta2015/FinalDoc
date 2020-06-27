@@ -38,6 +38,21 @@ router.post('/delStuTopic', async (req, res) => {
         res.status(200).json({ code: 200, data: r, msg: '删除学生课题' })
     });
 });
+router.post('/calStuTopicStateThree', async (req, res) => {
+    let sql = `CALL PROC_CAL_ONE_STU_TOPIC_WITH_STATUS_THREE(?)`;
+    let params = req.body;
+    console.log(params)
+    callProc(sql, params, res, (r) => {
+        if(r.length!=0)
+        {
+            res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为3 输出 topic里面的所有字段' })
+        }
+        else{
+            res.status(200).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为3 输出 topic里面的所有字段' })
+        }
+       
+    });
+});
 router.post('/getStuTopicStatus', async (req, res) => {
     let sql = `CALL PROC_CAL_ONE_TOPIC_STATUS(?)`;
     let params = req.body;
@@ -46,9 +61,9 @@ router.post('/getStuTopicStatus', async (req, res) => {
         console.log(r)
         if(r.length!=0)
         {
-            res.status(200).json({ code: 200, data: r, msg: '取学生课题' })
+            res.status(200).json({ code: 200, data: r, msg: '数据获取成功 取学生课题' })
         }else{
-            res.status(200).json({ code: 200, data:"虎鲸┗|｀O′|┛ 嗷~~", msg: '取学生课题' })
+            res.status(200).json({ code: 201, data:null, msg: '数据获取为空 取学生课题 ┗|｀O′|┛ 嗷~~' })
         }
         
     });
