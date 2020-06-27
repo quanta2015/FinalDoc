@@ -7,6 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import './style.css';
  
 const paginationProps = {
+	showSizeChanger: false,
 	pageSize: 5
 }
 

@@ -1,14 +1,11 @@
 import { Component } from 'preact';
 import { inject } from 'mobx-react';
 import style from './style';
-import { Radio, InputNumber, Select, AutoComplete, Button, message } from 'antd';
+import { Radio, InputNumber, Select, Button, message } from 'antd';
 const { Option } = Select;
 
 @inject('manageStore')
 export default class Home extends Component {
-    // constructor(props) {
-    //     super(props)
-
     state = {
         value: 1,
         // uid,value
@@ -16,7 +13,8 @@ export default class Home extends Component {
         // id,tid,topic
         topic_name: [],
         // 手动的老师id
-        one_tea_name: "123",
+        one_tea_name: "",
+        onlyTeaName: undefined,
         //已选择的老师
         select_teacher: [],
         //已选择的课题
@@ -24,14 +22,16 @@ export default class Home extends Component {
         // 最大可分配课题数目
         maxNum: 10,
         // 分配数目
-        num: 0,
+        num: 1,
     }
-    // }
 
     async componentDidMount() {
+        // 获取到教师列表
         let tea = await this.props.manageStore.getTeaList()
         // console.log(this.state)
+        // 获取到topic列表
         let topic = await this.props.manageStore.getTopicList()
+        // 将教师列表值变为id+name
         let teaName = []
         tea.data.map((item) =>
             teaName.push({ tid: item.uid, value: item.uid + " " + item.name })
@@ -46,20 +46,16 @@ export default class Home extends Component {
             value: e.target.value,
             select_teacher: [],
             select_topic: [],
-            one_tea_name: undefined,
-            num: 0
         });
     };
 
     addSelectTeacher = (value) => {
-        console.log(`selected ${value}`);
         this.setState({
             select_teacher: value
         }, () => { console.log(this.state.select_teacher) })
     }
 
     addSelectTopic = (value) => {
-        console.log(`selected ${value}`);
         this.setState({
             select_topic: value
         }, () => { console.log(this.state.select_topic) })
@@ -67,17 +63,20 @@ export default class Home extends Component {
 
     // 提交自动分配
     autoDistribute = () => {
-        let result = []
         if (this.state.select_teacher.length === 0) {
             message.info("还未选择审核老师！")
             return;
         }
-        let tea_id = []
+        let tea_id = [this.state.num]
         this.state.select_teacher.map((item) =>
             tea_id.push(item.split(" ")[0])
         )
-
-        // this.forceUpdate()
+        // console.log(tea_id)
+        // 清空已选教师列表
+        this.setState({
+            select_teacher: [],
+            num: 1
+        })
     }
 
     // 提交手动分配
@@ -91,7 +90,6 @@ export default class Home extends Component {
             topic_id.push(parseInt(item.split(" ")[0]))
         )
         let temp = [{"teacher_id":this.state.one_tea_name, "topic_id":topic_id}]
-        console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
             message.info("分配成功！")
@@ -99,31 +97,31 @@ export default class Home extends Component {
             this.setState({
                 topic_name: topic.data,
             })
+        }else {
+            message.info("分配失败！请重试")
         }
-        // this.forceUpdate()
         this.setState({
             one_tea_name: "",
+            onlyTeaName: undefined,
             select_topic: [],
         })
     }
 
     selectOnlyTea = (value) => {
-        // console.log(this.name.inputValue)
         let id
         if (value !== "" && value !== undefined) {
             id = value.split(" ")[0];
         } else {
             id = value
+            // 清空选择课题列表
+            this.setState({
+                select_topic: []
+            })
         }
         this.setState({
-            one_tea_name: id
+            one_tea_name: id,
+            onlyTeaName: value
         }, () => { console.log(this.state.one_tea_name) })
-
-        console.log(this.tea_name)
-        // console.log("2"+this.state.one_tea_name)
-        console.log("*"+document.getElementsByClassName(".ant-select-selection-item"))
-        document.getElementsByClassName(".ant-select-selection-item").innerText = "123"
-        console.log("*"+document.getElementsByClassName(".ant-select-selection-item").innerHTML)
     }
 
     maxNum = (value) => {
@@ -160,11 +158,15 @@ export default class Home extends Component {
                                 <div class="title">审核教师</div>
                                 <div class="item">
                                     <Select
+                                        value={this.state.select_teacher}
+                                        defaultActiveFirstOption={false}
+                                        ref={selectItem => this.selectItem = selectItem}
                                         mode="multiple"
                                         style={{ width: 320 }}
                                         placeholder="请选择审核教师"
                                         onChange={this.addSelectTeacher}
                                         allowClear
+                                        id="select_teacher"
                                     >
                                         {this.state.tea_name_2.map((item, i) =>
                                             <Select.Option key={item.value}>{item.value}</Select.Option>
@@ -178,7 +180,7 @@ export default class Home extends Component {
                         </div>
                         <div className="checknum">
                             <div className="title">课题数量</div>
-                            <InputNumber style={{ width: 320 }} min={1} max={this.state.maxNum} defaultValue={1} onChange={this.maxNum} />
+                            <InputNumber value={this.state.num} style={{ width: 320 }} min={1} max={this.state.maxNum} onChange={this.maxNum} />
                         </div>
                         <div className="btn">
                             <Button type="primary" onClick={this.autoDistribute}>提交</Button>
@@ -191,10 +193,10 @@ export default class Home extends Component {
                             <div class="checkTeacher">
                                 <div class="title">审核教师</div>
                                 <Select
+                                    value={this.state.onlyTeaName}
                                     allowClear
                                     showSearch
-                                    defaultValue={this.state.one_tea_name}
-                                    ref={tea_name => this.tea_name = tea_name}
+                                    defaultActiveFirstOption={false}
                                     style={{ width: 320 }}
                                     placeholder="请选择审核教师"
                                     optionFilterProp="children"
@@ -218,6 +220,7 @@ export default class Home extends Component {
                                             placeholder="请选择要审核的课题"
                                             allowClear
                                             onChange={this.addSelectTopic}
+                                            defaultActiveFirstOption={false}
                                         >
                                             {/* 该老师的课题不能出现在其需要审核的课题中 */}
                                             {this.state.topic_name.map((item, i) =>
@@ -236,7 +239,7 @@ export default class Home extends Component {
                                         >
                                         </Select>
                                     }
-                                    {(this.state.one_tea_name!== undefined && this.state.select_topic.length !== 0) &&
+                                    {(this.state.onlyTeaName!== undefined && this.state.select_topic.length !== 0) &&
                                         <div class="num">已选{this.state.select_topic.length}项</div>
                                     }
                                 </div>
