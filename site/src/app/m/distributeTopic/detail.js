@@ -7,7 +7,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import './style.css';
  
 const paginationProps = {
-	pageSize: 6
+	pageSize: 5
 }
 
 @inject('manageStore')
@@ -27,13 +27,16 @@ export default class Home extends Component {
 					ref={node => {
 						this.searchInput = node;
 					}}
-					placeholder={`Search ${dataIndex}`}
+					placeholder={`输入教师姓名`}
 					value={selectedKeys[0]}
 					onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
 					onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
 					style={{ width: 188, marginBottom: 8, display: 'block' }}
 				/>
 				<Space>
+					<Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+						重置
+          </Button>
 					<Button
 						type="primary"
 						onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
@@ -41,11 +44,9 @@ export default class Home extends Component {
 						size="small"
 						style={{ width: 90 }}
 					>
-						Search
+						搜索
           </Button>
-					<Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-						Reset
-          </Button>
+					 
 				</Space>
 			</div>
 		),
@@ -106,22 +107,19 @@ export default class Home extends Component {
 	render(_, { value, own }) {
 		const columns = [
 			{
-				title: '课题题目',
-				dataIndex: 'topicTOPIC',
-				key: 'topicTOPIC',
-
-			},
-			{
-				title: '发布教师',
-				dataIndex: 'topicTeacher',
-				key: 'topicTeacher',
-			},
-			{
 				title: '审核教师',
 				dataIndex: 'checkTeacher',
 				key: 'checkTeacher',
 				...this.getColumnSearchProps('checkTeacher'),
 			},
+			{
+				title: '课题题目',
+				dataIndex: 'topicTOPIC',
+				key: 'topicTOPIC',
+
+			},
+			 
+			 
 			{
 				title: '审核状态',
 				key: 'result',
@@ -132,13 +130,17 @@ export default class Home extends Component {
 					console.log(result);
 					let color = "";
 					let tag = "";
-					if (result == 0) {
-						tag = "未通过";
-						color = "red"
+					if (result == 2) {
+						tag = "待审核";
+						color = "blue"
 					}
-					else {
+					else if(result==1){
 						tag = "通过";
 						color = "green";
+					}
+					else{
+						tag="未通过";
+						color="red"
 					}
 					console.log(tag);
 					return (
@@ -166,13 +168,19 @@ export default class Home extends Component {
 		console.log(own.checkTeacher, 111)
 		let color = "";
 		let tag = "";
-		if (own.result == 0) {
-			tag = "未通过";
-			color = "red"
+		if (own.result == 2) {
+			tag = "待审核";
+			color = "blue";
+			 
 		}
-		else {
+		else if(own.result==1)
+		{
 			tag = "通过";
 			color = "green";
+		}
+		else {
+			tag = "未通过";
+			color = "red"
 		}
 
 
@@ -214,11 +222,10 @@ export default class Home extends Component {
 
 
 					>
-						<Descriptions.Item label="课题名称" span={3}>{own.topicTOPIC}</Descriptions.Item>
-						<Descriptions.Item label="课题简介" span={3}>{own.content}</Descriptions.Item>
-						<Descriptions.Item label="发布教师">{own.topicTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核教师">{own.checkTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核状态"><Tag color={color} >
+						<Descriptions.Item label="课题名称" span={4}>{own.topicTOPIC}</Descriptions.Item>
+						<Descriptions.Item label="课题简介" span={4}>{own.content}</Descriptions.Item>
+						<Descriptions.Item label="审核教师" span={2}>{own.checkTeacher}</Descriptions.Item>
+						<Descriptions.Item label="审核状态" span={2}><Tag color={color} >
 							{tag}
 						</Tag></Descriptions.Item>
 
