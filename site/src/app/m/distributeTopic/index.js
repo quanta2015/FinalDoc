@@ -11,8 +11,6 @@ export default class Home extends Component {
 
     state = {
         value: 1,
-        // uid,name
-        // tea_name: [],
         // uid,value
         tea_name_2: [],
         // id,tid,topic
@@ -27,9 +25,6 @@ export default class Home extends Component {
         maxNum: 10,
         // 分配数目
         num: 0,
-        // flag:true,
-        temp:0,
-        // allTopic:[]
     }
     // }
 
@@ -51,7 +46,7 @@ export default class Home extends Component {
             value: e.target.value,
             select_teacher: [],
             select_topic: [],
-            one_tea_name: "",
+            one_tea_name: undefined,
             num: 0
         });
     };
@@ -78,49 +73,39 @@ export default class Home extends Component {
             return;
         }
         let tea_id = []
-        this.state.select_teacher.map((item)=>
+        this.state.select_teacher.map((item) =>
             tea_id.push(item.split(" ")[0])
         )
-        
+
         // this.forceUpdate()
     }
 
     // 提交手动分配
     handDistribute = async () => {
-        if(this.state.select_topic.length === 0){
+        if (this.state.select_topic.length === 0) {
             message.info("还未选择课题！")
             return;
         }
         let topic_id = []
-        this.state.select_topic.map((item)=>
+        this.state.select_topic.map((item) =>
             topic_id.push(parseInt(item.split(" ")[0]))
         )
-        // let temp = [{"teacher_id":this.state.one_tea_name, "topic_id":topic_id}]
-        let temp = [{"teacher_id":this.state.one_tea_name, "topic_id":topic_id[0]}]
-        
+        let temp = [{"teacher_id":this.state.one_tea_name, "topic_id":topic_id}]
+        console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
-            this.message.info("分配成功！")
-            // let topic = await this.props.manageStore.getTopicList()
-            // this.setState({
-            //     topic_name: topic.data,
-                
-            // })
-            // this.forceUpdate()
+            message.info("分配成功！")
+            let topic = await this.props.manageStore.getTopicList()
+            this.setState({
+                topic_name: topic.data,
+            })
         }
         // this.forceUpdate()
         this.setState({
             one_tea_name: "",
             select_topic: [],
         })
-        // console.log(this.name)
-        // this.name.inputValue = undefined;
-        // console.log(this.ref.topic)
-        // this.forceUpdate()
-        // console.log(this.select)
-        // console.log(this.select_no)
-
-    } 
+    }
 
     selectOnlyTea = (value) => {
         // console.log(this.name.inputValue)
@@ -133,6 +118,12 @@ export default class Home extends Component {
         this.setState({
             one_tea_name: id
         }, () => { console.log(this.state.one_tea_name) })
+
+        console.log(this.tea_name)
+        // console.log("2"+this.state.one_tea_name)
+        console.log("*"+document.getElementsByClassName(".ant-select-selection-item"))
+        document.getElementsByClassName(".ant-select-selection-item").innerText = "123"
+        console.log("*"+document.getElementsByClassName(".ant-select-selection-item").innerHTML)
     }
 
     maxNum = (value) => {
@@ -143,7 +134,7 @@ export default class Home extends Component {
             maxNum: max_num,
             num: value
         })
-        if(value === max_num){
+        if (value === max_num) {
             message.info("已到达最大分配数量")
         }
     }
@@ -151,8 +142,10 @@ export default class Home extends Component {
     render() {
         return (
             <div className="main">
-                <div className="topicNum">还有<span>{this.state.topic_name.length}篇</span>课题未分配审核</div>
-                <div className="detail"><Button type="primary" href="./m_distributeTopic_detail">查看审核详情</Button></div>
+                <div className="head">
+                    <div className="topicNum">还有<span>{this.state.topic_name.length}篇</span>课题未分配审核</div>
+                    <div className="detail"><Button type="primary" href="./m_distributeTopic_detail">审核详情</Button></div>
+                </div>
                 <div className="choose">
                     <div class="title">分配方式</div>
                     <Radio.Group onChange={this.onChange} value={this.state.value}>
@@ -164,11 +157,11 @@ export default class Home extends Component {
                     <div>
                         <div>
                             <div class="checkTeacher">
-                                <div class="title">选择审核教师</div>
+                                <div class="title">审核教师</div>
                                 <div class="item">
                                     <Select
                                         mode="multiple"
-                                        style={{ width: 300 }}
+                                        style={{ width: 320 }}
                                         placeholder="请选择审核教师"
                                         onChange={this.addSelectTeacher}
                                         allowClear
@@ -177,13 +170,15 @@ export default class Home extends Component {
                                             <Select.Option key={item.value}>{item.value}</Select.Option>
                                         )}
                                     </Select>
-                                    <div class="num">已选{this.state.select_teacher.length}项</div>
+                                    {(this.state.select_teacher.length !== 0) && 
+                                        <div class="num">已选{this.state.select_teacher.length}项</div>
+                                    }
                                 </div>
                             </div>
                         </div>
                         <div className="checknum">
-                            <div className="title">自动分配审核课题数量</div>
-                            <InputNumber style={{ width: 300 }} min={1} max={this.state.maxNum} defaultValue={1} onChange={this.maxNum} />
+                            <div className="title">课题数量</div>
+                            <InputNumber style={{ width: 320 }} min={1} max={this.state.maxNum} defaultValue={1} onChange={this.maxNum} />
                         </div>
                         <div className="btn">
                             <Button type="primary" onClick={this.autoDistribute}>提交</Button>
@@ -194,37 +189,40 @@ export default class Home extends Component {
                     <div>
                         <div>
                             <div class="checkTeacher">
-                                <div class="title">选择审核教师</div>
-                                <AutoComplete
-                                    // defaultValue={this.state.select_topic}
-                                    ref={name => this.name = name}
-                                    style={{ width: 300 }}
-                                    options={this.state.tea_name_2}
-                                    placeholder="请选择审核教师"
+                                <div class="title">审核教师</div>
+                                <Select
                                     allowClear
-                                    filterOption={(inputValue, option) =>
-                                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                                    }
+                                    showSearch
+                                    defaultValue={this.state.one_tea_name}
+                                    ref={tea_name => this.tea_name = tea_name}
+                                    style={{ width: 320 }}
+                                    placeholder="请选择审核教师"
+                                    optionFilterProp="children"
                                     onChange={this.selectOnlyTea}
-                                />
+                                    filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                >
+                                    {this.state.tea_name_2.map((item, i) =>
+                                        <Select.Option key={item.value}>{item.value}</Select.Option>
+                                    )}
+                                </Select>
                             </div>
                             <div class="checkTopic">
-                                <div class="title">选择分配审核课题</div>
+                                <div class="title">审核课题</div>
                                 <div class="item">
                                     {(this.state.one_tea_name !== "" && this.state.one_tea_name !== undefined) &&
                                         <Select
-                                            
                                             mode="multiple"
-                                            style={{ width: 300 }}
+                                            style={{ width: 320 }}
                                             placeholder="请选择要审核的课题"
                                             allowClear
                                             onChange={this.addSelectTopic}
-                                            ref={select => this.select = select}
                                         >
                                             {/* 该老师的课题不能出现在其需要审核的课题中 */}
-                                            {this.state.topic_name.map((item, i) => 
+                                            {this.state.topic_name.map((item, i) =>
                                                 // <Select.Option key={item.id + " " + item.topic}>{item.topic}</Select.Option>
-                                                (item.tid.toString() !== this.state.one_tea_name) && <Select.Option key={item.id +  " " + item.topic}>{item.topic}</Select.Option>
+                                                (item.tid.toString() !== this.state.one_tea_name) && <Select.Option key={item.id + " " + item.topic}>{item.topic}</Select.Option>
                                             )}
                                         </Select>
                                     }
@@ -232,14 +230,15 @@ export default class Home extends Component {
                                     {(this.state.one_tea_name === "" || this.state.one_tea_name === undefined) &&
                                         <Select
                                             mode="multiple"
-                                            style={{ width: 300 }}
+                                            style={{ width: 320 }}
                                             placeholder="请先选择审核老师"
                                             disabled
-                                            ref={select_no => this.select_no = select_no}
                                         >
                                         </Select>
                                     }
-                                    <div class="num">已选{this.state.select_topic.length}项</div>
+                                    {(this.state.one_tea_name!== undefined && this.state.select_topic.length !== 0) &&
+                                        <div class="num">已选{this.state.select_topic.length}项</div>
+                                    }
                                 </div>
                             </div>
                             <div className="btn">

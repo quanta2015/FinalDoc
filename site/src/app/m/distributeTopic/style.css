@@ -1,23 +1,22 @@
 .main {
-    margin: 30px;
+    padding: 50px 75px;
     box-sizing: border-box;
-    /* width: 900px; */
+    width: 950px;
 }
 
-.detail {
-    text-align: right;
+.head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
-/* .choose {
-    margin: 10px;
-} */
+.ant-radio-group {
+    line-height: 32px;
+}
 
 .title {
     font-size: 16px;
-    /* font-weight: bold; */
-    /* margin-bottom: 10px; */
     line-height: 32px;
-    width: 200px;
     text-align: right;
     margin-right: 30px;
 }
@@ -25,19 +24,12 @@
 .checkTeacher,.checknum,.checkTopic,.choose {
     margin-bottom: 20px;
     display: flex;
-}
-
-.ant-btn {
-    margin-right: 10px;
-} 
-
-.item {
-    display: flex;
+    padding-left: 150px;
 }
 
 .num {
-    line-height: 32px;
-    margin-left: 10px;
+    margin-left: 13px;
+    color: #a2a2a2;
 }
 
 .topicNum {
