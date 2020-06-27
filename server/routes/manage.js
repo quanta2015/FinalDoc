@@ -76,21 +76,5 @@ router.post('/checkAllocate', async(req, res) => {
 });
 
 
-router.post('/checkUpdateYes', async(req, res) => {
-  let sql = `CALL PROC_CHECK_UPDATE_YES_M(?)`;
-  let params = req.body;
-  callProc(sql, params, res, (r) => {
-    res.status(200).json({code: 200, data: r, msg: '审核方通过该课题'})
-  });
-});
-
-
-router.post('/checkUpdateNo', async(req, res) => {
-  let sql = `CALL PROC_CHECK_UPDATE_NO_M(?)`;
-  let params = req.body;
-  callProc(sql, params, res, (r) => {
-    res.status(200).json({code: 200, data: r, msg: '审核方打回该课题'})
-  });
-});
 
 module.exports = router
