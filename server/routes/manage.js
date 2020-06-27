@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../util/db');
 const callProc = require('../util').callProc;
+// const Query = require('../util/db');
+
+const mysql = require('mysql');
+const config = require("../util/conf.js")
+const pool = mysql.createPool(config); 
 
 router.post('/teacherList', async(req, res) => {
   let sql = `CALL PROC_TEA_LIST_M`;
@@ -40,15 +45,18 @@ router.post('/randAllocate',async(req,res) => {
     const list = await db.Query(`CALL PROC_TOPIC_LIST_M`);
     let topicIdArr=list[0];
     for(let i=0;i<count;i++){
-      let temp = topicIdArr[topicIdArr.length-1];
+      let index = Math.floor(Math.random()*topicIdArr.length);
+      let temp = topicIdArr[index];
+      // let temp = topicIdArr[topicIdArr.length-1];
       if(temp.tid == teacherId){
         i--;
       }
       else{
         result = {teacher_id:teacherId,topic_id:temp.id};
         // console.log(JSON.stringify(result))
-        topicIdArr.pop(); 
-        console.log(topicIdArr.length)
+        // topicIdArr.pop(); 
+        topicIdArr.splice(index,1);
+        // console.log(topicIdArr.length)
         const add = await db.Query(`CALL PROC_CHECK_INSERT_M(?)`,[JSON.stringify(result)]);
       }
     }
@@ -68,5 +76,22 @@ router.post('/checkAllocate', async(req, res) => {
   res.status(200).json({code: 200,msg: '手动课题审核分配'})
 });
 
+
+router.post('/checkUpdateYes', async(req, res) => {
+  let sql = `CALL PROC_CHECK_UPDATE_YES_M(?)`;
+  let params = req.body;
+  callProc(sql, params, res, (r) => {
+    res.status(200).json({code: 200, data: r, msg: '审核方通过该课题'})
+  });
+});
+
+
+router.post('/checkUpdateNo', async(req, res) => {
+  let sql = `CALL PROC_CHECK_UPDATE_NO_M(?)`;
+  let params = req.body;
+  callProc(sql, params, res, (r) => {
+    res.status(200).json({code: 200, data: r, msg: '审核方打回该课题'})
+  });
+});
 
 module.exports = router
