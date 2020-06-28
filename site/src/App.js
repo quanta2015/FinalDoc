@@ -33,6 +33,7 @@ class App extends Component {
         { (this.usr.role==0) && <NavT/>}
         { (this.usr.role==1) && <NavS/>}
         { (this.usr.role==2) && <NavM/>}
+        <div id="context">
         <Router >
           <AsyncRoute path='/t_manage'  getComponent={ () => import('./app/t/manage').then(module => module.default) } />
           <AsyncRoute path='/t_auditTP' getComponent={ () => import('./app/t/auditTP').then(module => module.default) } />
@@ -42,6 +43,7 @@ class App extends Component {
           <AsyncRoute path='/m_distributeTopic_detail' getComponent={ () => import('./app/m/distributeTopic/detail').then(module => module.default) }/> 
           <AsyncRoute path='/m_organizeOpendefence' getComponent={ () => import('./app/m/organizeOpendefence').then(module => module.default) }/>     
         </Router>
+        </div>
       </div>
     )
   }
