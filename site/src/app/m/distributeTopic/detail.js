@@ -7,7 +7,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import './style.css';
  
 const paginationProps = {
-	showSizeChanger: false,
+	showTotal: ((total) => {
+		return `共 ${total} 条`;
+	}),
+
 	pageSize: 5
 }
 
@@ -16,10 +19,15 @@ export default class Home extends Component {
 	state = {
 
 
-
+		filteredInfo: null,
 		value: [],//数据
 		visible: false,
 		own: []
+	}
+	handleChange = (filters) => {//筛选
+		this.setState({
+			filteredInfo: filters,
+		})
 	}
 	getColumnSearchProps = dataIndex => ({
 		filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -103,9 +111,20 @@ export default class Home extends Component {
 	async componentDidMount() {
 		let r = await this.props.manageStore.getCheckList()
 		console.log(r.data)
+		r.data.sort(function (a, b) {
+			if (a.result < b.result) {
+				return -1;
+			} else if (a.result > b.result) {
+				return 1;
+			}
+			return 0;
+		})
 		this.setState({ value: r.data }, () => { console.log(this.state.value) });
+
 	}
-	render(_, { value, own }) {
+	render(_, { own }) {
+		let {  filteredInfo } = this.state;
+		filteredInfo = filteredInfo || {}
 		const columns = [
 			{
 				title: '审核教师',
@@ -125,6 +144,16 @@ export default class Home extends Component {
 				title: '审核状态',
 				key: 'result',
 				dataIndex: 'result',
+				
+				filters: [
+					{ text: '未通过', value:0 },
+					{ text: '通过', value: 1 },
+					{ text: '待审核', value: 2 }
+				],
+
+				filterMultiple: false,
+				//filteredValue: filteredInfo.result || null,
+				onFilter: (value, record) => record.result === value,
 
 
 				render: result => {
@@ -166,7 +195,7 @@ export default class Home extends Component {
 				),
 			},
 		]
-		console.log(own.checkTeacher, 111)
+		 
 		let color = "";
 		let tag = "";
 		if (own.result == 2) {
@@ -193,7 +222,7 @@ export default class Home extends Component {
 			 <div class="detail-title">审核详情</div>
 
 
-				<Table columns={columns} dataSource={value} tableLayout='fixed'
+				<Table columns={columns} dataSource={this.state.value} tableLayout='fixed'
 					onRow={(record) => {
 						return {
 							onClick: () => {
@@ -204,6 +233,7 @@ export default class Home extends Component {
 							}
 						}
 					}}
+					onChange={this.handleChange}
 					pagination={paginationProps}
 
 				/>
@@ -223,10 +253,10 @@ export default class Home extends Component {
 
 
 					>
-						<Descriptions.Item label="课题名称" span={4}>{own.topicTOPIC}</Descriptions.Item>
-						<Descriptions.Item label="课题简介" span={4}>{own.content}</Descriptions.Item>
+						<Descriptions.Item label="课题名称" span={3}>{own.topicTOPIC}</Descriptions.Item>
+						<Descriptions.Item label="课题简介" span={3}>{own.content}</Descriptions.Item>
 						<Descriptions.Item label="审核教师" span={2}>{own.checkTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核状态" span={2}><Tag color={color} >
+						<Descriptions.Item label="审核状态" ><Tag color={color} >
 							{tag}
 						</Tag></Descriptions.Item>
 
