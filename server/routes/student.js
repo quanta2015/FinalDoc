@@ -53,6 +53,36 @@ router.post('/calStuTopicStateThree', async (req, res) => {
        
     });
 });
+router.post('/calStuTopicStateZero', async (req, res) => {
+    let sql = `CALL PROC_CAL_ONE_STU_TOPIC_WITH_STATUS_ZERO(?)`;
+    let params = req.body;
+    console.log(params)
+    callProc(sql, params, res, (r) => {
+        if(r.length!=0)
+        {
+            res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为0 输出 topic里面的所有字段' })
+        }
+        else{
+            res.status(201).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为0 输出 topic里面的所有字段' })
+        }
+       
+    });
+});
+router.post('/calStuTopicStateTwo', async (req, res) => {
+    let sql = `CALL PROC_CAL_ONE_STU_TOPIC_WITH_STATUS_TWO(?)`;
+    let params = req.body;
+    console.log(params)
+    callProc(sql, params, res, (r) => {
+        if(r.length!=0)
+        {
+            res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为2 输出 topic里面的所有字段' })
+        }
+        else{
+            res.status(201).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为2 输出 topic里面的所有字段' })
+        }
+       
+    });
+});
 router.post('/getStuTopicStatus', async (req, res) => {
     let sql = `CALL PROC_CAL_ONE_TOPIC_STATUS(?)`;
     let params = req.body;
