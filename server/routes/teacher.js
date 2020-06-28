@@ -58,11 +58,11 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
-  router.post('/getTopicFullInfo', async(req, res) => {
+  router.post('/delOneTopicWithID', async(req, res) => {
     let sql = `CALL PROC_DEL_ONE_TOPIC(?)`;
     let params = req.body;
     callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '通过课题id课题查询成功，返回课题内容'});
+        res.status(200).json({code: 200, data: null, msg: '删除成功'});
     })
   })
 
