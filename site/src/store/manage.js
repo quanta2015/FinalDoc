@@ -1,5 +1,5 @@
 import BaseActions from '../component/BaseActions'
-import { observable, action } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import * as urls from '../constant/urls'
 
 
@@ -12,14 +12,27 @@ class manager extends BaseActions {
     role:2    // 0: teacher 1:student 2: manage
   }
 
+  // 分配审核课题
+  @observable
+  distributeTopic = {
+    teacher_info: [],
+    topic_info: []
+  }
+
   @action
   async getTeaList() {
-    return await this.post(urls.API_MAN_GET_TEALIST,null)
+    const res = await this.post(urls.API_MAN_GET_TEALIST,null);
+    runInAction(()=>{
+      this.distributeTopic.teacher_info = res.data;
+    })
   }
 
   @action
   async getTopicList() {
-    return await this.post(urls.API_MAN_GET_TOPICLIST,null)
+    const res = await this.post(urls.API_MAN_GET_TOPICLIST,null);
+    runInAction(()=>{
+      this.distributeTopic.topic_info = res.data;
+    })
   }
 
   @action

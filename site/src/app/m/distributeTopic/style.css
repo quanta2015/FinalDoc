@@ -8,7 +8,7 @@
 .head {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .ant-radio-group {
@@ -25,7 +25,7 @@
 .checkTeacher,.checknum,.checkTopic,.choose {
     margin-bottom: 20px;
     display: flex;
-    padding-left: 150px;
+    /* padding-left: 150px; */
 }
 
 .num {
@@ -44,7 +44,11 @@
 }
 
 .btn {
-    text-align: center;
+    /* text-align: center; */
+}
+
+.btn #clear {
+    margin-right: 10px;
 }
 
 /* 数据详情 */
