@@ -62,7 +62,7 @@ export default class Home extends Component {
     }
 
     // 提交自动分配
-    autoDistribute = () => {
+    autoDistribute = async () => {
         if (this.state.select_teacher.length === 0) {
             message.info("还未选择审核老师！")
             return;
@@ -72,6 +72,16 @@ export default class Home extends Component {
             tea_id.push(item.split(" ")[0])
         )
         // console.log(tea_id)
+        let res = await this.props.manageStore.autoAllocateTopic(tea_id);
+        if (res && res.code === 200) {
+            message.info("分配成功！")
+            let topic = await this.props.manageStore.getTopicList()
+            this.setState({
+                topic_name: topic.data,
+            })
+        }else {
+            message.info("分配失败！请重试")
+        }
         // 清空已选教师列表
         this.setState({
             select_teacher: [],

@@ -16,19 +16,28 @@ class manager extends BaseActions {
   async getTeaList() {
     return await this.post(urls.API_MAN_GET_TEALIST,null)
   }
+
   @action
   async getTopicList() {
     return await this.post(urls.API_MAN_GET_TOPICLIST,null)
   }
+
   @action
   async allocateTopic(param) {
     return await this.post(urls.API_MAN_POST_ALLOCATETOPIC,param)
   }
 
   @action
+  async autoAllocateTopic(param) {
+    return await this.post(urls.API_MAN_POST_AUTOALLOCATETOPIC,param)
+  }
+
+  @action
   async getCheckList() {
     return await this.post(urls.API_MAN_POST_CHECKLIST, null)
   }
+
+  
 
 }
 
