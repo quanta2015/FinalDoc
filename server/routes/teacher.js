@@ -66,5 +66,13 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
+  // 送回所有研究方向数据
+  router.get('/getTopicAllAreas', async(req, res) => {
+      let sql = `CALL PROC_GET_TOPIC_ALL_AREAS`;
+      let params = req.body;
+      callProc(sql, {}, res, (r) => {
+          res.status(200).json({code: 200, data: r, msg: '返回所有研究方向'});
+      })
+  })
 
   module.exports = router;
