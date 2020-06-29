@@ -15,6 +15,8 @@ const paginationProps = {
 	pageSize: 5
 }
 
+
+
 @inject('manageStore')
 export default class Detail extends Component {
 	state = {

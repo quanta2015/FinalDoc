@@ -2,59 +2,46 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { InputNumber, Select, Button, message, Table } from 'antd';
+import {  Table,Modal, Select, Descriptions } from 'antd';
 const { Option } = Select;
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-    },
-];
-
-const data = [];
-for (let i = 0; i < 46; i++) {
-    data.push({
-        key: i,
-        name: `Edward King ${i}`,
-        age: 32,
-        address: `London, Park Lane no. ${i}`,
-    });
-}
+ 
 
 @inject('manageStore')
 @observer
 export default class HeadAllocate extends Component {
     state = {
-        selectedRowKeys: [], // Check here to configure the default column
+        selectedRowKeys: [],// Check here to configure the default column
         // tid,value
         teacher_info: [],
+        topic_info:[],
         tea_id: "",
         tea_name: undefined,
-        // 表格数据
-        value: [],
+        visible: false,
+        
     };
+
+
+
+     
 
     @computed
     get distributeTopic() {
         return this.props.manageStore.distributeTopic;
     }
 
+
+
     async componentDidMount() {
         await this.props.manageStore.getTopicList();
         await this.props.manageStore.getTeaList();
         // 获取到教师列表
         let tea = this.distributeTopic.teacher_info;
+        let topic = this.distributeTopic.topic_info;
         // 将教师列表值变为id+name
         let teaName = []
+        
+        
         tea.map((item) =>
             teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
         )
@@ -67,10 +54,13 @@ export default class HeadAllocate extends Component {
             return 0;
         })
         // console.log(topic)
-        this.setState({ value: this.distributeTopic.topic_info, teacher_info: teaName });
+        this.setState({ teacher_info: teaName,
+            topic_info: topic });
     }
 
-    onSelectChange = selectedRowKeys => {
+    
+
+    onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
@@ -92,26 +82,12 @@ export default class HeadAllocate extends Component {
         }, () => { console.log(this.state.tea_id, this.state.tea_name) })
     }
 
-    render() {
-        // const columns = [
-        //     {
-        //         title: '课题题目',
-        //         dataIndex: 'topic',
-        //     },
-        //     {
-        //         title: '出题教师',
-        //         dataIndex: 'tName',
-        //     },
-        //     {
-        //         title: '课题研究领域',
-        //         dataIndex: 'areas',
-        //     },
-        //     {
-        //         title: '详情',
-        //         dataIndex: '',
-        //     },
-        // ];
+    
+
+    render( ) {
         const { selectedRowKeys } = this.state;
+
+
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -120,6 +96,31 @@ export default class HeadAllocate extends Component {
                 Table.SELECTION_INVERT,
             ],
         };
+
+        const columns = [
+            {
+                title: '课题题目',
+                dataIndex: 'topic',
+                key: 'topic',
+            },
+            {
+                title: '出题教师',
+                dataIndex: 'tName',
+                key: 'tName',
+            },
+            {
+                title: '研究领域',
+                dataIndex: 'areas',
+                key: 'areas',
+            },
+            {
+                title: '操作',
+                dataIndex: '',
+                key: 'topic',
+
+                
+            },
+        ];
         return (
             <div>
                 <div class="checkTeacher">
@@ -142,7 +143,11 @@ export default class HeadAllocate extends Component {
                         )}
                     </Select>
                 </div>
-                <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+                <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.topic_info}
+                    
+                      />
+
+                 
             </div>
         );
     }
