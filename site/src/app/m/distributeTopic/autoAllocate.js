@@ -32,7 +32,7 @@ export default class AutoAllocate extends Component {
         // 将教师列表值变为id+name
         let teaName = []
         tea.map((item) =>
-            teaName.push({ tid: item.uid, value: item.uid + " " + item.name })
+            teaName.push({ tid: item.uid, value: item.uid + " " + item.Tname })
         )
         // console.log(topic)
         this.setState({ teacher_info: teaName });

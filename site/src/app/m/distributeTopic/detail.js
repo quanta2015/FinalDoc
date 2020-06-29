@@ -1,10 +1,11 @@
 import { Component } from 'preact';
-import { inject } from 'mobx-react';
-import style from './style';
+import { inject, observer} from 'mobx-react';
+import { computed } from 'mobx';
+import  './style-detail';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input } from 'antd';
 
 import { SearchOutlined } from '@ant-design/icons';
-import './style.css';
+ 
  
 const paginationProps = {
 	showTotal: ((total) => {
@@ -15,7 +16,7 @@ const paginationProps = {
 }
 
 @inject('manageStore')
-export default class Home extends Component {
+export default class Detail extends Component {
 	state = {
 
 
@@ -45,7 +46,7 @@ export default class Home extends Component {
 				<Space>
 					<Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
 						重置
-          </Button>
+          			</Button>
 					<Button
 						type="primary"
 						onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
@@ -54,7 +55,7 @@ export default class Home extends Component {
 						style={{ width: 90 }}
 					>
 						搜索
-          </Button>
+          			</Button>
 					 
 				</Space>
 			</div>
@@ -215,13 +216,7 @@ export default class Home extends Component {
 
 
 		return (
-
-
 			<div>
-				 
-			 <div class="detail-title">审核详情</div>
-
-
 				<Table columns={columns} dataSource={this.state.value} tableLayout='fixed'
 					onRow={(record) => {
 						return {
