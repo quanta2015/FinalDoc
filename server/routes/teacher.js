@@ -14,13 +14,25 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
 	})
   })
 
-  // 发布教师课题：向topic表中插入数据
+  // 发布教师课题（或修改）
   router.post('/postTopicInfo', async(req, res) => {
-      let sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
-      let params = req.body;
-      callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '插入数据成功'});
-      })
+    let params = req.body;
+    var area = "";
+    for (let i = 0; i < params.area.length - 1; i++) {
+        const element = params.area[i];
+        area += element + "|";
+    }
+    area += params.area[params.area.length - 1];
+    params.area = area;
+    let sql;
+    if (params.topic_id == '') {
+        sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
+    } else {
+        sql = `CALL PROC_TOPIC_ALTER(?)`;
+    }
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '课题发布成功'});
+    })
   })
 
   // 由教师id获取topic内容（课题id，课题状态）
@@ -56,6 +68,23 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '通过课题id课题查询成功，返回课题内容'});
     })
+  })
+
+  router.post('/delOneTopicWithID', async(req, res) => {
+    let sql = `CALL PROC_DEL_ONE_TOPIC(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: null, msg: '删除成功'});
+    })
+  })
+
+  // 送回所有研究方向数据
+  router.get('/getTopicAllAreas', async(req, res) => {
+      let sql = `CALL PROC_GET_TOPIC_ALL_AREAS`;
+      let params = req.body;
+      callProc(sql, {}, res, (r) => {
+          res.status(200).json({code: 200, data: r, msg: '返回所有研究方向'});
+      })
   })
 
   module.exports = router;
