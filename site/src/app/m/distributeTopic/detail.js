@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject } from 'mobx-react';
-import style from './style';
+import detail from './detail.css';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input } from 'antd';
 
 import { SearchOutlined } from '@ant-design/icons';

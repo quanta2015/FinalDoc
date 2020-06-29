@@ -22,16 +22,16 @@
     margin-right: 30px;
 }
 
-.checkTeacher,.checknum,.checkTopic,.choose {
+.choose {
     margin-bottom: 20px;
     display: flex;
     /* padding-left: 150px; */
 }
 
-.num {
+/* .num {
     margin-left: 13px;
     color: #a2a2a2;
-}
+} */
 
 .topicNum {
     font-size: 16px;
@@ -43,16 +43,16 @@
     margin: 0 10px;
 }
 
-.btn {
-    /* text-align: center; */
+/* .btn {
+    text-align: center;
 }
 
 .btn #clear {
     margin-right: 10px;
-}
+} */
 
 /* 数据详情 */
- .ant-table-tbody{
+ /* .ant-table-tbody{
 	 display: flex;
 	 flex-direction: column;
 	  width: 800px;
@@ -95,4 +95,4 @@
     font-size: 24px;
     padding-left:80px;
     padding-top:30px
-}
+} */

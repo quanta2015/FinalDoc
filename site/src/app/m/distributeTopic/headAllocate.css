@@ -1,0 +1,19 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    width: 200px;
+    text-align: center;
+}
+
+.ant-table-selection-column {
+    width: 60px;
+}

@@ -1,0 +1,18 @@
+.checkTeacher,.checknum {
+    margin-bottom: 20px;
+    display: flex;
+    /* padding-left: 150px; */
+}
+
+.num {
+    margin-left: 13px;
+    color: #a2a2a2;
+}
+
+/* .btn {
+    text-align: center;
+} */
+
+.btn #clear {
+    margin-right: 10px;
+}

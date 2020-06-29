@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
-import style from './style';
+import autoAllocate from './AutoAllocate.css';
 import { InputNumber, Select, Button, message } from 'antd';
 const { Option } = Select;
 
@@ -9,7 +9,7 @@ const { Option } = Select;
 @observer
 export default class AutoAllocate extends Component {
     state = {
-        // uid,value
+        // uid,maj,name,area
         teacher_info: [],
         //已选择的老师
         select_teacher: [],
@@ -29,11 +29,19 @@ export default class AutoAllocate extends Component {
         await this.props.manageStore.getTeaList();
         // 获取到教师列表
         let tea = this.distributeTopic.teacher_info;
-        // 将教师列表值变为id+name
+        // console.log(tea)
         let teaName = []
         tea.map((item) =>
-            teaName.push({ tid: item.uid, value: item.uid + " " + item.name })
+            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
         )
+        teaName.sort(function(a,b){
+            if (a.value < b.value) {
+				return 1;
+			} else if (a.value > b.value) {
+				return -1;
+			}
+			return 0;
+        })
         // console.log(topic)
         this.setState({ teacher_info: teaName });
     }
@@ -105,14 +113,13 @@ export default class AutoAllocate extends Component {
                                 defaultActiveFirstOption={false}
                                 ref={selectItem => this.selectItem = selectItem}
                                 mode="multiple"
-                                style={{ width: 320 }}
+                                style={{ width: 350 }}
                                 placeholder="请选择审核教师"
                                 onChange={this.addSelectTeacher}
                                 allowClear
-                                id="select_teacher"
                             >
                                 {this.state.teacher_info.map((item, i) =>
-                                    <Select.Option key={item.value}>{item.value}</Select.Option>
+                                    <Select.Option key={item.tid}>{item.value}</Select.Option>
                                 )}
                             </Select>
                             {(this.state.select_teacher.length !== 0) &&
@@ -123,7 +130,7 @@ export default class AutoAllocate extends Component {
                 </div>
                 <div className="checknum">
                     <div className="title">课题数量</div>
-                    <InputNumber value={this.state.num} style={{ width: 320 }} min={1} max={this.state.maxNum} onChange={this.maxNum} />
+                    <InputNumber value={this.state.num} style={{ width: 350 }} min={1} max={this.state.maxNum} onChange={this.maxNum} />
                 </div>
                 <div className="btn">
                     <Button onClick={this.clear} id="clear">重置</Button>
