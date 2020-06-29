@@ -113,7 +113,7 @@ export default class AutoAllocate extends Component {
                                 defaultActiveFirstOption={false}
                                 ref={selectItem => this.selectItem = selectItem}
                                 mode="multiple"
-                                style={{ width: 350 }}
+                                style={{ width: 400 }}
                                 placeholder="请选择审核教师"
                                 onChange={this.addSelectTeacher}
                                 allowClear
@@ -130,7 +130,7 @@ export default class AutoAllocate extends Component {
                 </div>
                 <div className="checknum">
                     <div className="title">课题数量</div>
-                    <InputNumber value={this.state.num} style={{ width: 350 }} min={1} max={this.state.maxNum} onChange={this.maxNum} />
+                    <InputNumber value={this.state.num} style={{ width: 400 }} min={1} max={this.state.maxNum} onChange={this.maxNum} />
                 </div>
                 <div className="btn">
                     <Button onClick={this.clear} id="clear">重置</Button>

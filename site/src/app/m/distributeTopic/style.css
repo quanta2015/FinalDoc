@@ -43,6 +43,10 @@
     margin: 0 10px;
 }
 
+.ant-table-placeholder .ant-table-cell{
+    width: 800px;
+}
+
 /* .btn {
     text-align: center;
 }
