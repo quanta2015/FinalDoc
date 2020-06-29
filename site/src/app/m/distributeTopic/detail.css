@@ -38,3 +38,8 @@ tbody.ant-table-tbody {
     padding-left:80px;
     padding-top:30px
 }
+
+.release {
+	margin-bottom: 15px;
+	text-align: right;
+}

@@ -1,12 +1,12 @@
 import { Component } from 'preact';
-import { inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
-import  './detail.css';
-import { Table, Tag, Space, message, Modal, Button, Descriptions, Input } from 'antd';
+import './detail.css';
+import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip } from 'antd';
 
 import { SearchOutlined } from '@ant-design/icons';
- 
- 
+
+
 const paginationProps = {
 	showTotal: ((total) => {
 		return `共 ${total} 条`;
@@ -18,12 +18,14 @@ const paginationProps = {
 @inject('manageStore')
 export default class Detail extends Component {
 	state = {
-
-
 		filteredInfo: null,
 		value: [],//数据
 		visible: false,
-		own: []
+		own: [],
+		tooltipText: "",
+		auditcount: [],
+		// 是否可以发布课题
+		flag: 0,
 	}
 	handleChange = (filters) => {//筛选
 		this.setState({
@@ -56,7 +58,7 @@ export default class Detail extends Component {
 					>
 						搜索
           			</Button>
-					 
+
 				</Space>
 			</div>
 		),
@@ -111,7 +113,8 @@ export default class Detail extends Component {
 
 	async componentDidMount() {
 		let r = await this.props.manageStore.getCheckList()
-		console.log(r.data)
+		let count = await this.props.manageStore.getAuditCount()
+		// console.log(r.data)
 		r.data.sort(function (a, b) {
 			if (a.result < b.result) {
 				return -1;
@@ -120,11 +123,21 @@ export default class Detail extends Component {
 			}
 			return 0;
 		})
-		this.setState({ value: r.data }, () => { console.log(this.state.value) });
-
+		this.setState({ value: r.data, auditcount: count.data[0] }, () => {
+			let text = ""
+			let flag = 0
+			if (this.state.auditcount.unAudit !== 0 || this.state.auditcount.unPassed !== 0) {
+				flag = 0
+				text = "还有" + this.state.auditcount.unAudit + "篇课题未审核，" + this.state.auditcount.unPassed + "篇未通过，还不能发布所有课题"
+			} else {
+				flag = 1
+				text = "课题均已通过审核，共"+ this.state.auditcount.Passed +"，可以发布所有课题"
+			}
+			this.setState({ tooltipText: text, flag: flag })
+		});
 	}
 	render(_, { own }) {
-		let {  filteredInfo } = this.state;
+		let { filteredInfo } = this.state;
 		filteredInfo = filteredInfo || {}
 		const columns = [
 			{
@@ -139,15 +152,15 @@ export default class Detail extends Component {
 				key: 'topicTOPIC',
 
 			},
-			 
-			 
+
+
 			{
 				title: '审核状态',
 				key: 'result',
 				dataIndex: 'result',
-				
+
 				filters: [
-					{ text: '未通过', value:0 },
+					{ text: '未通过', value: 0 },
 					{ text: '通过', value: 1 },
 					{ text: '待审核', value: 2 }
 				],
@@ -165,13 +178,13 @@ export default class Detail extends Component {
 						tag = "待审核";
 						color = "blue"
 					}
-					else if(result==1){
+					else if (result == 1) {
 						tag = "通过";
 						color = "green";
 					}
-					else{
-						tag="未通过";
-						color="red"
+					else {
+						tag = "未通过";
+						color = "red"
 					}
 					console.log(tag);
 					return (
@@ -196,16 +209,15 @@ export default class Detail extends Component {
 				),
 			},
 		]
-		 
+
 		let color = "";
 		let tag = "";
 		if (own.result == 2) {
 			tag = "待审核";
 			color = "blue";
-			 
+
 		}
-		else if(own.result==1)
-		{
+		else if (own.result == 1) {
 			tag = "通过";
 			color = "green";
 		}
@@ -217,6 +229,17 @@ export default class Detail extends Component {
 
 		return (
 			<div>
+				{/* 所有课题审核通过，才可以一键发布课题 */}
+				<div className="release">
+					<Tooltip placement="top" title={this.state.tooltipText}>
+						{(this.state.flag === 0) &&
+							<Button type="primary" disabled>发布课题</Button>
+						}
+						{(this.state.flag === 1) &&
+							<Button type="primary">发布课题</Button>
+						}
+					</Tooltip>
+				</div>
 				<Table columns={columns} dataSource={this.state.value} tableLayout='fixed'
 					onRow={(record) => {
 						return {
@@ -261,7 +284,7 @@ export default class Detail extends Component {
 						</Descriptions.Item>
 					</Descriptions>
 				</Modal>
-				<div className="back"><Button type="primary" href="./m_distributeTopic">返回</Button></div>
+				{/* <div className="back"><Button type="primary" href="./m_distributeTopic">返回</Button></div> */}
 
 			</div>
 
@@ -271,4 +294,4 @@ export default class Detail extends Component {
 	}
 }
 
- 
+

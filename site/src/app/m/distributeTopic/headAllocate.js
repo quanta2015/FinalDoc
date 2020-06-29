@@ -7,20 +7,16 @@ const { Option } = Select;
 
 const columns = [
     {
-        title: '课题题目',
+        title: 'Name',
         dataIndex: 'name',
     },
     {
-        title: '出题教师',
+        title: 'Age',
         dataIndex: 'age',
     },
     {
-        title: '研究领域',
+        title: 'Address',
         dataIndex: 'address',
-    },
-    {
-        title: '详情',
-        dataIndex: '',
     },
 ];
 
@@ -34,7 +30,6 @@ for (let i = 0; i < 46; i++) {
     });
 }
 
-
 @inject('manageStore')
 @observer
 export default class HeadAllocate extends Component {
@@ -44,26 +39,9 @@ export default class HeadAllocate extends Component {
         teacher_info: [],
         tea_id: "",
         tea_name: undefined,
+        // 表格数据
+        value: [],
     };
-
-    columns = [
-        {
-            title: '课题题目',
-            dataIndex: 'name',
-        },
-        {
-            title: '出题教师',
-            dataIndex: 'age',
-        },
-        {
-            title: '研究领域',
-            dataIndex: 'address',
-        },
-        {
-            title: '详情',
-            dataIndex: '',
-        },
-    ];
 
     @computed
     get distributeTopic() {
@@ -78,10 +56,18 @@ export default class HeadAllocate extends Component {
         // 将教师列表值变为id+name
         let teaName = []
         tea.map((item) =>
-            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.name + "-" + item.area, value: item.maj + "-" + item.name + "-" + item.area })
+            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
         )
+        teaName.sort(function (a, b) {
+            if (a.value < b.value) {
+                return 1;
+            } else if (a.value > b.value) {
+                return -1;
+            }
+            return 0;
+        })
         // console.log(topic)
-        this.setState({ teacher_info: teaName });
+        this.setState({ value: this.distributeTopic.topic_info, teacher_info: teaName });
     }
 
     onSelectChange = selectedRowKeys => {
@@ -103,10 +89,28 @@ export default class HeadAllocate extends Component {
         this.setState({
             tea_id: id,
             tea_name: value
-        }, () => { console.log(this.state.tea_id,this.state.tea_name) })
+        }, () => { console.log(this.state.tea_id, this.state.tea_name) })
     }
 
     render() {
+        // const columns = [
+        //     {
+        //         title: '课题题目',
+        //         dataIndex: 'topic',
+        //     },
+        //     {
+        //         title: '出题教师',
+        //         dataIndex: 'tName',
+        //     },
+        //     {
+        //         title: '课题研究领域',
+        //         dataIndex: 'areas',
+        //     },
+        //     {
+        //         title: '详情',
+        //         dataIndex: '',
+        //     },
+        // ];
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -115,7 +119,6 @@ export default class HeadAllocate extends Component {
                 Table.SELECTION_ALL,
                 Table.SELECTION_INVERT,
             ],
-            columnWidth: 200,
         };
         return (
             <div>
@@ -126,7 +129,7 @@ export default class HeadAllocate extends Component {
                         allowClear
                         showSearch
                         defaultActiveFirstOption={false}
-                        style={{ width: 320 }}
+                        style={{ width: 400 }}
                         placeholder="请选择审核教师"
                         optionFilterProp="children"
                         onChange={this.selectOnlyTea}

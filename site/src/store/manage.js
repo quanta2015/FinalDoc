@@ -52,7 +52,10 @@ class manager extends BaseActions {
    
   }
 
-  
+  @action
+  async getAuditCount() {
+    return await this.post(urls.API_MAN_POST_AUDITCOUNT, null);
+  }
 
 }
 
