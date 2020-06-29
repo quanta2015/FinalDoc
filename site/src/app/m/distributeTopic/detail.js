@@ -128,10 +128,10 @@ export default class Detail extends Component {
 			let flag = 0
 			if (this.state.auditcount.unAudit !== 0 || this.state.auditcount.unPassed !== 0) {
 				flag = 0
-				text = "还有" + this.state.auditcount.unAudit + "篇课题未审核，" + this.state.auditcount.unPassed + "篇未通过，还不能发布所有课题"
+				text = this.state.auditcount.unAudit + "篇课题未审核，" + this.state.auditcount.unPassed + "篇未通过，不能发布所有课题"
 			} else {
 				flag = 1
-				text = "课题均已通过审核，共"+ this.state.auditcount.Passed +"，可以发布所有课题"
+				text = "课题均已通过审核，共"+ this.state.auditcount.Passed +"，一键发布所有课题"
 			}
 			this.setState({ tooltipText: text, flag: flag })
 		});

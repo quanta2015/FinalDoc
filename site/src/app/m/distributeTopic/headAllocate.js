@@ -2,10 +2,16 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { Table, Select, Modal, Button, Descriptions, Space  } from 'antd';
+import { Table, Modal, Select, Descriptions,Input, Button, Space } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+
 const { Option } = Select;
 
- 
+const paginationProps = {
+	showTotal: ((total) => {
+		return `共 ${total} 条`;
+	}),
+}
 
 @inject('manageStore')
 @observer
@@ -14,12 +20,14 @@ export default class HeadAllocate extends Component {
         selectedRowKeys: [],// Check here to configure the default column
         // tid,value
         teacher_info: [],
-        topic_info:[],
+        topic_info: [],
         tea_id: "",
         tea_name: undefined,
         visible: false,
         own: [],
-        
+        searchText: '',
+        searchedColumn: '',
+
     };
 
 
@@ -42,8 +50,8 @@ export default class HeadAllocate extends Component {
         let topic = this.distributeTopic.topic_info;
         // 将教师列表值变为id+name
         let teaName = []
-        
-        
+
+
         tea.map((item) =>
             teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
         )
@@ -56,11 +64,13 @@ export default class HeadAllocate extends Component {
             return 0;
         })
         // console.log(topic)
-        this.setState({ teacher_info: teaName,
-            topic_info: topic });
+        this.setState({
+            teacher_info: teaName,
+            topic_info: topic
+        });
     }
 
-    
+
 
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -90,6 +100,69 @@ export default class HeadAllocate extends Component {
     };
 //===============================
 
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+              </Button>
+                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        Reset
+              </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+        render: text => text
+            // this.state.searchedColumn === dataIndex ? (
+            //     <Highlighter
+            //         highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            //         searchWords={[this.state.searchText]}
+            //         autoEscape
+            //         textToHighlight={text.toString()}
+            //     />
+            // ) : (
+            //         text
+            //     ),
+    });
+
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        this.setState({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex,
+        });
+    };
+
+    handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
+
     selectOnlyTea = (value) => {
         let id
         if (value !== "" && value !== undefined) {
@@ -107,7 +180,6 @@ export default class HeadAllocate extends Component {
         }, () => { console.log(this.state.tea_id, this.state.tea_name) })
     }
 
-    
 
     render() {
         const { selectedRowKeys } = this.state;
@@ -127,16 +199,19 @@ export default class HeadAllocate extends Component {
                 title: '课题题目',
                 dataIndex: 'topic',
                 key: 'topic',
+                ...this.getColumnSearchProps('topic'),
             },
             {
                 title: '出题教师',
                 dataIndex: 'tName',
                 key: 'tName',
+                ...this.getColumnSearchProps('tName'),
             },
             {
                 title: '研究领域',
                 dataIndex: 'areas',
                 key: 'areas',
+                ...this.getColumnSearchProps('areas'),
             },
             {
                 title: '操作',
@@ -209,7 +284,6 @@ export default class HeadAllocate extends Component {
                     </Descriptions>
                 </Modal>
 
-                 
             </div>
         );
     }
