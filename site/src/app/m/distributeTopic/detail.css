@@ -11,13 +11,13 @@ tbody.ant-table-tbody {
 }
 
 .ant-table-cell {
-    width: 200px;
+    /* width: 200px; */
     text-align: center;
 }
 
-.ant-table-selection-column {
+/* .ant-table-selection-column {
     width: 60px;
-}
+} */
  
 .ant-modal-content{
 	width: 900px;
@@ -42,4 +42,24 @@ tbody.ant-table-tbody {
 .release {
 	margin-bottom: 15px;
 	text-align: right;
+}
+
+.detail_table .ant-table-cell:nth-last-child(3) {
+    width: 400px;
+}
+
+.detail_table .ant-table-cell:nth-last-child(4) {
+    width: 150px;
+}
+
+.detail_table .ant-table-cell:nth-last-child(2) {
+    width: 150px;
+}
+
+.detail_table .ant-table-cell:nth-last-child(1) {
+    width: 100px;
+}
+
+.detail_table .ant-table-placeholder .ant-table-cell{
+    width: 800px;
 }

@@ -10,7 +10,7 @@ import { SearchOutlined } from '@ant-design/icons';
 const paginationProps = {
 	showTotal: ((total) => {
 		return `共 ${total} 条`;
-	}),	 
+	}),
 }
 
 
@@ -131,7 +131,7 @@ export default class Detail extends Component {
 				text = this.state.auditcount.unAudit + "篇课题未审核，" + this.state.auditcount.unPassed + "篇未通过，不能发布所有课题"
 			} else {
 				flag = 1
-				text = "课题均已通过审核，共"+ this.state.auditcount.Passed +"，一键发布所有课题"
+				text = "课题均已通过审核，共" + this.state.auditcount.Passed + "，一键发布所有课题"
 			}
 			this.setState({ tooltipText: text, flag: flag })
 		});
@@ -240,28 +240,29 @@ export default class Detail extends Component {
 						}
 					</Tooltip>
 				</div>
-				<Table columns={columns} dataSource={this.state.value} tableLayout='fixed'
-					onRow={(record) => {
-						return {
-							onClick: () => {
-								console.log(record)
-								this.state.own = record
-								console.log(this.state.own)
+				<div className="detail_table">
+					<Table columns={columns} dataSource={this.state.value} tableLayout='fixed'
+						onRow={(record) => {
+							return {
+								onClick: () => {
+									console.log(record)
+									this.state.own = record
+									console.log(this.state.own)
 
+								}
 							}
-						}
-					}}
-					onChange={this.handleChange}
-					pagination={paginationProps}
+						}}
+						onChange={this.handleChange}
+						pagination={paginationProps}
 
-				/>
-
+					/>
+				</div>
 				<Modal
 					title="查看详情"
 					visible={this.state.visible}
 					onOk={this.handleOk}
 					onCancel={this.handleCancel}
-
+					footer={null}
 				>
 
 

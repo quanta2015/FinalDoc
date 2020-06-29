@@ -9,9 +9,9 @@
     color: #a2a2a2;
 }
 
-/* .btn {
-    text-align: center;
-} */
+.btn {
+    margin-left: 94px;
+}
 
 .btn #clear {
     margin-right: 10px;

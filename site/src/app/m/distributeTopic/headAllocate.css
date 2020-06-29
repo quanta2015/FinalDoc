@@ -10,10 +10,44 @@ tbody.ant-table-tbody {
 }
 
 .ant-table-cell {
-    width: 200px;
+    /* width: 200px; */
     text-align: center;
 }
 
 .ant-table-selection-column {
     width: 60px;
+}
+
+/* .head_btn {
+    text-align: center;
+    margin-top: 10px;
+} */
+
+.head_btn .clear {
+    margin-right: 15px;
+}
+
+.top_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(3) {
+    width: 300px;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(4) {
+    width: 120px;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(2) {
+    width: 200px;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(1) {
+    width: 100px;
+}
+
+.headAllocate_table .ant-table-placeholder .ant-table-cell{
+    width: 800px;
 }

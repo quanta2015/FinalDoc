@@ -23,7 +23,7 @@
 }
 
 .choose {
-    margin-bottom: 20px;
+    margin-bottom: 35px;
     display: flex;
     /* padding-left: 150px; */
 }
@@ -55,4 +55,6 @@
     margin-right: 10px;
 } */
 
- 
+.ant-radio span {
+    font-size: 16px;
+}
