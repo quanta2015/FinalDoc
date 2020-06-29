@@ -1,5 +1,6 @@
-import { Component } from 'preact'
-import { inject } from 'mobx-react'
+import { Component } from 'preact';
+import { inject, observer } from 'mobx-react';
+import { computed } from 'mobx';
 import { Form, Input, Button, Checkbox, Modal,Space} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { message,Select } from 'antd'
@@ -22,12 +23,6 @@ function onSearch(val) {
   console.log('search:', val);
 }
 
-// const children = [];
-// for (let i = 10; i < 36; i++) {
-//   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-// }
-
- 
 function formReset() {
   document.getElementById("basic").reset()
    
@@ -40,6 +35,7 @@ function showConfirm() {
     content: 'Some descriptions',
     onOk() {
       console.log('OK');
+      onFinish();
     },
     onCancel() {
       console.log('Cancel');
@@ -72,28 +68,34 @@ const tailLayout = {
  
 
 @inject('manageStore')
+@observer
 export default class Home extends Component {
   state = {
-    tea_name_2: [],
+     
     // id,tid,topic
-    topic_name: [],
+     
     select_leader:" ",
     select_member: [],
-    new_arr:[]
+    new_arr:[],
+    teacher_info: [],
   }
-
+  @computed
+  get distributeTopic() {
+    return this.props.manageStore.distributeTopic;
+  }
  
 
   async componentDidMount() {
-    let tea = await this.props.manageStore.getTeaList()
-    console.log(this.state)
+    await this.props.manageStore.getTeaList();
+    let tea = this.distributeTopic.teacher_info;
+    console.log(this.state.tea)
     
     let teaName = []
-    tea.data.map((item) =>
-      teaName.push({ tid: item.uid, value: item.uid + " " + item.name })
+    tea.map((item) =>
+      teaName.push({ tid: item.uid, value: item.Tname })
     )
     // console.log(topic)
-    this.setState({ tea_name_2: teaName}, () => { message.info("ok") });
+    this.setState({ teacher_info: teaName}, () => { message.info("ok") });
 
   }
   
@@ -122,11 +124,11 @@ export default class Home extends Component {
   
 
 
-	render(_,{new_arr}) {
-    new_arr = [];
-    for (let i of this.state.tea_name_2) {
+	render() {
+    this.state.new_arr = [];
+    for (let i of this.state.teacher_info) {
       if (this.state.select_member.indexOf(i.value) == -1) {
-        new_arr.push(i.value);
+        this.state.new_arr.push(i.value);
 
       }
     }
@@ -168,7 +170,7 @@ export default class Home extends Component {
             >
               {
                // console.log(c,"shuju9999"),
-                new_arr.map((item, i) =>
+                  this.state.new_arr.map((item, i) =>
                
                 
                  <Select.Option key={item}>{item}</Select.Option>
@@ -195,7 +197,7 @@ export default class Home extends Component {
                 
                 onChange={this.handleChange}
               >
-                {this.state.tea_name_2.map((item, i) =>
+                {this.state.teacher_info.map((item, i) =>
                   // <Select.Option key={item.id + " " + item.topic}>{item.topic}</Select.Option>
                   (item.value !== this.state.select_leader) && <Select.Option key={item.value}>{item.value}</Select.Option>
                 

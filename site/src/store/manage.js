@@ -16,7 +16,8 @@ class manager extends BaseActions {
   @observable
   distributeTopic = {
     teacher_info: [],
-    topic_info: []
+    topic_info: [],
+    checklist_info:[]
   }
 
   @action
@@ -47,7 +48,8 @@ class manager extends BaseActions {
 
   @action
   async getCheckList() {
-    return await this.post(urls.API_MAN_POST_CHECKLIST, null)
+    return await this.post(urls.API_MAN_POST_CHECKLIST, null);
+   
   }
 
   
