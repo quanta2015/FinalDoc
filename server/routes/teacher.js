@@ -17,12 +17,18 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
   // 发布教师课题（或修改）
   router.post('/postTopicInfo', async(req, res) => {
     let params = req.body;
+    var area = "";
+    for (let i = 0; i < params.area.length - 1; i++) {
+        const element = params.area[i];
+        area += element + "|";
+    }
+    area += params.area[params.area.length - 1];
+    params.area = area;
     let sql;
-    if (params.pid == '') {
+    if (params.topic_id == '') {
         sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
     } else {
         sql = `CALL PROC_TOPIC_ALTER(?)`;
-        console.log("--------------");
     }
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '课题发布成功'});
