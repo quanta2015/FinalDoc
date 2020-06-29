@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
 import headAllocate from './headAllocate.css';
-import {  Table,Modal, Select, Descriptions } from 'antd';
+import { Table, Select, Modal, Button, Descriptions, Space  } from 'antd';
 const { Option } = Select;
 
  
@@ -18,8 +18,10 @@ export default class HeadAllocate extends Component {
         tea_id: "",
         tea_name: undefined,
         visible: false,
+        own: [],
         
     };
+
 
 
 
@@ -64,6 +66,29 @@ export default class HeadAllocate extends Component {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
+//模态框
+    showModal = (record) => {
+        console.log(record.topicTOPIC)
+        this.setState({
+            visible: true,
+            own: record,
+        });
+    };
+
+    handleOk = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+//===============================
 
     selectOnlyTea = (value) => {
         let id
@@ -84,7 +109,7 @@ export default class HeadAllocate extends Component {
 
     
 
-    render( ) {
+    render() {
         const { selectedRowKeys } = this.state;
 
 
@@ -118,6 +143,14 @@ export default class HeadAllocate extends Component {
                 dataIndex: '',
                 key: 'topic',
 
+                render: (text, record) => (
+                    <Space size="middle">
+                        <a onClick={() => this.showModal(record)}>  详情</a>
+
+                    </Space>
+
+                ),
+
                 
             },
         ];
@@ -144,8 +177,37 @@ export default class HeadAllocate extends Component {
                     </Select>
                 </div>
                 <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.topic_info}
+                    onRow={(record) => {
+                        return {
+                            onClick: () => {
+                                console.log(record)
+                                this.state.own = record
+                                console.log(this.state.own)
+
+                            }
+                        }
+                    }}
                     
                       />
+                <Modal
+                    title="查看详情"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+
+                >
+
+
+                    <Descriptions
+                        title=""
+                        bordered
+
+
+                    >
+                        <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+                         
+                    </Descriptions>
+                </Modal>
 
                  
             </div>

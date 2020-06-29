@@ -10,9 +10,7 @@ import { SearchOutlined } from '@ant-design/icons';
 const paginationProps = {
 	showTotal: ((total) => {
 		return `共 ${total} 条`;
-	}),
-
-	pageSize: 5
+	}),	 
 }
 
 
