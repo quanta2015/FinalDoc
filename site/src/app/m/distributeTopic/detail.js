@@ -15,6 +15,8 @@ const paginationProps = {
 	pageSize: 5
 }
 
+
+
 @inject('manageStore')
 export default class Detail extends Component {
 	state = {
@@ -261,7 +263,7 @@ export default class Detail extends Component {
 						</Descriptions.Item>
 					</Descriptions>
 				</Modal>
-				<div className="back"><Button type="primary" href="./m_distributeTopic">返回</Button></div>
+				<div className="back"><Button type="primary" href="./m_distributeTopic">发布</Button></div>
 
 			</div>
 
