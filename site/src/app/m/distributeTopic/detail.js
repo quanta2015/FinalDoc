@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer} from 'mobx-react';
 import { computed } from 'mobx';
-import  './style-detail';
+import  './detail.css';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input } from 'antd';
 
 import { SearchOutlined } from '@ant-design/icons';

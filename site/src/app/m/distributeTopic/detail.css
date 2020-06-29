@@ -1,32 +1,28 @@
- .ant-table-tbody{
-	 display: flex;
-	 flex-direction: column;
-	  width: 800px;
-	  
- }
- .ant-table-content{
-	 padding-left: 80px;
-	 padding-top:40px
- }
+/* 数据详情 */
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    width: 200px;
+    text-align: center;
+}
+
+.ant-table-selection-column {
+    width: 60px;
+}
  
-.ant-spin-nested-loading{
-	width: 880px;
-}
-
-.ant-table-tbody > tr > td{
-	width: 200px;
-
-}
-.ant-table-cell{
-	text-align: center;
-	
-}
-
 .ant-modal-content{
 	width: 900px;
 	margin-left :-170px;
 }
-
 .ant-descriptions-item-label{
 	width: 120px;
 }
