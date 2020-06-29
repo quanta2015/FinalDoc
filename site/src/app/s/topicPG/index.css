@@ -1,6 +1,10 @@
 .g-topic {
-    padding: 30px 20px;
+    padding: 16px;
     width: 950px;
+}
+
+.g-topic h2 {
+    margin-bottom: 2px;
 }
 
 .bold {
@@ -9,7 +13,16 @@
 
 .m-topicInfo {
     border-top: 1px solid #eee;
-    padding: 18px 0;
+    padding-top: 10px;
+    clear: both;
+}
+
+.m-topicInfo p{
+    margin-bottom: 5px;
+}
+
+.m-topicInfo h3 {
+    color: #777;
 }
 
 .m-card {
@@ -25,5 +38,42 @@
 }
 
 .g-topic .linespace {
-   margin: 0 15px;
+    margin: 0 15px;
+}
+
+.g-topic .interval {
+    margin-top: 18px;
+}
+
+.right-interval {
+    margin-right: 45px;
+}
+
+.g-topic .m-line {
+    display: flex;
+    width: 100%;
+}
+
+.m-submit {
+    text-decoration: underline;
+}
+
+.m-statusItem {
+    width: 25%;
+    margin-bottom: 5px;
+}
+
+.left-right {
+    margin: 0;
+    float: right;
+    margin-top: -30px;
+    margin-right: 10px;
+}
+
+.m-paperInfo {
+    width: 50%;
+}
+
+.g-topic .m-title {
+    font-size: 18px;
 }

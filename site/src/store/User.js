@@ -8,7 +8,7 @@ class User extends BaseActions {
   @observable
   usr = {
     name: '张三',
-    uid: '20172106010',
+    uid: '20182102070',
     dep: '杭州国际服务工程学院',
     maj: '计算机科学与技术',
     cls: '计算机183',
