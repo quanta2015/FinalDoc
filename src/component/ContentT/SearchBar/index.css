@@ -33,3 +33,12 @@
     margin-right: 10px;
     float: right;
 }
+
+.title{
+    padding-top: 15px;
+    font-size: 18px;
+}
+
+.divider{
+    margin: 10px 0;
+}

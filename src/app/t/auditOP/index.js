@@ -1,11 +1,11 @@
 import { Component } from 'preact';
 
-import style from './style';
+import './style.scss';
 
 export default class Home extends Component {
 	render() {
 		return (
-			<div >
+			<div className="g-home">
 				Login
 			</div>
 		);

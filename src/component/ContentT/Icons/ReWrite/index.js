@@ -19,7 +19,6 @@ class ReWrite extends Component{
   }
 
   render(){
-    console.log("?")
     return(
     <span className="m-icon">
       <span 
@@ -31,7 +30,7 @@ class ReWrite extends Component{
       {
         this.state.show&&
         <span className="tip">
-          查看意见
+          重新编辑
         </span>
       }
     </span>

@@ -1,40 +1,16 @@
 .check-block{
   width: 100%;
   overflow-y: auto;
-  padding: 30px 60px;
   font-size: 18px;
 }
 
 .title{
   padding: 15px 0;
-}
-
-.input-line{
-  width: 100%;
   display: flex;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #fafafa;
-  color: #000;
-  margin: 25px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.input-left{
-  width: 150px;
-}
-
-.input-right>input{
-  border: 0;
-}
-
-.input-right>input:focus{
-  border: 0;
-  outline: 0;
-}
-
-.have-placehoder::placeholder{
-  color: #bbb; 
-  font-size: 18px;
-}
 
 .fail-block{
   display: flex;
@@ -80,4 +56,8 @@ table {
 
 .icons>span{
   cursor: pointer;
+}
+
+.ant-collapse .ant-collapse-item-disabled > .ant-collapse-header, .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header > .arrow{
+  color: rgba(0, 0, 0, 0.85);
 }

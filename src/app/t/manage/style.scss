@@ -1,16 +1,5 @@
 .g-home {
-  display: flex;
-  flex-direction: column;
-  width: 1080px;
-  
-  .m-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-}
-
-
-.t1{
-  color: white;
+  flex: 4;
+  padding: 30px 60px;
+  overflow: auto;
 }

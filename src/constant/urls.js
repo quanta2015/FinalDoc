@@ -19,6 +19,10 @@ export const API_SYS_POST_TOPIC_INFO = API_SERVER + '/teacher/postTopicInfo';
 //通过学号模糊查询
 export const API_SYS_GET_STU_BY_LIKEID = API_SERVER + '/teacher/getStuInfoByLikeID';
 //通过topicID查询完整信息
-export const API_SYS_GET_FUUL_TOPIC_BY_ID = API_SERVER + '/teacher/getStuInfoByLikeID';
+export const API_SYS_GET_FUUL_TOPIC_BY_ID = API_SERVER + '/teacher/getTopicFullInfo';
 //通过教师id获取topic内容
 export const API_SYS_GET_TOPIC_BY_TEACHER_ID = API_SERVER + '/teacher/getTidgetTopic'; 
+//通过topicID删除topic
+export const API_USR_DELETE_TOPIC_BY_ID = API_SERVER + '/teacher/delOneTopicWithID';
+//获取area列表
+export const API_SYS_GET_AREA_LIST = API_SERVER + '/teacher/getTopicAllAreas'

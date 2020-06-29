@@ -1,47 +1,57 @@
 import { Component } from 'preact';
 
-import { Input, Select, Button} from 'antd';
+import { Input, Select, Button, Divider} from 'antd';
 
 const { Option } = Select;
 
-import './index.css'
+import style from './index.css'
 
-class NavT extends Component { 
+//test data
+const user={
+	id: "20040070"
+}
+
+class SearchBar extends Component { 
 
     constructor(props) {
         super(props)
         this.state = {
             subjectTitle: null,
-            subjectCategoryId: null,
-            subjectTeacher: null
+            subjectCategoryId: null
         }
     }
 
-    searchBtnClick = (title,categoryId,teacherId) =>{
-        console.log(title,categoryId,teacherId)
+    searchBtnClick = (title,categoryId) =>{
+        console.log(title,categoryId)
         //发送数据
-        let newSubjects = [
-            {
-                id: 1,
-                title: 'subjectA',
-                content: 'this is subjectA.',
-                teacher: 'teacherA',
-                category: 'category1'
-            },{
-                id: 2,
-                title: 'subjectB',
-                content: 'this is subjectB.',
-                teacher: 'teacherB',
-                category: 'category3'
-            },{
-                id: 3,
-                title: 'subjectC',
-                content: 'this is subjectc.',
-                teacher: 'teacherC',
-                category: 'category3'
-            }
-        ]
-        this.props.dataChange(this, newSubjects)
+        // let newSubjects = {
+        //     code: 200,
+        //     data:[
+        //         {
+        //             id: 1,
+        //             title: 'subjectA',
+        //             content: 'this is subjectA.',
+        //             category: 'category1'
+        //         },{
+        //             id: 2,
+        //             title: 'subjectB',
+        //             content: 'this is subjectB.',
+        //             category: 'category3'
+        //         },{
+        //             id: 3,
+        //             title: 'subjectC',
+        //             content: 'this is subjectc.',
+        //             category: 'category3'
+        //         }
+        //     ]
+        // }
+
+        // var data = await this.post("http://www.hanhuikrkr.com:8090/auditTp/searchTopic",{
+        //     "uid": user.id,
+        //     "topic": title,
+        //     "typeId": categoryId
+        // });
+        // this.props.dataChange(this, newSubjects)
     }
 
     searchInputChange = (e) => {
@@ -56,15 +66,12 @@ class NavT extends Component {
         })
     }
 
-    searchTeacherChange = (value) => {
-        this.setState({
-            subjectTeacher: value
-        })
-    }
-
-	render(_,{subjectTitle,subjectCategoryId,subjectTeacher}){
+	render(_,{subjectTitle,subjectCategoryId}){
         return(
             <div id="searchbox">
+                <div className="title">命题审核</div>
+                <Divider class="divider"/>
+
                 <h4 id="searchbox_title">选题查询</h4>
 
                 <div class="search_method_box">
@@ -88,33 +95,19 @@ class NavT extends Component {
                         placeholder="选择选题类型"
                         onChange={this.searchCategoryChange}
                     >
-                        <Option value="" disabled>选择选题类型</Option>
-                        {this.props.subjectCategorys.map((category) => 
-                            <Option value={category.id.toString()}>{category.title}</Option>
+                        <Option>选择选题类型</Option>
+                        {this.props.subjectCategorys.data.map((category) => 
+                            <Option value={category.id.toString()}>{category.type}</Option>
                         )}
                     </Select>
                 </div>
 
-                <div class="search_method_box">
-                    <h5 class="search_method_box_title">选题教师</h5>
-                    <Select
-                        class="search_select"
-                        showSearch
-                        size="small"
-                        placeholder="选择选题教师"
-                        onChange={this.searchTeacherChange}
-                    >
-                        <Option value="" disabled>选择选题教师</Option>
-                        {this.props.teachers.map((teacher) => 
-                            <Option value={teacher.id}>{teacher.name}</Option>
-                        )}
-                    </Select>
-                </div>
+                <Button id="search_btn" size="small" type="primary" onClick={this.searchBtnClick.bind(this,subjectTitle,subjectCategoryId)}>查询</Button>
 
-                <Button id="search_btn" size="small" type="primary" onClick={this.searchBtnClick.bind(this,subjectTitle,subjectCategoryId,subjectTeacher)}>查询</Button>
+                <Divider class="divider"/>
             </div>
         )
     }
 }
 
-export default NavT
+export default SearchBar

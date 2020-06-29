@@ -1,5 +1,5 @@
 import { Component } from 'preact';
-import { Router, route } from 'preact-router';
+import { Router } from 'preact-router';
 import AsyncRoute from 'preact-async-route';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
@@ -7,7 +7,6 @@ import { createHashHistory } from 'history';
 
 import NavT from './component/NavT'
 import NavS from './component/NavS'
-import './style.scss'
 
 @inject('userStore')
 @observer
@@ -29,8 +28,8 @@ class App extends Component {
         <Router >
           <AsyncRoute path='/t_manage'  getComponent={ () => import('./app/t/manage').then(module => module.default) } />
           <AsyncRoute path='/t_auditTP' getComponent={ () => import('./app/t/auditTP').then(module => module.default) } />
-          <AsyncRoute path='/t_auditOP' getComponent={ () => import('./app/t/auditOP').then(module => module.default) }/>
-          <AsyncRoute path='/t_auditFD' getComponent={ () => import('./app/t/auditFD').then(module => module.default) }/>
+          <AsyncRoute path='/t_auditOP' getComponent={ () => import('./app/t/auditOP').then(module => module.default) }/>   
+          <AsyncRoute path='/t_auditFD' getComponent={ () => import('./app/t/auditFD').then(module => module.default) }/>   
         </Router>
       </div>
     )

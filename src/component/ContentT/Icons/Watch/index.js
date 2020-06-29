@@ -19,7 +19,6 @@ class Watch extends Component{
   }
 
   render(){
-    console.log("?")
     return(
     <span className="m-icon">
       <span
