@@ -5,13 +5,9 @@ import './index.css'
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 const { Search } = Input;
-import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
-
-
-//test data
-var me = {
-  uid: 20020732
+let me = {
+  uid: '20100119'
 }
 var users = [];
 
@@ -30,7 +26,7 @@ class Publish extends BaseActions {
   } 
 
   setBlocks= async ()=>{
-    console.log("开始设置！")
+    console.log(this.props.tid)
     if(!!this.props.tid){
       let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.tid});
       data = data.data[0];
@@ -49,17 +45,8 @@ class Publish extends BaseActions {
   }
 
   async componentDidMount(){  
-    this.setState({
-      areaList:[
-        {id:1,name:"方向1"},
-        {id:2,name:"方向2"},
-        {id:3,name:'方向3'},
-        {id:4,name:'方向4'},
-        {id:5,name:'方向5'},
-        {id:6,name:'方向6'}]
-    })
-    // let areaData = await this.get(urls.API_SYS_GET_AREA_LIST,null);
-    // this.setState({areaList:areaData.data})
+    let areaData = await this.get(urls.API_SYS_GET_AREA_LIST,null);
+    this.setState({areaList:areaData.data})
   }
 
   clear = e => {
@@ -121,7 +108,7 @@ class Publish extends BaseActions {
           type:this.type.base.textContent,
           note:this.note.state.value,
           stuId:this.state.selected_stu_data,
-          topic_id:this.props.tid,
+          topic_id:this.props.tid==null?"":this.props.tid,
           area:this.state.area
         };
       }
@@ -132,12 +119,14 @@ class Publish extends BaseActions {
         type:this.state.type,
         note:this.note.state.value,
         stuId:null,
-        topic_id:this.props.tid,
+        topic_id:this.props.tid==null?"":this.props.tid,
         area:this.state.area
       }
     }
     console.log(data)
-    await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
+    let s = await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
+    console.log(s);
+    
     this.props.close();
   }
 

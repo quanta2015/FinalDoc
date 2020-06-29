@@ -17,23 +17,6 @@
   justify-content: space-between;
 }
 
-.ant-table-tbody{
-  display: flex;
-  flex-direction: column;
-  width: 1000px;
-}
-
-table {
-  table-layout: fixed;
-}
-
-.ant-spin-nested-loading{
-  width: 1000px;
-}
-
-.ant-table-tbody > tr > td{
-  width: 250px;
-}
 
 .ant-collapse > .ant-collapse-item > .ant-collapse-header{
   cursor: auto;

@@ -9,9 +9,8 @@ import ReWrite from '../../../component/ContentT/Icons/ReWrite'
 import Watch from '../../../component/ContentT/Icons/Watch'
 
 let me = {
-  tea_id : '20020732'
+  tea_id : '20100119'
 }
-
 
 
 const PanelHeader = (name,status)=>(
@@ -76,9 +75,13 @@ class Check extends BaseActions {
       <div className="check-block">
         <div className="title">
           <span>我的课题</span>
-          {this.props.toplist.length<8&&
-          <Button type="dashed" style="margin:20px 0" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
-        }
+          <span>
+            {this.props.toplist.length<8&&
+            <Button type="dashed" style="margin:20px 0" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
+          }
+          <Button type="primary" style="margin:20px 30px" onClick={this.props.openCheckModal}>查看申请列表</Button>
+          </span>
+          
         </div>
         {this.props.toplist.length==0&&<span>您还没有课题！</span>}
         <Collapse 
