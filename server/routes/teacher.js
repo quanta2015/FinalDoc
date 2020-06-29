@@ -14,13 +14,19 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
 	})
   })
 
-  // 发布教师课题：向topic表中插入数据
+  // 发布教师课题（或修改）
   router.post('/postTopicInfo', async(req, res) => {
-      let sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
-      let params = req.body;
-      callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '插入数据成功'});
-      })
+    let params = req.body;
+    let sql;
+    if (params.pid == '') {
+        sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
+    } else {
+        sql = `CALL PROC_TOPIC_ALTER(?)`;
+        console.log("--------------");
+    }
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '课题发布成功'});
+    })
   })
 
   // 由教师id获取topic内容（课题id，课题状态）
