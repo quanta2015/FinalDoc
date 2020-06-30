@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip ,Tag} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -44,6 +44,11 @@ export default class HeadAllocate extends Component {
         // console.log(topic[1].areas.split(","))
         // 将教师列表值变为id+name
         let teaName = []
+        let topicList=[]
+
+        topic.map((item) =>
+            topicList.push({key:item.key, tid: item.tid, tName: item.tName, topic: item.topic.split(","), content: item.content, areas: item.areas.split(","), color: item.color.split(",")})
+        )
         
 
         tea.map((item) =>
@@ -70,7 +75,7 @@ export default class HeadAllocate extends Component {
         // console.log(sort_topic)
         this.setState({
             teacher_info: teaName,
-            topic_info: topic
+            topic_info: topicList
         });
     }
 
@@ -263,16 +268,22 @@ export default class HeadAllocate extends Component {
                 title: '研究领域',
                 dataIndex: 'areas',
                 key: 'areas',
-                render: areas => {
-                    console.log(areas)
-                    let color = "green"
-                    return (
-						<Tag color={color} >
-							123
-						</Tag>
-					)
-                },
-                ...this.getColumnSearchProps('areas'),
+                render: areas => (
+                    <>
+                        {
+                            
+                        areas.map(tag => {
+                            let color =  'green';
+                            
+                            return (
+                                <Tag color={color} key={tag}>
+                                    {tag}
+                                </Tag>
+                            );
+                        })}
+                    </>
+                ),
+                 
             },
             {
                 title: '操作',
