@@ -38,6 +38,8 @@ export default class HeadAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getTopicList();
         await this.props.manageStore.getTeaList();
+        await this.props.manageStore.getAreasList();
+        // console.log(toJS(this.distributeTopic.areas_list))
         // 获取到教师列表
         let tea = this.distributeTopic.teacher_info;
         let topic = toJS(this.distributeTopic.topic_info);
@@ -268,6 +270,11 @@ export default class HeadAllocate extends Component {
                 title: '研究领域',
                 dataIndex: 'areas',
                 key: 'areas',
+                filters: toJS(this.distributeTopic.areas_list),
+                filterMultiple: false,
+                onFilter: (value, record) => 
+                    record.areas.indexOf(value) !== -1,
+
                 render: areas => (
                     <>
                         {

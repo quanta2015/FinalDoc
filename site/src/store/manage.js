@@ -17,7 +17,8 @@ class manager extends BaseActions {
   distributeTopic = {
     teacher_info: [],
     topic_info: [],
-    checklist_info:[]
+    checklist_info:[],
+    areas_list: [],
   }
 
   @action
@@ -55,6 +56,14 @@ class manager extends BaseActions {
   @action
   async getAuditCount() {
     return await this.post(urls.API_MAN_POST_AUDITCOUNT, null);
+  }
+
+  @action
+  async getAreasList() {
+    const res = await this.post(urls.API_MAN_POST_AREALIST,null);
+    runInAction(()=>{
+      this.distributeTopic.areas_list = res.data;
+    })
   }
 
 }
