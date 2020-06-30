@@ -60,3 +60,20 @@ tbody.ant-table-tbody {
     font-weight: bold;
     width: 200px;
 }
+
+.ant-input-number-handler-wrap{
+    display:none
+}
+
+.ant-input-number {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid;
+}
+
+.ant-input-number-input {
+    font-size: 21px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}

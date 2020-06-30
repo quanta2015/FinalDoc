@@ -80,16 +80,29 @@ export default class AutoAllocate extends Component {
             tea_id.push(item.split(" ")[0])
         )
         console.log(tea_id)
-        // let res = await this.props.manageStore.autoAllocateTopic(tea_id);
-        // if (res && res.code === 200) {
-        //     message.info("分配成功！")
-        //     let topic = await this.props.manageStore.getTopicList()
-        //     this.setState({
-        //         topic_name: topic.data,
-        //     })
-        // } else {
-        //     message.info("分配失败！请重试")
-        // }
+        let res = await this.props.manageStore.autoAllocateTopic(tea_id);
+        if (res && res.code === 200) {
+            console.log(res.data[0].result)
+            let flag = 1
+            let tname = ""
+            res.data[0].map((item)=>{
+                if(item.result !== 1){
+                    flag = 0
+                    tname = item.tName + "," + tname
+                }
+            })
+            if(flag === 0){
+                message.info("部分分配成功！但"+tname+"老师匹配课题不足，可手动分配")
+            }else{
+                message.info("分配成功！")
+            }
+            await this.props.manageStore.getTopicList()
+            this.setState({
+                topic_info: this.distributeTopic.teacher_info,
+            })
+        } else {
+            message.info("分配失败！请重试")
+        }
         // 清空已选教师列表
         this.setState({
             select_teacher: [],

@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip } from 'antd';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -41,6 +41,7 @@ export default class HeadAllocate extends Component {
         // 获取到教师列表
         let tea = this.distributeTopic.teacher_info;
         let topic = toJS(this.distributeTopic.topic_info);
+        // console.log(topic[1].areas.split(","))
         // 将教师列表值变为id+name
         let teaName = []
         
@@ -262,21 +263,15 @@ export default class HeadAllocate extends Component {
                 title: '研究领域',
                 dataIndex: 'areas',
                 key: 'areas',
-                render: areas => (
-                    <>
-                        {areas.split(",").map(tag => {
-                            let color =  'green';
-                            if (tag === 'loser') {
-                                color = 'volcano';
-                            }
-                            return (
-                                <Tag color={color} key={tag}>
-                                    {tag}
-                                </Tag>
-                            );
-                        })}
-                    </>
-                ),
+                render: areas => {
+                    console.log(areas)
+                    let color = "green"
+                    return (
+						<Tag color={color} >
+							123
+						</Tag>
+					)
+                },
                 ...this.getColumnSearchProps('areas'),
             },
             {
