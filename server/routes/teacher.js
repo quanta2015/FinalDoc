@@ -18,12 +18,14 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
   router.post('/postTopicInfo', async(req, res) => {
     let params = req.body;
     var area = "";
-    for (let i = 0; i < params.area.length - 1; i++) {
-        const element = params.area[i];
-        area += element + "|";
+    if (params.area.length != 0) {
+        for (let i = 0; i < params.area.length - 1; i++) {
+            const element = params.area[i];
+            area += element + "|";
+        }
+        area += params.area[params.area.length - 1];
+        params.area = area;
     }
-    area += params.area[params.area.length - 1];
-    params.area = area;
     let sql;
     if (params.topic_id == '') {
         sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
@@ -82,6 +84,7 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
+  // 根据课题id删除课题
   router.post('/delOneTopicWithID', async(req, res) => {
     let sql = `CALL PROC_DEL_ONE_TOPIC(?)`;
     let params = req.body;
