@@ -69,6 +69,15 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     let sql = `CALL PROC_PID_GET_TOPIC_INFO(?)`;
     let params = req.body;
     callProc(sql, params, res, (r) => {
+        var areas = r[0]["area"].split("|");
+        var area = [];
+        if (r[0]["area"].length != 0) {
+            // area字段不为空
+            for (let i = 0; i < areas.length; i++) {
+                area.push(parseInt(areas[i]));
+            }
+        }
+        r[0]["area"] = area;
         res.status(200).json({code: 200, data: r, msg: '通过课题id课题查询成功，返回课题内容'});
     })
   })
