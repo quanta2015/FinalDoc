@@ -40,21 +40,24 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STATUS(?)`;
     let params = req.body;
     callProc(sql, params, res, (r) => {
-        var status0 = 0;
-        var status1 = 1;
-        var status2 = 2;
-        var status3 = 3;
+        var pass0 = 0;
+        var pass1 = 1;
+        var pass2 = 2;
+        var pass3 = 3;
         for (let index = 0; index < r.length; index++) {
+            if (r[index].status != 3) {
+                r[index].sid = null;
+            }
             if (r[index].sel == 0) {
-                r[index].status = status0;
+                r[index].pass = pass0;
             } else if(r[index].result == 0) {
                 if (r[index].sugg == null) {
-                    r[index].status = status1;
+                    r[index].pass = pass1;
                 } else {
-                    r[index].status = status2;
+                    r[index].pass = pass2;
                 }
             } else {
-                r[index].status = status3;
+                r[index].pass = pass3;
             }
         }
         res.status(200).json({code: 200, data: r, msg: '课题查询成功，返回课题列表'});
