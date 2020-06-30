@@ -21,3 +21,10 @@ table,tbody.ant-table-body{
   width: 25%;
   text-align: center;
 }
+
+
+.review-line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

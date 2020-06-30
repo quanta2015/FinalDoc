@@ -26,7 +26,6 @@ class Publish extends BaseActions {
   } 
 
   setBlocks= async ()=>{
-    console.log(this.props.tid)
     if(!!this.props.tid){
       let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.tid});
       data = data.data[0];
@@ -45,8 +44,8 @@ class Publish extends BaseActions {
   }
 
   async componentDidMount(){  
-    let areaData = await this.get(urls.API_SYS_GET_AREA_LIST,null);
-    this.setState({areaList:areaData.data})
+    let areaData = await this.post(urls.API_SYS_GET_TEACHER_AREA_LIST,{tid:me.uid});
+    this.setState({areaList:areaData.data,area:areaData.data.map((x)=>{return x.id})})
   }
 
   clear = e => {
@@ -59,15 +58,19 @@ class Publish extends BaseActions {
     })
   }
 
-  handleSearchStu = async () => {
-    let id = this.searchValue.state.value;
-    if(!/^\d+$/.test(id)){
-      message.error("请输入纯数字！");
-      return;
+  handleSearchStu = async (e) => {
+    this.setState({
+      selected_stu_data:e
+    },async ()=>{
+      let id = this.state.selected_stu_data;
+      if(!/^\d+$/.test(id)){
+        message.error("请输入纯数字！");
+        return;
+      }
+      let data = await this.post(urls.API_SYS_GET_STU_BY_LIKEID,{num :id});
+      this.setState({stuData:data.data})
     }
-    let data = await this.post(urls.API_SYS_GET_STU_BY_LIKEID,{num :id});
-    console.log(data.data)
-    this.setState({stuData:data.data})
+    );
   }
 
   handleSwitchChange = () => {
@@ -126,7 +129,6 @@ class Publish extends BaseActions {
     console.log(data)
     let s = await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
     console.log(s);
-    
     this.props.close();
   }
 
@@ -138,7 +140,7 @@ class Publish extends BaseActions {
             <div className="input-left"><span>课</span><span>题</span><span>名</span><span>称</span></div>
             <div className="input-right">
               <input
-                style={{ width: 300 }}
+                style={{ width: 400 }}
                 ref={name => this.name = name}
                 className="have-placehoder" type="text" placeholder="请输入课题名" />
             </div>
@@ -153,7 +155,7 @@ class Publish extends BaseActions {
                 showSearch
                 onChange={this.handleTypeChange}
                 defaultValue={"工程设计"}
-                style={{ width: 300 }}
+                style={{ width: 400 }}
                 placeholder="选择项目类别"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
@@ -177,7 +179,7 @@ class Publish extends BaseActions {
                 showSearch
                 mode="multiple"
                 onChange={this.handleAreaChange}
-                style={{ width: 300 }}
+                style={{ width: 400 }}
                 placeholder="选择研究方向"
                 optionFilterProp="children"
                 filterOption={(input, option) =>  
@@ -194,7 +196,7 @@ class Publish extends BaseActions {
             <div className="input-right">
               <TextArea
                 ref={note => this.note = note}
-                style={{ width: 300 }} rows={6} placeholder="输入您的简介" className="have-placehoder" />
+                style={{ width: 400 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
             </div>
           </div>
 
@@ -212,28 +214,19 @@ class Publish extends BaseActions {
           {this.state.selectStu &&
             <>
             <div className="input-line">
-              <div className="input-left"><span>搜</span><span>索</span><span>学</span><span>生</span></div>
-              <div className="input-right">
-                <Search
-                  ref={search=>this.searchValue=search}
-                  placeholder="按学号搜索学生"
-                  onSearch={this.handleSearchStu}
-                  style={{ width: 300 }}
-                />
-              </div>
-            </div>
-            <div className="input-line">
-              <div className="input-left"><span>学</span><span>生</span><span>列</span><span>表</span></div>
+              <div className="input-left"><span>选</span><span>择</span><span>学</span><span>生</span></div>
               <div className="input-right">
 
                 <Select
                   ref={stu => this.stuId = stu}
                   value={this.state.selected_stu_data}
                   className="have-placehoder"
-                  style={{ width: 300 }}
-                  placeholder="查询结果"
+                  style={{ width: 400 }}
+                  placeholder="按学号搜索学生"
                   optionFilterProp="children"
                   onChange={this.handleStuChange}
+                  showSearch
+                  onSearch={this.handleSearchStu}
                 >
                   {
                     this.state.stuData.map((x) => <Option value={x.uid}>{x.name} {x.uid}</Option>)

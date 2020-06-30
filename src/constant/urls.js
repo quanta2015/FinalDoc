@@ -25,8 +25,10 @@ export const API_SYS_GET_TOPIC_BY_TEACHER_ID = API_SERVER + '/teacher/getTidgetT
 //通过topicID删除topic
 export const API_USR_DELETE_TOPIC_BY_ID = API_SERVER + '/teacher/delOneTopicWithID';
 //获取area列表
-export const API_SYS_GET_AREA_LIST = API_SERVER + '/teacher/getTopicAllAreas'
+export const API_SYS_GET_TEACHER_AREA_LIST = API_SERVER + '/teacher/getTeacherAreas'
 //获取学生申请列表
 export const API_SYS_GET_TOPIC_CHECK_STUDNET = API_SERVER + '/teacher/getTopicCheckStudent'
 //审核学生申请
 export const API_SYS_TEACHER_REVIEW_STUDENT = API_SERVER + 'teacher/getTopicStudentAlter'
+//查看学生个人信息
+export const API_SYS_TEACHER_GET_STU_INFO = API_SERVER + '/teacher/getStuPersonalInfo'

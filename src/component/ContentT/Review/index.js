@@ -2,7 +2,7 @@ import './index.css'
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 import { Table, Tag, Space ,Tooltip} from 'antd';
-import { StarOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { StarOutlined, CloseOutlined, CheckOutlined,UserOutlined } from '@ant-design/icons';
 
 
 export default class Review extends BaseActions{
@@ -43,27 +43,60 @@ export default class Review extends BaseActions{
   ]
   constructor(props){
     super(props)
+    console.log(this.props.list)
   }
 
+  /**
+   * 通过学生申请
+   * @param {string} id 学生id
+   * @param {string} name 学生name
+   * @param {string} tid 课题id
+   */
   pass =async (id,name,tid)=>{
     let r = confirm(`您确定要通过 ${name} 的申请么？`)
     if(!r)return;
-    r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT,{dis:id,topic_id:tid,val:1});
+    r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT,{sid:id,topic_id:tid,val:1});
     console.log(r);
+    this.props.freshList();
   }
 
+  /**
+   * 拒绝学生申请
+   * @param {string} id 学生id
+   * @param {string} name 学生name
+   * @param {string} tid 课题id
+   */
   refuse =async (id,name,tid)=>{
     let r = confirm(`您确定要拒绝 ${name} 的申请么？`)
     if(!r)return;
-    r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT,{dis:id,topic_id:tid,val:0});
-    console.log(r);
+    r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT,{sid:id,topic_id:tid,val:0});
+    this.props.freshList();
   }
 
 
   render(){
     return (
-      <Table columns={this.columns} dataSource={this.props.list}>
-      </Table>
+      <div className="review-line">
+        <span>
+          <span style="margin-right:20px"><UserOutlined /></span>
+          申请学生：
+          <span style="margin:0 10px">学号： {this.props.list.sid}</span>
+          <span style="margin:0 10px">姓名： {this.props.list.name}</span>
+        </span>
+        
+        <div className="icons">
+          <Tooltip placement="top" title={"通过"}>
+            <span className="m-icon">
+              <CheckOutlined onClick={()=>{this.pass(ths.props.list.sid,ths.props.list.sid,ths.props.list.sid)}} style="color:blue"/>
+            </span>
+          </Tooltip>
+          <Tooltip placement="top" title={"拒绝"}>
+            <span  className="m-icon">
+            <CloseOutlined onClick={()=>{this.refuse(ths.props.list.sid,ths.props.list.sid,ths.props.list.sid)}} style="color:red"/>
+            </span>
+          </Tooltip>
+        </div>
+      </div>
     )
   }
 

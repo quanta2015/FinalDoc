@@ -14,7 +14,7 @@ let me = {
 }
 
 const filter = (t)=>{
-  return {id:t.id,name:t.topic,status:(t.status==2?4:t.status)}
+  return {id:t.id,name:t.topic,status:(t.pass==2?4:t.pass),sid:t.sid}
 }
 const sorter = (x,y)=>{
   return y.status-x.status;
@@ -31,7 +31,6 @@ export default class Home extends BaseActions {
     placement: 'right',
     tid:null,
     toplist:[],
-    modal_visiable:false,
     checkList:[]
   }
 
@@ -44,9 +43,19 @@ export default class Home extends BaseActions {
     data = data.data.map(filter);
     data.sort(sorter);
     this.setState({toplist:data});
-    console.log(data);
+    //获取申请列表
+    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET,{tea_id:me.tea_id})
+    data = data.data;
+    this.setState({
+      checkList:data
+    })
+
   }
 
+  /**
+   * 显示右侧抽屉，并根据ID自动赋值
+   * @param {int} id 课题ID
+   */
   showDrawer = (id) => {
     this.setState({
       tid:id,
@@ -55,6 +64,9 @@ export default class Home extends BaseActions {
     
   };
 
+  /**
+   * 关闭右侧抽屉，并刷新课题列表
+   */
   onClose = () => {
     this.setState({
       visible: false
@@ -62,33 +74,19 @@ export default class Home extends BaseActions {
     this.getTopicList();
   };
 
-  showModal = async ()=>{
-    let data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET,{tea_id:me.tea_id})
-    console.log(data);
-    
-    data = data.data;
-    this.setState({
-      checkList:data,modal_visiable:true
-    })
-    // this.setState({
-    //   checkList:[{id:2,topic:'哈哈哈哈',sid:'20192106010',name:'李兆荣'}],
-    //   modal_visiable:true
-    // })
-  }
-
-  handleCancel=()=>{
-    this.setState({modal_visiable:false})
-  }
-
 	render() {
     const { placement, visible,tid } = this.state;
 		return (
       <div className="g-home">
 
-        <CheckBlock change={this.showDrawer} toplist={this.state.toplist}  close={this.onClose} openCheckModal={this.showModal}/>
+        <CheckBlock 
+          change={this.showDrawer} 
+          checkList={this.state.checkList} 
+          toplist={this.state.toplist}  
+          close={this.onClose}/>
         <Drawer
           forceRender={true}
-          width={520}
+          width={720}
           title="课题发布"
           placement={placement}
           closable={false}
@@ -98,25 +96,10 @@ export default class Home extends BaseActions {
         >
         <PublishBlock tid={tid} close={this.onClose} ref={c=>this.child = c}/>
         </Drawer>
-        <Modal
-          visible={this.state.modal_visiable}
-          title="申请列表"
-          width={800}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              关闭
-            </Button>
-          ]}
-        >
-          {this.state.checkList.length!=0&&
-          <ReviewBlock list={this.state.checkList}/>
-          }
-          {this.state.checkList.length==0&&
-          <span>您暂时没有学生申请哦</span>
-          }
-          
-        </Modal>
+        {/*
+        <ReviewBlock freshList={this.getTopicList} list={this.state.checkList}/>
+*/
+        }
       </div>
 		);
 	}
