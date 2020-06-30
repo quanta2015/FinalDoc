@@ -45,8 +45,27 @@ export default class HeadAllocate extends Component {
         let teaName = []
         let topicList=[]
 
+        // let area_x=[]
+        // let color_x=[]
+        // let total_x=[]
+
+         
+        // topic.map((item) =>
+        //     total_x.push(
+        //         color_x.push(item.color.split(",")[0], item.areas.split(",")[0])
+
+        //     )
+             
+             
+
+        // )
+        // console.log(total_x)
+
+
         topic.map((item) =>
-            topicList.push({key:item.key, tid: item.tid, tName: item.tName, topic: item.topic.split(","), content: item.content, areas: item.areas.split(","), color: item.color.split(",")})
+            topicList.push({key:item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content, 
+            areas: item.areas.split(","),
+            color: item.color.split(",")})
         )
         
 
@@ -267,21 +286,25 @@ export default class HeadAllocate extends Component {
                 title: '研究领域',
                 dataIndex: 'areas',
                 key: 'areas',
-                render: areas => (
+                render: (areas,record) => (
                     <>
+                    
+                    
                         {
-                            
-                        areas.map(tag => {
-                            let color =  'green';
+                           
+                        areas.map((tag,i) => {
+                           
                             
                             return (
-                                <Tag color={color} key={tag}>
+                                <Tag color={record.color[i]} key={tag}>
                                     {tag}
                                 </Tag>
                             );
                         })}
                     </>
                 ),
+              
+               
                  
             },
             {
