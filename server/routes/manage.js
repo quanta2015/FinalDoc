@@ -66,7 +66,7 @@ router.post('/randAllocate',async(req,res) => {
   let resultArr=[];
   for(let i=1;i<req.body.length;i++){
     let params = {sum:count,teacher_id:req.body[i]};
-    message = await db.Query(`CALL test(?)`,[JSON.stringify(params)])
+    message = await db.Query(`CALL PROC_CHECK_RAND_M(?)`,[JSON.stringify(params)])
     let result = JSON.stringify(message[0][0])
     resultArr.push(result);
   }
