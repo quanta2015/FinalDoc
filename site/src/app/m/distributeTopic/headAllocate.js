@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip } from 'antd';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip ,Tag} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -43,6 +43,11 @@ export default class HeadAllocate extends Component {
         let topic = toJS(this.distributeTopic.topic_info);
         // 将教师列表值变为id+name
         let teaName = []
+        let topicList=[]
+
+        topic.map((item) =>
+            topicList.push({key:item.key, tid: item.tid, tName: item.tName, topic: item.topic.split(","), content: item.content, areas: item.areas.split(","), color: item.color.split(",")})
+        )
         
 
         tea.map((item) =>
@@ -69,7 +74,7 @@ export default class HeadAllocate extends Component {
         // console.log(sort_topic)
         this.setState({
             teacher_info: teaName,
-            topic_info: topic
+            topic_info: topicList
         });
     }
 
@@ -264,11 +269,11 @@ export default class HeadAllocate extends Component {
                 key: 'areas',
                 render: areas => (
                     <>
-                        {areas.split(",").map(tag => {
+                        {
+                            
+                        areas.map(tag => {
                             let color =  'green';
-                            if (tag === 'loser') {
-                                color = 'volcano';
-                            }
+                            
                             return (
                                 <Tag color={color} key={tag}>
                                     {tag}
@@ -277,7 +282,7 @@ export default class HeadAllocate extends Component {
                         })}
                     </>
                 ),
-                ...this.getColumnSearchProps('areas'),
+                 
             },
             {
                 title: '操作',
