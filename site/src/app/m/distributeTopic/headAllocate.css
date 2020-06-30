@@ -33,7 +33,7 @@ tbody.ant-table-tbody {
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(3) {
-    width: 320px;
+    width: 290px;
     text-align: left;
 }
 
@@ -42,7 +42,8 @@ tbody.ant-table-tbody {
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(2) {
-    width: 220px;
+    width: 250px;
+    text-align: left;
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(1) {
