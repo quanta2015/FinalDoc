@@ -35,7 +35,7 @@ export default class Home extends Component {
     render() {
         return (
             <div className="main">
-                <Tabs defaultActiveKey="1"  >
+                <Tabs defaultActiveKey="1" >
                     <TabPane tab="分配课题" key="1">
                         {/* Content of Tab Pane 1 */}
                         {/* <div className="head">
@@ -57,7 +57,7 @@ export default class Home extends Component {
                         }
 
                      </TabPane>
-                    <TabPane tab="数据详情" key="2">
+                    <TabPane tab="审核详情" key="2">
                         {/* Content of Tab Pane 2 */}
                         <Detail/>
                     </TabPane>
