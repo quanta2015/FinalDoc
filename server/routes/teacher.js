@@ -121,7 +121,6 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
   router.post('/getTopicStudentAlter', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STUDENT_PASS(?)`;
     let params = req.body;
-    params.val=0;
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '学生审核已修改'});
     })
@@ -133,6 +132,15 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     let params = req.body;
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '教师研究方向数组已返回'});
+    })
+  })
+
+  // 根据课题id返回被审核意见
+  router.post('/getTidToTsugg', async(req, res) => {
+    let sql = `CALL PROC_GET_TID_TSUGG(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '课题被审核意见已返回'});
     })
   })
 
