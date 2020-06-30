@@ -97,6 +97,15 @@ router.post('/auditCount', async(req, res) => {
 });
 
 
+router.post('/areaList', async(req, res) => {
+  let sql = `CALL PROC_GET_AREA_LIST_M`;
+	let params = req.body;
+	callProc(sql, {}, res, (r) => {
+		res.status(200).json({code: 200, data: r, msg: '取领域列表'})
+	});
+});
+
+
 //迁至auditTp
 // router.post('/checkUpdateYes', async(req, res) => {
 //   let sql = `CALL PROC_CHECK_UPDATE_YES_M(?)`;
