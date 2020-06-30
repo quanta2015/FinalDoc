@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message } from 'antd';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -11,6 +11,7 @@ const paginationProps = {
     showTotal: ((total) => {
         return `共 ${total} 条`;
     }),
+    position: ['topRight', 'bottomRight']
 }
 
 @inject('manageStore')
@@ -42,6 +43,7 @@ export default class HeadAllocate extends Component {
         let topic = toJS(this.distributeTopic.topic_info);
         // 将教师列表值变为id+name
         let teaName = []
+        
 
         tea.map((item) =>
             teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
@@ -245,11 +247,36 @@ export default class HeadAllocate extends Component {
                 dataIndex: 'topic',
                 key: 'topic',
                 ...this.getColumnSearchProps('topic'),
+                ellipsis: {
+                    showTitle: false,
+                },
+                render: topic => (
+                    <Tooltip placement="topLeft" title={topic}>
+                        {topic}
+                    </Tooltip>
+                ),
+                 
+                
             },
             {
                 title: '研究领域',
                 dataIndex: 'areas',
                 key: 'areas',
+                render: areas => (
+                    <>
+                        {areas.split(",").map(tag => {
+                            let color =  'green';
+                            if (tag === 'loser') {
+                                color = 'volcano';
+                            }
+                            return (
+                                <Tag color={color} key={tag}>
+                                    {tag}
+                                </Tag>
+                            );
+                        })}
+                    </>
+                ),
                 ...this.getColumnSearchProps('areas'),
             },
             {
@@ -291,6 +318,8 @@ export default class HeadAllocate extends Component {
                         <Button type="primary" onClick={this.handDistribute}>提交</Button>
                     </div>
                 </div>
+                <div className="noTopicNum">{this.distributeTopic.topic_info.length}篇未分配
+                            已选{selectedRowKeys.length}篇</div>
                 <div className="headAllocate_table">
                     <Table
                         onChange={this.handleChange}
@@ -311,7 +340,7 @@ export default class HeadAllocate extends Component {
 
                     />
                 </div>
-                <div className="noTopicNum">{this.distributeTopic.topic_info.length}篇未分配</div>
+               
                 {/* <div className="head_btn">
                     <Button onClick={this.clear} className="clear">重置</Button>
                     <Button type="primary" onClick={this.handDistribute}>提交</Button>
@@ -331,6 +360,7 @@ export default class HeadAllocate extends Component {
 
 
                     >
+                        <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
                         <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
 
                     </Descriptions>

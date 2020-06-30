@@ -34,6 +34,7 @@ tbody.ant-table-tbody {
 
 .headAllocate_table .ant-table-cell:nth-last-child(3) {
     width: 320px;
+    text-align: left;
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(4) {
@@ -54,7 +55,7 @@ tbody.ant-table-tbody {
 
 .noTopicNum {
     position: relative;
-    top: -45px;
+    bottom: -45px;
     font-size: 16px;
     font-weight: bold;
     width: 200px;

@@ -170,6 +170,14 @@ export default class Detail extends Component {
 				title: '课题题目',
 				dataIndex: 'topicTOPIC',
 				key: 'topicTOPIC',
+				ellipsis: {
+					showTitle: false,
+				},
+				render: topicTOPIC => (
+					<Tooltip placement="topLeft" title={topicTOPIC}>
+						{topicTOPIC}
+					</Tooltip>
+				),
 
 			},
 
