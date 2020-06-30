@@ -58,3 +58,7 @@
 .ant-radio span {
     font-size: 16px;
 }
+
+.ant-tabs-nav-list{
+    float:right;
+}
