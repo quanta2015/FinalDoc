@@ -81,14 +81,14 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
-  // 送回所有研究方向数据
-  router.get('/getTopicAllAreas', async(req, res) => {
-    let sql = `CALL PROC_GET_TOPIC_ALL_AREAS`;
-    let params = req.body;
-    callProc(sql, {}, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '返回所有研究方向'});
-    })
-  })
+  // 送回该教师所有研究方向数据
+//   router.post('/getTopicAllAreas', async(req, res) => {
+//     let sql = `CALL PROC_GET_TOPIC_ALL_AREAS`;
+//     let params = req.body;
+//     callProc(sql, params, res, (r) => {
+//         res.status(200).json({code: 200, data: r, msg: '返回所有研究方向'});
+//     })
+//   })
 
   // 根据学生id获取学生个人信息
   router.post('/getStuPersonalInfo', async(req, res) => {
@@ -115,6 +115,15 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     params.val=0;
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '学生审核已修改'});
+    })
+  })
+
+  // 根据教师id返回研究方向
+  router.post('/getTeacherAreas', async(req, res) => {
+    let sql = `CALL PROC_GET_TEACHER_AREAS(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '教师研究方向数组已返回'});
     })
   })
 
