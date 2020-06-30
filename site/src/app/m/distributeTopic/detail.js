@@ -115,14 +115,34 @@ export default class Detail extends Component {
 		let r = await this.props.manageStore.getCheckList()
 		let count = await this.props.manageStore.getAuditCount()
 		// console.log(r.data)
-		r.data.sort(function (a, b) {
-			if (a.result < b.result) {
-				return -1;
-			} else if (a.result > b.result) {
-				return 1;
-			}
-			return 0;
-		})
+		 
+			
+			r.data.sort(function (a, b) {
+
+				if (a.checkTeacher === b.checkTeacher) {
+
+					if (a.result < b.result) {
+						return -1;
+					} else if (a.result > b.result) {
+						return 1;
+					}
+					return 0;
+				}
+				else if (a.checkTeacher < b.checkTeacher){
+					return -1;
+
+
+				}
+				else{
+					return 1;
+				}
+				 
+
+				 
+			})
+		
+		 
+		 
 		this.setState({ value: r.data, auditcount: count.data[0] }, () => {
 			let text = ""
 			let flag = 0
