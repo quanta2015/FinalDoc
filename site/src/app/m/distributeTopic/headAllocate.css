@@ -33,7 +33,7 @@ tbody.ant-table-tbody {
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(3) {
-    width: 300px;
+    width: 320px;
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(4) {
@@ -41,7 +41,7 @@ tbody.ant-table-tbody {
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(2) {
-    width: 200px;
+    width: 220px;
 }
 
 .headAllocate_table .ant-table-cell:nth-last-child(1) {
@@ -50,4 +50,11 @@ tbody.ant-table-tbody {
 
 .headAllocate_table .ant-table-placeholder .ant-table-cell{
     width: 800px;
+}
+
+.noTopicNum {
+    position: relative;
+    top: -45px;
+    font-size: 16px;
+    font-weight: bold;
 }

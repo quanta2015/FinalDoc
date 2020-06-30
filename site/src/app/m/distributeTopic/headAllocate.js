@@ -27,7 +27,6 @@ export default class HeadAllocate extends Component {
         own: [],
         searchText: '',
         searchedColumn: '',
-
     };
 
     @computed
@@ -191,6 +190,7 @@ export default class HeadAllocate extends Component {
             selectedRowKeys: [],
             tea_id: "",
             tea_name: undefined,
+            topic_info: toJS(this.distributeTopic.topic_info),
         })
     }
 
@@ -223,7 +223,6 @@ export default class HeadAllocate extends Component {
 
     render() {
         const { selectedRowKeys } = this.state;
-
 
         const rowSelection = {
             selectedRowKeys,
@@ -260,12 +259,8 @@ export default class HeadAllocate extends Component {
                 render: (text, record) => (
                     <Space size="middle">
                         <a onClick={() => this.showModal(record)}>  详情</a>
-
                     </Space>
-
                 ),
-
-
             },
         ];
         return (
@@ -297,7 +292,12 @@ export default class HeadAllocate extends Component {
                     </div>
                 </div>
                 <div className="headAllocate_table">
-                    <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.topic_info} pagination={paginationProps}
+                    <Table
+                        onChange={this.handleChange}
+                        rowSelection={rowSelection}
+                        columns={columns}
+                        dataSource={this.state.topic_info}
+                        pagination={paginationProps}
                         onRow={(record) => {
                             return {
                                 onClick: () => {
@@ -311,6 +311,7 @@ export default class HeadAllocate extends Component {
 
                     />
                 </div>
+                <div className="noTopicNum">{this.distributeTopic.topic_info.length}篇未分配</div>
                 {/* <div className="head_btn">
                     <Button onClick={this.clear} className="clear">重置</Button>
                     <Button type="primary" onClick={this.handDistribute}>提交</Button>

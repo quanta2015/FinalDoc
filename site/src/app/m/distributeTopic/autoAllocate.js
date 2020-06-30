@@ -96,10 +96,14 @@ export default class AutoAllocate extends Component {
     }
 
     maxNum = (value) => {
+        console.log(value)
         var allSelectTea = this.state.select_teacher.length;
         var allTopic = this.distributeTopic.topic_info.length;
         var max_num = parseInt(allTopic / allSelectTea);
         var tea_num = Math.ceil(allTopic / value)
+        if(value === null || value === ""){
+            tea_num = "*"
+        }
         this.setState({
             maxNum: max_num,
             num: value,
