@@ -41,6 +41,7 @@ export default class HeadAllocate extends Component {
         // 获取到教师列表
         let tea = this.distributeTopic.teacher_info;
         let topic = toJS(this.distributeTopic.topic_info);
+        // console.log(topic[1].areas.split(","))
         // 将教师列表值变为id+name
         let teaName = []
         let topicList=[]
