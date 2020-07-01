@@ -147,4 +147,23 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
+  // 返回所有通过审核的课题
+  router.get('/getAllPassedTopic', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_PASSED_TOPIC`;
+    callProc(sql, {}, res, (r) => {
+        for (let i = 0; i < r.length; i++) {
+            var areas = r[i]["areas"].split(",");
+            var color = r[i]["color"].split(",");
+            var area = [];
+            for (let j = 0; j < areas.length; j++) {
+                area.push({name: areas[j], color: color[j]});
+            }
+            r[i].area = area;
+            delete r[i].areas;
+            delete r[i].color
+        }
+        res.status(200).json({code: 200, data: r, msg: '所有通过审核的课题信息已返回'});
+    })
+  })
+
   module.exports = router;
