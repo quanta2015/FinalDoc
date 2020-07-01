@@ -48,7 +48,21 @@ export default class HeadAllocate extends Component {
         let teaName = []
         let topicList = []
 
-     
+        // let area_x=[]
+        // let color_x=[]
+        // let total_x=[]
+
+
+        // topic.map((item) =>
+        //     total_x.push(
+        //         color_x.push(item.color.split(",")[0], item.areas.split(",")[0])
+
+        //     )
+
+
+
+        // )
+        // console.log(total_x)
 
 
         topic.map((item) =>
@@ -71,7 +85,17 @@ export default class HeadAllocate extends Component {
             }
             return 0;
         })
-        
+        // let sort_topic = topic
+        // sort_topic.sort(function (a, b) {
+        //     if (a.tName < b.tName) {
+        //         return 1;
+        //     } else if (a.tName > b.tName) {
+        //         return -1;
+        //     }
+        //     return 0;
+        // })
+
+        // console.log(sort_topic)
         this.setState({
             teacher_info: teaName,
             topic_info: topicList
@@ -215,11 +239,22 @@ export default class HeadAllocate extends Component {
     }
 
     clear = () => {
+        /******************** */
+        let topic = toJS(this.distributeTopic.topic_info);
+        let topicList = []
+        topic.map((item) =>
+            topicList.push({
+                key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+                areas: item.areas.split(","),
+                color: item.color.split(",")
+            })
+        )
+        /******************** */
         this.setState({
             selectedRowKeys: [],
             tea_id: "",
             tea_name: undefined,
-            topic_info: toJS(this.distributeTopic.topic_info),
+            topic_info: topicList,
         })
     }
 
@@ -236,9 +271,20 @@ export default class HeadAllocate extends Component {
             message.info("分配成功！")
             await this.props.manageStore.getTopicList();
             // 获取到教师列表
-            let topic = this.distributeTopic.topic_info;
-            this.setState({ 
-                topic_info: topic
+            // let topic = this.distributeTopic.topic_info;
+            /******************** */
+            let topic = toJS(this.distributeTopic.topic_info);
+            let topicList = []
+            topic.map((item) =>
+                topicList.push({
+                    key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+                    areas: item.areas.split(","),
+                    color: item.color.split(",")
+                })
+            )
+            /******************** */
+            this.setState({
+                topic_info: topicList
             });
         } else {
             message.info("分配失败！请重试")
@@ -299,7 +345,7 @@ export default class HeadAllocate extends Component {
 
 
                         {
-
+                            // console.log(areas),
                             areas.map((tag, i) => {
 
 
