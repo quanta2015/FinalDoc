@@ -39,9 +39,11 @@ class App extends Component {
           <AsyncRoute path='/t_auditTP' getComponent={ () => import('./app/t/auditTP').then(module => module.default) } />
           <AsyncRoute path='/t_auditOP' getComponent={ () => import('./app/t/auditOP').then(module => module.default) }/>   
           <AsyncRoute path='/t_auditFD' getComponent={ () => import('./app/t/auditFD').then(module => module.default) }/>
+          {/* 系主任端 */}
           <AsyncRoute path='/m_distributeTopic' getComponent={ () => import('./app/m/distributeTopic').then(module => module.default) }/>
-          <AsyncRoute path='/m_distributeTopic_detail' getComponent={ () => import('./app/m/distributeTopic/detail').then(module => module.default) }/> 
-          <AsyncRoute path='/m_organizeOpendefence' getComponent={ () => import('./app/m/organizeOpendefence').then(module => module.default) }/>     
+          <AsyncRoute path='/m_organizeOpendefence' getComponent={ () => import('./app/m/organizeOpendefence').then(module => module.default) }/>
+          <AsyncRoute path='/m_organizeFinaldefence' getComponent={ () => import('./app/m/organizeFinaldefence').then(module => module.default) }/>
+          <AsyncRoute path='/m_viewProgress' getComponent={ () => import('./app/m/viewProgress').then(module => module.default) }/> 
         </Router>
         </div>
       </div>
