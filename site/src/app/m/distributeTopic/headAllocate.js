@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import headAllocate from './headAllocate.css';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip ,Tag} from 'antd';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -46,31 +46,33 @@ export default class HeadAllocate extends Component {
         // console.log(topic[1].areas.split(","))
         // 将教师列表值变为id+name
         let teaName = []
-        let topicList=[]
+        let topicList = []
 
         // let area_x=[]
         // let color_x=[]
         // let total_x=[]
 
-         
+
         // topic.map((item) =>
         //     total_x.push(
         //         color_x.push(item.color.split(",")[0], item.areas.split(",")[0])
 
         //     )
-             
-             
+
+
 
         // )
         // console.log(total_x)
 
 
         topic.map((item) =>
-            topicList.push({key:item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content, 
-            areas: item.areas.split(","),
-            color: item.color.split(",")})
+            topicList.push({
+                key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+                areas: item.areas.split(","),
+                color: item.color.split(",")
+            })
         )
-        
+
 
         tea.map((item) =>
             teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
@@ -187,20 +189,42 @@ export default class HeadAllocate extends Component {
             id = value.split(" ")[0];
         } else {
             id = value
+            /******************** */
+            let topic = toJS(this.distributeTopic.topic_info);
+            let topicList = []
+            topic.map((item) =>
+                topicList.push({
+                    key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+                    areas: item.areas.split(","),
+                    color: item.color.split(",")
+                })
+            )
+            /******************** */
             // 清空选择课题列表
             this.setState({
                 selectedRowKeys: [],
-                topic_info: toJS(this.distributeTopic.topic_info),
+                topic_info: topicList,
             })
         }
         this.setState({
             tea_id: id,
             tea_name: value
         }, () => {
-            let topiclist = toJS(this.distributeTopic.topic_info);
+            /******************** */
+            let topic = toJS(this.distributeTopic.topic_info);
+            let topicList = []
+            topic.map((item) =>
+                topicList.push({
+                    key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+                    areas: item.areas.split(","),
+                    color: item.color.split(",")
+                })
+            )
+            /******************** */
+            // let topiclist = toJS(this.distributeTopic.topic_info);
             let newlist = [];
-            console.log("1 " + topiclist.length)
-            topiclist.map((item, i) => {
+            console.log("1 " + topicList.length)
+            topicList.map((item, i) => {
                 if (item.tid !== this.state.tea_id) {
                     newlist.push(item);
                 }
@@ -282,8 +306,8 @@ export default class HeadAllocate extends Component {
                         {topic}
                     </Tooltip>
                 ),
-                 
-                
+
+
             },
             {
                 title: '研究领域',
@@ -291,29 +315,29 @@ export default class HeadAllocate extends Component {
                 key: 'areas',
                 filters: toJS(this.distributeTopic.areas_list),
                 filterMultiple: false,
-                onFilter: (value, record) => 
+                onFilter: (value, record) =>
                     record.areas.indexOf(value) !== -1,
 
-                render: areas => (
+                render: (areas, record) => (
                     <>
-                    
-                    
+
+
                         {
-                           
-                        areas.map((tag,i) => {
-                           
-                            
-                            return (
-                                <Tag color={record.color[i]} key={tag}>
-                                    {tag}
-                                </Tag>
-                            );
-                        })}
+
+                            areas.map((tag, i) => {
+
+
+                                return (
+                                    <Tag color={record.color[i]} >
+                                        {tag}
+                                    </Tag>
+                                );
+                            })}
                     </>
                 ),
-              
-               
-                 
+
+
+
             },
             {
                 title: '操作',
@@ -376,7 +400,7 @@ export default class HeadAllocate extends Component {
 
                     />
                 </div>
-               
+
                 {/* <div className="head_btn">
                     <Button onClick={this.clear} className="clear">重置</Button>
                     <Button type="primary" onClick={this.handDistribute}>提交</Button>
