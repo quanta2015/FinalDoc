@@ -1,7 +1,8 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { Table, Space, Popconfirm, Modal, Button, Tooltip } from 'antd';
+import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import './dividedetail.css';
 
 const paginationProps = {
@@ -13,74 +14,6 @@ const paginationProps = {
 }
 
 export default class DivideDetail extends Component {
-    columns = [
-        {
-            title: '序号',
-            dataIndex: 'key',
-            key: 'key',
-        },
-        {
-            title: '组长',
-            dataIndex: 'leader',
-            key: 'leader',
-        },
-        {
-            title: '组员',
-            dataIndex: 'member',
-            key: 'member',
-        },
-        {
-            title: '答辩课题',
-            key: 'action',
-            render: (text, record) => (
-                <Space size="middle">
-                    <a onClick={() => this.showModal(record)}>详情</a>
-                </Space>
-            ),
-        },
-        {
-            title: '操作',
-            key: 'action',
-            render: (text, record) =>
-                this.state.dataSource.length >= 1 ? (
-                    <Popconfirm title="是否删除该小组？" onConfirm={() => this.handleDelete(record.key)}>
-                        <a>删除</a>
-                    </Popconfirm>
-                ) : null,
-        },
-    ];
-
-    topic_columns = [
-        {
-            title: '答辩课题',
-            dataIndex: 'topic',
-            key: 'topic',
-            ellipsis: {
-                showTitle: false,
-            },
-            render: topic => (
-                <Tooltip placement="topLeft" title={topic}>
-                    {topic}
-                </Tooltip>
-            ),
-        },
-        {
-            title: '学生姓名',
-            dataIndex: 'sname',
-            key: 'sname',
-        },
-        {
-            title: '班级',
-            dataIndex: 'class',
-            key: 'class',
-        },
-        {
-            title: '指导老师',
-            dataIndex: 'tname',
-            key: 'tname',
-        },
-    ];
-
     state = {
         dataSource: [
             {
@@ -149,6 +82,9 @@ export default class DivideDetail extends Component {
             },
         ],
         visible: false,
+        // 表格中搜索功能
+        searchText: '',
+        searchedColumn: '',
     }
 
     // 模态框
@@ -156,6 +92,60 @@ export default class DivideDetail extends Component {
         this.setState({
             visible: true,
         });
+    };
+
+    // 表格中的搜索功能
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node;
+                    }}
+                    placeholder={`请输入关键字查询`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        搜索
+                    </Button>
+                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        重置
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+        render: text => text
+    });
+
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        this.setState({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex,
+        });
+    };
+
+    handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
     };
 
     handleCancel = e => {
@@ -174,12 +164,85 @@ export default class DivideDetail extends Component {
     };
 
     render() {
+        const columns = [
+            {
+                title: '序号',
+                dataIndex: 'key',
+                key: 'key',
+            },
+            {
+                title: '组长',
+                dataIndex: 'leader',
+                key: 'leader',
+                ...this.getColumnSearchProps('leader'),
+            },
+            {
+                title: '组员',
+                dataIndex: 'member',
+                key: 'member',
+                ...this.getColumnSearchProps('member'),
+            },
+            {
+                title: '答辩课题',
+                key: 'action',
+                render: (text, record) => (
+                    <Space size="middle">
+                        <a onClick={() => this.showModal(record)}>详情</a>
+                    </Space>
+                ),
+            },
+            {
+                title: '操作',
+                key: 'action',
+                render: (text, record) =>
+                    this.state.dataSource.length >= 1 ? (
+                        <Popconfirm title="是否删除该小组？" onConfirm={() => this.handleDelete(record.key)}>
+                            <a>删除</a>
+                        </Popconfirm>
+                    ) : null,
+            },
+        ];
+
+        const topic_columns = [
+            {
+                title: '答辩课题',
+                dataIndex: 'topic',
+                key: 'topic',
+                ellipsis: {
+                    showTitle: false,
+                },
+                render: topic => (
+                    <Tooltip placement="topLeft" title={topic}>
+                        {topic}
+                    </Tooltip>
+                ),
+                ...this.getColumnSearchProps('topic'),
+            },
+            {
+                title: '学生姓名',
+                dataIndex: 'sname',
+                key: 'sname',
+                ...this.getColumnSearchProps('sname'),
+            },
+            {
+                title: '班级',
+                dataIndex: 'class',
+                key: 'class',
+                ...this.getColumnSearchProps('class'),
+            },
+            {
+                title: '指导老师',
+                dataIndex: 'tname',
+                key: 'tname',
+                ...this.getColumnSearchProps('tname'),
+            },
+        ];
+
         return (
             <div>
                 <div className="dividedetail">
-                    <Table dataSource={this.state.dataSource} columns={this.columns} />
+                    <Table dataSource={this.state.dataSource} columns={columns} />
                 </div>
-
 
                 <Modal
                     title="答辩课题详情"
@@ -188,7 +251,7 @@ export default class DivideDetail extends Component {
                     footer={false}
                 >
                     <div className="topicdetail">
-                        <Table pagination={paginationProps} dataSource={this.state.topic_data} columns={this.topic_columns} size="small" />
+                        <Table pagination={paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
                     </div>
                 </Modal>
             </div>

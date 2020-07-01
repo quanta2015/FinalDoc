@@ -9,6 +9,10 @@ tbody.ant-table-tbody {
     display: flex;
 }
 
+.ant-modal-content {
+    width: 520px;
+}
+
 .dividedetail .ant-table-cell {
     text-align: center;
 }
@@ -56,4 +60,8 @@ tbody.ant-table-tbody {
 
 .topicdetail .ant-table-cell:nth-last-child(1){
     width: 100px;
+}
+
+.topicdetail .ant-table-placeholder .ant-table-cell{
+    width: 472px;
 }
