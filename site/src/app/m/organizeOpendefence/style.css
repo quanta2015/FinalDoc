@@ -1,35 +1,5 @@
-.orig{
-    width: 100%;
-}
-
-.orig-title{
-    padding: 30px;
-    font-weight: 550;
-    font-size: 20px;
-}
-
-
-.orig-form{
-     width: 80%;
-     display: flex;
-     justify-content: center;
-     
-}
- 
-.ant-form-item-control-input-content{
-    display: flex;
-    justify-content: center;
-}
-
-.ant-form-item-label > label::after{
-    color:white
-}
-
-.ant-form-item-label > label.ant-form-item-required::before{
-    color: white;
-}
-
-.ant-form-item-label{
-    width: auto;
-    
+.main {
+    padding: 15px 75px;
+    box-sizing: border-box;
+    width: 950px;
 }
