@@ -24,9 +24,10 @@ class NavS extends Component {
       .then(r => {
         if (!r.data.length) {
           route('/s_selectTL');
-        } else {
-          route('/s_topicPG');
         }
+        // } else {
+        //   route('/s_topicPG');
+        // }
       })
   }
 
@@ -38,8 +39,8 @@ class NavS extends Component {
             {this.usr.name && <p>姓名：{this.usr.name}</p>}
             {this.usr.uid && <p>学号：{this.usr.uid}</p>}
             {this.usr.cls && <p>班级：{this.usr.cls}</p>}
-            {this.usr.maj && <p>专业：{this.usr.maj}</p>}
-            {this.usr.dep && <p>学院：{this.usr.dep}</p>}
+            {/* {this.usr.maj && <p>专业：{this.usr.maj}</p>}
+            {this.usr.dep && <p>学院：{this.usr.dep}</p>} */}
             {this.topInfo && <p>指导老师：{this.topInfo.name}</p>}
           </div>
           {!this.topInfo &&

@@ -24,16 +24,18 @@ class App extends Component {
   render() {
     return (
       <div id="app">
-        { (this.usr.role==0) && <NavT/>}
-        { (this.usr.role==1) && <NavS/>}
-        <Router >
-          <AsyncRoute path='/t_manage'  getComponent={ () => import('./app/t/manage').then(module => module.default) } />
-          <AsyncRoute path='/t_auditTP' getComponent={ () => import('./app/t/auditTP').then(module => module.default) } />
-          <AsyncRoute path='/t_auditOP' getComponent={ () => import('./app/t/auditOP').then(module => module.default) }/>   
-          <AsyncRoute path='/t_auditFD' getComponent={ () => import('./app/t/auditFD').then(module => module.default) }/>   
-          <AsyncRoute path='/s_selectTL' getComponent={() => import('./app/s/selectTL').then(module => module.default)} />
-          <AsyncRoute path='/s_topicPG' getComponent={() => import('./app/s/topicPG').then(module => module.default)} />
-        </Router>
+        {(this.usr.role == 0) && <NavT />}
+        {(this.usr.role == 1) && <NavS />}
+        <div id="context">
+          <Router >
+            <AsyncRoute path='/t_manage' getComponent={() => import('./app/t/manage').then(module => module.default)} />
+            <AsyncRoute path='/t_auditTP' getComponent={() => import('./app/t/auditTP').then(module => module.default)} />
+            <AsyncRoute path='/t_auditOP' getComponent={() => import('./app/t/auditOP').then(module => module.default)} />
+            <AsyncRoute path='/t_auditFD' getComponent={() => import('./app/t/auditFD').then(module => module.default)} />
+            <AsyncRoute path='/s_selectTL' getComponent={() => import('./app/s/selectTL').then(module => module.default)} />
+            <AsyncRoute path='/s_topicPG' getComponent={() => import('./app/s/topicPG').then(module => module.default)} />
+          </Router>
+        </div>
       </div>
     )
   }
