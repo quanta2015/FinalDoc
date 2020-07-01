@@ -1,0 +1,19 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+
+.noTopicNums {
+    position: relative;
+    bottom: -45px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 200px;
+}

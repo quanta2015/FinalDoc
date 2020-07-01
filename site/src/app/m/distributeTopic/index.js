@@ -37,13 +37,9 @@ export default class Home extends Component {
             <div className="main">
                 <Tabs defaultActiveKey="1" >
                     <TabPane tab="分配课题" key="1">
-                        {/* Content of Tab Pane 1 */}
-                        {/* <div className="head">
-                            <div className="topicNum">还有<span>{this.distributeTopic.topic_info.length}篇</span>课题未分配审核</div>
-                            <div className="detail"><Button type="primary" href="./m_distributeTopic_detail">审核详情</Button></div>
-                        </div> */}
+                        
                         <div className="choose">
-                            {/* <div class="title">分配方式</div> */}
+                           
                             <Radio.Group onChange={this.onChange} value={this.state.value}>
                                 <Radio value={1}>自动分配</Radio>
                                 <Radio value={2}>手动分配</Radio>
