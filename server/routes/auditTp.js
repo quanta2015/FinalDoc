@@ -49,6 +49,14 @@ router.post('/checkUpdateYes', async(req, res) => {
       res.status(200).json({code: 200, data: r, msg: '审核方打回该课题'})
     });
   });
+
+  router.post('/searchTopicById', async(req, res) => {
+    let sql = `CALL PROC_GET_TOPIC_BY_TOPIC(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data: r, msg: '返回课题具体信息'})
+    });
+  })
   
 
 module.exports = router
