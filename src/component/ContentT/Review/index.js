@@ -33,8 +33,11 @@ export default class Review extends BaseActions{
           <Tooltip placement="top" title={"通过"}>
             <CheckOutlined onClick={()=>{this.pass(record.sid,record.name,record.id)}} style="color:blue"/>
           </Tooltip>
-          <Tooltip placement="top" title={"拒绝"}>
-            <CloseOutlined onClick={()=>{this.refuse(record.sid,record.name,record.id)}} style="color:red"/>
+          <Tooltip placement="top" title={"拒绝"}  >
+            <span onClick={()=>{console.log("????");this.refuse(record.sid,record.name,record.id)}}>
+              <CloseOutlined style="color:red"/>
+            </span>
+            
           </Tooltip>
           </div>
         )
@@ -55,7 +58,8 @@ export default class Review extends BaseActions{
   pass =async (id,name,tid)=>{
     let r = confirm(`您确定要通过 ${name} 的申请么？`)
     if(!r)return;
-    r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT,{sid:id,topic_id:tid,val:1});
+    let data = {sid:id,topic_id:tid,val:1}
+    r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT,data);
     console.log(r);
     this.props.freshList();
   }
@@ -87,12 +91,12 @@ export default class Review extends BaseActions{
         <div className="icons">
           <Tooltip placement="top" title={"通过"}>
             <span className="m-icon">
-              <CheckOutlined onClick={()=>{this.pass(ths.props.list.sid,ths.props.list.sid,ths.props.list.sid)}} style="color:blue"/>
+              <CheckOutlined onClick={()=>{this.pass(this.props.list.sid,this.props.list.name,this.props.list.id)}} style="color:blue"/>
             </span>
           </Tooltip>
           <Tooltip placement="top" title={"拒绝"}>
             <span  className="m-icon">
-            <CloseOutlined onClick={()=>{this.refuse(ths.props.list.sid,ths.props.list.sid,ths.props.list.sid)}} style="color:red"/>
+            <CloseOutlined onClick={()=>{this.refuse(this.props.list.sid,this.props.list.name,this.props.list.id)}} style="color:red"/>
             </span>
           </Tooltip>
         </div>

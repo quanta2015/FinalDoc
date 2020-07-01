@@ -44,3 +44,8 @@
 .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header, .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header > .arrow{
   color: rgba(0, 0, 0, 0.85);
 }
+
+.title>span>button{
+  margin: 20px;
+  width: 120px;
+}

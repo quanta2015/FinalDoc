@@ -29,6 +29,22 @@ export const API_SYS_GET_TEACHER_AREA_LIST = API_SERVER + '/teacher/getTeacherAr
 //获取学生申请列表
 export const API_SYS_GET_TOPIC_CHECK_STUDNET = API_SERVER + '/teacher/getTopicCheckStudent'
 //审核学生申请
-export const API_SYS_TEACHER_REVIEW_STUDENT = API_SERVER + 'teacher/getTopicStudentAlter'
+export const API_SYS_TEACHER_REVIEW_STUDENT = API_SERVER + '/teacher/getTopicStudentAlter'
 //查看学生个人信息
-export const API_SYS_TEACHER_GET_STU_INFO = API_SERVER + '/teacher/getStuPersonalInfo'
+export const API_TEACHER_GET_STU_INFO = API_SERVER + '/teacher/getStuPersonalInfo'
+//查看被审核意见
+export const API_TEACHER_GET_SUGG = API_SERVER +'/teacher/getTidToTsugg'
+//获取全部已通过topic
+export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic'
+
+
+// 任课教师-初期审核
+
+// 获取审核命题列表
+export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';
+// 提交通过命题审核
+export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES = API_SERVER + '/auditTp/checkUpdateYes';
+// 提交未通过命题审核
+export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_NO = API_SERVER + '/auditTp/checkUpdateNo';
+// 查询命题列表
+export const API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID = API_SERVER + '/auditTp/searchTopicById';

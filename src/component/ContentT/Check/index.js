@@ -59,6 +59,11 @@ class Check extends BaseActions {
     this.props.close();
   }
 
+  getSugg = async (id)=>{
+    let data = await this.post(urls.API_TEACHER_GET_SUGG,{pid:id})
+    message.info("意见信息："+data.data[0].sugg)
+  }
+
   StateExtra = (t) => (
     <div className="state-extra">
       {t.status==3 && <Tag color="green">已通过</Tag>}
@@ -70,10 +75,10 @@ class Check extends BaseActions {
           (t.status==0||t.status==1||t.status==4)&&<span onClick={()=>{this.deleteTopic(t.id,t.name)}}><DeleteSpan /></span>
         }
         {
-          (t.status==4||t.status==0)&&<span  onClick={()=>{this.props.change(t.id)}}><ReWrite/></span>
+          (t.status==4||t.status==0)&&<span onClick={()=>{this.props.change(t.id)}}><ReWrite/></span>
         }
         {
-          (t.status==4)&&<span><Watch/></span>
+          (t.status==4)&&<span onClick={()=>{this.getSugg(t.id)}}><Watch/></span>
         }
       </div>
       
@@ -86,9 +91,14 @@ class Check extends BaseActions {
         <div className="title">
           <span>我的课题</span>
           <span>
+            {
+              this.props.pbChanged&&
+              <Button type="dashed"  onClick={()=>{this.props.justOpenDrawer()}}>继续编辑</Button>
+            }
             {this.props.toplist.length<8&&
-            <Button type="dashed" style="margin:20px 0" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
-          }
+              <Button type="dashed" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
+            }
+            <Button type="default" onClick={()=>{this.props.showAllTopic()}}>查看全部课题</Button>
           </span>
         </div>
         {this.props.toplist.length==0&&<span>您还没有课题！</span>}
@@ -105,14 +115,14 @@ class Check extends BaseActions {
                     {t.status==3 &&
                       <>
                         {t.sid!=null&&
-                          <StuMethods  sid={t.sid}/>
+                          <StuMethods  sid={t.sid} tid={t.id}/>
                         }
                         {t.sid==null&&this.props.checkList.map((x)=>{return x.id}).indexOf(t.id)<0&&
                           <span>您的课题{t.name}还没有学生选择</span>
                         }
                         {
                           t.sid==null&&this.props.checkList.map((x)=>{return x.id}).indexOf(t.id)>=0&&
-                          <ReviewLine list={this.props.checkList[this.props.checkList.map((x)=>x.id).indexOf(t.id)]}/>
+                          <ReviewLine list={this.props.checkList[this.props.checkList.map((x)=>x.id).indexOf(t.id)]} freshList={this.props.freshList}/>
                         }
                       </>
                     }

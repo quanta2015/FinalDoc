@@ -1,4 +1,4 @@
-import { Input, Select, Button, Switch, InputNumber, message } from 'antd';
+import { Input, Select, Button, Switch, InputNumber, message,Tag } from 'antd';
 const { Option } = Select;
 const { TextArea } = Input;
 import './index.css'
@@ -9,11 +9,22 @@ const { Search } = Input;
 let me = {
   uid: '20100119'
 }
-var users = [];
+
+function tagRender(props) {
+  const { label, value, closable, onClose } = props;
+  return (
+    <Tag color={!!label?label[1].props.children:"blue"} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
+      {label}
+    </Tag>
+  );
+}
 
 class Publish extends BaseActions {
+
+  cleared=true;
+
   state = {
-    stuData: users,
+    stuData: [],
     selectStu: false,
     type:'工程设计',
     selected_stu_data:null,
@@ -26,13 +37,20 @@ class Publish extends BaseActions {
   } 
 
   setBlocks= async ()=>{
+    if(!this.cleared){
+      let r = confirm("您上次编辑的记录还未提交，是否覆盖/清空？")
+      if(!r)return;
+      this.cleared = true;
+      this.props.needGoon(false);
+    }
     if(!!this.props.tid){
       let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.tid});
       data = data.data[0];
       this.name.value = data.topic;
       this.setState({type:data.type,area:data.area})
-      this.note.setState({value:data.note})
-      if(data.sid!==null){
+      this.note.setState({value:data.note})    
+      if((data.sid==null||data.sid=="null")&&this.state.selectStu){this.switch.click();}
+      if(data.sid!=null&&data.sid!="null"){
         if(!this.state.selectStu){
           this.switch.click();
         }
@@ -45,7 +63,7 @@ class Publish extends BaseActions {
 
   async componentDidMount(){  
     let areaData = await this.post(urls.API_SYS_GET_TEACHER_AREA_LIST,{tid:me.uid});
-    this.setState({areaList:areaData.data,area:areaData.data.map((x)=>{return x.id})})
+    this.setState({areaList:areaData.data})
   }
 
   clear = e => {
@@ -54,8 +72,10 @@ class Publish extends BaseActions {
     this.setState({
       selected_stu_data:null,
       type:'工程设计',
-      area:[]
+      area:this.state.areaList.map((x)=>x.id)
     })
+    this.cleared = true;
+      this.props.needGoon(false);
   }
 
   handleSearchStu = async (e) => {
@@ -93,11 +113,15 @@ class Publish extends BaseActions {
   handleAreaChange=(e)=>{
     this.setState({
       area:e
-    },()=>{console.log(this.state.area)})
+    })
   }
 
   postInfo = async () => {
     let data;
+    if(this.state.area.length==0){
+      alert("请选择研究方向！")
+      return;
+    }
     if(this.state.selectStu){
       let addr = this.state.selected_stu_data;
       if(addr<13){
@@ -112,7 +136,7 @@ class Publish extends BaseActions {
           note:this.note.state.value,
           stuId:this.state.selected_stu_data,
           topic_id:this.props.tid==null?"":this.props.tid,
-          area:this.state.area
+          area:this.state.area===undefined?[]:this.state.area
         };
       }
     }else{
@@ -123,24 +147,23 @@ class Publish extends BaseActions {
         note:this.note.state.value,
         stuId:null,
         topic_id:this.props.tid==null?"":this.props.tid,
-        area:this.state.area
+        area:this.state.area===undefined?[]:this.state.area
       }
     }
-    console.log(data)
-    let s = await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
-    console.log(s);
+    await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
     this.props.close();
+    this.cleared = true;
+      this.props.needGoon(false);
   }
 
   render() {
     return (
-      <div className="publish-block">
-        
+      <div className="publish-block"  onChange={()=>{this.cleared=false;this.props.needGoon(true)}}>
           <div className="input-line">
             <div className="input-left"><span>课</span><span>题</span><span>名</span><span>称</span></div>
             <div className="input-right">
               <input
-                style={{ width: 400 }}
+                style={{ width: 500 }}
                 ref={name => this.name = name}
                 className="have-placehoder" type="text" placeholder="请输入课题名" />
             </div>
@@ -155,7 +178,7 @@ class Publish extends BaseActions {
                 showSearch
                 onChange={this.handleTypeChange}
                 defaultValue={"工程设计"}
-                style={{ width: 400 }}
+                style={{ width: 500 }}
                 placeholder="选择项目类别"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
@@ -177,16 +200,17 @@ class Publish extends BaseActions {
                 className="have-placehoder"
                 value={this.state.area}
                 showSearch
+                tagRender={tagRender}
                 mode="multiple"
                 onChange={this.handleAreaChange}
-                style={{ width: 400 }}
+                style={{ width: 500 }}
                 placeholder="选择研究方向"
                 optionFilterProp="children"
                 filterOption={(input, option) =>  
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                {this.state.areaList.map((x)=><Option value={x.id}>{x.name}</Option>
+                {this.state.areaList.map((x)=><Option value={x.id}>{x.area}<span style="display:none">{x.color}</span></Option>
                 )}
               </Select>
             </div>
@@ -196,7 +220,7 @@ class Publish extends BaseActions {
             <div className="input-right">
               <TextArea
                 ref={note => this.note = note}
-                style={{ width: 400 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
+                style={{ width: 500 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
             </div>
           </div>
 
@@ -221,7 +245,7 @@ class Publish extends BaseActions {
                   ref={stu => this.stuId = stu}
                   value={this.state.selected_stu_data}
                   className="have-placehoder"
-                  style={{ width: 400 }}
+                  style={{ width: 500 }}
                   placeholder="按学号搜索学生"
                   optionFilterProp="children"
                   onChange={this.handleStuChange}

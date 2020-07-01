@@ -1,0 +1,38 @@
+.ant-tabs-large > .ant-tabs-nav .ant-tabs-tab{
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.note-block{
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.note-block>.ant-card>.ant-card-body{
+  padding: 5px 10px;
+  word-wrap: break-word;
+}
+
+.file-block{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  padding: 3px;
+}
+
+.card-inner{
+  display: flex;
+}
+
+.file-block-row{
+  display: flex;
+  width: 250px;
+  flex-wrap: wrap;
+}
+
+.file-block-row>.g-file{
+  margin: 0 5px;
+}

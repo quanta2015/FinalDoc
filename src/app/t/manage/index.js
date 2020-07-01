@@ -6,6 +6,7 @@ import * as urls from '../../../constant/urls'
 import BaseActions from '../../../component/BaseActions';
 import PublishBlock from '../../../component/ContentT/Publish'
 import ReviewBlock from '../../../component/ContentT/Review'
+import AllTopicList from '../../../component/ContentT/AllTpoicList'
 
 import style from './style.scss';
 
@@ -31,13 +32,17 @@ export default class Home extends BaseActions {
     placement: 'right',
     tid:null,
     toplist:[],
-    checkList:[]
+    checkList:[],
+    pbChanged:false
   }
 
   componentDidMount(){
     this.getTopicList();
   }
 
+  /**
+   * 获取自己的课题列表
+   */
   getTopicList = async ()=>{
     let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID,{tea_id:me.tea_id})
     data = data.data.map(filter);
@@ -64,6 +69,10 @@ export default class Home extends BaseActions {
     
   };
 
+  justOpenDrawer = ()=>{
+    this.setState({visible:true})
+  }
+
   /**
    * 关闭右侧抽屉，并刷新课题列表
    */
@@ -74,6 +83,10 @@ export default class Home extends BaseActions {
     this.getTopicList();
   };
 
+  showTopics=()=>{
+    this.setState({modal_visiable:true})
+  }
+
 	render() {
     const { placement, visible,tid } = this.state;
 		return (
@@ -83,7 +96,12 @@ export default class Home extends BaseActions {
           change={this.showDrawer} 
           checkList={this.state.checkList} 
           toplist={this.state.toplist}  
-          close={this.onClose}/>
+          close={this.onClose}
+          freshList={this.getTopicList}
+          pbChanged={this.state.pbChanged}
+          justOpenDrawer={this.justOpenDrawer}
+          showAllTopic={this.showTopics}
+          />
         <Drawer
           forceRender={true}
           width={720}
@@ -94,12 +112,19 @@ export default class Home extends BaseActions {
           visible={visible}
           key={placement}
         >
-        <PublishBlock tid={tid} close={this.onClose} ref={c=>this.child = c}/>
+        <PublishBlock tid={tid} close={this.onClose} ref={c=>this.child = c} needGoon={(x)=>{this.setState({pbChanged:x})}} />
         </Drawer>
-        {/*
-        <ReviewBlock freshList={this.getTopicList} list={this.state.checkList}/>
-*/
-        }
+
+
+        <Modal
+        title="课题列表"
+        visible={this.state.modal_visiable}
+        onCancel={()=>{this.setState({modal_visiable:false})}}
+        footer={null}
+        width={1200}
+        >
+          <AllTopicList uid={me.tea_id}/>
+        </Modal>
       </div>
 		);
 	}
