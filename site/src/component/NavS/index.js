@@ -10,8 +10,8 @@ import './index.scss'
 class NavS extends Component {
 
   @computed
-  get topInfo() {
-    return toJS(this.props.studentStore.topInfo);
+  get selectTpInfo() {
+    return toJS(this.props.studentStore.selectTpInfo);
   }
 
   @computed
@@ -20,33 +20,42 @@ class NavS extends Component {
   }
 
   componentDidMount() {
-    this.props.studentStore.getTopInfo({ uid: this.usr.uid })
-      .then(r => {
-        if (!r.data.length) {
-          route('/s_selectTL');
-        }
-        // } else {
-        //   route('/s_topicPG');
-        // }
-      })
+    this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
+    .then(r => {
+      if (!r.length) { //未双选
+        route('/s_selectTL');
+      } else { //已双选
+        route('/s_topicPG');
+      }
+    })
   }
 
   render() {
+    const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
     return (
       <div className="g-nav">
         <div className="g-menu">
           <div className="m-info">
+            <h2 className="m-title bold">基本信息</h2>
             {this.usr.name && <p>姓名：{this.usr.name}</p>}
             {this.usr.uid && <p>学号：{this.usr.uid}</p>}
             {this.usr.cls && <p>班级：{this.usr.cls}</p>}
-            {/* {this.usr.maj && <p>专业：{this.usr.maj}</p>}
-            {this.usr.dep && <p>学院：{this.usr.dep}</p>} */}
-            {this.topInfo && <p>指导老师：{this.topInfo.name}</p>}
           </div>
-          {!this.topInfo &&
+          {!this.selectTpInfo.topic ?
             <div className='m-menuItem active'>
               <PushpinOutlined />
               <span>选择课题</span>
+            </div>:
+            <div className="m-info divider">
+              <h2 className="m-title bold">文件模板</h2>
+              <p><a href={link} download>开题报告</a></p>
+              <p><a href={link} download>中期检查表</a></p>
+              <p><a href={link} download>外文文献翻译</a></p>
+              <p><a href={link} download>文献综述</a></p>
+              <p><a href={link} download>论文格式</a></p>
+              <p><a href={link} download>作品说明书</a></p>
+              <p><a href={link} download>诚信承诺书</a></p>
+              <p><a href={link} download>评审答辩成绩表</a></p>
             </div>
           }
         </div>

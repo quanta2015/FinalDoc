@@ -11,9 +11,30 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    .divider {
+      border-top: 1px solid rgba(255, 255, 255, .2);
+    }
     
     .m-info {
-      margin: 30px 15px;
+      padding: 16px;
+      min-height: 240px;
+
+      .m-title {
+        font-size: 18px;
+      }
+
+      .bold {
+        font-weight: 550;
+      }
+
+      h2 {
+        color: #fff;
+      }
+
+      a {
+        color: #A1BFF1;
+      }
     }
     
     .m-menuItem {
@@ -27,6 +48,10 @@
 
       &.active {
         background: #336699!important;
+      }
+
+      &.bold {
+        font-weight: 550;
       }
 
       & span {
