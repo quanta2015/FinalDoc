@@ -100,9 +100,6 @@ export default class Home extends Component {
   }
   
 
- 
-
-  
 
   addSelectTeacher = (value) => {
     console.log(`selected ${value}`);
@@ -136,6 +133,7 @@ export default class Home extends Component {
 		return (
 			<div className="orig">
         <div className="orig-title">组织开题答辩</div>
+        
         
         <div className="orig-form"> 
         <Form
