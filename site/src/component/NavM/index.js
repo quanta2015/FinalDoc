@@ -13,7 +13,11 @@ class NavM extends Component {
     this.state = {
       cur: 0,
     }
-	}
+  }
+  
+  componentDidMount() {
+    route('/m_distributeTopic')
+  }
 
   doMenu = (path,i)=>{
     this.setState({cur:i},()=>{ 

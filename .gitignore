@@ -1,3 +1,4 @@
 site/node_modules
 site/build
 site/*.log
+node_modules/
