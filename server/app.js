@@ -10,7 +10,7 @@ const db = require('./util/db')
 const utils = require('./util')
 const fs = require('fs')
 const callProc = require('./util').callProc
-
+let path = require("path");
 
 const manage = require('./routes/manage');
 const student = require('./routes/student');
@@ -155,7 +155,9 @@ app.get('/UserList', async function (req, res) {
 // })
 
 app.post('/upload', async function (req, res) {
+
 	const form = new formidable.IncomingForm()
+	form.uploadDir = "./upload";
 	form.parse(req)
 	let get_data = { t: "json" };
 	form.on('field', function (name, value) {
@@ -163,16 +165,30 @@ app.post('/upload', async function (req, res) {
 		console.log(get_data)
 	})
 
-	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
-	})
+	// form.on('fileBegin', function (name, file) {
+	// 	// let type = file.name.split('.').slice(-1)
+	// 	// console.log(file)
 
+	// })
+	form.parse(req, (err, fields, files) => {
+		//重命名
+		console.log('===========', files, files.avatar)
+		let type = files.avatar.name.split('.').slice(-1)
+		let ttt = `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`;
+
+		let extname = path.extname(files.avatar.name);
+		let oldpath = __dirname + '/' + files.avatar.path
+		let newpath = __dirname + '/' + "upload/" + ttt;
+		fs.rename(oldpath, newpath, function (err) {
+			if (err) {
+				throw Error("改名失败");
+			}
+		});
+	});
 	form.on('file', (name, file) => {
 		let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
 		let params = get_data;
-		get_data.filePath=file.path
+		get_data.filePath = file.path
 		console.log(params)
 
 		callProc(sql, params, res, (r) => {
@@ -183,9 +199,17 @@ app.post('/upload', async function (req, res) {
 			})
 		});
 	});
-	
+
 
 })
+app.post('/download', function (req, res, next) {
+
+	let filename = req.body.file
+
+	res.download('./' + filename)
+
+})
+
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
