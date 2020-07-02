@@ -16,4 +16,4 @@ export const API_SYS_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
 export const API_SYS_FIND_ISINPROJ = API_SERVER + '/student/calStuTopicStateZero'
 export const API_SYS_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
 export const API_SYS_GET_STPINFO = API_SERVER + '/student/calStuTopicStateThree' //双选成功的课题信息
-
+export const API_SYS_UPLOAD_FILE = API_SERVER + '/upload'

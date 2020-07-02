@@ -1,25 +1,68 @@
 import { Component } from 'preact';
-import { Upload, Tooltip } from 'antd';
-import { LoadingOutlined, PlusOutlined, SmileOutlined, CloseOutlined } from '@ant-design/icons';
+import { Upload, Tooltip, message } from 'antd';
+import { LoadingOutlined, PlusOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { FILE_UPLOAD_FORMAT } from '../../constant/data'
+import { API_SYS_UPLOAD_FILE } from '../../constant/urls'
 import './index.css'
+
+const isValidFormat = (formatList, fileFormat) => {
+    if (formatList.indexOf(fileFormat) === -1) {
+        message.error('请重新选择文件，支持的类型有 ' + formatList.join(','));
+        return false;
+    }
+    return true;
+}
 
 class FileUpload extends Component {
     state = {
         loading: false,
-        imageUrl: '',
+        fileUrl: '',
         showDel: false
     };
 
-    componentDidMount() {
-        if(this.props.type.name === "开题报告") {
+    componentDidUpdate(prevProps) {
+        let fileUrl = this.props.tpInfo[this.props.type.type];
+        if (this.props.tpInfo.id && fileUrl && fileUrl !== this.state.fileUrl) {
             this.setState({
-                imageUrl: 'test'
+                fileUrl: fileUrl
             })
         }
     }
 
+    handleChange = (info) => {
+        if (info.file.status === 'uploading') {
+            this.setState({ loading: true });
+            return;
+        }
+        if (info.file.status === 'done') {
+            this.setState({
+                loading: false,
+                fileUrl: info.file.response.data.path
+            })
+            message.success(`成功上传文件《${info.file.name}》`)
+        }
+    }
+
+    beforeUpload = (file) => {
+        // 文件格式约束
+        let tag = true;
+        let fileFormat = file.name.slice(file.name.indexOf('.') + 1);
+        if (this.props.type.name === '答辩材料') {
+            tag = isValidFormat(FILE_UPLOAD_FORMAT.reply, fileFormat);
+        } else {
+            // todo: 判断是否答辩阶段已结束 结束 清除非pdf文件 上传pdf
+            tag = isValidFormat(FILE_UPLOAD_FORMAT.doc, fileFormat);
+        }
+        // 文件大小约束
+        const isLt10M = file.size / 1024 / 1024 < 10;
+        if(!isLt10M) {
+            message.error('请重新选择文件，文件不得大于10M');
+        }
+        return tag && isLt10M;
+    }
+
     handleHover = () => {
-        if(this.state.imageUrl) {
+        if(this.state.fileUrl) {
             this.setState({
                 showDel: true
             })
@@ -27,7 +70,7 @@ class FileUpload extends Component {
     }
 
     handleMouseOut = () => {
-        if (this.state.imageUrl) {
+        if (this.state.fileUrl) {
             this.setState({
                 showDel: false
             })
@@ -35,42 +78,46 @@ class FileUpload extends Component {
     }
 
     handleDel = () => {
+        //todo: 后端接口 清空对应字段
         this.setState({
-            imageUrl: '',
+            fileUrl: '',
             showDel: false
         })
     }
 
     render() {
-        // {name: "文献综述", type: "f_docs"}
+        // example: {name: "文献综述", type: "f_docs"}
         const fileType = this.props.type;
-        const { imageUrl, showDel } = this.state;
+        const tpInfo = this.props.tpInfo;
+        const { fileUrl, showDel } = this.state;
         const text = "点击下载已提交文件";
-        const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc';
+        const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
         const uploadButton = (
             <div>
                 { this.state.loading ? <LoadingOutlined /> : <PlusOutlined /> }
                 < div className = "ant-upload-text" > 上传</div>
             </div>
         )
-
         return (
             <div className="g-file">
-                <div className={imageUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"} onMouseOver={this.handleHover} onMouseLeave={this.handleMouseOut}>
+                <div className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"} onMouseOver={this.handleHover} onMouseLeave={this.handleMouseOut}>
                     {showDel && <CloseOutlined className="m-del" onClick={this.handleDel}/>}
                     <Upload
                         name="avatar"
                         listType="picture-card"
                         className="avatar-uploader"
                         showUploadList={false}
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        action={API_SYS_UPLOAD_FILE}
+                        data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid}}}
+                        beforeUpload={this.beforeUpload}
+                        onChange={this.handleChange}
                     >
-                        {imageUrl ? <SmileOutlined className="m-smile"/> : uploadButton}
+                        {fileUrl ? <CheckOutlined className="m-smile"/> : uploadButton}
                     </Upload>
                 </div>
-                {   imageUrl ?
+                {   fileUrl ?
                     <Tooltip placement="bottomLeft" title={text}>
-                        <a href={link} download className="submitted-p">开题报告</a>
+                        <a href={link} download className="submitted-p">{fileType.name}</a>
                     </Tooltip>:
                     <p>{fileType.name}</p>
                 }

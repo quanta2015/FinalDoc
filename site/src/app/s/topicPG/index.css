@@ -1,5 +1,5 @@
 .g-topic {
-    padding: 16px;
+    padding: 26px;
     width: 950px;
 }
 
@@ -35,6 +35,7 @@
 
 .g-topic .m-line{
     display: flex;
+    flex-wrap: wrap;
 }
 
 .g-topic .linespace {
@@ -42,11 +43,19 @@
 }
 
 .g-topic .interval {
-    margin-top: 18px;
+    margin-top: 35px;
 }
 
 .right-interval {
-    margin-right: 45px;
+    margin-right: 20px;
+}
+
+.bottom-interval {
+    margin-bottom: 10px;
+}
+
+.spact-bwt {
+    justify-content: space-between;
 }
 
 .g-topic .m-line {
@@ -59,7 +68,7 @@
 }
 
 .m-statusItem {
-    width: 25%;
+    width: 20%;
     margin-bottom: 5px;
 }
 
@@ -76,4 +85,31 @@
 
 .g-topic .m-title {
     font-size: 18px;
+}
+
+.g-topic .m-stage {
+    width: 33%;
+}
+
+.g-topic .border-bwt {
+    border-left: 1px solid #9e9e9e;
+    border-right: 1px solid #9e9e9e;
+}
+
+.g-topic .left-pad {
+    padding-left: 15px;
+}
+
+.g-topic .m-file:first-child .avatar-uploader > .ant-upload {
+    width: 165px;
+    height: 165px;
+}
+
+.g-topic .m-file:first-child .m-bdwrapper {
+    width: 167px;
+    height: 167px;
+}
+
+.g-topic .floatLeft {
+    float: left;
 }
