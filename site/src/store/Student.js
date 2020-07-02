@@ -91,15 +91,14 @@ class Student extends BaseActions {
     @action
     async getSelectTopic(params) {
         const r = await this.post(urls.API_SYS_GET_STPINFO, params);
-        if (r && r.code === 200) {
+        if (r && r.code === 200 && r.data) {
             runInAction(() => {
                 this.selectTpInfo = r.data[0]
             })
-            return r.data
         } else {
             message.error("网络错误")
         }
-        return r;
+        return r.data;
     }
 
 }
