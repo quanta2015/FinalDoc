@@ -232,30 +232,33 @@ export default class Detail extends Component {
 						pagination={paginationProps}
 					/>
 				</div>
-				<Modal
-					title="查看详情"
-					visible={this.state.visible}
-					onOk={this.handleOk}
-					onCancel={this.handleCancel}
-					footer={null}
-				>
-					<Descriptions
-						title=""
-						bordered
+				{/* <div className="detail_modal"> */}
+					<Modal
+						title="查看详情"
+						visible={this.state.visible}
+						onOk={this.handleOk}
+						onCancel={this.handleCancel}
+						footer={null}
+						width={900}
 					>
-						<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
-						<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-						<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
-						<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核状态" ><Tag color={color} >
-							{tag}
-						</Tag></Descriptions.Item>
+						<Descriptions
+							title=""
+							bordered
+						>
+							<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
+							<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+							<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
+							<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
+							<Descriptions.Item label="审核状态" ><Tag color={color} >
+								{tag}
+							</Tag></Descriptions.Item>
 
-						<Descriptions.Item label="审核建议">
-							{this.state.own.sugg}
-						</Descriptions.Item>
-					</Descriptions>
-				</Modal>
+							<Descriptions.Item label="审核建议">
+								{this.state.own.sugg}
+							</Descriptions.Item>
+						</Descriptions>
+					</Modal>
+				{/* </div> */}
 			</div>
 		);
 	}
