@@ -216,7 +216,7 @@ export default class DivideDetail extends Component {
                         {topic}
                     </Tooltip>
                 ),
-                ...this.getColumnSearchProps('topic'),
+                // ...this.getColumnSearchProps('topic'),
             },
             {
                 title: '学生姓名',
@@ -244,16 +244,18 @@ export default class DivideDetail extends Component {
                     <Table dataSource={this.state.dataSource} columns={columns} />
                 </div>
 
-                <Modal
-                    title="答辩课题详情"
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    footer={false}
-                >
-                    <div className="topicdetail">
-                        <Table pagination={paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
-                    </div>
-                </Modal>
+                <div className="dd_modal">
+                    <Modal
+                        title="答辩课题详情"
+                        visible={this.state.visible}
+                        onCancel={this.handleCancel}
+                        footer={false}
+                    >
+                        <div className="topicdetail">
+                            <Table pagination={paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
+                        </div>
+                    </Modal>
+                </div>
             </div>
         );
     }

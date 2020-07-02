@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
+import { computed, toJS } from 'mobx';
 import './detail.css';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip } from 'antd';
 
@@ -13,19 +13,14 @@ const paginationProps = {
 	}),
 }
 
-
-
 @inject('manageStore')
+@observer
 export default class Detail extends Component {
 	state = {
 		filteredInfo: null,
-		value: [],//数据
+		// value: [],
 		visible: false,
 		own: [],
-		tooltipText: "",
-		auditcount: [],
-		// 是否可以发布课题
-		flag: 0,
 	}
 	handleChange = (filters) => {//筛选
 		this.setState({
@@ -97,13 +92,6 @@ export default class Detail extends Component {
 		});
 	};
 
-	handleOk = e => {
-		console.log(e);
-		this.setState({
-			visible: false,
-		});
-	};
-
 	handleCancel = e => {
 		console.log(e);
 		this.setState({
@@ -111,60 +99,12 @@ export default class Detail extends Component {
 		});
 	};
 
-	async componentWillMount() {
-		let r = await this.props.manageStore.getCheckList()
-	
-		this.setState({ value: r.data });
+	@computed
+	get distributeTopic() {
+		return this.props.manageStore.distributeTopic;
 	}
 
-
-
-	async componentDidMount() {
-		let r = await this.props.manageStore.getCheckList()
-		let count = await this.props.manageStore.getAuditCount()
-		// console.log(r.data)
-		 
-			
-			r.data.sort(function (a, b) {
-
-				if (a.checkTeacher === b.checkTeacher) {
-
-					if (a.result < b.result) {
-						return -1;
-					} else if (a.result > b.result) {
-						return 1;
-					}
-					return 0;
-				}
-				else if (a.checkTeacher < b.checkTeacher){
-					return -1;
-
-
-				}
-				else{
-					return 1;
-				}
-				 
-
-				 
-			})
-		
-		 
-		 
-		this.setState({ value: r.data, auditcount: count.data[0] }, () => {
-			let text = ""
-			let flag = 0
-			if (this.state.auditcount.unAudit !== 0 || this.state.auditcount.unPassed !== 0) {
-				flag = 0
-				text = this.state.auditcount.unAudit + "篇课题未审核，" + this.state.auditcount.unPassed + "篇未通过，不能发布所有课题"
-			} else {
-				flag = 1
-				text = "课题均已通过审核，共" + this.state.auditcount.Passed + "，一键发布所有课题"
-			}
-			this.setState({ tooltipText: text, flag: flag })
-		});
-	}
-	render(_, { own }) {
+	render() {
 		let { filteredInfo } = this.state;
 		filteredInfo = filteredInfo || {}
 		const columns = [
@@ -181,6 +121,7 @@ export default class Detail extends Component {
 				ellipsis: {
 					showTitle: false,
 				},
+				...this.getColumnSearchProps('topicTOPIC'),
 				render: topicTOPIC => (
 					<Tooltip placement="topLeft" title={topicTOPIC}>
 						{topicTOPIC}
@@ -207,7 +148,7 @@ export default class Detail extends Component {
 
 
 				render: result => {
-					console.log(result);
+					// console.log(result);
 					let color = "";
 					let tag = "";
 					if (result == 2) {
@@ -222,7 +163,7 @@ export default class Detail extends Component {
 						tag = "未通过";
 						color = "red"
 					}
-					console.log(tag);
+					// console.log(tag);
 					return (
 						<Tag color={color} >
 							{tag}
@@ -248,12 +189,12 @@ export default class Detail extends Component {
 
 		let color = "";
 		let tag = "";
-		if (own.result == 2) {
+		if (this.state.own.result == 2) {
 			tag = "待审核";
 			color = "blue";
 
 		}
-		else if (own.result == 1) {
+		else if (this.state.own.result == 1) {
 			tag = "通过";
 			color = "green";
 		}
@@ -267,66 +208,58 @@ export default class Detail extends Component {
 			<div>
 				{/* 所有课题审核通过，才可以一键发布课题 */}
 				<div className="release">
-					<Tooltip placement="top" title={this.state.tooltipText}>
-						{(this.state.flag === 0) &&
+					<Tooltip placement="top" title={this.props.tooltipText}>
+						{(this.props.flag === 0) &&
 							<Button type="primary" disabled>发布课题</Button>
 						}
-						{(this.state.flag === 1) &&
+						{(this.props.flag === 1) &&
 							<Button type="primary">发布课题</Button>
 						}
 					</Tooltip>
 				</div>
 				<div className="detail_table">
-					<Table columns={columns} dataSource={this.state.value} tableLayout='fixed'
+					<Table columns={columns} dataSource={this.props.checklist_info} tableLayout='fixed'
 						onRow={(record) => {
 							return {
 								onClick: () => {
 									console.log(record)
 									this.state.own = record
 									console.log(this.state.own)
-
 								}
 							}
 						}}
 						onChange={this.handleChange}
 						pagination={paginationProps}
-
 					/>
 				</div>
-				<Modal
-					title="查看详情"
-					visible={this.state.visible}
-					onOk={this.handleOk}
-					onCancel={this.handleCancel}
-					footer={null}
-				>
-
-
-					<Descriptions
-						title=""
-						bordered
-
-
+				{/* <div className="detail_modal"> */}
+					<Modal
+						title="查看详情"
+						visible={this.state.visible}
+						onOk={this.handleOk}
+						onCancel={this.handleCancel}
+						footer={null}
+						width={900}
 					>
-						<Descriptions.Item label="课题名称" span={3}>{own.topicTOPIC}</Descriptions.Item>
-						<Descriptions.Item label="课题简介" span={3}>{own.content}</Descriptions.Item>
-						<Descriptions.Item label="审核教师" span={2}>{own.checkTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核状态" ><Tag color={color} >
-							{tag}
-						</Tag></Descriptions.Item>
+						<Descriptions
+							title=""
+							bordered
+						>
+							<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
+							<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+							<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
+							<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
+							<Descriptions.Item label="审核状态" ><Tag color={color} >
+								{tag}
+							</Tag></Descriptions.Item>
 
-						<Descriptions.Item label="审核建议">
-							{own.sugg}
-
-						</Descriptions.Item>
-					</Descriptions>
-				</Modal>
-				{/* <div className="back"><Button type="primary" href="./m_distributeTopic">返回</Button></div> */}
-
+							<Descriptions.Item label="审核建议">
+								{this.state.own.sugg}
+							</Descriptions.Item>
+						</Descriptions>
+					</Modal>
+				{/* </div> */}
 			</div>
-
-
-
 		);
 	}
 }

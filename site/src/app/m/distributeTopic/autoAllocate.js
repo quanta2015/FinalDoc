@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
+import { computed,toJS } from 'mobx';
 import autoAllocate from './AutoAllocate.css';
 import { InputNumber, Select, Button, message } from 'antd';
 const { Option } = Select;
@@ -19,6 +19,11 @@ export default class AutoAllocate extends Component {
         teaNum: 0,
         // 分配数目
         num: 8,
+        
+        // 已分配课题列表
+        checklist_info: [],
+        // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
+        auditCount: {},
     }
 
     @computed
@@ -69,6 +74,14 @@ export default class AutoAllocate extends Component {
         }, () => { console.log(this.state.select_teacher) })
     }
 
+    // 给父组件传值
+    toParent = () => {
+        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
+        let msg = {checklist_info:toJS(this.state.checklist_info), auditCount:toJS(this.state.auditCount)}
+        console.log(msg.auditCount);
+        this.props.parent.getChildrenMsg(this, msg)
+    }
+
     // 提交自动分配
     autoDistribute = async () => {
         if (this.state.select_teacher.length === 0) {
@@ -97,8 +110,16 @@ export default class AutoAllocate extends Component {
                 message.info("分配成功！")
             }
             await this.props.manageStore.getTopicList()
+            await this.props.manageStore.getCheckList()
+            await this.props.manageStore.getAuditCount()
             this.setState({
-                topic_info: this.distributeTopic.teacher_info,
+                // topic_info: toJS(this.distributeTopic.teacher_info),
+                topic_info: toJS(this.distributeTopic.topic_info),
+                checklist_info: toJS(this.distributeTopic.checklist_info),
+                auditCount: toJS(this.distributeTopic.auditCount),
+            },()=>{
+                console.log(this.state.auditCount)
+                this.toParent()
             })
         } else {
             message.info("分配失败！请重试")
@@ -106,7 +127,8 @@ export default class AutoAllocate extends Component {
         // 清空已选教师列表
         this.setState({
             select_teacher: [],
-            num: 8
+            num: 8,
+            teaNum: Math.ceil(this.distributeTopic.topic_info.length / 8),
         })
         await this.props.manageStore.getTopicList()
     }

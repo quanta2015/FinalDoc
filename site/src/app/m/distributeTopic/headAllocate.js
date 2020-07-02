@@ -28,6 +28,11 @@ export default class HeadAllocate extends Component {
         own: [],
         searchText: '',
         searchedColumn: '',
+
+        // 已分配课题列表
+        checklist_info: [],
+        // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
+        auditCount: {},
     };
 
     @computed
@@ -208,14 +213,14 @@ export default class HeadAllocate extends Component {
             /******************** */
             // let topiclist = toJS(this.distributeTopic.topic_info);
             let newlist = [];
-            console.log("1 " + topicList.length)
+            // console.log("1 " + topicList.length)
             topicList.map((item, i) => {
                 if (item.tid !== this.state.tea_id) {
                     newlist.push(item);
                 }
             })
 
-            console.log("2 " + newlist.length)
+            // console.log("2 " + newlist.length)
 
             this.setState({
                 topic_info: newlist,
@@ -243,6 +248,14 @@ export default class HeadAllocate extends Component {
         })
     }
 
+    // 给父组件传值
+    toParent = () => {
+        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
+        let msg = {checklist_info:toJS(this.state.checklist_info), auditCount:toJS(this.state.auditCount)}
+        console.log(msg.auditCount);
+        this.props.parent.getChildrenMsg(this, msg)
+    }
+
     // 提交手动分配
     handDistribute = async () => {
         if (this.state.selectedRowKeys.length === 0) {
@@ -268,8 +281,16 @@ export default class HeadAllocate extends Component {
                 })
             )
             /******************** */
+
+            await this.props.manageStore.getCheckList()
+            await this.props.manageStore.getAuditCount()
+
             this.setState({
-                topic_info: topicList
+                topic_info: topicList,
+                checklist_info: toJS(this.distributeTopic.checklist_info),
+                auditCount: toJS(this.distributeTopic.auditCount),
+            },()=>{
+                this.toParent()
             });
         } else {
             message.info("分配失败！请重试")

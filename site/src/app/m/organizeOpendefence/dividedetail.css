@@ -9,9 +9,9 @@ tbody.ant-table-tbody {
     display: flex;
 }
 
-.ant-modal-content {
+/* .ant-modal-content {
     width: 520px;
-}
+} */
 
 .dividedetail .ant-table-cell {
     text-align: center;
