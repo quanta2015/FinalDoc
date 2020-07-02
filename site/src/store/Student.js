@@ -96,7 +96,7 @@ class Student extends BaseActions {
                 this.selectTpInfo = r.data[0]
             })
         } else {
-            message.error("网络错误")
+            // message.error("网络错误")
         }
         return r.data;
     }

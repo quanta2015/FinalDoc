@@ -11,6 +11,7 @@ var del = []
 var cha = []
 var tmp = []
 var rec = []
+var click = 0
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicList extends Component {
@@ -137,12 +138,14 @@ export default class TopicList extends Component {
     };
 
     showModal = () => {
+        click++;
         this.setState({
             visible: true,
         });
 
     };
     handleOk = e => {
+        click++;
         this.setState({
             visible: false,
         });
@@ -172,7 +175,6 @@ export default class TopicList extends Component {
                 this.setState({
                     tmpList: this.topicList,
                     topicList: [topicList[record.key]] // 选中后表格中只显示此项
-                }, () => {
                 })
                 this.props.studentStore.upStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[record.key].id })
             }
@@ -196,8 +198,6 @@ export default class TopicList extends Component {
                     })
                     this.setState({
                         topicList: [...tmp, ...rec]
-                    }, () => {
-                        topicList[0].status = '——';
                     })
                 })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
@@ -217,7 +217,7 @@ export default class TopicList extends Component {
                 topicList[i].key = i;
                 del.push("primary")
                 cha.push("选定")
-
+                console.log('s', del[i], cha[i])
                 if (!tea.includes(topicList[i].instructor)) {
                     tea.push(topicList[i].instructor)
                 }
@@ -225,22 +225,26 @@ export default class TopicList extends Component {
                     field.push(topicList[i].areas)
                 }
             }
+
         } else {
-            for (let i = 0; i < topicList.length; i++) {
-                topicList[i].key = i;
-                del.push("text")
-                cha.push("取消")
-                topicList[i].status = 1
+            if (!click) {
+                for (let i = 0; i < topicList.length; i++) {
+                    topicList[i].key = i;
+                    topicList[i].status = 1
+                    del.push("text")
+                    cha.push("取消")
+                    console.log('d', del[i], cha[i])
+                    if (!tea.includes(topicList[i].instructor)) {
+                        tea.push(topicList[i].instructor)
+                    }
+                    if (!field.includes(topicList[i].areas)) {
+                        field.push(topicList[i].areas)
+                    }
 
-                if (!tea.includes(topicList[i].instructor)) {
-                    tea.push(topicList[i].instructor)
                 }
-                if (!field.includes(topicList[i].areas)) {
-                    field.push(topicList[i].areas)
-                }
-
             }
         }
+
         for (let i = 0; i < field.length; i++) {
             for (let j = 0; j < field[i].length; j++) {
                 if (!area.includes(field[i][j])) {
@@ -350,7 +354,6 @@ export default class TopicList extends Component {
                 <Modal
                     title="课题详情"
                     visible={this.state.visible}
-                    onOk={this.handleOk}
                     onCancel={this.handleOk}
                     footer={[]}
                 >
