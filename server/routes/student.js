@@ -63,7 +63,7 @@ router.post('/calStuTopicStateZero', async (req, res) => {
             res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为0 输出 topic里面的所有字段' })
         }
         else{
-            res.status(201).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为0 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为0 输出 topic里面的所有字段' })
         }
        
     });
@@ -78,7 +78,7 @@ router.post('/calStuTopicStateTwo', async (req, res) => {
             res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为2 输出 topic里面的所有字段' })
         }
         else{
-            res.status(201).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为2 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为2 输出 topic里面的所有字段' })
         }
        
     });
