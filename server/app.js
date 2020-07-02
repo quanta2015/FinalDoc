@@ -45,114 +45,148 @@ app.get('/UserList', async function (req, res) {
 		res.status(200).json({ code: 200, data: r })
 	})
 })
-app.post('/UploadTaskFile', async function (req, res) {
+// app.post('/UploadTaskFile', async function (req, res) {
+// 	const form = new formidable.IncomingForm()
+// 	form.parse(req)
+
+// 	form.on('fileBegin', function (name, file) {
+// 		let type = file.name.split('.').slice(-1)
+// 		console.log(file)
+// 		file.path = 'upload/' + `Task_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+// 	})
+
+// 	form.on('file', (name, file) => {
+// 		res.status(200).json({
+// 			code: 200,
+// 			msg: '上传任务书成功',
+// 			data: { path: file.path }
+// 		})
+// 	})
+// })
+// app.post('/UploadOpenFile', async function (req, res) {
+// 	const form = new formidable.IncomingForm()
+// 	form.parse(req)
+
+// 	form.on('fileBegin', function (name, file) {
+// 		let type = file.name.split('.').slice(-1)
+// 		console.log(file)
+// 		file.path = 'upload/' + `Open_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+// 	})
+
+// 	form.on('file', (name, file) => {
+// 		res.status(200).json({
+// 			code: 200,
+// 			msg: '上传开题报告成功',
+// 			data: { path: file.path }
+// 		})
+// 	})
+// })
+// app.post('/UploadPaperFile', async function (req, res) {
+// 	const form = new formidable.IncomingForm()
+// 	form.parse(req)
+
+// 	form.on('fileBegin', function (name, file) {
+// 		let type = file.name.split('.').slice(-1)
+// 		console.log(file)
+// 		file.path = 'upload/' + `Paper_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+// 	})
+
+// 	form.on('file', (name, file) => {
+// 		res.status(200).json({
+// 			code: 200,
+// 			msg: '上传论文终稿成功',
+// 			data: { path: file.path }
+// 		})
+// 	})
+// })
+// app.post('/UploadDocsFile', async function (req, res) {
+// 	const form = new formidable.IncomingForm()
+// 	form.parse(req)
+
+// 	form.on('fileBegin', function (name, file) {
+// 		let type = file.name.split('.').slice(-1)
+// 		console.log(file)
+// 		file.path = 'upload/' + `Dos_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+// 	})
+
+// 	form.on('file', (name, file) => {
+// 		res.status(200).json({
+// 			code: 200,
+// 			msg: '上传文献综述成功',
+// 			data: { path: file.path }
+// 		})
+// 	})
+// })
+// app.post('/UploadTransFile', async function (req, res) {
+// 	const form = new formidable.IncomingForm()
+// 	form.parse(req)
+
+// 	form.on('fileBegin', function (name, file) {
+// 		let type = file.name.split('.').slice(-1)
+// 		console.log(file)
+// 		file.path = 'upload/' + `Trans_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+// 	})
+
+// 	form.on('file', (name, file) => {
+// 		res.status(200).json({
+// 			code: 200,
+// 			msg: '上传外文翻译成功',
+// 			data: { path: file.path }
+// 		})
+// 	})
+// })
+// app.post('/UploadCheckFile', async function (req, res) {
+// 	const form = new formidable.IncomingForm()
+// 	form.parse(req)
+
+// 	form.on('fileBegin', function (name, file) {
+// 		let type = file.name.split('.').slice(-1)
+// 		console.log(file)
+// 		file.path = 'upload/' + `Check_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+// 	})
+
+// 	form.on('file', (name, file) => {
+// 		res.status(200).json({
+// 			code: 200,
+// 			msg: '上传查重报告成功',
+// 			data: { path: file.path }
+// 		})
+// 	})
+// })
+
+app.post('/upload', async function (req, res) {
 	const form = new formidable.IncomingForm()
 	form.parse(req)
+	let get_data = { t: "json" };
+	form.on('field', function (name, value) {
+		get_data[name] = value
+		console.log(get_data)
+	})
 
 	form.on('fileBegin', function (name, file) {
 		let type = file.name.split('.').slice(-1)
 		console.log(file)
-		file.path = 'upload/' + `Task_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
+		file.path = 'upload/' + `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
 	})
 
 	form.on('file', (name, file) => {
-		res.status(200).json({
-			code: 200,
-			msg: '上传任务书成功',
-			data: { path: file.path }
-		})
-	})
+		let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
+		let params = get_data;
+		get_data.filePath=file.path
+		console.log(params)
+
+		callProc(sql, params, res, (r) => {
+			res.status(200).json({
+				code: 200,
+				msg: `上传${get_data.type}成功`,
+				data: { path: file.path }
+			})
+		});
+	});
+	
+
 })
-app.post('/UploadOpenFile', async function (req, res) {
-	const form = new formidable.IncomingForm()
-	form.parse(req)
 
-	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `Open_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
-	})
-
-	form.on('file', (name, file) => {
-		res.status(200).json({
-			code: 200,
-			msg: '上传开题报告成功',
-			data: { path: file.path }
-		})
-	})
-})
-app.post('/UploadPaperFile', async function (req, res) {
-	const form = new formidable.IncomingForm()
-	form.parse(req)
-
-	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `Paper_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
-	})
-
-	form.on('file', (name, file) => {
-		res.status(200).json({
-			code: 200,
-			msg: '上传论文终稿成功',
-			data: { path: file.path }
-		})
-	})
-})
-app.post('/UploadDocsFile', async function (req, res) {
-	const form = new formidable.IncomingForm()
-	form.parse(req)
-
-	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `Dos_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
-	})
-
-	form.on('file', (name, file) => {
-		res.status(200).json({
-			code: 200,
-			msg: '上传文献综述成功',
-			data: { path: file.path }
-		})
-	})
-})
-app.post('/UploadTransFile', async function (req, res) {
-	const form = new formidable.IncomingForm()
-	form.parse(req)
-
-	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `Trans_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
-	})
-
-	form.on('file', (name, file) => {
-		res.status(200).json({
-			code: 200,
-			msg: '上传外文翻译成功',
-			data: { path: file.path }
-		})
-	})
-})
-app.post('/UploadCheckFile', async function (req, res) {
-	const form = new formidable.IncomingForm()
-	form.parse(req)
-
-	form.on('fileBegin', function (name, file) {
-		let type = file.name.split('.').slice(-1)
-		console.log(file)
-		file.path = 'upload/' + `Check_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`
-	})
-
-	form.on('file', (name, file) => {
-		res.status(200).json({
-			code: 200,
-			msg: '上传查重报告成功',
-			data: { path: file.path }
-		})
-	})
-})
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
 module.exports = app;

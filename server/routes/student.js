@@ -48,7 +48,7 @@ router.post('/calStuTopicStateThree', async (req, res) => {
             res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为3 输出 topic里面的所有字段' })
         }
         else{
-            res.status(200).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为3 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 200, data: null, msg: '数据为空 传学生id条件 状态码为3 输出 topic里面的所有字段' })
         }
        
     });
@@ -63,7 +63,7 @@ router.post('/calStuTopicStateZero', async (req, res) => {
             res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为0 输出 topic里面的所有字段' })
         }
         else{
-            res.status(200).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为0 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 200, data: null, msg: '数据为空 传学生id条件 状态码为0 输出 topic里面的所有字段' })
         }
        
     });
@@ -78,7 +78,7 @@ router.post('/calStuTopicStateTwo', async (req, res) => {
             res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为2 输出 topic里面的所有字段' })
         }
         else{
-            res.status(200).json({ code: 201, data: null, msg: '数据为空 传学生id条件 状态码为2 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 200, data: null, msg: '数据为空 传学生id条件 状态码为2 输出 topic里面的所有字段' })
         }
        
     });
@@ -93,7 +93,7 @@ router.post('/getStuTopicStatus', async (req, res) => {
         {
             res.status(200).json({ code: 200, data: r, msg: '数据获取成功 取学生课题' })
         }else{
-            res.status(200).json({ code: 201, data:null, msg: '数据获取为空 取学生课题 ┗|｀O′|┛ 嗷~~' })
+            res.status(200).json({ code: 200, data:null, msg: '数据获取为空 取学生课题 ┗|｀O′|┛ 嗷~~' })
         }
         
     });
