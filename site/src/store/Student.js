@@ -18,7 +18,7 @@ class Student extends BaseActions {
 
     @action
     async getTopInfo(params) {
-        const r = await this.post(urls.API_SYS_GET_TOPINFO, params);
+        const r = await this.post(urls.API_STU_GET_TOPINFO, params);
         if (r && r.code === 200) {
             runInAction(() => {
                 this.topInfo = r.data
@@ -31,7 +31,7 @@ class Student extends BaseActions {
 
     @action
     async getTopicList() {
-        const r = await this.post(urls.API_SYS_GET_TTLLIST, null);
+        const r = await this.post(urls.API_STU_GET_TTLLIST, null);
         if (r && r.code === 200) {
             runInAction(() => {
                 this.topicList = r.data
@@ -46,7 +46,7 @@ class Student extends BaseActions {
     // 学生选课审核中 status 2
     @action
     async isDurAudit(params) {
-        const r = await this.post(urls.API_SYS_FIND_ISDURAUDIT, params);
+        const r = await this.post(urls.API_STU_FIND_ISDURAUDIT, params);
         if (r && r.code === 200) {
             return r.data
         } else {
@@ -58,7 +58,7 @@ class Student extends BaseActions {
 
     @action
     async upStuTopicList(params) {
-        const r = await this.post(urls.API_SYS_UPDATE_TTLLIST, params);
+        const r = await this.post(urls.API_STU_UPDATE_TTLLIST, params);
         if (r && r.code === 200) {
             runInAction(() => {
                 message.success('选择成功')
@@ -72,7 +72,7 @@ class Student extends BaseActions {
 
     @action
     async delStuTopicList(params) {
-        const r = await this.post(urls.API_SYS_DELETE_TTLLIST, params);
+        const r = await this.post(urls.API_STU_DELETE_TTLLIST, params);
         if (r && r.code === 200) {
             runInAction(() => {
                 message.info('已取消')
@@ -90,13 +90,13 @@ class Student extends BaseActions {
 
     @action
     async getSelectTopic(params) {
-        const r = await this.post(urls.API_SYS_GET_STPINFO, params);
+        const r = await this.post(urls.API_STU_GET_STPINFO, params);
         if (r && r.code === 200 && r.data) {
             runInAction(() => {
                 this.selectTpInfo = r.data[0]
             })
         } else {
-            message.error("网络错误")
+            // message.error("网络错误")
         }
         return r.data;
     }

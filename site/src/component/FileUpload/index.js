@@ -1,4 +1,5 @@
 import { Component } from 'preact';
+import { inject, observer } from 'mobx-react';
 import { Upload, Tooltip, message } from 'antd';
 import { LoadingOutlined, PlusOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { FILE_UPLOAD_FORMAT } from '../../constant/data'
@@ -13,6 +14,8 @@ const isValidFormat = (formatList, fileFormat) => {
     return true;
 }
 
+@inject('userStore')
+@observer
 class FileUpload extends Component {
     state = {
         loading: false,
@@ -41,6 +44,13 @@ class FileUpload extends Component {
             })
             message.success(`成功上传文件《${info.file.name}》`)
         }
+    }
+
+    downloadFile = () => {
+        // this.props.userStore.downloadFile({ file: this.state.fileUrl })
+        // .then(r=>{
+        //     console.log(r)
+        // })
     }
 
     beforeUpload = (file) => {
@@ -116,8 +126,8 @@ class FileUpload extends Component {
                     </Upload>
                 </div>
                 {   fileUrl ?
-                    <Tooltip placement="bottomLeft" title={text}>
-                        <a href={link} download className="submitted-p">{fileType.name}</a>
+                    <Tooltip placement="bottom" title={text}>
+                        <p className="submitted-p" onClick={this.downloadFile}>{fileType.name}</p>
                     </Tooltip>:
                     <p>{fileType.name}</p>
                 }
