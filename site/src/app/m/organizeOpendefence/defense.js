@@ -1,25 +1,10 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
-import { Radio, Form, Button, message, Select ,InputNumber} from 'antd';
+import { computed ,toJS} from 'mobx';
+import { Radio, Form, Button, message, Select, InputNumber } from 'antd';
 import "./defense.css"
 import ManualAllocate from "./manualAllocate.js"
 import AutoAllocate from './autoAllocate.js';
-
-
- 
- 
-
-
-const onFinish = values => {
-    console.log('Success:', values);
-
-};
-
-const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-
-};
 
 
 @inject('manageStore')
@@ -33,7 +18,8 @@ export default class Defense extends Component {
         select_member: [],
         new_arr: [],
         teacher_info: [],
-        value:1,
+        value: 1,
+        childrenMsg: []
     }
     @computed
     get distributeTopic() {
@@ -48,7 +34,7 @@ export default class Defense extends Component {
 
         let teaName = []
         tea.map((item) =>
-            teaName.push({ tid: item.uid, value: item.Tname })
+            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, name: item.Tname, value: item.maj + "-" + item.Tname + "-" + item.areas })
         )
         // console.log(topic)
         this.setState({ teacher_info: teaName }, () => { message.info("ok") });
@@ -75,139 +61,108 @@ export default class Defense extends Component {
             value: e.target.value,
         });
     };
-    
+
+    getChildrenMsg = (result, msg) => {//获取子组件
+        // console.log(result, msg)
+        // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
+        this.setState({
+            childrenMsg: msg
+        })
+    }
+
     render() {
         this.state.new_arr = [];
         for (let i of this.state.teacher_info) {
-            if (this.state.select_member.indexOf(i.value) == -1) {
-                this.state.new_arr.push(i.value);
+            if (this.state.select_member.indexOf(i.tid) == -1) {
+                this.state.new_arr.push(i);
 
             }
         }
+         
         return (
-            <div  >
-                <div>1111</div>
-                
-                    <Form
+            <div>
 
-                        
-                        name="basic"
-                        initialValues={{ remember: true }}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                         
-                    >
-                    
-                        <Form.Item
-                            label="组长"
-                            name="leader"
-                            rules={[{ required: true, message: '请选择组长' }]}
-                        >
+
+                <div class="defs-select">
+                    <div class="select-group">
+                        <div class="lable">组长</div>
+                        <div class="choose">
                             <Select
                                 showSearch
-                                style={{ width: 200 }}
+                                style={{ width: 500 }}
                                 placeholder="请选择教师"
                                 optionFilterProp="children"
                                 onChange={this.addSelectTeacher}
-                                 
+
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-
-
                                 }
+                                optionLabelProp="label"
                             >
                                 {
                                     this.state.new_arr.map((item, i) =>
-                                        <Select.Option key={item}>{item}</Select.Option>
+                                        <Select.Option
+                                            label={item.name} key={item.tid}>{item.value}</Select.Option>
 
                                     )}
 
                             </Select>
-                        </Form.Item>
-                       
+                        </div>
+                    </div>
 
-                        <Form.Item
-                            label="组员"
-                            colon="false"
-                            name="member"
-                            rules={[{ required: true, message: '请选择组员' }]}
-                        >
-
+                    <div class="select-group">
+                        <div class="lable">组员</div>
+                        <div class="choose">
                             <Select
                                 mode="multiple"
-                                style={{ width:200 }}
+                                style={{ width: 500 }}
                                 placeholder="请选择教师"
 
                                 onChange={this.handleChange}
+                                optionLabelProp="label"
+                                allowClear
                             >
                                 {this.state.teacher_info.map((item, i) =>
-                                    
-                                    (item.value !== this.state.select_leader) && <Select.Option key={item.value}>{item.value}</Select.Option>
+
+                                    (item.tid !== this.state.select_leader) && <Select.Option label={item.name}
+                                        key={item.tid}>{item.value}</Select.Option>
 
                                 )}
                             </Select>
 
-
-                        </Form.Item>
-                       
-                        <Radio.Group onChange={this.onChange} value={this.state.value}>
-                            <Radio value={1}>自动分配</Radio>
-                            <Radio value={2}>手动分配</Radio>
-                        </Radio.Group>
-                       
-                        {(this.state.value === 1) &&
-                         <div>
-                        <Form.Item
-                            label="数量"
-                            colon="false"
-                            name="num"
-                        >
-                            <InputNumber size="small" style={{ width: 50 }} min={1} />
-                        </Form.Item>
-
-                        
-                            <Form.Item 
-                            >
-                        
-                                <Button type="primary" htmlType="submit">
-                                    提交
-                             </Button>
-
-                            </Form.Item>
                         </div>
-                        }
-                        {(this.state.value === 2) &&
+                    </div>
+                    <div class="select-group">
+                        <div class="lable">分配方式</div>
+                        <div class="choose">
+
+                            <Radio.Group onChange={this.onChange} value={this.state.value}>
+                                <Radio value={1}>自动分配</Radio>
+                                <Radio value={2}>手动分配</Radio>
+                            </Radio.Group>
+                        </div>
+                    </div>
+
+                    {(this.state.value === 1) &&
                         <div>
-                        <div>{this.props.children}</div>  
-                        <Form.Item
-                            label="id"
-                            colon="false"
-                            name="tpoicid"
-                        >
 
-                            
-                        
-                        <ManualAllocate /> 
-                        </Form.Item>
-                            <Form.Item>
-                            
-                            <Button type="primary" htmlType="submit">
-                                提交
-                             </Button>
+                            <AutoAllocate select_leader={this.state.select_leader}
+                                select_member={this.state.select_member} />
 
-
-                            </Form.Item>
                         </div>
-                             
-                        }
-
-                         
-
+                    }
+                    {(this.state.value === 2) &&
+                        <div>
 
 
-                         
-                    </Form>
-                
+                            <ManualAllocate select_leader={this.state.select_leader}
+                                select_member={this.state.select_member} />
+                        </div>
+
+                    }
+
+
+                </div>
             </div>
         );
     }

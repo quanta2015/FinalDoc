@@ -85,7 +85,7 @@ export default class AutoAllocate extends Component {
             console.log(res.data[0].result)
             let flag = 1
             let tname = ""
-            res.data[0].map((item)=>{
+            res.data.map((item)=>{
                 if(item.result !== 1){
                     flag = 0
                     tname = item.tName + "," + tname

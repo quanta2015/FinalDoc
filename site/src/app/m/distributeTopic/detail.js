@@ -111,6 +111,14 @@ export default class Detail extends Component {
 		});
 	};
 
+	async componentWillMount() {
+		let r = await this.props.manageStore.getCheckList()
+	
+		this.setState({ value: r.data });
+	}
+
+
+
 	async componentDidMount() {
 		let r = await this.props.manageStore.getCheckList()
 		let count = await this.props.manageStore.getAuditCount()

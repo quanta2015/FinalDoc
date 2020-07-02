@@ -48,22 +48,7 @@ export default class HeadAllocate extends Component {
         let teaName = []
         let topicList = []
 
-        // let area_x=[]
-        // let color_x=[]
-        // let total_x=[]
-
-
-        // topic.map((item) =>
-        //     total_x.push(
-        //         color_x.push(item.color.split(",")[0], item.areas.split(",")[0])
-
-        //     )
-
-
-
-        // )
-        // console.log(total_x)
-
+  
 
         topic.map((item) =>
             topicList.push({

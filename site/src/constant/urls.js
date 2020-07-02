@@ -13,6 +13,7 @@ export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
 // 专业负责人接口声明
 export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'
 export const API_MAN_GET_TOPICLIST = API_SERVER + '/manage/topicList'
+
 export const API_MAN_POST_ALLOCATETOPIC = API_SERVER + '/manage/checkAllocate'
 export const API_MAN_POST_AUTOALLOCATETOPIC = API_SERVER + '/manage/randAllocate'
 export const API_MAN_POST_CHECKLIST = API_SERVER + '/manage/checkList'

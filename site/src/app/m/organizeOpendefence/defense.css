@@ -1,1 +1,27 @@
+ .defs-select{
+     display: flex;
+     flex-direction: column;
+ }
+
+ .select-group{
+
+    display: flex;
+    flex-direction: row;
+ }
+
+ .lable{
+      font-size: 16px;
+    line-height: 32px;
+    text-align: right;
+    margin-right: 30px;
+ }
+ .select{
+     margin-bottom: 35px;
+    display: flex;
+ }
+
+ .auto-allocate{
+     display: flex;
+     flex-direction: column;
+ }
  

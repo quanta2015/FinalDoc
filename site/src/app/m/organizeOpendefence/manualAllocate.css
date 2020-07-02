@@ -17,3 +17,11 @@ tbody.ant-table-tbody {
     font-weight: bold;
     width: 200px;
 }
+.manu-table{
+    display: flex;
+    flex-direction: column;
+}
+.manu-btn{
+    text-align: right;
+    
+}
