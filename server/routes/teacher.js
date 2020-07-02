@@ -18,12 +18,14 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
   router.post('/postTopicInfo', async(req, res) => {
     let params = req.body;
     var area = "";
-    for (let i = 0; i < params.area.length - 1; i++) {
-        const element = params.area[i];
-        area += element + "|";
+    if (params.area.length != 0) {
+        for (let i = 0; i < params.area.length - 1; i++) {
+            const element = params.area[i];
+            area += element + "|";
+        }
+        area += params.area[params.area.length - 1];
+        params.area = area;
     }
-    area += params.area[params.area.length - 1];
-    params.area = area;
     let sql;
     if (params.topic_id == '') {
         sql = `CALL PROC_TOPIC_INIT_INSERT(?)`;
@@ -82,6 +84,7 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
+  // 根据课题id删除课题
   router.post('/delOneTopicWithID', async(req, res) => {
     let sql = `CALL PROC_DEL_ONE_TOPIC(?)`;
     let params = req.body;
@@ -121,7 +124,6 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
   router.post('/getTopicStudentAlter', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STUDENT_PASS(?)`;
     let params = req.body;
-    params.val=0;
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '学生审核已修改'});
     })
@@ -133,6 +135,34 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     let params = req.body;
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '教师研究方向数组已返回'});
+    })
+  })
+
+  // 根据课题id返回被审核意见
+  router.post('/getTidToTsugg', async(req, res) => {
+    let sql = `CALL PROC_GET_TID_TSUGG(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '课题被审核意见已返回'});
+    })
+  })
+
+  // 返回所有通过审核的课题
+  router.get('/getAllPassedTopic', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_PASSED_TOPIC`;
+    callProc(sql, {}, res, (r) => {
+        for (let i = 0; i < r.length; i++) {
+            var areas = r[i]["areas"].split(",");
+            var color = r[i]["color"].split(",");
+            var area = [];
+            for (let j = 0; j < areas.length; j++) {
+                area.push({name: areas[j], color: color[j]});
+            }
+            r[i].area = area;
+            delete r[i].areas;
+            delete r[i].color
+        }
+        res.status(200).json({code: 200, data: r, msg: '所有通过审核的课题信息已返回'});
     })
   })
 
