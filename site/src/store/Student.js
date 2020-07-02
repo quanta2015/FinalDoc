@@ -24,7 +24,7 @@ class Student extends BaseActions {
                 this.topInfo = r.data
             })
         } else {
-            // message.error("网络错误")
+            message.error("网络错误")
         }
         return r;
     }
@@ -38,7 +38,7 @@ class Student extends BaseActions {
             })
             return r.data
         } else {
-            // message.error("网络错误")
+            message.error("网络错误")
         }
         return r;
     }
@@ -50,7 +50,7 @@ class Student extends BaseActions {
         if (r && r.code === 200) {
             return r.data
         } else {
-            // message.error('网络错误111')
+            message.error('网络错误')
         }
         return r;
     }
@@ -65,7 +65,7 @@ class Student extends BaseActions {
             })
             return r.data
         } else {
-            // message.error('网络错误')
+            message.error('网络错误')
         }
         return r;
     }
@@ -75,10 +75,10 @@ class Student extends BaseActions {
         const r = await this.post(urls.API_SYS_DELETE_TTLLIST, params);
         if (r && r.code === 200) {
             runInAction(() => {
-                message.success('取消成功')
+                message.info('已取消')
             })
         } else {
-            // message.error('网路错误');
+            message.error('网络错误');
         }
         return r;
     }
@@ -87,7 +87,7 @@ class Student extends BaseActions {
     setTopicList(TopicList) {
         this.TopicList = TopicList
     }
-    
+
     @action
     async getSelectTopic(params) {
         const r = await this.post(urls.API_SYS_GET_STPINFO, params);
