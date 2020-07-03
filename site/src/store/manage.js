@@ -97,6 +97,52 @@ class manager extends BaseActions {
     })
   }
 
+  // 组织开题答辩
+  @observable
+  openDefenseGroup = {
+    // 开题分组信息
+    group_list: [],
+  }
+
+  @action
+  async getGroupList_ogp() {
+    const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, null);
+    let group = [];
+    res.data.map((item,i)=>{
+      group.push({
+        id: i+1,
+        gid: item.gid,
+        leader: item.leader,
+        members: item.names,
+      })
+    })
+    runInAction(() => {
+      this.openDefenseGroup.group_list = group;
+    })
+  }
+
+  // 组内课题详情
+  // {group_id:int}
+  @action
+  async topicDetailList_ogp(param) {
+    let res = await this.post(urls.API_MAN_POST_OGP_TDETAILLIST, param)
+    let temp = []
+    res.data.map((item,i) => {
+      temp.push({
+        topic: item.topic,
+        class: item.maj + item.cls,
+        sName: item.sName,
+        tName: item.tName,
+      })
+    })
+    return temp;
+  }
+
+  // 删除某个分组
+  @action
+  async deleteGroup_ogp(param) {
+    return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
+  }
 }
 
 export default new manager()

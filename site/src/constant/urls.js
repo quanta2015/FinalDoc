@@ -14,8 +14,14 @@ export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
 export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'
 export const API_MAN_GET_TOPICLIST = API_SERVER + '/manage/topicList'
 
+// 分配审核课题模块
 export const API_MAN_POST_ALLOCATETOPIC = API_SERVER + '/manage/checkAllocate'
 export const API_MAN_POST_AUTOALLOCATETOPIC = API_SERVER + '/manage/randAllocate'
 export const API_MAN_POST_CHECKLIST = API_SERVER + '/manage/checkList'
 export const API_MAN_POST_AUDITCOUNT = API_SERVER + '/manage/auditCount'
 export const API_MAN_POST_AREALIST = API_SERVER + '/manage/areaList'
+
+// 组织开题答辩模块
+export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
+export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
+export const API_MAN_POST_OGP_DELETEGROUP = API_SERVER + '/openGp/deleteGroup'
