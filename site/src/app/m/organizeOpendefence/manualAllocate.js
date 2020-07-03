@@ -49,9 +49,6 @@ export default class ManualAllocate extends Component {
         let teaName = []
 
 
-
-
-
         tea.map((item) =>
             teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
         )
@@ -150,7 +147,7 @@ export default class ManualAllocate extends Component {
          
         let temp = [{ "leader": this.props.select_leader.split(" ")[0], "member": member_x, "topic": this.state.selectedRowKeys }]
         console.log(temp)
-        let res = await this.props.manageStore.m_allocate(temp);
+        //let res = await this.props.manageStore.m_allocate(temp);
         // if(res && res.code === 200) {
         //     message.info("分配成功！")
         //     await this.props.manageStore.getTopicList();
