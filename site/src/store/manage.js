@@ -27,6 +27,7 @@ class manager extends BaseActions {
     auditCount: {},
   }
 
+
   @action
   async getTeaList() {
     const res = await this.post(urls.API_MAN_GET_TEALIST, null);
@@ -95,6 +96,70 @@ class manager extends BaseActions {
     runInAction(() => {
       this.distributeTopic.areas_list = res.data;
     })
+  }
+
+  // 分配答辩小组
+  @observable
+  openDefenseGroup = {
+    // 教师列表
+    teacher_info: [],
+    // 未分配课题列表
+    topic_info: [],
+    // 已分配课题列表
+    checklist_info: [],
+    // 领域列表
+    areas_list: [],
+    // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
+
+  }
+
+  @action
+  async getTopicList_ogp() {
+    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, null); 
+    let topic=[]
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+    res.data.map((item) =>
+      topic.push({
+        key: item.key,
+        sName: item.sName,
+        topic: item.topic,
+        content: item.content,
+        tName: item.tName,
+        classname: item.sMaj + item.class,
+      })
+    )
+    runInAction(() => {
+      this.openDefenseGroup.topic_info = topic;
+    })
+    
+  }
+
+  @action
+  async getTeacherList_ogp() {
+    const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, null);
+    let teacher = []
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+    res.data.map((item) =>
+      teacher.push({
+        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
+        name: item.Tname, 
+        value: item.maj + "-" + item.Tname + "-" + item.areas
+      })
+    )
+    runInAction(() => {
+      this.openDefenseGroup.teacher_info = teacher;
+    })
+  }
+  // 自动分配审核选题
+  @action
+  async autoAllocateTopic_ogp(param) {
+    return await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param)
+  }
+
+  // 手动分配审核选题
+  @action
+  async manualAllocateTopic_ogp(param) {
+    return await this.post(urls.API_MAN_POST_OGP_MANUALALLOCATETOPIC, param)
   }
 
 }

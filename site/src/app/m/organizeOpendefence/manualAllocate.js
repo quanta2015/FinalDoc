@@ -32,30 +32,21 @@ export default class ManualAllocate extends Component {
     };
 
     @computed
-    get distributeTopic() {
-        return this.props.manageStore.distributeTopic;
+    get openDefenseGroup() {
+        return this.props.manageStore.openDefenseGroup;
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTopicList();
-        await this.props.manageStore.getTeaList();
-        await this.props.manageStore.getAreasList();
+        await this.props.manageStore.getTopicList_ogp();
         // console.log(toJS(this.distributeTopic.areas_list))
         // 获取到教师列表
-        let tea = this.distributeTopic.teacher_info;
-        let topic = toJS(this.distributeTopic.topic_info);
+         
+        let topic = toJS(this.openDefenseGroup.topic_info);
+         
         // console.log(topic[1].areas.split(","))
         // 将教师列表值变为id+name
-        let teaName = []
-
-
-        tea.map((item) =>
-            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
-        )
-
-
-        this.setState({
-            teacher_info: teaName,
+        this.setState({      
+            teacher_info:[],  
             topic_info: topic
         });
 
@@ -73,6 +64,13 @@ export default class ManualAllocate extends Component {
         this.setState({
             visible: true,
             own: record,
+        });
+    };
+
+    handleCancel = e => {
+        console.log(e);
+        this.setState({
+            visible: false,
         });
     };
 
@@ -145,25 +143,29 @@ export default class ManualAllocate extends Component {
         let member_x=[]
         this.props.select_member.map((item)=> member_x.push(item.split(" ")[0]))
          
-        let temp = [{ "leader": this.props.select_leader.split(" ")[0], "member": member_x, "topic": this.state.selectedRowKeys }]
+        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
-        //let res = await this.props.manageStore.m_allocate(temp);
-        // if(res && res.code === 200) {
-        //     message.info("分配成功！")
-        //     await this.props.manageStore.getTopicList();
-        //     // 获取到教师列表
-        //     let topic = this.distributeTopic.topic_info;
-        //     this.setState({
-        //         topic_info: topic
-        //     });
-        // } else {
-        //     message.info("分配失败！请重试")
-        // }
-        // this.setState({
-        //     selectedRowKeys: [],
-        //     tea_id: "",
-        //     tea_name: undefined,
-        // })
+        let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
+        if(res && res.code === 200) {
+            message.info("成功添加答辩小组！")
+            await this.props.manageStore.getTopicList_ogp();
+            await this.props.manageStore.getTeacherList_ogp();
+            // 获取到教师列表
+            let teacher = toJS(this.openDefenseGroup.teacher_info);
+            let topic = toJS(this.openDefenseGroup.topic_info);
+            this.setState({
+                topic_info: topic,
+                teacher_info: teacher
+            }, () => { this.toParent });
+
+            // 获取到课题列表
+             
+            
+        } else {
+            message.info("分配失败！请重试")
+        }
+        this.clear()
+       
     }
 
     clear = () => {
@@ -171,6 +173,11 @@ export default class ManualAllocate extends Component {
         this.setState({
             selectedRowKeys: [],
         })
+    }
+    //手动分配传值到父组件
+    toParent = () => {
+        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
+        this.props.parent.getChildrenMsg(this, this.state.teacher_info)
     }
 
     render() {
@@ -187,12 +194,6 @@ export default class ManualAllocate extends Component {
 
         const columns = [
             {
-                title: '出题教师',
-                dataIndex: 'tName',
-                key: 'tName',
-                ...this.getColumnSearchProps('tName'),
-            },
-            {
                 title: '课题题目',
                 dataIndex: 'topic',
                 key: 'topic',
@@ -205,8 +206,25 @@ export default class ManualAllocate extends Component {
                         {topic}
                     </Tooltip>
                 ),
-
-
+            },
+             
+            {
+                title: '学生姓名',
+                dataIndex: 'sName',
+                key: 'sName',
+                ...this.getColumnSearchProps('sName'),
+            },
+            {
+                title: '班级',
+                dataIndex: 'classname',
+                key: 'classname',
+                ...this.getColumnSearchProps('classname'),
+            },
+            {
+                title: '指导教师',
+                dataIndex: 'tName',
+                key: 'tName',
+                ...this.getColumnSearchProps('tName'),
             },
 
             {
@@ -233,7 +251,7 @@ export default class ManualAllocate extends Component {
 
                 </div>
 
-                <div className="noTopicNums">{this.distributeTopic.topic_info.length}篇未分配
+                    <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配
                             已选{selectedRowKeys.length}篇</div>
                 
                 
@@ -264,7 +282,6 @@ export default class ManualAllocate extends Component {
                 <Modal
                     title="查看详情"
                     visible={this.state.visible}
-                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     footer={null}
                 >

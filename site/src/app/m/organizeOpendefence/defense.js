@@ -22,22 +22,19 @@ export default class Defense extends Component {
         childrenMsg: []
     }
     @computed
-    get distributeTopic() {
-        return this.props.manageStore.distributeTopic;
+    get openDefenseGroup() {
+        return this.props.manageStore.openDefenseGroup;
     }
 
 
     async componentDidMount() {
-        await this.props.manageStore.getTeaList();
-        let tea = this.distributeTopic.teacher_info;
+        await this.props.manageStore.getTeacherList_ogp();
+        let tea = this.openDefenseGroup.teacher_info;
         console.log(this.state.tea)
 
-        let teaName = []
-        tea.map((item) =>
-            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, name: item.Tname, value: item.maj + "-" + item.Tname + "-" + item.areas })
-        )
+         
         // console.log(topic)
-        this.setState({ teacher_info: teaName }, () => { message.info("ok") });
+        this.setState({ teacher_info: tea }, () => { message.info("ok") });
 
     }
 
@@ -66,7 +63,7 @@ export default class Defense extends Component {
         // console.log(result, msg)
         // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
         this.setState({
-            childrenMsg: msg
+            teacher_info: msg
         })
     }
 
@@ -76,6 +73,8 @@ export default class Defense extends Component {
             select_member: [],
         })
     }
+     
+    
 
     render() {
         this.state.new_arr = [];
@@ -158,6 +157,8 @@ export default class Defense extends Component {
                                 select_leader={this.state.select_leader}
                                 select_member={this.state.select_member} 
                                 clear={this.clear}
+                                 parent={this} 
+                                 
                             />
 
                         </div>
@@ -170,6 +171,7 @@ export default class Defense extends Component {
                                 select_leader={this.state.select_leader}
                                 select_member={this.state.select_member} 
                                 clear={this.clear}
+                                parent={this} 
                             />
                         </div>
 
