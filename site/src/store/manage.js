@@ -142,6 +142,17 @@ class manager extends BaseActions {
         value: item.maj + "-" + item.Tname + "-" + item.areas
       })
     )
+    teacher.sort(function (a, b) {
+      if (a.value === b.value) {
+        return 0;
+      }
+      else if (a.value < b.value) {
+        return 1;
+      }
+      else {
+        return -1;
+      }
+    })
     runInAction(() => {
       this.openDefenseGroup.teacher_info = teacher;
     })

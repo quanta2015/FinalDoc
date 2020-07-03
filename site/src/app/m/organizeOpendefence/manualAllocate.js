@@ -152,11 +152,12 @@ export default class ManualAllocate extends Component {
             await this.props.manageStore.getTeacherList_ogp();
             // 获取到教师列表
             let teacher = toJS(this.openDefenseGroup.teacher_info);
+            console.log(teacher)
             let topic = toJS(this.openDefenseGroup.topic_info);
             this.setState({
                 topic_info: topic,
                 teacher_info: teacher
-            }, () => { this.toParent });
+            }, () => { this.toParent() });
 
             // 获取到课题列表
              
@@ -255,7 +256,7 @@ export default class ManualAllocate extends Component {
                             已选{selectedRowKeys.length}篇</div>
                 
                 
-                <div className="headAllocate_table">
+                <div className="ogp_headAllocate_table">
                     <Table
                         onChange={this.handleChange}
                         rowSelection={rowSelection}
@@ -278,14 +279,16 @@ export default class ManualAllocate extends Component {
 
 
 
-
+                 
                 <Modal
                     title="查看详情"
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     footer={null}
+                    width="800px"
                 >
-
+                    
+                    <div class="ogp-descrip"> 
                     <Descriptions
                         title=""
                         bordered
@@ -294,7 +297,10 @@ export default class ManualAllocate extends Component {
                         <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
 
                     </Descriptions>
+                    </div>
                 </Modal>
+
+                 
 
             </div>
         );

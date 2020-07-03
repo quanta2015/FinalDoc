@@ -353,8 +353,6 @@ export default class HeadAllocate extends Component {
                         {
                             // console.log(areas),
                             areas.map((tag, i) => {
-
-
                                 return (
                                     <Tag color={record.color[i]} >
                                         {tag}

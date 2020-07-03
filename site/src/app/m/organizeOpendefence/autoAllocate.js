@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
+import { computed, toJS} from 'mobx';
 
 
 import { InputNumber, Select, Button, message, Form } from 'antd';
@@ -13,9 +13,33 @@ import { InputNumber, Select, Button, message, Form } from 'antd';
 export default class AutoAllocate extends Component {
     state = {
         num: 10,
+        teacher_info:[]
+
+    }
+
+    @computed
+    get openDefenseGroup() {
+        return this.props.manageStore.openDefenseGroup;
+    }
+
+    async componentDidMount() {
+        await this.props.manageStore.getTopicList_ogp();
+        // console.log(toJS(this.distributeTopic.areas_list))
+        // 获取到教师列表
+         
+        let topic = toJS(this.openDefenseGroup.topic_info);
+         
+        // console.log(topic[1].areas.split(","))
+        // 将教师列表值变为id+name
+        this.setState({      
+            teacher_info:[],  
+            topic_info: topic
+        });
 
 
     }
+
+
     // 提交自动分配
     autoDistribute = async () => {
         if (this.props.select_leader.length === 0 ||
@@ -25,27 +49,26 @@ export default class AutoAllocate extends Component {
         }
         let member_x = []
         this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
+        console.log(member_x,"memeber_x")
 
-        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": this.props.select_member, "number": this.state.num }
+        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "number": this.state.num }
         console.log(temp)
 
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
             
-             
-            let teacher=await this.props.manageStore.getTeacherList_ogp();
+            await this.props.manageStore.getTeacherList_ogp();
+            let teacher = toJS(this.openDefenseGroup.teacher_info);
+            console.log(teacher)
              
             // 获取到教师列表
            
 
             this.setState({
                 teacher_info: teacher
-            }, () => { this.toParent });
+            }, () => { this.toParent() });
 
-            
-             
-             
         } else {
             message.info("分配失败！请重试")
         }
