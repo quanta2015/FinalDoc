@@ -1,0 +1,80 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    /* width: 200px; */
+    text-align: center;
+}
+
+.ant-table-selection-column {
+    width: 60px;
+}
+
+/* .head_btn {
+    text-align: center;
+    margin-top: 10px;
+} */
+
+.head_btn .clear {
+    margin-right: 15px;
+}
+
+.top_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(3) {
+    width: 290px;
+    text-align: left;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(4) {
+    width: 120px;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(2) {
+    width: 250px;
+    text-align: left;
+}
+
+.headAllocate_table .ant-table-cell:nth-last-child(1) {
+    width: 100px;
+}
+
+.headAllocate_table .ant-table-placeholder .ant-table-cell{
+    width: 800px;
+}
+
+.noTopicNum {
+    position: relative;
+    bottom: -45px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 200px;
+}
+
+.ant-input-number-handler-wrap{
+    display:none
+}
+
+.ant-input-number {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid;
+}
+
+.ant-input-number-input {
+    font-size: 21px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
