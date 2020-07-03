@@ -14,7 +14,7 @@ export default class Defense extends Component {
 
         // id,tid,topic
 
-        select_leader: " ",
+        select_leader: undefined,
         select_member: [],
         new_arr: [],
         teacher_info: [],
@@ -53,7 +53,7 @@ export default class Defense extends Component {
         //console.log(`selected ${value}`);
         this.setState({
             select_member: value
-        }, () => { console.log(this.state.select_member, 888) })
+        }, () => { console.log(this.state.select_member) })
     }
 
     onChange = e => {
@@ -67,6 +67,13 @@ export default class Defense extends Component {
         // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
         this.setState({
             childrenMsg: msg
+        })
+    }
+
+    clear = () => {
+        this.setState({
+            select_leader: undefined,
+            select_member: [],
         })
     }
 
@@ -88,12 +95,13 @@ export default class Defense extends Component {
                         <div class="lable">组长</div>
                         <div class="choose">
                             <Select
+                                value={this.state.select_leader}
                                 showSearch
                                 style={{ width: 500 }}
                                 placeholder="请选择教师"
                                 optionFilterProp="children"
                                 onChange={this.addSelectTeacher}
-
+                                allowClear
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
@@ -117,7 +125,7 @@ export default class Defense extends Component {
                                 mode="multiple"
                                 style={{ width: 500 }}
                                 placeholder="请选择教师"
-
+                                value={this.state.select_member}
                                 onChange={this.handleChange}
                                 optionLabelProp="label"
                                 allowClear
@@ -146,8 +154,11 @@ export default class Defense extends Component {
                     {(this.state.value === 1) &&
                         <div>
 
-                            <AutoAllocate select_leader={this.state.select_leader}
-                                select_member={this.state.select_member} />
+                            <AutoAllocate 
+                                select_leader={this.state.select_leader}
+                                select_member={this.state.select_member} 
+                                clear={this.clear}
+                            />
 
                         </div>
                     }
@@ -155,8 +166,11 @@ export default class Defense extends Component {
                         <div>
 
 
-                            <ManualAllocate select_leader={this.state.select_leader}
-                                select_member={this.state.select_member} />
+                            <ManualAllocate 
+                                select_leader={this.state.select_leader}
+                                select_member={this.state.select_member} 
+                                clear={this.clear}
+                            />
                         </div>
 
                     }
