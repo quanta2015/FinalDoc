@@ -1,21 +1,28 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
-
-
+import { computed, toJS } from 'mobx';
 import { InputNumber, Select, Button, message, Form } from 'antd';
-
-
-
 
 @inject('manageStore')
 @observer
 export default class AutoAllocate extends Component {
     state = {
         num: 10,
-
-
+        topic_num: 0,
     }
+
+    @computed
+    get openDefenseGroup() {
+        return this.props.manageStore.openDefenseGroup;
+    }
+
+    async componentDidMount() {
+        await this.props.manageStore.getTopicList_ogp();
+        this.setState({
+            topic_num: toJS(this.openDefenseGroup.topic_info).length,
+        })
+    }
+
     // 提交自动分配
     autoDistribute = async () => {
         if (this.props.select_leader.length === 0 ||
@@ -32,27 +39,15 @@ export default class AutoAllocate extends Component {
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
-            
-             
             let teacher=await this.props.manageStore.getTeacherList_ogp();
-             
             // 获取到教师列表
-           
-
             this.setState({
                 teacher_info: teacher
-            }, () => { this.toParent });
-
-            
-             
-             
+            }, () => { this.toParent });      
         } else {
             message.info("分配失败！请重试")
         }
         this.clear()
-
-
-
     }
 
     setNum = (value) => {
@@ -79,20 +74,15 @@ export default class AutoAllocate extends Component {
         return (
             <div class="auto-allocate">
                 <div class="select-group">
-                    <div class="lable">分配数量</div>
+                    <div class="lable">学生数量</div>
                     <div class="choose">
-
-                        <InputNumber size="small" style={{ width: 50 }} min={1} value={this.state.num} onChange={this.setNum} />
-
+                        <InputNumber style={{ width: 50 }} min={1} max={this.state.topic_num} value={this.state.num} onChange={this.setNum} />
                     </div>
                 </div>
                 <div>
                     <Button onClick={this.clear}>重置</Button>
                     <Button type="primary" onClick={this.autoDistribute}> 提交</Button>
                 </div>
-
-
-
             </div>
         );
     }
