@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input } from 'antd';
+import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './dividedetail.css';
 
@@ -9,88 +9,40 @@ const paginationProps = {
     showTotal: ((total) => {
         return `共 ${total} 条`;
     }),
+}
+
+const topic_paginationProps = {
+    showTotal: ((total) => {
+        return `共 ${total} 条`;
+    }),
     showSizeChanger: false,
     pageSize: 5,
 }
 
+@inject('manageStore')
+@observer
 export default class DivideDetail extends Component {
     state = {
-        dataSource: [
-            {
-                key: '1',
-                leader: '周一真',
-                member: '王奔，江兵兵，周春儿',
-            },
-            {
-                key: '2',
-                leader: '程从玲',
-                member: '王子栋，潘虹',
-            },
-            {
-                key: '3',
-                leader: '张量',
-                member: '张佳，姚茂群，周迪斌',
-            },
-            {
-                key: '4',
-                leader: '严彩萍',
-                member: '贾中云，丁丹丹，王伟坤',
-            },
-        ],
-        topic_data: [
-            {
-                key: '1',
-                topic: '高校本科毕业设计命题刍探',
-                sname: '薛心怡',
-                class: '计算机181',
-                tname: '丁丹丹',
-            },
-            {
-                key: '2',
-                topic: '工科类本科毕业设计指导教学模式探索',
-                sname: '杨薪宏',
-                class: '计算机181',
-                tname: '周一真',
-            },
-            {
-                key: '3',
-                topic: '学生毕业论文选题系统的研究与设计',
-                sname: '胡晶媛',
-                class: '计算机183',
-                tname: '周炯',
-            },
-            {
-                key: '4',
-                topic: '关于小学英语毕业试卷命题设计的几点思考',
-                sname: '汪艺侠',
-                class: '计算机183',
-                tname: '孙晓燕',
-            },
-            {
-                key: '5',
-                topic: '高校本科毕业设计命题刍探',
-                sname: '柴海伦',
-                class: '计算机183',
-                tname: '张乐星',
-            },
-            {
-                key: '6',
-                topic: '关于胡晶媛是永远滴神的讨论',
-                sname: '李子依',
-                class: '计算机183',
-                tname: '崔华建',
-            },
-        ],
+        // 点击某个小组详情，模态框中的表格数据
+        topic_data: [],
+        // 控制模态框的开关
         visible: false,
         // 表格中搜索功能
         searchText: '',
         searchedColumn: '',
+
+        group_list: [],
     }
 
     // 模态框
-    showModal = () => {
+    showModal = async (record) => {
+        console.log(record.gid)
+        let param = { "group_id": record.gid }
+        let group_info = await this.props.manageStore.topicDetailList_ogp(param);
+        // console.log(group_info)
         this.setState({
             visible: true,
+            topic_data: group_info,
         });
     };
 
@@ -155,20 +107,38 @@ export default class DivideDetail extends Component {
         });
     };
 
+    @computed
+    get openDefenseGroup() {
+      return this.props.manageStore.openDefenseGroup;
+    }
+
     // 表格中的删除 
-    handleDelete = key => {
-        const dataSource = [...this.state.dataSource];
-        this.setState({
-            dataSource: dataSource.filter(item => item.key !== key),
-        });
+    handleDelete = async (key) => {
+        let res = await this.props.manageStore.deleteGroup_ogp({"gid":key});
+        if(res && res.code === 200){
+            message.info("删除成功！")
+            await this.props.manageStore.getGroupList_ogp();
+            let list = toJS(this.openDefenseGroup.group_list);
+            this.toParent(list)
+        }else {
+            message.info("删除失败！")
+        }
+        // await this.props.manageStore.getGroupList_ogp();
     };
+
+    // 给父组件传值
+    toParent = (msg) => {
+        // let msg = { checklist_info: toJS(this.state.checklist_info), auditCount: toJS(this.state.auditCount) }
+        // console.log(msg.auditCount);
+        this.props.parent.getChildrenMsg(this, msg)
+    }
 
     render() {
         const columns = [
             {
                 title: '序号',
-                dataIndex: 'key',
-                key: 'key',
+                dataIndex: 'id',
+                key: 'id',
             },
             {
                 title: '组长',
@@ -178,9 +148,9 @@ export default class DivideDetail extends Component {
             },
             {
                 title: '组员',
-                dataIndex: 'member',
-                key: 'member',
-                ...this.getColumnSearchProps('member'),
+                dataIndex: 'members',
+                key: 'members',
+                ...this.getColumnSearchProps('members'),
             },
             {
                 title: '答辩课题',
@@ -195,8 +165,8 @@ export default class DivideDetail extends Component {
                 title: '操作',
                 key: 'action',
                 render: (text, record) =>
-                    this.state.dataSource.length >= 1 ? (
-                        <Popconfirm title="是否删除该小组？" onConfirm={() => this.handleDelete(record.key)}>
+                    this.props.group_list.length >= 1 ? (
+                        <Popconfirm title="是否删除该小组？" onConfirm={() => this.handleDelete(record.gid)}>
                             <a>删除</a>
                         </Popconfirm>
                     ) : null,
@@ -220,9 +190,9 @@ export default class DivideDetail extends Component {
             },
             {
                 title: '学生姓名',
-                dataIndex: 'sname',
-                key: 'sname',
-                ...this.getColumnSearchProps('sname'),
+                dataIndex: 'sName',
+                key: 'sName',
+                ...this.getColumnSearchProps('sName'),
             },
             {
                 title: '班级',
@@ -232,16 +202,16 @@ export default class DivideDetail extends Component {
             },
             {
                 title: '指导老师',
-                dataIndex: 'tname',
-                key: 'tname',
-                ...this.getColumnSearchProps('tname'),
+                dataIndex: 'tName',
+                key: 'tName',
+                ...this.getColumnSearchProps('tName'),
             },
         ];
 
         return (
             <div>
                 <div className="dividedetail">
-                    <Table dataSource={this.state.dataSource} columns={columns} />
+                    <Table pagination={paginationProps} dataSource={this.props.group_list} columns={columns} />
                 </div>
 
                 <div className="dd_modal">
@@ -250,9 +220,10 @@ export default class DivideDetail extends Component {
                         visible={this.state.visible}
                         onCancel={this.handleCancel}
                         footer={false}
+                        width={800}
                     >
                         <div className="topicdetail">
-                            <Table pagination={paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
+                            <Table pagination={topic_paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
                         </div>
                     </Modal>
                 </div>

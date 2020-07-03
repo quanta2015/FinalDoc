@@ -105,18 +105,14 @@ class manager extends BaseActions {
     teacher_info: [],
     // 未分配课题列表
     topic_info: [],
-    // 已分配课题列表
-    checklist_info: [],
-    // 领域列表
-    areas_list: [],
-    // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
-
+    // 开题分组信息
+    group_list: [],
   }
 
   @action
   async getTopicList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, null); 
-    let topic=[]
+    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, null);
+    let topic = []
     // 同一老师课题放一起，按未通过、通过、未审核排序
     res.data.map((item) =>
       topic.push({
@@ -131,7 +127,7 @@ class manager extends BaseActions {
     runInAction(() => {
       this.openDefenseGroup.topic_info = topic;
     })
-    
+
   }
 
   @action
@@ -142,7 +138,7 @@ class manager extends BaseActions {
     res.data.map((item) =>
       teacher.push({
         tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
-        name: item.Tname, 
+        name: item.Tname,
         value: item.maj + "-" + item.Tname + "-" + item.areas
       })
     )
@@ -161,6 +157,49 @@ class manager extends BaseActions {
   async manualAllocateTopic_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_MANUALALLOCATETOPIC, param)
   }
+
+  @action
+  async getGroupList_ogp() {
+    const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, null);
+    let group = [];
+    res.data.map((item, i) => {
+      group.push({
+        id: i + 1,
+        gid: item.gid,
+        leader: item.leader,
+        members: item.names,
+      })
+    })
+    runInAction(() => {
+      this.openDefenseGroup.group_list = group;
+    })
+  }
+
+  // 组内课题详情
+  // {group_id:int}
+  @action
+  async topicDetailList_ogp(param) {
+    let res = await this.post(urls.API_MAN_POST_OGP_TDETAILLIST, param)
+    let temp = []
+    res.data.map((item, i) => {
+      temp.push({
+        topic: item.topic,
+        class: item.maj + item.cls,
+        sName: item.sName,
+        tName: item.tName,
+      })
+    })
+    return temp;
+  }
+
+  // 删除某个分组
+  @action
+  async deleteGroup_ogp(param) {
+    return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
+  }
+
+
+
 
 }
 
