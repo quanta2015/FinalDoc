@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-02 17:48:32
+ * @LastEditTime: 2020-07-03 12:38:18
  */ 
 
 const express = require('express');
@@ -63,28 +63,6 @@ router.post('/checkList', async(req, res) => {
 	});
 });
 
-// router.post('/randAllocate',async(req,res) => {
-//   let count = req.body[0];
-//   for(let k=1;k<req.body.length;k++){
-//     let teacherId = req.body[k];
-//     let result;
-//     const list = await db.Query(`CALL PROC_TOPIC_LIST_M`);
-//     let topicIdArr=list[0];
-//     for(let i=0;i<count;i++){
-//       let index = Math.floor(Math.random()*topicIdArr.length);
-//       let temp = topicIdArr[index];
-//       if(temp.tid == teacherId){
-//         i--;
-//       }
-//       else{
-//         result = {teacher_id:teacherId,topic_id:temp.id};
-//         topicIdArr.splice(index,1);
-//         const add = await db.Query(`CALL PROC_CHECK_INSERT_M(?)`,[JSON.stringify(result)]);
-//       }
-//     }
-//   }
-//   return res.status(200).json({code: 200, msg: '自动课题审核分配'})
-// });
 
 /**
  * @name: 
