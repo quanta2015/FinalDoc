@@ -23,7 +23,10 @@ export default class AutoAllocate extends Component {
             message.info("选择数量不够")
             return;
         }
-        let temp = [{ "leader_id": this.props.select_leader, "teacher_id": this.props.select_member, "num": this.state.num }]
+        let member_x = []
+        this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
+
+        let temp = [{ "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": this.props.select_member, "num": this.state.num }]
         console.log(temp)
         //let res = await this.props.manageStore.m_allocate(temp);
         // if (res && res.code === 200) {
