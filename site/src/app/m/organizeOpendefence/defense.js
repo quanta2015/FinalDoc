@@ -16,17 +16,16 @@ export default class Defense extends Component {
         new_arr: [],
         teacher_info: [],
         value: 1,
-        childrenMsg: []
     }
+
     @computed
     get openDefenseGroup() {
         return this.props.manageStore.openDefenseGroup;
     }
 
-
     async componentDidMount() {
         await this.props.manageStore.getTeacherList_ogp();
-        let tea = this.openDefenseGroup.teacher_info;
+        let tea = toJS(this.openDefenseGroup.teacher_info);
         console.log(this.state.tea)
 
 
@@ -119,6 +118,7 @@ export default class Defense extends Component {
                                 mode="multiple"
                                 style={{ width: 500 }}
                                 placeholder="请选择教师"
+                                defaultActiveFirstOption={false}
                                 value={this.state.select_member}
                                 onChange={this.handleChange}
                                 optionLabelProp="label"

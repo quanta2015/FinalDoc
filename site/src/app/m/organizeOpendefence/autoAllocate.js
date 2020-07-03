@@ -9,6 +9,7 @@ export default class AutoAllocate extends Component {
     state = {
         num: 10,
         topic_num: 0,
+        teacher_info:[]
     }
 
     @computed
@@ -32,18 +33,23 @@ export default class AutoAllocate extends Component {
         }
         let member_x = []
         this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
+        console.log(member_x,"memeber_x")
 
-        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": this.props.select_member, "number": this.state.num }
+        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "number": this.state.num }
         console.log(temp)
 
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
-            let teacher=await this.props.manageStore.getTeacherList_ogp();
+            await this.props.manageStore.getTeacherList_ogp();
+            let teacher = toJS(this.openDefenseGroup.teacher_info);
+            console.log(teacher)
+             
             // 获取到教师列表
             this.setState({
                 teacher_info: teacher
-            }, () => { this.toParent });      
+            }, () => { this.toParent() });
+
         } else {
             message.info("分配失败！请重试")
         }
