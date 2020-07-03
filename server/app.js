@@ -157,9 +157,9 @@ app.get('/UserList', async function (req, res) {
 // })
 
 app.post('/upload', async function (req, res) {
-
+	let new_path;
 	const form = new formidable.IncomingForm()
-	form.uploadDir = "./upload";
+	form.uploadDir = "./upload/";
 	form.parse(req)
 	let get_data = { t: "json" };
 	form.on('field', function (name, value) {
@@ -174,40 +174,50 @@ app.post('/upload', async function (req, res) {
 	// })
 	form.parse(req, (err, fields, files) => {
 		//重命名
+		//学习笔记：form.parse自带一个反馈，所以不能再另外写一个res
+
 		console.log('===========', files, files.avatar)
 		let type = files.avatar.name.split('.').slice(-1)
 		let ttt = `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`;
 
 		let extname = path.extname(files.avatar.name);
-		let oldpath = __dirname + '/' + files.avatar.path
-		let newpath = __dirname + '/' + "upload/" + ttt;
+		let oldpath =  '' + files.avatar.path
+		let newpath =  '' + "./upload/" + ttt;
+		new_path=newpath;
 		fs.rename(oldpath, newpath, function (err) {
+			console.log(err)
 			if (err) {
+				console.log(err);
 				throw Error("改名失败");
 			}
 		});
-	});
-	form.on('file', (name, file) => {
+		console.log(get_data);
 		let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
+		
+		get_data.filePath = new_path
 		let params = get_data;
-		get_data.filePath = file.path
+		console.log("============199===199===199===========")
 		console.log(params)
 
 		callProc(sql, params, res, (r) => {
 			res.status(200).json({
 				code: 200,
 				msg: `上传${get_data.type}成功`,
-				data: { path: file.path }
+				data: new_path,
+				mysqldata:r
 			})
 		});
 	});
+	// form.on('file', (name, file) => {
+		
+	// });
 
 
 })
 app.post('/download', function (req, res, next) {
 
 	let filename = req.body.file
-
+	console.log(res);
 	res.download('./' + filename)
 
 })
