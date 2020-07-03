@@ -38,7 +38,6 @@ export default class Home extends Component {
   }
 
   async componentDidMount() {
-    await this.props.manageStore.getTopicList();
     await this.props.manageStore.getGroupList_ogp();
     this.setState({
       group_list: toJS(this.openDefenseGroup.group_list),
