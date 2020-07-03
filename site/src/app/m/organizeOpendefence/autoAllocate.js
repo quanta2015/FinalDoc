@@ -28,24 +28,21 @@ export default class AutoAllocate extends Component {
 
         let temp = [{ "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": this.props.select_member, "num": this.state.num }]
         console.log(temp)
-        //let res = await this.props.manageStore.m_allocate(temp);
-        // if (res && res.code === 200) {
-        //     message.info("分配成功！")
-        //     await this.props.manageStore.getTopicList();
-        //     // 获取到教师列表
-        //     let topic = this.distributeTopic.topic_info;
-        //     this.setState({
-        //         topic_info: topic
-        //     });
-        // } else {
-        //     message.info("分配失败！请重试")
-        // }
-        // this.setState({
-        //     selectedRowKeys: [],
-        //     tea_id: "",
-        //     tea_name: undefined,
-        // })
     }
+
+    setNum = (value) => {
+        this.setState({
+            num: value,
+        })
+    }
+
+    clear = () => {
+        this.props.clear()
+        this.setState({
+            num: 10,
+        })
+    }
+
     render() {
         return (
             <div class="auto-allocate">
@@ -53,11 +50,12 @@ export default class AutoAllocate extends Component {
                     <div class="lable">分配数量</div>
                     <div class="choose">
 
-                        <InputNumber size="small" style={{ width: 50 }} min={1} value={this.state.num} />
+                        <InputNumber size="small" style={{ width: 50 }} min={1} value={this.state.num} onChange={this.setNum} />
 
                     </div>
                 </div>
                 <div>
+                    <Button onClick={this.clear}>重置</Button>
                     <Button type="primary" onClick={this.autoDistribute}> 提交</Button>
                 </div>
 

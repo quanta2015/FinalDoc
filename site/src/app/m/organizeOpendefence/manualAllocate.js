@@ -166,7 +166,12 @@ export default class ManualAllocate extends Component {
         // })
     }
 
-
+    clear = () => {
+        this.props.clear()
+        this.setState({
+            selectedRowKeys: [],
+        })
+    }
 
     render() {
         const { selectedRowKeys } = this.state;
@@ -221,6 +226,7 @@ export default class ManualAllocate extends Component {
 
 
                 <div class="manu-btn">
+                    <Button onClick={this.clear}>重置</Button>
                     <Button type="primary" onClick={this.manualDistribute}>
                         提交
                     </Button>
