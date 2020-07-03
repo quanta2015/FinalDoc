@@ -17,7 +17,7 @@ import './style.scss'
 //   role:2    // 0: teacher 1:student 2: manage
 // }
 
-@inject('userStore','manageStore')
+@inject('userStore','manageStore','teacherStore')
 @observer
 class App extends Component {
   constructor(props) {
@@ -27,7 +27,8 @@ class App extends Component {
   @computed
   get usr() {
     // return this.props.manageStore.usr;
-    return this.props.userStore.usr;
+    // return this.props.userStore.usr;
+    return this.props.teacherStore.usr;
   }
 
   render() {

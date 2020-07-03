@@ -1,9 +1,8 @@
-.g-home {
-	display: flex;
-  flex-direction: column;
 
-  .m-list {
-    display: flex;
-    flex-direction: column;
+  .t-manage-home{
+    flex: 4;
+    padding: 30px 60px;
+    overflow: auto;
   }
-}
+
+
