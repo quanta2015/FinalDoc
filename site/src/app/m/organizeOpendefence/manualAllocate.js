@@ -38,21 +38,15 @@ export default class ManualAllocate extends Component {
 
     async componentDidMount() {
         await this.props.manageStore.getTopicList_ogp();
-        // console.log(toJS(this.distributeTopic.areas_list))
-        // 获取到教师列表
-         
+        //获取未被分配列表
         let topic = toJS(this.openDefenseGroup.topic_info);
-         
-        // console.log(topic[1].areas.split(","))
+
         // 将教师列表值变为id+name
-        this.setState({      
-            teacher_info:[],  
+        this.setState({
+            teacher_info: [],
             topic_info: topic
         });
-
-
     }
-
     onSelectChange = (selectedRowKeys) => {
 
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -73,8 +67,6 @@ export default class ManualAllocate extends Component {
             visible: false,
         });
     };
-
-
 
     // 搜索框功能
     getColumnSearchProps = dataIndex => ({
@@ -124,15 +116,10 @@ export default class ManualAllocate extends Component {
             searchedColumn: dataIndex,
         });
     };
-
     handleReset = clearFilters => {
         clearFilters();
         this.setState({ searchText: '' });
     };
-
-
-
-
     // 提交手动分配
     manualDistribute = async () => {
         if (this.props.select_leader.length === 0 ||
@@ -140,13 +127,12 @@ export default class ManualAllocate extends Component {
             message.info("选择数量不够")
             return;
         }
-        let member_x=[]
-        this.props.select_member.map((item)=> member_x.push(item.split(" ")[0]))
-         
+        let member_x = []
+        this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
         let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
-        if(res && res.code === 200) {
+        if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
             await this.props.manageStore.getTopicList_ogp();
             await this.props.manageStore.getTeacherList_ogp();
@@ -160,15 +146,11 @@ export default class ManualAllocate extends Component {
             }, () => { this.toParent() });
 
             // 获取到课题列表
-             
-            
         } else {
             message.info("分配失败！请重试")
         }
         this.clear()
-       
     }
-
     clear = () => {
         this.props.clear()
         this.setState({
@@ -180,10 +162,8 @@ export default class ManualAllocate extends Component {
         // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
         this.props.parent.getChildrenMsg(this, this.state.teacher_info)
     }
-
     render() {
         const { selectedRowKeys } = this.state;
-
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -192,7 +172,6 @@ export default class ManualAllocate extends Component {
                 Table.SELECTION_INVERT,
             ],
         };
-
         const columns = [
             {
                 title: '课题题目',
@@ -208,7 +187,6 @@ export default class ManualAllocate extends Component {
                     </Tooltip>
                 ),
             },
-             
             {
                 title: '学生姓名',
                 dataIndex: 'sName',
@@ -227,7 +205,6 @@ export default class ManualAllocate extends Component {
                 key: 'tName',
                 ...this.getColumnSearchProps('tName'),
             },
-
             {
                 title: '操作',
                 dataIndex: '',
@@ -242,44 +219,33 @@ export default class ManualAllocate extends Component {
         return (
             <div>
                 <div class="manu-table">
-
-
-                <div class="manu-btn">
-                    <Button onClick={this.clear}>重置</Button>
-                    <Button type="primary" onClick={this.manualDistribute}>
-                        提交
+                    <div class="manu-btn">
+                        <Button onClick={this.clear}>重置</Button>
+                        <Button type="primary" onClick={this.manualDistribute}>
+                            提交
                     </Button>
-
-                </div>
-
+                    </div>
                     <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配
                             已选{selectedRowKeys.length}篇</div>
-                
-                
-                <div className="ogp_headAllocate_table">
-                    <Table
-                        onChange={this.handleChange}
-                        rowSelection={rowSelection}
-                        columns={columns}
-                        dataSource={this.state.topic_info}
-                        pagination={paginationProps}
-                        onRow={(record) => {
-                            return {
-                                onClick: () => {
-                                    console.log(record)
-                                    this.state.own = record
-                                    console.log(this.state.own)
+                    <div className="ogp_headAllocate_table">
+                        <Table
+                            onChange={this.handleChange}
+                            rowSelection={rowSelection}
+                            columns={columns}
+                            dataSource={this.state.topic_info}
+                            pagination={paginationProps}
+                            onRow={(record) => {
+                                return {
+                                    onClick: () => {
+                                        console.log(record)
+                                        this.state.own = record
+                                        console.log(this.state.own)
+                                    }
                                 }
-                            }
-                        }}
-
-                    />
+                            }}
+                        />
+                    </div>
                 </div>
-                </div>
-
-
-
-                 
                 <Modal
                     title="查看详情"
                     visible={this.state.visible}
@@ -287,20 +253,20 @@ export default class ManualAllocate extends Component {
                     footer={null}
                     width="800px"
                 >
-                    
-                    <div class="ogp-descrip"> 
-                    <Descriptions
-                        title=""
-                        bordered
-                    >
-                        <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
 
-                    </Descriptions>
+                    <div class="ogp-descrip">
+                        <Descriptions
+                            title=""
+                            bordered
+                        >
+                            <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
+                            <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+
+                        </Descriptions>
                     </div>
                 </Modal>
 
-                 
+
 
             </div>
         );

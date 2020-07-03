@@ -22,22 +22,7 @@ export default class AutoAllocate extends Component {
         return this.props.manageStore.openDefenseGroup;
     }
 
-    async componentDidMount() {
-        await this.props.manageStore.getTopicList_ogp();
-        // console.log(toJS(this.distributeTopic.areas_list))
-        // 获取到教师列表
-         
-        let topic = toJS(this.openDefenseGroup.topic_info);
-         
-        // console.log(topic[1].areas.split(","))
-        // 将教师列表值变为id+name
-        this.setState({      
-            teacher_info:[],  
-            topic_info: topic
-        });
-
-
-    }
+    
 
 
     // 提交自动分配
