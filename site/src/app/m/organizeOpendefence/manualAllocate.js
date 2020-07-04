@@ -136,18 +136,20 @@ export default class ManualAllocate extends Component {
         }
         let member_x = []
         this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
-        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": this.state.selectedRowKeys }
+        let temp = { "ide": this.usr.uid, "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
             await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
-
-            this.setState({
-                topic_info: toJS(this.openDefenseGroup.topic_info),
+            await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
+            this.setState({ topic_info: toJS(this.openDefenseGroup.topic_info)});
+            let msg={
+                group_list:toJS(this.openDefenseGroup.group_list),
                 teacher_info: toJS(this.openDefenseGroup.teacher_info)
-            }, () => { this.toParent() });
+            };
+            this.toParent(msg);
         } else {
             message.info("分配失败！请重试")
         }
@@ -159,10 +161,13 @@ export default class ManualAllocate extends Component {
             selectedRowKeys: [],
         })
     }
-    //手动分配传值到父组件
-    toParent = () => {
-        this.props.parent.getChildrenMsg(this, this.state.teacher_info)
+
+    toParent = (msg) => {
+         
+        this.props.parent.getChildrenMsg(this, msg)
     }
+    
+   
     render() {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
