@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-03 12:38:18
+ * @LastEditTime: 2020-07-04 15:38:02
  */ 
 
 const express = require('express');
@@ -16,14 +16,14 @@ const callProc = require('../util').callProc;
 /**
  * @name: 
  * @test: test font
- * @msg: 获取全部教师列表
+ * @msg: 获取全部教师列表 --权限
  * @param {type} 
  * @return: data
  */
 router.post('/teacherList', async(req, res) => {
-  let sql = `CALL PROC_TEA_LIST_M`;
+  let sql = `CALL PROC_TEA_LIST_M(?)`;
   let params = req.body;
-	callProc(sql, {}, res, (r) => {
+	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取教师列表'})
     });
 });
@@ -31,14 +31,14 @@ router.post('/teacherList', async(req, res) => {
 /**
  * @name: 
  * @test: test font
- * @msg: 获取未分配审核的课题列表
+ * @msg: 获取未分配审核的课题列表 --权限
  * @param {type} 
  * @return: 
  */
 router.post('/topicList', async(req, res) => {
-  let sql = `CALL PROC_TOPIC_LIST_M`;
+  let sql = `CALL PROC_TOPIC_LIST_M(?)`;
 	let params = req.body;
-	callProc(sql, {}, res, (r) => {
+	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取课题列表'})
   });
 });
@@ -46,14 +46,14 @@ router.post('/topicList', async(req, res) => {
 /**
  * @name: 
  * @test: test font
- * @msg: 获取审核列表
+ * @msg: 获取审核列表  --权限
  * @param {type} 
  * @return: 
  */
 router.post('/checkList', async(req, res) => {
-  let sql = `CALL PROC_TOPIC_CHECK_LIST_M`;
+  let sql = `CALL PROC_TOPIC_CHECK_LIST_M(?)`;
 	let params = req.body;
-	callProc(sql, {}, res, (r) => {
+	callProc(sql, params, res, (r) => {
     r.forEach(element => {
       if (!element.result && element.sugg==null){
         element.result=2;
@@ -67,16 +67,17 @@ router.post('/checkList', async(req, res) => {
 /**
  * @name: 
  * @test: test font
- * @msg: 审核老师自动分配课题
+ * @msg: 审核老师自动分配课题 --权限
  * @param {type} 
  * @return: 
  */
 router.post('/randAllocate',async(req,res) => {
-  let count = req.body[0];
+  let _ide = req.body.ide;
+  let count = req.body.number;
   let message;
   let resultArr=[];
-  for(let i=1;i<req.body.length;i++){
-    let params = {sum:count,teacher_id:req.body[i]};
+  for(let i=0;i<req.body.teacher_id.length;i++){
+    let params = {ide:_ide,sum:count,teacher_id:req.body.teacher_id[i]};
     message = await db.Query(`CALL PROC_CHECK_RAND_M(?)`,[JSON.stringify(params)])
     // let result = JSON.stringify(message[0][0])
     let result = (message[0][0])
@@ -84,6 +85,7 @@ router.post('/randAllocate',async(req,res) => {
   }
   return res.status(200).json({code: 200, data: resultArr, msg: '自动课题审核分配'})
 });
+
 
 /**
  * @name: 
@@ -93,12 +95,10 @@ router.post('/randAllocate',async(req,res) => {
  * @return: 
  */
 router.post('/checkAllocate', async(req, res) => {
-  for(let i of req.body){
-    for(let j of i.topic_id){
-      let sql = `CALL PROC_CHECK_INSERT_M(?)`;
-      let params = {teacher_id:i.teacher_id,topic_id:j};
-      callProc(sql, params, res, (r) => {});
-    }
+  for(let j of req.body.topic_id){
+    let sql = `CALL PROC_CHECK_INSERT_M(?)`;
+    let params = {teacher_id:req.body.teacher_id,topic_id:j};
+    callProc(sql, params, res, (r) => {});
   }
   res.status(200).json({code: 200,msg: '手动课题审核分配'})
 });
@@ -106,14 +106,14 @@ router.post('/checkAllocate', async(req, res) => {
 /**
  * @name: 
  * @test: test font
- * @msg: 审核相关数值
+ * @msg: 审核相关数值  --权限
  * @param {type} 
  * @return: 未审核、未通过、已通过
  */
 router.post('/auditCount', async(req, res) => {
-  let sql = `CALL PROC_AUDIT_COUNT_M`;
+  let sql = `CALL PROC_AUDIT_COUNT_M(?)`;
 	let params = req.body;
-	callProc(sql, {}, res, (r) => {
+	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取审核相关的三值'})
 	});
 });
