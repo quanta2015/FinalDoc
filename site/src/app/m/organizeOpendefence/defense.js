@@ -7,7 +7,7 @@ import ManualAllocate from "./manualAllocate.js"
 import AutoAllocate from './autoAllocate.js';
 
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class Defense extends Component {
     state = {
@@ -15,6 +15,7 @@ export default class Defense extends Component {
         select_member: [],
         new_arr: [],
         teacher_info: [],
+        group_info:[],
         value: 1,
     }
 
@@ -22,15 +23,19 @@ export default class Defense extends Component {
     get openDefenseGroup() {
         return this.props.manageStore.openDefenseGroup;
     }
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
 
     async componentDidMount() {
-        await this.props.manageStore.getTeacherList_ogp();
+        await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
         let tea = toJS(this.openDefenseGroup.teacher_info);
         console.log(this.state.tea)
 
 
         // console.log(topic)
-        this.setState({ teacher_info: tea }, () => { message.info("ok") });
+        this.setState({ teacher_info: tea }, () => { this.toParent() });
 
     }
 
@@ -63,8 +68,15 @@ export default class Defense extends Component {
         // console.log(result, msg)
         // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
         this.setState({
-            teacher_info: msg
+            teacher_info: msg.teacher_info,
+            group_info:msg.group_info
         })
+    }
+
+    toParent=()=>{
+        let msg={teacher_info:toJS(this.state.teacher_info),
+        group_info:toJS(this.state.group_info)}
+        this.props.parent.getChildrenMsg(this, msg)
     }
 
     clear = () => {

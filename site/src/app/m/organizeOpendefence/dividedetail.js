@@ -19,7 +19,7 @@ const topic_paginationProps = {
     pageSize: 5,
 }
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class DivideDetail extends Component {
     state = {
@@ -111,13 +111,17 @@ export default class DivideDetail extends Component {
     get openDefenseGroup() {
       return this.props.manageStore.openDefenseGroup;
     }
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
 
     // 表格中的删除 
     handleDelete = async (key) => {
         let res = await this.props.manageStore.deleteGroup_ogp({"gid":key});
         if(res && res.code === 200){
             message.info("删除成功！")
-            await this.props.manageStore.getGroupList_ogp();
+            await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
             let list = toJS(this.openDefenseGroup.group_list);
             this.toParent(list)
         }else {

@@ -5,7 +5,7 @@ import autoAllocate from './AutoAllocate.css';
 import { InputNumber, Select, Button, message } from 'antd';
 const { Option } = Select;
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class AutoAllocate extends Component {
     state = {
@@ -31,9 +31,14 @@ export default class AutoAllocate extends Component {
         return this.props.manageStore.distributeTopic;
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList();
-        await this.props.manageStore.getTeaList();
+        await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid });
         // 获取到教师列表
         let tea = this.distributeTopic.teacher_info;
 
@@ -109,9 +114,9 @@ export default class AutoAllocate extends Component {
             }else{
                 message.info("分配成功！")
             }
-            await this.props.manageStore.getTopicList()
-            await this.props.manageStore.getCheckList()
-            await this.props.manageStore.getAuditCount()
+            await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
+            await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
             this.setState({
                 // topic_info: toJS(this.distributeTopic.teacher_info),
                 topic_info: toJS(this.distributeTopic.topic_info),
@@ -130,7 +135,7 @@ export default class AutoAllocate extends Component {
             num: 8,
             teaNum: Math.ceil(this.distributeTopic.topic_info.length / 8),
         })
-        await this.props.manageStore.getTopicList()
+        await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
     }
 
     maxNum = (value) => {

@@ -13,7 +13,7 @@ const paginationProps = {
 	}),
 }
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class Detail extends Component {
 	state = {
@@ -99,10 +99,7 @@ export default class Detail extends Component {
 		});
 	};
 
-	@computed
-	get distributeTopic() {
-		return this.props.manageStore.distributeTopic;
-	}
+ 
 
 	render() {
 		let { filteredInfo } = this.state;

@@ -14,7 +14,7 @@ const paginationProps = {
     position: ['topRight', 'bottomRight']
 }
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class HeadAllocate extends Component {
     state = {
@@ -40,9 +40,13 @@ export default class HeadAllocate extends Component {
         return this.props.manageStore.distributeTopic;
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
     async componentDidMount() {
-        await this.props.manageStore.getTopicList();
-        await this.props.manageStore.getTeaList();
+        await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid });
         await this.props.manageStore.getAreasList();
         // console.log(toJS(this.distributeTopic.areas_list))
         // 获取到教师列表
@@ -267,7 +271,7 @@ export default class HeadAllocate extends Component {
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
             message.info("分配成功！")
-            await this.props.manageStore.getTopicList();
+            await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
             // 获取到教师列表
             // let topic = this.distributeTopic.topic_info;
             /******************** */
@@ -282,8 +286,8 @@ export default class HeadAllocate extends Component {
             )
             /******************** */
 
-            await this.props.manageStore.getCheckList()
-            await this.props.manageStore.getAuditCount()
+            await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
 
             this.setState({
                 topic_info: topicList,

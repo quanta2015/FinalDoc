@@ -9,7 +9,7 @@ import { Radio, Select, Tabs } from 'antd';
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class Home extends Component {
     state = {
@@ -35,10 +35,15 @@ export default class Home extends Component {
         return this.props.manageStore.distributeTopic;
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList();
-        await this.props.manageStore.getCheckList();
-        await this.props.manageStore.getAuditCount();
+        await this.props.manageStore.getTopicList({"ide":this.usr.uid});
+        await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
+        await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
         this.setState({
             checklist_info: toJS(this.distributeTopic.checklist_info),
             auditCount: toJS(this.distributeTopic.auditCount),

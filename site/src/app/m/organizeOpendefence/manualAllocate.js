@@ -15,7 +15,7 @@ const paginationProps = {
     position: ['topRight', 'bottomRight']
 }
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class ManualAllocate extends Component {
     state = {
@@ -23,6 +23,7 @@ export default class ManualAllocate extends Component {
         // tid,value
         teacher_info: [],
         topic_info: [],
+        group_info:[],
         tea_id: "",
         tea_name: undefined,
         visible: false,
@@ -36,8 +37,13 @@ export default class ManualAllocate extends Component {
         return this.props.manageStore.openDefenseGroup;
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList_ogp();
+        await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
         //获取未被分配列表
         let topic = toJS(this.openDefenseGroup.topic_info);
 
@@ -134,8 +140,8 @@ export default class ManualAllocate extends Component {
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
-            await this.props.manageStore.getTopicList_ogp();
-            await this.props.manageStore.getTeacherList_ogp();
+            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
+            await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
             // 获取到教师列表
             let teacher = toJS(this.openDefenseGroup.teacher_info);
             console.log(teacher)
@@ -159,8 +165,8 @@ export default class ManualAllocate extends Component {
     }
     //手动分配传值到父组件
     toParent = () => {
-        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
-        this.props.parent.getChildrenMsg(this, this.state.teacher_info)
+        let msg ={group_info:toJS(this.state.group_info),teacher_info:toJS(this.state.teacher_info)}
+        this.props.parent.getChildrenMsg(this, msg)
     }
     render() {
         const { selectedRowKeys } = this.state;

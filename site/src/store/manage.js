@@ -6,11 +6,11 @@ import * as urls from '../constant/urls'
 
 class manager extends BaseActions {
 
-  @observable
-  usr = {
-    name: '专业负责人',
-    role: 2    // 0: teacher 1:student 2: manage
-  }
+  // @observable
+  // usr = {
+  //   name: '专业负责人',
+  //   role: 2    // 0: teacher 1:student 2: manage
+  // }
 
   // 分配审核课题
   @observable
@@ -29,16 +29,16 @@ class manager extends BaseActions {
 
 
   @action
-  async getTeaList() {
-    const res = await this.post(urls.API_MAN_GET_TEALIST, null);
+  async getTeaList(param) {
+    const res = await this.post(urls.API_MAN_GET_TEALIST, param);
     runInAction(() => {
       this.distributeTopic.teacher_info = res.data;
     })
   }
 
   @action
-  async getTopicList() {
-    const res = await this.post(urls.API_MAN_GET_TOPICLIST, null);
+  async getTopicList(param) {
+    const res = await this.post(urls.API_MAN_GET_TOPICLIST, param);
     runInAction(() => {
       this.distributeTopic.topic_info = res.data;
     })
@@ -57,8 +57,8 @@ class manager extends BaseActions {
   }
 
   @action
-  async getCheckList() {
-    let res = await this.post(urls.API_MAN_POST_CHECKLIST, null);
+  async getCheckList(param) {
+    let res = await this.post(urls.API_MAN_POST_CHECKLIST, param);
     let r = res.data
     // 同一老师课题放一起，按未通过、通过、未审核排序
     r.sort(function (a, b) {
@@ -110,8 +110,8 @@ class manager extends BaseActions {
   }
 
   @action
-  async getTopicList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, null);
+  async getTopicList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, param);
     let topic = []
     // 同一老师课题放一起，按未通过、通过、未审核排序
     res.data.map((item) =>
@@ -131,8 +131,8 @@ class manager extends BaseActions {
   }
 
   @action
-  async getTeacherList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, null);
+  async getTeacherList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, param);
     let teacher = []
     // 同一老师课题放一起，按未通过、通过、未审核排序
     res.data.map((item) =>
@@ -170,8 +170,8 @@ class manager extends BaseActions {
   }
 
   @action
-  async getGroupList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, null);
+  async getGroupList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, param);
     let group = [];
     res.data.map((item, i) => {
       group.push({
@@ -208,9 +208,6 @@ class manager extends BaseActions {
   async deleteGroup_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
   }
-
-
-
 
 }
 
