@@ -42,8 +42,13 @@ export default class Home extends Component {
 
     async componentDidMount() {
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
+<<<<<<< HEAD
         await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
         await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
+=======
+        await this.props.manageStore.getCheckList({"ide":this.usr.uid});
+        await this.props.manageStore.getAuditCount({"ide":this.usr.uid});
+>>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
         this.setState({
             checklist_info: toJS(this.distributeTopic.checklist_info),
             auditCount: toJS(this.distributeTopic.auditCount),
@@ -94,9 +99,7 @@ export default class Home extends Component {
             <div className="main">
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="分配课题" key="1">
-
                         <div className="choose">
-
                             <Radio.Group onChange={this.onChange} value={this.state.value}>
                                 <Radio value={1}>自动分配</Radio>
                                 <Radio value={2}>手动分配</Radio>
@@ -108,7 +111,6 @@ export default class Home extends Component {
                         {(this.state.value === 2) &&
                             <HeadAllocate parent={this} />
                         }
-
                     </TabPane>
                     <TabPane tab="审核详情" key="2">
                         {/* Content of Tab Pane 2 */}
@@ -119,11 +121,7 @@ export default class Home extends Component {
                             tooltipText={this.state.tooltipText}
                         />
                     </TabPane>
-
                 </Tabs>
-
-
-
             </div>
         );
     }

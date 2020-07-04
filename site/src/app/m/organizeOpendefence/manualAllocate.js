@@ -12,7 +12,7 @@ const paginationProps = {
     showTotal: ((total) => {
         return `共 ${total} 条`;
     }),
-    position: ['topRight', 'bottomRight']
+    // position: ['topRight', 'bottomRight']
 }
 
 @inject('manageStore','userStore')
@@ -39,17 +39,18 @@ export default class ManualAllocate extends Component {
 
     @computed
     get usr() {
-        return this.props.userStore.usr;
+      return this.props.userStore.usr;
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
-        //获取未被分配列表
+        await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+        // console.log(toJS(this.distributeTopic.areas_list))
+        // 获取到教师列表
+         
         let topic = toJS(this.openDefenseGroup.topic_info);
-
-        // 将教师列表值变为id+name
-        this.setState({
-            teacher_info: [],
+        
+        this.setState({      
+            teacher_info:[],  
             topic_info: topic
         });
     }
@@ -140,18 +141,13 @@ export default class ManualAllocate extends Component {
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
-            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-            // 获取到教师列表
-            let teacher = toJS(this.openDefenseGroup.teacher_info);
-            console.log(teacher)
-            let topic = toJS(this.openDefenseGroup.topic_info);
-            this.setState({
-                topic_info: topic,
-                teacher_info: teacher
-            }, () => { this.toParent() });
+            await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+            await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
 
-            // 获取到课题列表
+            this.setState({
+                topic_info: toJS(this.openDefenseGroup.topic_info),
+                teacher_info: toJS(this.openDefenseGroup.teacher_info)
+            }, () => { this.toParent() });
         } else {
             message.info("分配失败！请重试")
         }
@@ -165,8 +161,7 @@ export default class ManualAllocate extends Component {
     }
     //手动分配传值到父组件
     toParent = () => {
-        let msg ={group_info:toJS(this.state.group_info),teacher_info:toJS(this.state.teacher_info)}
-        this.props.parent.getChildrenMsg(this, msg)
+        this.props.parent.getChildrenMsg(this, this.state.teacher_info)
     }
     render() {
         const { selectedRowKeys } = this.state;
@@ -225,30 +220,37 @@ export default class ManualAllocate extends Component {
         return (
             <div>
                 <div class="manu-table">
+
+                <div class="head_info">
+                    <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配 已选{selectedRowKeys.length}篇</div>
                     <div class="manu-btn">
-                        <Button onClick={this.clear}>重置</Button>
+                        <Button className="reset"
+                         onClick={this.clear}>重置</Button>
                         <Button type="primary" onClick={this.manualDistribute}>
                             提交
-                    </Button>
+                        </Button>
                     </div>
-                    <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配
-                            已选{selectedRowKeys.length}篇</div>
-                    <div className="ogp_headAllocate_table">
-                        <Table
-                            onChange={this.handleChange}
-                            rowSelection={rowSelection}
-                            columns={columns}
-                            dataSource={this.state.topic_info}
-                            pagination={paginationProps}
-                            onRow={(record) => {
-                                return {
-                                    onClick: () => {
-                                        console.log(record)
-                                        this.state.own = record
-                                        console.log(this.state.own)
-                                    }
+                </div>
+
+                {/* <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配 已选{selectedRowKeys.length}篇</div> */}
+                
+                
+                <div className="ogp_headAllocate_table">
+                    <Table
+                        onChange={this.handleChange}
+                        rowSelection={rowSelection}
+                        columns={columns}
+                        dataSource={this.state.topic_info}
+                        pagination={paginationProps}
+                        onRow={(record) => {
+                            return {
+                                onClick: () => {
+                                    console.log(record)
+                                    this.state.own = record
+                                    console.log(this.state.own)
                                 }
                             }}
+                        }
                         />
                     </div>
                 </div>

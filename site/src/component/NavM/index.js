@@ -1,40 +1,47 @@
 import { Component } from 'preact';
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 import './index.scss'
 // import more from './more.svg'
 import { MENU_MAIN_M } from '../../constant/data'
 
-
+@inject('manageStore', 'userStore')
+@observer
 class NavM extends Component {
-	constructor(props) {
-		super(props)
+  constructor(props) {
+    super(props)
 
     this.state = {
       cur: 0,
     }
-	}
+  }
 
-  doMenu = (path,i)=>{
-    this.setState({cur:i},()=>{ 
+  @computed
+  get usr() {
+    return this.props.userStore.usr;
+  }
+
+  doMenu = (path, i) => {
+    this.setState({ cur: i }, () => {
       route(path)
     })
   }
 
-	render(_,{ cur }) {
+  render() {
     return (
       <div className="g-nav">
         <div className="g-info">
           <div>身份：系主任</div>
-          <div>姓名：李四</div>
-          <div>工号：04080901</div>
-          <div>所在系：计算机科学与技术</div>
+          <div>姓名：{this.usr.name}</div>
+          <div>工号：{this.usr.uid}</div>
+          <div>所在系：{this.usr.maj}</div>
           {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
-          {MENU_MAIN_M.map((item,i)=>
-            <div className={(cur==i)?'m-menu-item active':'m-menu-item'} key={i} onClick={this.doMenu.bind(this,item.path,i)}>
-              <img src={item.icon} /><span>{item.title}</span> 
+          {MENU_MAIN_M.map((item, i) =>
+            <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
+              <img src={item.icon} /><span>{item.title}</span>
             </div>
           )}
         </div>
