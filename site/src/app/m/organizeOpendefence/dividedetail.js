@@ -126,7 +126,6 @@ export default class DivideDetail extends Component {
             message.info("删除成功！")
             // 刷新分组列表
             await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
-            // 更新未分组的教师列表
             await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
         }else {

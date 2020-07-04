@@ -38,9 +38,9 @@ export default class AutoAllocate extends Component {
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
-            await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
+            await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+            await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
             await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
         } else {
             message.info("分配失败！请重试")
         }

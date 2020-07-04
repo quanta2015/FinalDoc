@@ -26,6 +26,10 @@ export default class Defense extends Component {
         return this.props.userStore.usr;
     }
 
+    async componentDidMount() {
+        await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
+
+    }
     addSelectTeacher = (value) => {
         console.log(`selected ${value}`);
         this.setState({
@@ -58,12 +62,9 @@ export default class Defense extends Component {
             select_member: [],
         })
     }
-
-    async componentDidMount() {
-        await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
-    }
-
+    
     render() {
+         
         this.state.new_arr = [];
         for (let i of this.openDefenseGroup.teacher_info) {
             if (this.state.select_member.indexOf(i.tid) == -1) {
@@ -85,6 +86,7 @@ export default class Defense extends Component {
                                     style={{ width: 500 }}
                                     placeholder="请选择教师"
                                     optionFilterProp="children"
+                                    defaultActiveFirstOption={false}
                                     onChange={this.addSelectTeacher}
                                     allowClear
                                     filterOption={(input, option) =>
