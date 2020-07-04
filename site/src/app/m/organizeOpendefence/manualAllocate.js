@@ -53,7 +53,6 @@ export default class ManualAllocate extends Component {
             topic_info: topic
         });
     }
-
     onSelectChange = (selectedRowKeys) => {
 
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -74,8 +73,6 @@ export default class ManualAllocate extends Component {
             visible: false,
         });
     };
-
-
 
     // 搜索框功能
     getColumnSearchProps = dataIndex => ({
@@ -125,15 +122,10 @@ export default class ManualAllocate extends Component {
             searchedColumn: dataIndex,
         });
     };
-
     handleReset = clearFilters => {
         clearFilters();
         this.setState({ searchText: '' });
     };
-
-
-
-
     // 提交手动分配
     manualDistribute = async () => {
         if (this.props.select_leader.length === 0 ||
@@ -141,13 +133,12 @@ export default class ManualAllocate extends Component {
             message.info("选择数量不够")
             return;
         }
-        let member_x=[]
-        this.props.select_member.map((item)=> member_x.push(item.split(" ")[0]))
-         
+        let member_x = []
+        this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
         let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
-        if(res && res.code === 200) {
+        if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
             await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
@@ -161,7 +152,6 @@ export default class ManualAllocate extends Component {
         }
         this.clear()
     }
-
     clear = () => {
         this.props.clear()
         this.setState({
@@ -172,10 +162,8 @@ export default class ManualAllocate extends Component {
     toParent = () => {
         this.props.parent.getChildrenMsg(this, this.state.teacher_info)
     }
-
     render() {
         const { selectedRowKeys } = this.state;
-
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -184,7 +172,6 @@ export default class ManualAllocate extends Component {
                 Table.SELECTION_INVERT,
             ],
         };
-
         const columns = [
             {
                 title: '课题题目',
@@ -200,7 +187,6 @@ export default class ManualAllocate extends Component {
                     </Tooltip>
                 ),
             },
-             
             {
                 title: '学生姓名',
                 dataIndex: 'sName',
@@ -219,7 +205,6 @@ export default class ManualAllocate extends Component {
                 key: 'tName',
                 ...this.getColumnSearchProps('tName'),
             },
-
             {
                 title: '操作',
                 dataIndex: '',
@@ -263,16 +248,11 @@ export default class ManualAllocate extends Component {
                                     this.state.own = record
                                     console.log(this.state.own)
                                 }
-                            }
-                        }}
-
-                    />
+                            }}
+                        }
+                        />
+                    </div>
                 </div>
-                </div>
-
-
-
-                 
                 <Modal
                     title="查看详情"
                     visible={this.state.visible}
@@ -280,20 +260,20 @@ export default class ManualAllocate extends Component {
                     footer={null}
                     width="800px"
                 >
-                    
-                    <div class="ogp-descrip"> 
-                    <Descriptions
-                        title=""
-                        bordered
-                    >
-                        <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
 
-                    </Descriptions>
+                    <div class="ogp-descrip">
+                        <Descriptions
+                            title=""
+                            bordered
+                        >
+                            <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
+                            <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+
+                        </Descriptions>
                     </div>
                 </Modal>
 
-                 
+
 
             </div>
         );
