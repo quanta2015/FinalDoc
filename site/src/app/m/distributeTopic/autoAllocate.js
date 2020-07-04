@@ -66,12 +66,14 @@ export default class AutoAllocate extends Component {
             message.info("还未选择审核老师！")
             return;
         }
-        let tea_id = [this.state.num]
+        let tea_id = []
         this.state.select_teacher.map((item) =>
             tea_id.push(item.split(" ")[0])
         )
-        console.log(tea_id)
-        let res = await this.props.manageStore.autoAllocateTopic(tea_id);
+
+        let param = {"ide":this.usr.uid,"number":this.state.num,"teacher_id":tea_id}
+        // console.log(param)
+        let res = await this.props.manageStore.autoAllocateTopic(param);
         if (res && res.code === 200) {
             console.log(res.data[0].result)
             let flag = 1

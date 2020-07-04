@@ -121,20 +121,24 @@ export default class DivideDetail extends Component {
         let res = await this.props.manageStore.deleteGroup_ogp({"gid":key});
         if(res && res.code === 200){
             message.info("删除成功！")
+            // 刷新分组列表
             await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
-            let list = toJS(this.openDefenseGroup.group_list);
-            this.toParent(list)
+            // 更新未分组的教师列表
+            await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
+            let msg = {
+                teacher_info: toJS(this.openDefenseGroup.teacher_info),
+                group_list: toJS(this.openDefenseGroup.group_list),
+            }
+
+            this.toParent(msg);
         }else {
             message.info("删除失败！")
         }
-        // await this.props.manageStore.getGroupList_ogp();
     };
 
     // 给父组件传值
     toParent = (msg) => {
-        // let msg = { checklist_info: toJS(this.state.checklist_info), auditCount: toJS(this.state.auditCount) }
-        // console.log(msg.auditCount);
-        this.props.parent.getChildrenMsg(this, msg)
+        this.props.parent.getDetailMsg(this, msg)
     }
 
     render() {

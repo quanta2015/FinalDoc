@@ -27,8 +27,7 @@ export default class Home extends Component {
     return this.props.userStore.usr;
   }
 
-
-  // 接收子组件传来的值
+  // 接收defense.js回传的数据
   getDefenseMsg = (result, msg) => {
     // result是子组件那bind的第一个参数this，msg是第二个参数
     console.log(msg,"index")
@@ -39,15 +38,24 @@ export default class Home extends Component {
        
     })
   }
+  
+
+
+  // 接收dividedetails.js回传的数据
+  // msg为删除小组后的teacher_info
+  getDetailMsg = (result, msg) => {
+    this.setState({
+      teacher_info: msg.teacher_info,
+      group_list: msg.group_list,
+    })
+  }
 
   async componentDidMount() {
     await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
-    await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
+    await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
     this.setState({
       group_list: toJS(this.openDefenseGroup.group_list),
-      teacher_info:toJS(this.openDefenseGroup.teacher_info)
-    }, () => {
-      console.log(this.state.group_list,this.state.teacher_info)
+      teacher_info: toJS(this.openDefenseGroup.teacher_info),
     })
   }
 

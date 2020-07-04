@@ -23,11 +23,11 @@ export default class Defense extends Component {
     get openDefenseGroup() {
         return this.props.manageStore.openDefenseGroup;
     }
+
     @computed
     get usr() {
         return this.props.userStore.usr;
     }
-
 
     addSelectTeacher = (value) => {
         console.log(`selected ${value}`);
@@ -83,6 +83,13 @@ export default class Defense extends Component {
         }
 
     }
+    // toParent=()=>{
+    //     let msg={
+    //         teacher_info:toJS(this.state.teacher_info),
+    //         group_list:toJS(this.state.group_list)
+    //     }
+    //     this.props.parent.getChildrenMsg(this, msg)
+    // }
 
     toParent =(msg)=>{
         this.props.parent.getDefenseMsg(msg)

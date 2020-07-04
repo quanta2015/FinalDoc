@@ -33,7 +33,11 @@ class manager extends BaseActions {
     const res = await this.post(urls.API_MAN_GET_TEALIST, param);
     let teaName = [];
     res.data.map((item) =>
-      teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
+      teaName.push({ 
+        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, 
+        value: item.maj + "-" + item.Tname + "-" + item.areas,
+        name: item.Tname,
+      })
     )
     teaName.sort(function (a, b) {
       if (a.value < b.value) {
@@ -68,14 +72,14 @@ class manager extends BaseActions {
   }
 
   // 手动分配审核选题
-  // [{ "teacher_id": "20130006", "topic_id": ["1","2","3"] }]
+  // { "teacher_id": "20130006", "topic_id": ["1","2","3"] }
   @action
   async allocateTopic(param) {
     return await this.post(urls.API_MAN_POST_ALLOCATETOPIC, param)
   }
 
   // 自动分配审核选题
-  // [5,"20130006","20181025"]
+  // {"ide":"20130006","number":5,"teacher_id":["20130006","20181025"]}
   @action
   async autoAllocateTopic(param) {
     return await this.post(urls.API_MAN_POST_AUTOALLOCATETOPIC, param)
@@ -192,7 +196,7 @@ class manager extends BaseActions {
   }
 
   // 自动分配答辩课题
-  // {"leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
+  // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
   @action
   async autoAllocateTopic_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param)
