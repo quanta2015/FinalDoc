@@ -8,9 +8,6 @@ import { InputNumber, Select, Button, message, Form } from 'antd';
 export default class AutoAllocate extends Component {
     state = {
         num: 10,
-        topic_num: 0,
-        teacher_info:[],
-        group_info:[]
     }
 
     @computed
@@ -22,12 +19,8 @@ export default class AutoAllocate extends Component {
         return this.props.userStore.usr;
     }
 
-
     async componentDidMount() {
         await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
-        this.setState({
-            topic_num: toJS(this.openDefenseGroup.topic_info).length,
-        })
     }
 
     // 提交自动分配
@@ -39,23 +32,15 @@ export default class AutoAllocate extends Component {
         }
         let member_x = []
         this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
-        console.log(member_x,"memeber_x")
 
         let temp = {"ide":this.usr.uid, "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "number": this.state.num }
-        console.log(temp)
 
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
             await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
-             
-            let msg={
-                teacher_info: toJS(this.openDefenseGroup.teacher_info),
-                group_list:toJS(this.openDefenseGroup.group_list)
-            };
-            this.toParent(msg);
-
+            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
         } else {
             message.info("分配失败！请重试")
         }
@@ -75,19 +60,13 @@ export default class AutoAllocate extends Component {
         })
     }
 
-    toParent = (msg) => {
-
-        this.props.parent.getChildrenMsg(this, msg)
-    }
- 
-
     render() {
         return (
             <div class="auto-allocate">
                 <div class="select-group">
                
-                    <div class="choose_num">还有<span class="stu_num">{this.state.topic_num}</span>位学生未被选择 为该组选择
-                        <InputNumber style={{ width: 50 }} min={1} max={this.state.topic_num} value={this.state.num} onChange={this.setNum} />
+                    <div class="choose_num">还有<span class="stu_num">{this.openDefenseGroup.topic_info.length}</span>位学生未被选择 为该组选择
+                        <InputNumber style={{ width: 50 }} min={1} max={this.openDefenseGroup.topic_info.length} value={this.state.num} onChange={this.setNum} />
                     位</div>
                 </div>
                 <div class="btn">

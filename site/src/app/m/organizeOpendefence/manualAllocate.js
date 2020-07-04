@@ -20,10 +20,6 @@ const paginationProps = {
 export default class ManualAllocate extends Component {
     state = {
         selectedRowKeys: [],// Check here to configure the default column
-        // tid,value
-        teacher_info: [],
-        topic_info: [],
-        group_info:[],
         tea_id: "",
         tea_name: undefined,
         visible: false,
@@ -44,24 +40,14 @@ export default class ManualAllocate extends Component {
 
     async componentDidMount() {
         await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
-        // console.log(toJS(this.distributeTopic.areas_list))
-        // 获取到教师列表
-         
-        let topic = toJS(this.openDefenseGroup.topic_info);
-        
-        this.setState({      
-            teacher_info:[],  
-            topic_info: topic
-        });
     }
-    onSelectChange = (selectedRowKeys) => {
 
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
+    onSelectChange = (selectedRowKeys) => {
         this.setState({ selectedRowKeys });
     };
+
     //模态框
     showModal = (record) => {
-        console.log(record.topicTOPIC)
         this.setState({
             visible: true,
             own: record,
@@ -69,7 +55,6 @@ export default class ManualAllocate extends Component {
     };
 
     handleCancel = e => {
-        console.log(e);
         this.setState({
             visible: false,
         });
@@ -127,6 +112,7 @@ export default class ManualAllocate extends Component {
         clearFilters();
         this.setState({ searchText: '' });
     };
+
     // 提交手动分配
     manualDistribute = async () => {
         if (this.props.select_leader.length === 0 ||
@@ -144,12 +130,6 @@ export default class ManualAllocate extends Component {
             await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
-            this.setState({ topic_info: toJS(this.openDefenseGroup.topic_info)});
-            let msg={
-                group_list:toJS(this.openDefenseGroup.group_list),
-                teacher_info: toJS(this.openDefenseGroup.teacher_info)
-            };
-            this.toParent(msg);
         } else {
             message.info("分配失败！请重试")
         }
@@ -161,12 +141,6 @@ export default class ManualAllocate extends Component {
             selectedRowKeys: [],
         })
     }
-
-    toParent = (msg) => {
-         
-        this.props.parent.getChildrenMsg(this, msg)
-    }
-    
    
     render() {
         const { selectedRowKeys } = this.state;
@@ -235,17 +209,14 @@ export default class ManualAllocate extends Component {
                             提交
                         </Button>
                     </div>
-                </div>
-
-                {/* <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配 已选{selectedRowKeys.length}篇</div> */}
-                
+                </div>                
                 
                 <div className="ogp_headAllocate_table">
                     <Table
                         onChange={this.handleChange}
                         rowSelection={rowSelection}
                         columns={columns}
-                        dataSource={this.state.topic_info}
+                        dataSource={this.openDefenseGroup.topic_info}
                         pagination={paginationProps}
                         onRow={(record) => {
                             return {

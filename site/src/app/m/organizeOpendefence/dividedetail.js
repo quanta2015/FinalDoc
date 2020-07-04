@@ -30,8 +30,6 @@ export default class DivideDetail extends Component {
         // 表格中搜索功能
         searchText: '',
         searchedColumn: '',
-
-        group_list: [],
     }
 
     // 模态框
@@ -109,11 +107,16 @@ export default class DivideDetail extends Component {
 
     @computed
     get openDefenseGroup() {
-      return this.props.manageStore.openDefenseGroup;
+        return this.props.manageStore.openDefenseGroup;
     }
+
     @computed
     get usr() {
         return this.props.userStore.usr;
+    }
+
+    async componentDidMount() {
+        await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
     }
 
     // 表格中的删除 
@@ -125,21 +128,11 @@ export default class DivideDetail extends Component {
             await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
             // 更新未分组的教师列表
             await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
-            let msg = {
-                teacher_info: toJS(this.openDefenseGroup.teacher_info),
-                group_list: toJS(this.openDefenseGroup.group_list),
-            }
-
-            this.toParent(msg);
+            await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
         }else {
             message.info("删除失败！")
         }
     };
-
-    // 给父组件传值
-    toParent = (msg) => {
-        this.props.parent.getDetailMsg(this, msg)
-    }
 
     render() {
         const columns = [
@@ -173,7 +166,7 @@ export default class DivideDetail extends Component {
                 title: '操作',
                 key: 'action',
                 render: (text, record) =>
-                    this.props.group_list.length >= 1 ? (
+                    this.openDefenseGroup.group_list.length >= 1 ? (
                         <Popconfirm title="是否删除该小组？" onConfirm={() => this.handleDelete(record.gid)}>
                             <a>删除</a>
                         </Popconfirm>
@@ -219,7 +212,7 @@ export default class DivideDetail extends Component {
         return (
             <div>
                 <div className="dividedetail">
-                    <Table pagination={paginationProps} dataSource={this.props.group_list} columns={columns} />
+                    <Table pagination={paginationProps} dataSource={this.openDefenseGroup.group_list} columns={columns} />
                 </div>
 
                 <div className="dd_modal">

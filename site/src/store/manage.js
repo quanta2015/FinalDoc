@@ -142,6 +142,8 @@ class manager extends BaseActions {
     group_list: [],
   }
 
+
+  
   @action
   // 参数，系主任id
   // {"ide":"20130006"}

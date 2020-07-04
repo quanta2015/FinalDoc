@@ -1,11 +1,10 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
+import { computed, toJS, autorun } from 'mobx';
 import { Radio, Form, Button, message, Select, InputNumber } from 'antd';
 import "./defense.css"
 import ManualAllocate from "./manualAllocate.js"
 import AutoAllocate from './autoAllocate.js';
-
 
 @inject('manageStore','userStore')
 @observer
@@ -14,8 +13,6 @@ export default class Defense extends Component {
         select_leader: undefined,
         select_member: [],
         new_arr: [],
-        teacher_info: [],
-         group_list:[],
         value: 1,
     }
 
@@ -61,46 +58,16 @@ export default class Defense extends Component {
             select_member: [],
         })
     }
-    getChildrenMsg = (result, msg) => {//获取子组件
-        // console.log(result, msg)
-        // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
-        
-        //this.toParent(msg)
-        this.setState({
-            teacher_info: msg.teacher_info,
-            group_list:msg.group_list
-        })
-         
 
-    }
-    componentWillUpdate =()=>{
-        if(this.state.teacher_info!==this.props.teacher_info){
-           let value = {
-            teacher_info: this.state.teacher_info,
-            group_list: this.state.group_list
-        }
-        this.toParent(value)
-        }
-
-    }
-    // toParent=()=>{
-    //     let msg={
-    //         teacher_info:toJS(this.state.teacher_info),
-    //         group_list:toJS(this.state.group_list)
-    //     }
-    //     this.props.parent.getChildrenMsg(this, msg)
-    // }
-
-    toParent =(msg)=>{
-        this.props.parent.getDefenseMsg(msg)
+    async componentDidMount() {
+        await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
     }
 
     render() {
         this.state.new_arr = [];
-        for (let i of this.props.teacher_info) {
+        for (let i of this.openDefenseGroup.teacher_info) {
             if (this.state.select_member.indexOf(i.tid) == -1) {
                 this.state.new_arr.push(i);
-
             }
         }
 
@@ -145,7 +112,7 @@ export default class Defense extends Component {
                                 optionLabelProp="label"
                                 allowClear
                             >
-                                {this.props.teacher_info.map((item, i) =>
+                                {this.openDefenseGroup.teacher_info.map((item, i) =>
                                     (item.tid !== this.state.select_leader) && <Select.Option label={item.name}
                                         key={item.tid}>{item.value}</Select.Option>
                                 )}
