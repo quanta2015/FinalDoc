@@ -27,10 +27,6 @@ class manager extends BaseActions {
 
 
   @action
-<<<<<<< HEAD
-  async getTeaList(param) {
-    const res = await this.post(urls.API_MAN_GET_TEALIST, param);
-=======
   // 参数，系主任id
   // {"ide":"20130006"}
   async getTeaList(param) {
@@ -48,17 +44,12 @@ class manager extends BaseActions {
       return 0;
     })
 
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
     runInAction(() => {
       this.distributeTopic.teacher_info = teaName;
     })
   }
 
   @action
-<<<<<<< HEAD
-  async getTopicList(param) {
-    const res = await this.post(urls.API_MAN_GET_TOPICLIST, param);
-=======
   // 参数，系主任id
   // {"ide":"20130006"}
   async getTopicList(param) {
@@ -71,7 +62,6 @@ class manager extends BaseActions {
         color: item.color.split(",")
       })
     )
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
     runInAction(() => {
       this.distributeTopic.topic_info = topicList;
     })
@@ -92,11 +82,8 @@ class manager extends BaseActions {
   }
 
   @action
-<<<<<<< HEAD
-=======
   // 参数，系主任id
   // {"ide":"20130006"}
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
   async getCheckList(param) {
     let res = await this.post(urls.API_MAN_POST_CHECKLIST, param);
     let r = res.data
@@ -152,11 +139,8 @@ class manager extends BaseActions {
   }
 
   @action
-<<<<<<< HEAD
-=======
   // 参数，系主任id
   // {"ide":"20130006"}
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
   async getTopicList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, param);
     let topic = []
@@ -178,11 +162,8 @@ class manager extends BaseActions {
   }
 
   @action
-<<<<<<< HEAD
-=======
   // 参数，系主任id
   // {"ide":"20130006"}
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
   async getTeacherList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, param);
     let teacher = []
@@ -225,12 +206,9 @@ class manager extends BaseActions {
   }
 
   @action
-<<<<<<< HEAD
-=======
   // 开题答辩小组的信息
   // 参数，系主任id
   // {"ide":"20130006"}
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
   async getGroupList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, param);
     let group = [];
@@ -270,10 +248,5 @@ class manager extends BaseActions {
   async deleteGroup_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
 }
-
 export default new manager()

@@ -22,10 +22,6 @@ export default class AutoAllocate extends Component {
         return this.props.userStore.usr;
     }
 
-    @computed
-    get usr() {
-      return this.props.userStore.usr;
-    }
 
     async componentDidMount() {
         await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});

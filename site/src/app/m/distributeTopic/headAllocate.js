@@ -192,7 +192,7 @@ export default class HeadAllocate extends Component {
             message.info("还未选择课题！")
             return;
         }
-        let temp = [{ "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }]
+        let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {

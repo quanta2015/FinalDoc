@@ -116,11 +116,6 @@ export default class DivideDetail extends Component {
         return this.props.userStore.usr;
     }
 
-    @computed
-    get usr() {
-      return this.props.userStore.usr;
-    }
-
     // 表格中的删除 
     handleDelete = async (key) => {
         let res = await this.props.manageStore.deleteGroup_ogp({"gid":key});

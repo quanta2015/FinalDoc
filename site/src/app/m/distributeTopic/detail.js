@@ -11,11 +11,6 @@ const paginationProps = {
 	}),
 }
 
-<<<<<<< HEAD
-@inject('manageStore','userStore')
-@observer
-=======
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
 export default class Detail extends Component {
 	state = {
 		filteredInfo: null,
@@ -100,11 +95,6 @@ export default class Detail extends Component {
 		});
 	};
 
-<<<<<<< HEAD
- 
-
-=======
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
 	render() {
 		let { filteredInfo } = this.state;
 		filteredInfo = filteredInfo || {}

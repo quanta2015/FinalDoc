@@ -28,10 +28,6 @@ export default class Defense extends Component {
         return this.props.userStore.usr;
     }
 
-    @computed
-    get usr() {
-      return this.props.userStore.usr;
-    }
 
     async componentDidMount() {
         await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});

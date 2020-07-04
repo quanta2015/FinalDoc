@@ -27,10 +27,6 @@ export default class Home extends Component {
     return this.props.userStore.usr;
   }
 
-  @computed
-  get usr() {
-    return this.props.userStore.usr;
-  }
 
   // 接收子组件传来的值
   getChildrenMsg = (result, msg) => {

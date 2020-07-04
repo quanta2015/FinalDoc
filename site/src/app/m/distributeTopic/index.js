@@ -42,13 +42,8 @@ export default class Home extends Component {
 
     async componentDidMount() {
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-<<<<<<< HEAD
-        await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
-        await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
-=======
         await this.props.manageStore.getCheckList({"ide":this.usr.uid});
         await this.props.manageStore.getAuditCount({"ide":this.usr.uid});
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
         this.setState({
             checklist_info: toJS(this.distributeTopic.checklist_info),
             auditCount: toJS(this.distributeTopic.auditCount),

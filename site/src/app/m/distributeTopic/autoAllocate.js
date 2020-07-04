@@ -35,28 +35,6 @@ export default class AutoAllocate extends Component {
     get usr() {
         return this.props.userStore.usr;
     }
-<<<<<<< HEAD
-
-    async componentDidMount() {
-        await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
-        await this.props.manageStore.getTeaList({ "ide": this.usr.uid });
-        // 获取到教师列表
-        let tea = this.distributeTopic.teacher_info;
-
-        let teaName = []
-        tea.map((item) =>
-            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, name: item.Tname, value: item.maj + "-" + item.Tname + "-" + item.areas })
-        )
-        teaName.sort(function (a, b) {
-            if (a.value < b.value) {
-                return 1;
-            } else if (a.value > b.value) {
-                return -1;
-            }
-            return 0;
-        })
-=======
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
 
     async componentDidMount() {
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
@@ -109,15 +87,9 @@ export default class AutoAllocate extends Component {
             }else{
                 message.info("分配成功！")
             }
-<<<<<<< HEAD
-            await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-            await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
-            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
-=======
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({"ide":this.usr.uid})
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
             this.setState({
                 topic_info: toJS(this.distributeTopic.topic_info),
                 checklist_info: toJS(this.distributeTopic.checklist_info),
@@ -134,13 +106,9 @@ export default class AutoAllocate extends Component {
             num: 8,
             teaNum: Math.ceil(this.distributeTopic.topic_info.length / 8),
         })
-<<<<<<< HEAD
-        await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-=======
         /**************************/
         await this.props.manageStore.getTopicList({"ide":this.usr.uid})
         /**************************/
->>>>>>> 4c5bfdfd10d5d80a5592ca2ff98f11f4a3880867
     }
 
     maxNum = (value) => {
