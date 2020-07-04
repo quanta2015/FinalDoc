@@ -5,7 +5,7 @@ const router = express.Router();
 const callProc = require('../util').callProc
 
 router.post('/getTopicList', async (req, res) => {
-    let sql = `CALL PROC_CAL_GET_STU_SELECT_TOPIC`;
+    let sql = `CALL PROC_CAL_GET_STU_SELECT_TOPIC(?)`;
     let params = req.body;
     console.log(params)
     callProc(sql, params, res, (r) => {
