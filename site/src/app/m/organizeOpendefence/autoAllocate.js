@@ -41,7 +41,7 @@ export default class AutoAllocate extends Component {
         this.props.select_member.map((item) => member_x.push(item.split(" ")[0]))
         console.log(member_x,"memeber_x")
 
-        let temp = { "leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "number": this.state.num }
+        let temp = {"ide":this.usr.uid ,"leader_id": this.props.select_leader.split(" ")[0], "teacher_id": member_x, "number": this.state.num }
         console.log(temp)
 
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);

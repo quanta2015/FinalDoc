@@ -15,7 +15,7 @@ export default class Defense extends Component {
         select_member: [],
         new_arr: [],
         teacher_info: [],
-        group_info:[],
+        group_list:[],
         value: 1,
     }
 
@@ -23,21 +23,10 @@ export default class Defense extends Component {
     get openDefenseGroup() {
         return this.props.manageStore.openDefenseGroup;
     }
+
     @computed
     get usr() {
         return this.props.userStore.usr;
-    }
-
-
-    async componentDidMount() {
-        await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
-        let tea = toJS(this.openDefenseGroup.teacher_info);
-        console.log(this.state.tea)
-
-
-        // console.log(topic)
-        this.setState({ teacher_info: tea }, () => { this.toParent() });
-
     }
 
     addSelectTeacher = (value) => {
@@ -70,15 +59,17 @@ export default class Defense extends Component {
         // 很奇怪这里的result就是子组件那bind的第一个参数this，msg是第二个参数
         this.setState({
             teacher_info: msg.teacher_info,
-            group_info:msg.group_info
+            group_list:msg.group_list
         })
     }
 
-    toParent=()=>{
-        let msg={teacher_info:toJS(this.state.teacher_info),
-        group_info:toJS(this.state.group_info)}
-        this.props.parent.getChildrenMsg(this, msg)
-    }
+    // toParent=()=>{
+    //     let msg={
+    //         teacher_info:toJS(this.state.teacher_info),
+    //         group_list:toJS(this.state.group_list)
+    //     }
+    //     this.props.parent.getChildrenMsg(this, msg)
+    // }
 
     clear = () => {
         this.setState({
@@ -89,7 +80,7 @@ export default class Defense extends Component {
 
     render() {
         this.state.new_arr = [];
-        for (let i of this.state.teacher_info) {
+        for (let i of this.props.teacher_info) {
             if (this.state.select_member.indexOf(i.tid) == -1) {
                 this.state.new_arr.push(i);
 
@@ -137,7 +128,7 @@ export default class Defense extends Component {
                                 optionLabelProp="label"
                                 allowClear
                             >
-                                {this.state.teacher_info.map((item, i) =>
+                                {this.props.teacher_info.map((item, i) =>
                                     (item.tid !== this.state.select_leader) && <Select.Option label={item.name}
                                         key={item.tid}>{item.value}</Select.Option>
                                 )}
