@@ -1,6 +1,4 @@
 import { Component } from 'preact';
-import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
 import './detail.css';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip } from 'antd';
 
@@ -13,8 +11,6 @@ const paginationProps = {
 	}),
 }
 
-@inject('manageStore')
-@observer
 export default class Detail extends Component {
 	state = {
 		filteredInfo: null,
@@ -98,11 +94,6 @@ export default class Detail extends Component {
 			visible: false,
 		});
 	};
-
-	@computed
-	get distributeTopic() {
-		return this.props.manageStore.distributeTopic;
-	}
 
 	render() {
 		let { filteredInfo } = this.state;

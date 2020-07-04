@@ -5,7 +5,7 @@ import autoAllocate from './AutoAllocate.css';
 import { InputNumber, Select, Button, message } from 'antd';
 const { Option } = Select;
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class AutoAllocate extends Component {
     state = {
@@ -31,54 +31,32 @@ export default class AutoAllocate extends Component {
         return this.props.manageStore.distributeTopic;
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList();
-        await this.props.manageStore.getTeaList();
-        // 获取到教师列表
-        let tea = this.distributeTopic.teacher_info;
-
-        let teaName = []
-        tea.map((item) =>
-            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, name: item.Tname, value: item.maj + "-" + item.Tname + "-" + item.areas })
-        )
-        teaName.sort(function (a, b) {
-            if (a.value < b.value) {
-                return 1;
-            } else if (a.value > b.value) {
-                return -1;
-            }
-            return 0;
-        })
-
+        await this.props.manageStore.getTopicList({"ide":this.usr.uid});
+        await this.props.manageStore.getTeaList({"ide":this.usr.uid});
         let tea_num = Math.ceil(this.distributeTopic.topic_info.length / this.state.num);
-        // console.log(tea_num)
-
-
-        this.setState({ teacher_info: teaName, teaNum: tea_num });
+        this.setState({ teacher_info: toJS(this.distributeTopic.teacher_info), teaNum: tea_num });
     }
 
     addSelectTeacher = (value) => {
-        // let topic_num = this.state.num
-        // let tea_num = this.state.teaNum
         if (value.length > this.state.teaNum) {
-            // topic_num = parseInt(this.distributeTopic.topic_info.length / value.length)
-            // tea_num = value.length
             // 删除最后一项
             value.pop()
             message.info("分配审核课题数量为" + this.state.num + "篇，最多只能选择" + this.state.teaNum + "位教师")
         }
         this.setState({
             select_teacher: value,
-            // num: topic_num,
-            // teaNum: tea_num
-        }, () => { console.log(this.state.select_teacher) })
+        })
     }
 
     // 给父组件传值
     toParent = () => {
-        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
         let msg = {checklist_info:toJS(this.state.checklist_info), auditCount:toJS(this.state.auditCount)}
-        console.log(msg.auditCount);
         this.props.parent.getChildrenMsg(this, msg)
     }
 
@@ -109,16 +87,14 @@ export default class AutoAllocate extends Component {
             }else{
                 message.info("分配成功！")
             }
-            await this.props.manageStore.getTopicList()
-            await this.props.manageStore.getCheckList()
-            await this.props.manageStore.getAuditCount()
+            await this.props.manageStore.getTopicList({"ide":this.usr.uid})
+            await this.props.manageStore.getCheckList({"ide":this.usr.uid})
+            await this.props.manageStore.getAuditCount({"ide":this.usr.uid})
             this.setState({
-                // topic_info: toJS(this.distributeTopic.teacher_info),
                 topic_info: toJS(this.distributeTopic.topic_info),
                 checklist_info: toJS(this.distributeTopic.checklist_info),
                 auditCount: toJS(this.distributeTopic.auditCount),
             },()=>{
-                console.log(this.state.auditCount)
                 this.toParent()
             })
         } else {
@@ -130,7 +106,9 @@ export default class AutoAllocate extends Component {
             num: 8,
             teaNum: Math.ceil(this.distributeTopic.topic_info.length / 8),
         })
-        await this.props.manageStore.getTopicList()
+        /**************************/
+        await this.props.manageStore.getTopicList({"ide":this.usr.uid})
+        /**************************/
     }
 
     maxNum = (value) => {

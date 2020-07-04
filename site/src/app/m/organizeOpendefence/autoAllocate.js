@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { InputNumber, Select, Button, message, Form } from 'antd';
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class AutoAllocate extends Component {
     state = {
@@ -17,8 +17,13 @@ export default class AutoAllocate extends Component {
         return this.props.manageStore.openDefenseGroup;
     }
 
+    @computed
+    get usr() {
+      return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList_ogp();
+        await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
         this.setState({
             topic_num: toJS(this.openDefenseGroup.topic_info).length,
         })
@@ -41,13 +46,9 @@ export default class AutoAllocate extends Component {
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             message.info("成功添加答辩小组！")
-            await this.props.manageStore.getTeacherList_ogp();
-            let teacher = toJS(this.openDefenseGroup.teacher_info);
-            console.log(teacher)
-             
-            // 获取到教师列表
+            await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
             this.setState({
-                teacher_info: teacher
+                teacher_info: toJS(this.openDefenseGroup.teacher_info),
             }, () => { this.toParent() });
 
         } else {
@@ -80,13 +81,16 @@ export default class AutoAllocate extends Component {
         return (
             <div class="auto-allocate">
                 <div class="select-group">
-                    <div class="lable">学生数量</div>
+                    {/* <div class="lable">学生数量</div>
                     <div class="choose">
                         <InputNumber style={{ width: 50 }} min={1} max={this.state.topic_num} value={this.state.num} onChange={this.setNum} />
-                    </div>
+                    </div> */}
+                    <div class="choose_num">还有<span class="stu_num">{this.state.topic_num}</span>位学生未被选择 为该组选择
+                        <InputNumber style={{ width: 50 }} min={1} max={this.state.topic_num} value={this.state.num} onChange={this.setNum} />
+                    位</div>
                 </div>
-                <div>
-                    <Button onClick={this.clear}>重置</Button>
+                <div class="btn">
+                    <Button className="reset" onClick={this.clear}>重置</Button>
                     <Button type="primary" onClick={this.autoDistribute}> 提交</Button>
                 </div>
             </div>

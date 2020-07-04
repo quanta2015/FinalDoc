@@ -10,7 +10,7 @@
 }
 
 .defs_tea {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .select-group {
@@ -37,4 +37,49 @@
 .auto-allocate{
     display: flex;
     flex-direction: column;
+}
+
+.choose_num {
+    font-size: 16px;
+    line-height: 40px;
+}
+
+.stu_num {
+    margin: 0 5px;
+    font-weight: bold;
+    font-size: 21px;
+    color: #333;
+}
+
+.choose_num .ant-input-number{
+    margin: 0 5px ;
+}
+
+.choose_num .ant-input-number-handler-wrap{
+    display:none
+}
+
+.choose_num .ant-input-number {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid;
+}
+
+.choose_num .ant-input-number-input {
+    font-size: 21px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.reset {
+    margin-right: 10px;
+}
+
+.ant-radio-wrapper span {
+    font-size: 16px;
+}
+
+.btn {
+    margin-top: 15px;
 }

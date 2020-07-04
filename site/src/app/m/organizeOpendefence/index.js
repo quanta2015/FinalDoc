@@ -10,7 +10,7 @@ import "./style.css";
 
 const { TabPane } = Tabs;
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class Home extends Component {
   state = {
@@ -19,13 +19,13 @@ export default class Home extends Component {
   }
 
   @computed
-  get distributeTopic() {
-    return this.props.manageStore.distributeTopic;
+  get openDefenseGroup() {
+    return this.props.manageStore.openDefenseGroup;
   }
 
   @computed
-  get openDefenseGroup() {
-    return this.props.manageStore.openDefenseGroup;
+  get usr() {
+    return this.props.userStore.usr;
   }
 
   // 接收子组件传来的值
@@ -38,7 +38,7 @@ export default class Home extends Component {
   }
 
   async componentDidMount() {
-    await this.props.manageStore.getGroupList_ogp();
+    await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
     this.setState({
       group_list: toJS(this.openDefenseGroup.group_list),
     }, () => {

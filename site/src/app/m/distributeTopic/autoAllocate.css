@@ -36,3 +36,20 @@
 .select_tea {
     margin: 10px 0;
 }
+
+.info .ant-input-number-handler-wrap{
+    display:none
+}
+
+.info .ant-input-number {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid;
+}
+
+.info .ant-input-number-input {
+    font-size: 21px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}

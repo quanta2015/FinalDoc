@@ -15,7 +15,7 @@ import { inject, observer } from 'mobx-react'
 //   role:2    // 0: teacher 1:student 2: manage
 // }
 
-@inject('manageStore')
+@inject('userStore')
 @observer
 class App extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class App extends Component {
 
   @computed
   get usr() {
-    return this.props.manageStore.usr;
+    return this.props.userStore.usr;
   }
 
   render() {

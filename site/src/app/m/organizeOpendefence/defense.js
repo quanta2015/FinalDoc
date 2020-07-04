@@ -7,7 +7,7 @@ import ManualAllocate from "./manualAllocate.js"
 import AutoAllocate from './autoAllocate.js';
 
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class Defense extends Component {
     state = {
@@ -23,8 +23,13 @@ export default class Defense extends Component {
         return this.props.manageStore.openDefenseGroup;
     }
 
+    @computed
+    get usr() {
+      return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTeacherList_ogp();
+        await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
         let tea = toJS(this.openDefenseGroup.teacher_info);
         console.log(this.state.tea)
 

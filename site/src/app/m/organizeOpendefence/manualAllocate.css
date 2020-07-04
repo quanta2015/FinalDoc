@@ -9,21 +9,30 @@ tbody.ant-table-tbody {
     display: flex;
 }
 
+.head_info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
 
 .noTopicNums {
-    position: relative;
-    bottom: -45px;
+    /* position: relative; */
+    /* bottom: -45px; */
     font-size: 16px;
-    font-weight: bold;
-    width: 200px;
+    /* font-weight: bold; */
+    /* width: 200px; */
 }
+
 .manu-table{
     display: flex;
     flex-direction: column;
 }
 .manu-btn{
     text-align: right;
-    
+}
+
+.manu-btn .reset{
+    margin-right: 10px;
 }
 
 .ogp_headAllocate_table .ant-table-cell {

@@ -2,15 +2,13 @@ import BaseActions from '../component/BaseActions'
 import { observable, action, runInAction } from 'mobx'
 import * as urls from '../constant/urls'
 
-
-
 class manager extends BaseActions {
 
-  @observable
-  usr = {
-    name: '专业负责人',
-    role: 2    // 0: teacher 1:student 2: manage
-  }
+  // @observable
+  // usr = {
+  //   name: '专业负责人',
+  //   role: 2    // 0: teacher 1:student 2: manage
+  // }
 
   // 分配审核课题
   @observable
@@ -29,36 +27,65 @@ class manager extends BaseActions {
 
 
   @action
-  async getTeaList() {
-    const res = await this.post(urls.API_MAN_GET_TEALIST, null);
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTeaList(param) {
+    const res = await this.post(urls.API_MAN_GET_TEALIST, param);
+    let teaName = [];
+    res.data.map((item) =>
+      teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
+    )
+    teaName.sort(function (a, b) {
+      if (a.value < b.value) {
+        return 1;
+      } else if (a.value > b.value) {
+        return -1;
+      }
+      return 0;
+    })
+
     runInAction(() => {
-      this.distributeTopic.teacher_info = res.data;
+      this.distributeTopic.teacher_info = teaName;
     })
   }
 
   @action
-  async getTopicList() {
-    const res = await this.post(urls.API_MAN_GET_TOPICLIST, null);
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTopicList(param) {
+    const res = await this.post(urls.API_MAN_GET_TOPICLIST, param);
+    let topicList = [];
+    res.data.map((item) =>
+      topicList.push({
+        key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+        areas: item.areas.split(","),
+        color: item.color.split(",")
+      })
+    )
     runInAction(() => {
-      this.distributeTopic.topic_info = res.data;
+      this.distributeTopic.topic_info = topicList;
     })
   }
 
   // 手动分配审核选题
+  // [{ "teacher_id": "20130006", "topic_id": ["1","2","3"] }]
   @action
   async allocateTopic(param) {
     return await this.post(urls.API_MAN_POST_ALLOCATETOPIC, param)
   }
 
   // 自动分配审核选题
+  // [5,"20130006","20181025"]
   @action
   async autoAllocateTopic(param) {
     return await this.post(urls.API_MAN_POST_AUTOALLOCATETOPIC, param)
   }
 
   @action
-  async getCheckList() {
-    let res = await this.post(urls.API_MAN_POST_CHECKLIST, null);
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getCheckList(param) {
+    let res = await this.post(urls.API_MAN_POST_CHECKLIST, param);
     let r = res.data
     // 同一老师课题放一起，按未通过、通过、未审核排序
     r.sort(function (a, b) {
@@ -83,8 +110,10 @@ class manager extends BaseActions {
   }
 
   @action
-  async getAuditCount() {
-    let res = await this.post(urls.API_MAN_POST_AUDITCOUNT, null);
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getAuditCount(param) {
+    let res = await this.post(urls.API_MAN_POST_AUDITCOUNT, param);
     runInAction(() => {
       this.distributeTopic.auditCount = res.data[0];
     })
@@ -110,8 +139,10 @@ class manager extends BaseActions {
   }
 
   @action
-  async getTopicList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, null);
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTopicList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, param);
     let topic = []
     // 同一老师课题放一起，按未通过、通过、未审核排序
     res.data.map((item) =>
@@ -131,8 +162,10 @@ class manager extends BaseActions {
   }
 
   @action
-  async getTeacherList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, null);
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTeacherList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, param);
     let teacher = []
     // 同一老师课题放一起，按未通过、通过、未审核排序
     res.data.map((item) =>
@@ -157,21 +190,27 @@ class manager extends BaseActions {
       this.openDefenseGroup.teacher_info = teacher;
     })
   }
-  // 自动分配审核选题
+
+  // 自动分配答辩课题
+  // {"leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
   @action
   async autoAllocateTopic_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param)
   }
 
-  // 手动分配审核选题
+  // 手动分配答辩课题
+  // {"leader_id":"20170056","teacher_id":["20020070","20021092","20020782","20021105"],"topic_id":[3,4,5,6,7]}
   @action
   async manualAllocateTopic_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_MANUALALLOCATETOPIC, param)
   }
 
   @action
-  async getGroupList_ogp() {
-    const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, null);
+  // 开题答辩小组的信息
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getGroupList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, param);
     let group = [];
     res.data.map((item, i) => {
       group.push({
@@ -187,7 +226,7 @@ class manager extends BaseActions {
   }
 
   // 组内课题详情
-  // {group_id:int}
+  // {"group_id":int}
   @action
   async topicDetailList_ogp(param) {
     let res = await this.post(urls.API_MAN_POST_OGP_TDETAILLIST, param)
@@ -204,14 +243,11 @@ class manager extends BaseActions {
   }
 
   // 删除某个分组
+  // {"gid":int}
   @action
   async deleteGroup_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
   }
-
-
-
-
 }
 
 export default new manager()
