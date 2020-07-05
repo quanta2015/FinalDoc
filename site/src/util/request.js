@@ -22,7 +22,6 @@ export default(url, options = {}, allRes = false) => {
     if (r && r.status === 200) {
       return r.data
     } else {
-      console.log(r)
       message.error('网络错误')
     }
   })

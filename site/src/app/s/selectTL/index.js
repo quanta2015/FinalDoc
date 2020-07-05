@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space } from 'antd';
+import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
 import 'antd/dist/antd.css';
@@ -25,6 +25,7 @@ export default class TopicList extends Component {
         isAudi: false,
         searchText: '',
         searchedColumn: '',
+        loading: false,
     }
     @computed
     get usr() {
@@ -53,7 +54,7 @@ export default class TopicList extends Component {
                         isAudi: true,
                     })
                 } else {
-                    this.props.studentStore.getTopicList()
+                    this.props.studentStore.getTopicList({ uid: this.usr.id })
                         .then(r => {
                             if (r.length) {
                                 r.map((item) => {
@@ -162,8 +163,14 @@ export default class TopicList extends Component {
                     del[i] = "primary"
                 }
                 this.setState({
-                    topicList: [...tmp, ...rec]
+                    loading: true,
                 })
+                setTimeout(() => {
+                    this.setState({
+                        loading: false,
+                        topicList: [...tmp, ...rec]
+                    })
+                }, 600)
                 this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
             } else { // 点击选定后
                 selectedRowKeys.push(0);
@@ -185,7 +192,7 @@ export default class TopicList extends Component {
             cha[0] = "选定"
             del[0] = "primary"
             topicList[0].status = '——';
-            this.props.studentStore.getTopicList()
+            this.props.studentStore.getTopicList({ uid: this.usr.id })
                 .then(r => {
                     tmp[0].status = '——';
                     r.map((item) => {
@@ -197,8 +204,15 @@ export default class TopicList extends Component {
                         })
                     })
                     this.setState({
-                        topicList: [...tmp, ...rec]
+                        loading: true,
                     })
+                    setTimeout(() => {
+                        this.setState({
+                            loading: false,
+                            topicList: [...tmp, ...rec]
+                        })
+                    }, 600)
+
                 })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
         }
@@ -217,7 +231,6 @@ export default class TopicList extends Component {
                 topicList[i].key = i;
                 del.push("primary")
                 cha.push("选定")
-                console.log('s', del[i], cha[i])
                 if (!tea.includes(topicList[i].instructor)) {
                     tea.push(topicList[i].instructor)
                 }
@@ -233,7 +246,6 @@ export default class TopicList extends Component {
                     topicList[i].status = 1
                     del.push("text")
                     cha.push("取消")
-                    console.log('d', del[i], cha[i])
                     if (!tea.includes(topicList[i].instructor)) {
                         tea.push(topicList[i].instructor)
                     }
@@ -337,20 +349,22 @@ export default class TopicList extends Component {
         return (
             <div className="g-table">
                 <h3 className="m-title bold">课题列表</h3>
-                <Table
-                    columns={columns}
-                    dataSource={this.state.topicList}
-                    rowKey={item => item.id}
-                    pagination={paginationProps}
-                    onRow={record => {
-                        return {
-                            onMouseEnter: e => {
-                                this.state.rowDetail = record
+                <Spin spinning={this.state.loading}>
+                    <Table
+                        columns={columns}
+                        dataSource={this.state.topicList}
+                        rowKey={item => item.id}
+                        pagination={paginationProps}
+                        onRow={record => {
+                            return {
+                                onMouseEnter: e => {
+                                    this.state.rowDetail = record
+                                }
                             }
                         }
-                    }
-                    }
-                />
+                        }
+                    />
+                </Spin>
                 <Modal
                     title="课题详情"
                     visible={this.state.visible}

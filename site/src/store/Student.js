@@ -30,8 +30,8 @@ class Student extends BaseActions {
     }
 
     @action
-    async getTopicList() {
-        const r = await this.post(urls.API_STU_GET_TTLLIST, null);
+    async getTopicList(params) {
+        const r = await this.post(urls.API_STU_GET_TTLLIST, params);
         if (r && r.code === 200) {
             runInAction(() => {
                 this.topicList = r.data
