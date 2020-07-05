@@ -18,7 +18,7 @@ const data = [
     {
         content: 'Ant Design Title 3',
         datetime: moment().format('YYYY年MM月DD日 HH:MM:SS'),
-        place: '学校'
+        place: '网络'
     },
     {
         content: 'Ant Design Title 4',
@@ -53,7 +53,7 @@ class LogDrawer extends Component {
             editedItemIndex: null,
             value: '',
             isInEdit: false,
-            sel: '',
+            sel: '学校',
         }
     }
 
@@ -110,6 +110,7 @@ class LogDrawer extends Component {
         this.setState({
             value: item.content,
             editedItemIndex: comments.indexOf(item),
+            sel: item.place,
             isInEdit: true,
         }, () => {
             console.log('edit', comments);
@@ -125,7 +126,13 @@ class LogDrawer extends Component {
         console.log(comments)
     }
     handleSelChange = (value) => {
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
+    }
+    handleSelect = (value, elem) => {
+        console.log(elem.key, elem.value)
+        this.setState({
+            sel: elem.key
+        })
     }
 
     render() {
@@ -154,13 +161,15 @@ class LogDrawer extends Component {
                     }
                 >
                     <Select
-                        defaultValue="学校"
+                        defaultValue={this.state.sel}
                         style={{ width: 120 }}
                         onChange={this.handleSelChange}
-                        // ref={selectItem => this.selectItem = selectItem}
+                        onSelect={this.handleSelect}
+                        value={this.state.sel}
+                    // ref={selectItem => this.selectItem = selectItem}
                     >
-                        <Option value="学校">学校</Option>
-                        <Option value="网络">网络</Option>
+                        <Option value="学校" key="学校">学校</Option>
+                        <Option value="网络" key="网络">网络</Option>
                     </Select>
                     <Comment
                         // avatar={
