@@ -1,41 +1,193 @@
-import { Component } from 'preact';
-import {  Input, Button, Spin, message } from 'antd'
-import { inject } from 'mobx-react'
-// import { Redirect } from 'react-router-dom'
-import './index.scss'
-import { route } from 'preact-router';
+import { Component } from "preact";
+import { inject, observer } from "mobx-react";
+import { computed } from "mobx";
+import "./style.scss";
+import {
+  InputNumber,
+  Select,
+  Button,
+  message,
+  Icon,
+  Form,
+  Input,
+  Divider,
+  Checkbox,
+} from "antd";
+import { route } from "preact-router";
 
-@inject('userStore')
+const { Option } = Select;
+
+@inject("userStore")
+@observer
 class Login extends Component {
-	constructor(props) {
-		super(props)
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      username: "",
+      password: "",
+      rememberMe: true,
+    };
+  }
 
-	doLogin=async ()=>{
-		let r = await this.props.userStore.login()
-		
-		switch(r.role) {
-			case 0: route('/t');break;
-			case 1: route('/s');break;
-			case 2: route('/m');break;
-		}	
-	}
+  @computed
+  get currUser() {
+    return this.props.userStore.currUser;
+  }
 
-  
-	render() {
+  // doLogin = () => {
+  //   this.props.form.validateFields(async (err, values) => {
+  //     if (err) {
+  //       return;
+  //     }
 
-		return (
-				<div className='g-login'>
-					<div className="m-login">
-						<input placeholder="学号"/>
-						<input placeholder="密码"/>
-						<button type="primary" className="input-btn" block onClick={this.doLogin}>登 录</button>
-					</div>
-						
-								
-				</div>
-		)
-	}
+  //     console.log(values);
+
+  //     this.props.userStore.login(values).then((r) => {
+  //       console.log('接收',r)
+  //       if (r && r.code === 200) {
+  //         console.log('succ')
+  //         message.success(r.msg);
+  //       } else if (r && r.code === 301) {
+  //         console.log('fail')
+  //         message.error(r.msg);
+  //       }
+  //     });
+  //   });
+  // };
+  getlayout = () => {
+    const layout = {
+      labelAlign: "left",
+      hideRequiredMark:true,
+      labelCol: { span: 8 },
+      wrapperCol: { offset: 0, span: 16 },
+    };
+    return layout;
+  };
+  gettailLayout = () => {
+    const tailLayout = {
+      wrapperCol: { offset: 0, span: 16 },
+    };
+    return tailLayout;
+  };
+
+  getonFinish = () => {
+    const onFinish = (values) => {
+      this.props.userStore.login(values).then((r)=>{
+        //console.log('=========75==================',r)
+        if (r.data&& r.code === 200) {
+          
+          message.success(r.msg);
+          route('/',true)
+        } else if (r.code===301) {
+          message.error(r.msg);
+        }
+      
+    //  console.log("Success:", values);
+      })
+       
+
+    };
+    return onFinish;
+  };
+
+  getonFinishFailed = () => {
+    const onFinishFailed = (errorInfo) => {
+    //  console.log("Failed:", errorInfo);
+    };
+    return onFinishFailed;
+  };
+
+  render() {
+    return (
+      <>
+        <div className="rootbody">
+          <div className="root">
+            <div className="fake_background">
+              <div className='cap_logo'></div>
+              <div className='xiaoxun'></div>
+            </div>
+            <div className="right_box">
+              <div className="logo_box">
+                <div className="logo">
+                </div>
+              </div>
+              <div className="login_box">
+                <div className="login_body">
+                  <div className="login_box">
+                    <Form
+                      {...this.getlayout()}
+                      name="basic"
+                      initialValues={{ remember: true }}
+                      onFinish={this.getonFinish()}
+                      onFinishFailed={this.getonFinishFailed()}
+                      layout={"vertical"}
+                    >
+                      <Form.Item
+                        className="label-text"
+                        label="ID"
+                        name="uid"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your ID!",
+                          },
+                        ]}
+                      >
+                        <Input className="input_box" />
+                      </Form.Item>
+
+                      <Form.Item
+                        className="label-text"
+                        label="Password"
+                        name="password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your password!",
+                          },
+                        ]}
+                      >
+                        <Input.Password className="input_box" />
+                      </Form.Item>
+
+                      <Form.Item {...this.gettailLayout()}>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          className="subit_buttom"
+                         
+                        >
+                          Submit
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                    <div className="under_sign">
+                      <div className="remember">
+                        <Checkbox>Remember me?</Checkbox>
+                      </div>
+                      <div>
+                        <span>Forgot password?</span>
+                        <br></br>
+                        <br></br>
+                        <div className="url_login">
+                          <span>统一身份认证登录</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="login_title">
+                    <span>毕业论文管理系统</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 }
+
 
 export default Login
