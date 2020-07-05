@@ -1,7 +1,10 @@
 import BaseActions from '../component/BaseActions'
-import { observable, action } from 'mobx'
-import axios from 'axios'
+import { observable, action, runInAction } from 'mobx'
 import * as urls from '../constant/urls'
+import axios from 'axios'
+import { message } from 'antd'
+
+import token from '../util/token.js'
 
 var ROLE = 2
 
@@ -22,11 +25,7 @@ class User extends BaseActions {
     return this.usr
   }
 
-  @action
-  async login() {
-    this.usr.role = ROLE
-    return { role: this.usr.role }
-  }
+
 
   @action
 	async login(params) {
@@ -35,9 +34,9 @@ class User extends BaseActions {
 		if (r) {
 			runInAction(() => {
 				token.saveUser(r.data)
-				this.currUser = r.data
+				this.usr = r.data[0]
 				console.log(r.data)
-				console.log(this.currUser)
+				console.log(this.usr)
 			})
 			console.log("判断成功")
 			return r

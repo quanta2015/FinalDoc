@@ -58,7 +58,7 @@ class Login extends Component {
   getlayout = () => {
     const layout = {
       labelAlign: "left",
-      hideRequiredMark:true,
+      hideRequiredMark: true,
       labelCol: { span: 8 },
       wrapperCol: { offset: 0, span: 16 },
     };
@@ -73,19 +73,24 @@ class Login extends Component {
 
   getonFinish = () => {
     const onFinish = (values) => {
-      this.props.userStore.login(values).then((r)=>{
+      this.props.userStore.login(values).then((r) => {
         //console.log('=========75==================',r)
-        if (r.data&& r.code === 200) {
-          
+        if (r.data && r.code === 200) {
+
           message.success(r.msg);
-          route('/',true)
-        } else if (r.code===301) {
+          if (r.data[0].role == 0)
+            route('/t', true)
+          if (r.data[0].role == 2)
+            route('/m', true)
+          if (r.data[0].role == 1)
+            route('/s', true)
+        } else if (r.code === 301) {
           message.error(r.msg);
         }
-      
-    //  console.log("Success:", values);
+
+        //  console.log("Success:", values);
       })
-       
+
 
     };
     return onFinish;
@@ -93,15 +98,15 @@ class Login extends Component {
 
   getonFinishFailed = () => {
     const onFinishFailed = (errorInfo) => {
-    //  console.log("Failed:", errorInfo);
+      //  console.log("Failed:", errorInfo);
     };
     return onFinishFailed;
   };
 
   render() {
     return (
-      <>
-        <div className="rootbody">
+      <div data-component="login">
+        <div className="rootbody" >
           <div className="root">
             <div className="fake_background">
               <div className='cap_logo'></div>
@@ -156,7 +161,7 @@ class Login extends Component {
                           type="primary"
                           htmlType="submit"
                           className="subit_buttom"
-                         
+
                         >
                           Submit
                         </Button>
@@ -184,7 +189,7 @@ class Login extends Component {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

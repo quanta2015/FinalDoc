@@ -3,6 +3,7 @@ import { API_SERVER } from './apis'
 
 // 用户接口声明
 export const API_USR_XXXXXX = API_SERVER + '/userXXXXXX'
+export const API_USR_LOGIN = API_SERVER +'/user/login'
 
 // 系统接口声明
 export const API_SYS_XXXXXX = API_SERVER + '/sysXXXXXX'

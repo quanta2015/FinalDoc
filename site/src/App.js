@@ -23,12 +23,13 @@ class App extends Component {
 
   @computed
   get usr() {
+    
     return this.props.userStore.usr;
   }
 
 
   render() {
-
+    console.log(this.usr)
     return (
       <div id="app">
         { (this.usr.role == 0) && <NavT/> }
@@ -36,7 +37,7 @@ class App extends Component {
         { (this.usr.role == 2) && <NavM/> }
 
         <div id="context">
-        <Router >
+        <Router onChange={this.handleRoute}>
           {/* 系统模块 */}
           <AsyncRoute path='/'  getComponent={ () => import('./app/login').then(module => module.default) } />
           
