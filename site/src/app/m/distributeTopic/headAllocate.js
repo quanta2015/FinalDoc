@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import headAllocate from './headAllocate.css';
+import  './headAllocate.css';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -50,11 +50,6 @@ export default class HeadAllocate extends Component {
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
         await this.props.manageStore.getTeaList({"ide":this.usr.uid});
         await this.props.manageStore.getAreasList();
-        // 获取到教师列表
-        this.setState({
-            teacher_info: toJS(this.distributeTopic.teacher_info),
-            topic_info: toJS(this.distributeTopic.topic_info),
-        });
     }
 
     onSelectChange = (selectedRowKeys) => {
@@ -178,13 +173,6 @@ export default class HeadAllocate extends Component {
         })
     }
 
-    // 给父组件传值
-    toParent = () => {
-        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
-        let msg = {checklist_info:toJS(this.state.checklist_info), auditCount:toJS(this.state.auditCount)}
-        console.log(msg.auditCount);
-        this.props.parent.getChildrenMsg(this, msg)
-    }
 
     // 提交手动分配
     handDistribute = async () => {
@@ -199,15 +187,7 @@ export default class HeadAllocate extends Component {
             message.info("分配成功！")
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
-            await this.props.manageStore.getAuditCount()
-
-            this.setState({
-                topic_info: toJS(this.distributeTopic.topic_info),
-                checklist_info: toJS(this.distributeTopic.checklist_info),
-                auditCount: toJS(this.distributeTopic.auditCount),
-            },()=>{
-                this.toParent()
-            });
+            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
         } else {
             message.info("分配失败！请重试")
         }
@@ -259,11 +239,8 @@ export default class HeadAllocate extends Component {
                 filterMultiple: false,
                 onFilter: (value, record) =>
                     record.areas.indexOf(value) !== -1,
-
                 render: (areas, record) => (
                     <>
-
-
                         {
                             // console.log(areas),
                             areas.map((tag, i) => {
@@ -305,7 +282,7 @@ export default class HeadAllocate extends Component {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                         >
-                            {this.state.teacher_info.map((item, i) =>
+                            {this.distributeTopic.teacher_info.map((item, i) =>
                                 <Select.Option key={item.tid}>{item.value}</Select.Option>
                             )}
                         </Select>
@@ -322,7 +299,7 @@ export default class HeadAllocate extends Component {
                         onChange={this.handleChange}
                         rowSelection={rowSelection}
                         columns={columns}
-                        dataSource={this.state.topic_info}
+                        dataSource={this.distributeTopic.topic_info}
                         pagination={paginationProps}
                         onRow={(record) => {
                             return {

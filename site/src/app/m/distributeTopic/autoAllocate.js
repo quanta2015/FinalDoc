@@ -1,16 +1,14 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed,toJS } from 'mobx';
-import autoAllocate from './AutoAllocate.css';
 import { InputNumber, Select, Button, message } from 'antd';
+import "./autoAllocate.css"
 const { Option } = Select;
 
 @inject('manageStore','userStore')
 @observer
 export default class AutoAllocate extends Component {
     state = {
-        // uid,maj,name,area
-        teacher_info: [],
         //已选择的老师
         select_teacher: [],
         // 最大可分配课题数目
@@ -19,9 +17,6 @@ export default class AutoAllocate extends Component {
         teaNum: 0,
         // 分配数目
         num: 8,
-        
-        // 已分配课题列表
-        checklist_info: [],
         // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
         auditCount: {},
     }
@@ -52,12 +47,6 @@ export default class AutoAllocate extends Component {
         this.setState({
             select_teacher: value,
         })
-    }
-
-    // 给父组件传值
-    toParent = () => {
-        let msg = {checklist_info:toJS(this.state.checklist_info), auditCount:toJS(this.state.auditCount)}
-        this.props.parent.getChildrenMsg(this, msg)
     }
 
     // 提交自动分配
@@ -92,13 +81,6 @@ export default class AutoAllocate extends Component {
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({"ide":this.usr.uid})
-            this.setState({
-                topic_info: toJS(this.distributeTopic.topic_info),
-                checklist_info: toJS(this.distributeTopic.checklist_info),
-                auditCount: toJS(this.distributeTopic.auditCount),
-            },()=>{
-                this.toParent()
-            })
         } else {
             message.info("分配失败！请重试")
         }
@@ -109,7 +91,7 @@ export default class AutoAllocate extends Component {
             teaNum: Math.ceil(this.distributeTopic.topic_info.length / 8),
         })
         /**************************/
-        await this.props.manageStore.getTopicList({"ide":this.usr.uid})
+        // await this.props.manageStore.getTopicList({"ide":this.usr.uid})
         /**************************/
     }
 
@@ -163,7 +145,7 @@ export default class AutoAllocate extends Component {
                         optionLabelProp="label"
                         allowClear
                     >
-                        {this.state.teacher_info.map((item, i) =>
+                        {this.distributeTopic.teacher_info.map((item, i) =>
                             <Select.Option label={item.name} key={item.tid}>{item.value}</Select.Option>
                         )}
                     </Select>

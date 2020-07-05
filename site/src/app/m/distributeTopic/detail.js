@@ -1,4 +1,6 @@
 import { Component } from 'preact';
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 import './detail.css';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip } from 'antd';
 
@@ -11,6 +13,9 @@ const paginationProps = {
 	}),
 }
 
+
+@inject('manageStore', 'userStore')
+@observer
 export default class Detail extends Component {
 	state = {
 		filteredInfo: null,
@@ -18,6 +23,23 @@ export default class Detail extends Component {
 		visible: false,
 		own: [],
 	}
+
+	@computed
+	get distributeTopic() {
+		return this.props.manageStore.distributeTopic;
+	}
+
+	@computed
+	get usr() {
+		return this.props.userStore.usr;
+	}
+
+	async componentDidMount() {
+		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
+		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
+		
+	}
+
 	handleChange = (filters) => {//筛选
 		this.setState({
 			filteredInfo: filters,
@@ -199,17 +221,18 @@ export default class Detail extends Component {
 			<div>
 				{/* 所有课题审核通过，才可以一键发布课题 */}
 				<div className="release">
-					<Tooltip placement="top" title={this.props.tooltipText}>
-						{(this.props.flag === 0) &&
+					<Tooltip placement="top" title={"仅" + this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, "+this.distributeTopic.topic_info.length+"篇未分配，不能发布所有课题"}>
+						
+						{(this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length === 0) &&
 							<Button type="primary" disabled>发布课题</Button>
 						}
-						{(this.props.flag === 1) &&
+						{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.topic_info.length === 0) &&
 							<Button type="primary">发布课题</Button>
 						}
 					</Tooltip>
 				</div>
 				<div className="detail_table">
-					<Table columns={columns} dataSource={this.props.checklist_info} tableLayout='fixed'
+					<Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
 						onRow={(record) => {
 							return {
 								onClick: () => {

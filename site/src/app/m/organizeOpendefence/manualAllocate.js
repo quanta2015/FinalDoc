@@ -129,7 +129,7 @@ export default class ManualAllocate extends Component {
             message.info("成功添加答辩小组！")
             await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
+            await this.props.manageStore.getGroupList_ogp({"ide": this.usr.uid });
         } else {
             message.info("分配失败！请重试")
         }
@@ -141,7 +141,6 @@ export default class ManualAllocate extends Component {
             selectedRowKeys: [],
         })
     }
-   
     render() {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
@@ -237,7 +236,6 @@ export default class ManualAllocate extends Component {
                     footer={null}
                     width="800px"
                 >
-
                     <div class="ogp-descrip">
                         <Descriptions
                             title=""
@@ -245,13 +243,9 @@ export default class ManualAllocate extends Component {
                         >
                             <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
                             <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-
                         </Descriptions>
                     </div>
                 </Modal>
-
-
-
             </div>
         );
     }

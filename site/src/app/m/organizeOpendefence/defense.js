@@ -138,8 +138,6 @@ export default class Defense extends Component {
                                 select_leader={this.state.select_leader}
                                 select_member={this.state.select_member}
                                 clear={this.clear}
-                                parent={this}
-                                
                             />
                         </div>
                     }
@@ -149,8 +147,6 @@ export default class Defense extends Component {
                                 select_leader={this.state.select_leader}
                                 select_member={this.state.select_member}
                                 clear={this.clear}
-                                parent={this}
-                                
                             />
                         </div>
                     }
