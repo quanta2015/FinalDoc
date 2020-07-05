@@ -14,7 +14,7 @@ const isValidFormat = (formatList, fileFormat) => {
     return true;
 }
 
-@inject('userStore')
+@inject('userStore', 'studentStore')
 @observer
 class FileUpload extends Component {
     state = {
@@ -25,7 +25,8 @@ class FileUpload extends Component {
 
     componentDidUpdate(prevProps) {
         let fileUrl = this.props.tpInfo[this.props.type.type];
-        if (this.props.tpInfo.id && fileUrl && fileUrl !== this.state.fileUrl) {
+        //有课题信息 && 该文件已上传 && 传入值与state值不一 && 传入值有变化
+        if (this.props.tpInfo.id && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
             this.setState({
                 fileUrl: fileUrl
             })
@@ -40,20 +41,36 @@ class FileUpload extends Component {
         if (info.file.status === 'done') {
             this.setState({
                 loading: false,
-                fileUrl: info.file.response.data.path
+                fileUrl: info.file.response.data
             })
             message.success(`成功上传文件《${info.file.name}》`)
         }
     }
 
     downloadFile = () => {
-        // this.props.userStore.downloadFile({ file: this.state.fileUrl })
-        // .then(r=>{
-        //     console.log(r)
-        // })
+        this.props.userStore.downloadFile({ file: this.state.fileUrl })
+        .then(r=>{
+            let type = r.headers['content-type'];
+            let data = new Blob([r.data],{
+                type: type
+            })
+            let blobUrl = window.URL.createObjectURL(data);
+            const a = document.createElement('a');
+            a.download = `${this.props.tpInfo.sid}_${this.props.type.name}`;
+            a.href = blobUrl;
+            document.body.appendChild(a)
+            a.click();
+            document.body.removeChild(a)
+            window.URL.revokeObjectURL(href)
+        }) 
+
     }
 
     beforeUpload = (file) => {
+        if(!file) {
+            this.setState({ fileUrl: '' })
+            return;
+        }
         // 文件格式约束
         let tag = true;
         let fileFormat = file.name.slice(file.name.indexOf('.') + 1);
@@ -68,6 +85,7 @@ class FileUpload extends Component {
         if(!isLt10M) {
             message.error('请重新选择文件，文件不得大于10M');
         }
+        
         return tag && isLt10M;
     }
 
@@ -88,10 +106,19 @@ class FileUpload extends Component {
     }
 
     handleDel = () => {
-        //todo: 后端接口 清空对应字段
-        this.setState({
-            fileUrl: '',
-            showDel: false
+        let params = { type: this.props.type.type, tid: this.props.tpInfo.tid, sid: this.props.tpInfo.sid};
+        this.props.studentStore.deleteFile(params)
+        .then(r => {
+            if(r.code === 200) {
+                this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
+                this.setState({
+                    fileUrl: "",
+                    showDel: false,
+                    loading: false
+                })
+            }else {
+                message.error('网络错误');
+            }
         })
     }
 
@@ -99,21 +126,25 @@ class FileUpload extends Component {
         // example: {name: "文献综述", type: "f_docs"}
         const fileType = this.props.type;
         const tpInfo = this.props.tpInfo;
-        const { fileUrl, showDel } = this.state;
+        const { fileUrl, showDel, loading } = this.state;
         const text = "点击下载已提交文件";
-        const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
         const uploadButton = (
             <div>
                 { this.state.loading ? <LoadingOutlined /> : <PlusOutlined /> }
                 < div className = "ant-upload-text" > 上传</div>
             </div>
         )
+        console.log(this.props.tpInfo, fileUrl, loading, showDel)
         return (
             <div className="g-file">
-                <div className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"} onMouseOver={this.handleHover} onMouseLeave={this.handleMouseOut}>
-                    {showDel && <CloseOutlined className="m-del" onClick={this.handleDel}/>}
+                <div 
+                    className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"} 
+                    onMouseOver={this.handleHover} 
+                    onMouseLeave={this.handleMouseOut} 
+                >
+                    {showDel && !loading && <CloseOutlined className="m-del" onClick={this.handleDel}/>}
                     <Upload
-                        name="avatar"
+                        name="file"
                         listType="picture-card"
                         className="avatar-uploader"
                         showUploadList={false}
@@ -122,7 +153,7 @@ class FileUpload extends Component {
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {fileUrl ? <CheckOutlined className="m-smile"/> : uploadButton}
+                        {(fileUrl && !loading) ? <CheckOutlined className="m-smile"/> : uploadButton}
                     </Upload>
                 </div>
                 {   fileUrl ?

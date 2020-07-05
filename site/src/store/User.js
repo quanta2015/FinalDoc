@@ -1,8 +1,7 @@
 import BaseActions from '../component/BaseActions'
 import { observable, action } from 'mobx'
+import axios from 'axios'
 import * as urls from '../constant/urls'
-
-
 
 class User extends BaseActions {
   @observable
@@ -23,9 +22,17 @@ class User extends BaseActions {
 
   @action
   async downloadFile(params) {
-    return await this.post(urls.API_SYS_DOWN_FILE, params)
+    return await axios({
+      url: urls.API_SYS_DOWN_FILE,
+      method: 'POST',
+      responseType: 'blob',
+      data: params
+    }).then(r => {
+      return r;
+    }).catch(e => {
+      console.log('网络错误')
+    })
   }
-
 }
 
 export default new User()
