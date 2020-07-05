@@ -178,6 +178,14 @@ export default class ManualAllocate extends Component {
                 dataIndex: 'classname',
                 key: 'classname',
                 ...this.getColumnSearchProps('classname'),
+                ellipsis: {
+                    showTitle: false,
+                },
+                render: classname => (
+                    <Tooltip placement="topLeft" title={classname}>
+                        {classname}
+                    </Tooltip>
+                ),
             },
             {
                 title: '指导教师',

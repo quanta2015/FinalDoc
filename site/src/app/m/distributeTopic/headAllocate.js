@@ -199,7 +199,7 @@ export default class HeadAllocate extends Component {
             message.info("分配成功！")
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
-            await this.props.manageStore.getAuditCount()
+            await this.props.manageStore.getAuditCount({"ide":this.usr.uid})
 
             this.setState({
                 topic_info: toJS(this.distributeTopic.topic_info),
