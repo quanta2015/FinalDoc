@@ -29,9 +29,23 @@ class User extends BaseActions {
   }
 
   @action
-  async getProjList() {
-    return await this.get(urls.API_SYS_GET_PROJLIST, null)
-  }
+	async login(params) {
+		const r = await this.post(urls.API_USR_LOGIN, params)
+		console.log(r)
+		if (r) {
+			runInAction(() => {
+				token.saveUser(r.data)
+				this.currUser = r.data
+				console.log(r.data)
+				console.log(this.currUser)
+			})
+			console.log("判断成功")
+			return r
+		} else {
+			message.error('网络错误', 0.7)
+		}
+
+	}
 
   @action
   async downloadFile(params) {
