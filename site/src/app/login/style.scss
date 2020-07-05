@@ -1,164 +1,161 @@
-html,
-body {
-  font: 14px/1.21 "Helvetica Neue", arial, sans-serif;
-  font-weight: 400;
-  width: 100%;
-  height: 100%;
+[data-component="login"] {
+  html,
+  body {
+    font: 14px/1.21 "Helvetica Neue", arial, sans-serif;
+    font-weight: 400;
+    width: 100%;
+    height: 100%;
 
-  margin: 0;
-  padding: 0;
-  background: #eee !important;
-}
-.rootbody {
-  width: 100%;
-  height: 100%;
-  .root {
-    margin: 0 auto;
-    width: 1200px;
-    height: 1080px;
-
-    padding: 0px;
-    display: flex;
-    background-color: white;
-    position: relative;
-    top: 50%;
-
-    .fake_background {
-      background-color: #333;
-      align-items: center;
-      align-content: center;
-     
-      width: 741.6px;
+    margin: 0;
+    padding: 0;
+    background: #eee !important;
+  }
+  .rootbody {
+    width: 100%;
+    height: 100%;
+    .root {
+      margin: 0 auto;
+      width: 1200px;
       height: 1080px;
-      margin: 0px;
+
       padding: 0px;
-      .cap_logo{
-        width: 230px;
-        height: 230px;
-        background-image: url(../../static/public/毕业1.svg);
-        background-size: 100% 100%;
-        margin: 0 auto;
-        margin-top: 215px;
-        
-      }
-      .xiaoxun{
-        width: 457px;
-        height: 51px;
-        background-image: url(../../static/public/xiaoxun.svg);
-        background-size: 100% 100%;
-        margin: 0 auto;
-        margin-top: 215px;
-      }
-    }
-    .right_box {
-      width: 458.4px;
-      height: 1080px;
+      display: flex;
       background-color: white;
-      align-content: center;
-      text-align: center;
+      position: relative;
+      top: 50%;
 
-      .logo_box {
-        width:  458.4px;
-        height: 413px;
-        background-color: #ffffff;
-        align-content: center;
-        text-align: center;
+      .fake_background {
+        background-color: #333;
         align-items: center;
-        .logo {
-          margin: 0 auto;
-          width: 255px;
-          height: 255px;
-          background-image: url(../../static/public/scl_logo.png);
-          background-size: auto 100%;
-          position: relative;
-          top:79px;
-          
-        }
-      }
-      .login_body {
-       
-        background: #fff;
-        //background: #333;
-        width: 458.4px;
-        height: 667px;
+        align-content: center;
+
+        width: 741.6px;
+        height: 1080px;
         margin: 0px;
         padding: 0px;
+        .cap_logo {
+          width: 230px;
+          height: 230px;
+          background-image: url(../../static/public/毕业1.svg);
+          background-size: 100% 100%;
+          margin: 0 auto;
+          margin-top: 215px;
+        }
+        .xiaoxun {
+          width: 457px;
+          height: 51px;
+          background-image: url(../../static/public/xiaoxun.svg);
+          background-size: 100% 100%;
+          margin: 0 auto;
+          margin-top: 215px;
+        }
+      }
+      .right_box {
+        width: 458.4px;
+        height: 1080px;
+        background-color: white;
         align-content: center;
         text-align: center;
-        .login_box{
-          width: 458.4px;
-          height: 412px;
 
-        }
-        .login_title{
-          height: 255px;
+        .logo_box {
           width: 458.4px;
+          height: 413px;
+          background-color: #ffffff;
           align-content: center;
           text-align: center;
-          span{
+          align-items: center;
+          .logo {
+            margin: 0 auto;
+            width: 255px;
+            height: 255px;
+            background-image: url(../../static/public/scl_logo.png);
+            background-size: auto 100%;
             position: relative;
-            top: 50%;
-            color: #0585D0;
+            top: 79px;
+          }
+        }
+        .login_body {
+          background: #fff;
+          //background: #333;
+          width: 458.4px;
+          height: 667px;
+          margin: 0px;
+          padding: 0px;
+          align-content: center;
+          text-align: center;
+          .login_box {
+            width: 458.4px;
+            height: 412px;
+          }
+          .login_title {
+            height: 255px;
+            width: 458.4px;
+            align-content: center;
+            text-align: center;
+            span {
+              position: relative;
+              top: 50%;
+              color: #0585d0;
+            }
           }
         }
       }
     }
   }
-}
-.subit_buttom{
-  position: relative;
-  top:22px; 
-  left:42px;
-  width: 358px!important ;
-  height: 47px!important ;
-  border-radius: 8px;
-  background-color:#0585D0;
-}
-.input_box{
-  width: 358px!important ;
-  height: 47px!important ;
-  border-radius: 8px;
-}
-.label-text{
-  position: relative;
-  left:42px;
-  font-size: 16;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.under_sign{
-  display: flex;
-  position: relative;
-  left:42px;
-  margin-top:47px ;
-  .remember{
-    display: flex;
-    
-    position: left;
-    font-size: 16;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    left: 37px;
-    width:239px;
-   
-    margin-right: 0px;
+  .subit_buttom {
+    position: relative;
+    top: 22px;
+    left: 42px;
+    width: 358px !important ;
+    height: 47px !important ;
+    border-radius: 8px;
+    background-color: #0585d0;
   }
-  .forgot{
+  .input_box {
+    width: 358px !important ;
+    height: 47px !important ;
+    border-radius: 8px;
+  }
+  .label-text {
+    position: relative;
+    left: 42px;
+    font-size: 16;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .under_sign {
     display: flex;
     position: relative;
-    left:10px;
-    font-size: 16;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
-    width:220.5px;
-   
-    margin-right: 0px;
+    left: 42px;
+    margin-top: 47px;
+    .remember {
+      display: flex;
+
+      position: left;
+      font-size: 16;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      left: 37px;
+      width: 239px;
+
+      margin-right: 0px;
+    }
+    .forgot {
+      display: flex;
+      position: relative;
+      left: 10px;
+      font-size: 16;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+      width: 220.5px;
+
+      margin-right: 0px;
+    }
   }
-  
-}
-.url_login{
-  margin-top: 6px;
-  
-  span{
-    color: #0585D0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  .url_login {
+    margin-top: 6px;
+
+    span {
+      color: #0585d0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
   }
 }
