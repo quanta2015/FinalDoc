@@ -7,6 +7,7 @@ import BaseActions from '../../../component/BaseActions';
 import PublishBlock from '../../../component/ContentT/Publish'
 import ReviewBlock from '../../../component/ContentT/Review'
 import AllTopicList from '../../../component/ContentT/AllTpoicList'
+import UploadImg from '../../../component/ImgUpload'
 
 import style from './style.scss';
 
@@ -133,7 +134,10 @@ export default class Home extends BaseActions {
         >
           <AllTopicList uid={me.tea_id}/>
         </Modal>
+        <UploadImg/>
       </div>
+
+      
 		);
 	}
 }
