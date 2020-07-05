@@ -27,8 +27,8 @@ class App extends Component {
   @computed
   get usr() {
     // return this.props.manageStore.usr;
-    // return this.props.userStore.usr;
-    return this.props.teacherStore.usr;
+    // return this.props.teacherStore.usr;
+    return this.props.userStore.usr;
   }
 
   render() {
