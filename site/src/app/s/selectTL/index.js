@@ -206,10 +206,18 @@ export default class TopicList extends Component {
                     this.setState({
                         loading: true,
                     })
+                    // 防止数据更改快慢不一
+                    let res = [...rec]
+                    let flag = false
+                    for (let i = 0; i < r.length; i++) {
+                        if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
+                            flag = true
+                        }
+                    }
                     setTimeout(() => {
                         this.setState({
                             loading: false,
-                            topicList: [...tmp, ...rec]
+                            topicList: flag ? [...rec] : [...tmp, ...rec]
                         })
                     }, 600)
 
