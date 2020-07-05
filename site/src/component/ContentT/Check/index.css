@@ -1,0 +1,51 @@
+.check-block{
+  width: 100%;
+  overflow-y: auto;
+  font-size: 18px;
+}
+
+.title{
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.fail-block{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.ant-collapse > .ant-collapse-item > .ant-collapse-header{
+  cursor: auto;
+}
+
+.ant-collapse > .ant-collapse-item > .ant-collapse-header>span{
+  cursor: pointer;
+}
+
+.state-extra{
+  display: flex;
+}
+
+.icons{
+  width: 100px;
+  margin: 0 20px 0 0 ;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.icons>span{
+  cursor: pointer;
+}
+
+.ant-collapse .ant-collapse-item-disabled > .ant-collapse-header, .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header > .arrow{
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.title>span>button{
+  margin: 20px;
+  width: 120px;
+}

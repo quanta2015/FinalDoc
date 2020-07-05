@@ -1,0 +1,115 @@
+.g-topic {
+    padding: 26px;
+    width: 950px;
+}
+
+.g-topic h2 {
+    margin-bottom: 2px;
+}
+
+.bold {
+    font-weight: 550;
+}
+
+.m-topicInfo {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    clear: both;
+}
+
+.m-topicInfo p{
+    margin-bottom: 5px;
+}
+
+.m-topicInfo h3 {
+    color: #777;
+}
+
+.m-card {
+    margin-top: 25px;
+}
+
+.m-cardItem {
+    margin-bottom: 25px;
+}
+
+.g-topic .m-line{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.g-topic .linespace {
+    margin: 0 15px;
+}
+
+.g-topic .interval {
+    margin-top: 35px;
+}
+
+.right-interval {
+    margin-right: 20px;
+}
+
+.bottom-interval {
+    margin-bottom: 10px;
+}
+
+.spact-bwt {
+    justify-content: space-between;
+}
+
+.g-topic .m-line {
+    display: flex;
+    width: 100%;
+}
+
+.m-submit {
+    text-decoration: underline;
+}
+
+.m-statusItem {
+    width: 20%;
+    margin-bottom: 5px;
+}
+
+.left-right {
+    margin: 0;
+    float: right;
+    margin-top: -30px;
+    margin-right: 10px;
+}
+
+.m-paperInfo {
+    width: 50%;
+}
+
+.g-topic .m-title {
+    font-size: 18px;
+}
+
+.g-topic .m-stage {
+    width: 33%;
+}
+
+.g-topic .border-bwt {
+    border-left: 1px solid #9e9e9e;
+    border-right: 1px solid #9e9e9e;
+}
+
+.g-topic .left-pad {
+    padding-left: 15px;
+}
+
+.g-topic .m-file:first-child .avatar-uploader > .ant-upload {
+    width: 165px;
+    height: 165px;
+}
+
+.g-topic .m-file:first-child .m-bdwrapper {
+    width: 167px;
+    height: 167px;
+}
+
+.g-topic .floatLeft {
+    float: left;
+}

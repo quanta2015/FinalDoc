@@ -21,6 +21,10 @@ class NavM extends Component {
   get usr() {
     return this.props.userStore.usr;
   }
+  
+  componentDidMount() {
+    route('/m_distributeTopic')
+  }
 
   doMenu = (path, i) => {
     this.setState({ cur: i }, () => {

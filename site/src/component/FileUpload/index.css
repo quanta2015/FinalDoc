@@ -1,0 +1,45 @@
+.avatar-uploader > .ant-upload {
+  width: 66px;
+  height: 66px;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+    margin: 0;
+    border: none;
+}
+
+.g-file {
+    text-align: center;
+    position: relative;
+}
+
+.m-bdwrapper {
+  border: 1px dashed #d9d9d9;
+  box-sizing: border-box;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitted-wp {
+    border: 1px solid #d9d9d9;
+}
+
+.submitted-p {
+  color: rgba(0, 0, 0, 0.65);
+  text-decoration: underline;
+}
+
+.m-del {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  color: #999;
+}
+
+.m-smile {
+    font-size: 32px;
+    color: #1891FF;
+}
