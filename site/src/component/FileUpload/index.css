@@ -13,7 +13,7 @@
     position: relative;
 }
 
-.m-bdwrapper {
+.g-file .m-bdwrapper {
   border: 1px dashed #d9d9d9;
   box-sizing: border-box;
   width: 68px;
@@ -23,23 +23,23 @@
   align-items: center;
 }
 
-.submitted-wp {
+.g-file .submitted-wp {
     border: 1px solid #d9d9d9;
 }
 
-.submitted-p {
+.g-file .submitted-p {
   color: rgba(0, 0, 0, 0.65);
   text-decoration: underline;
 }
 
-.m-del {
+.g-file .m-del {
   position: absolute;
   right: 3px;
   top: 3px;
   color: #999;
 }
 
-.m-smile {
+.g-file .m-smile {
     font-size: 32px;
     color: #1891FF;
 }

@@ -19,6 +19,11 @@ class NavS extends Component {
     return this.props.userStore.usr;
   }
 
+  @computed
+  get docTemplate() {
+    return this.props.studentStore.docTemplate;
+  }
+
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
     .then(r => {
@@ -31,7 +36,6 @@ class NavS extends Component {
   }
 
   render() {
-    const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
     return (
       <div className="g-nav">
         <div className="g-menu">
@@ -48,14 +52,9 @@ class NavS extends Component {
             </div>:
             <div className="m-info divider">
               <h2 className="m-title bold">文件模板</h2>
-              <p><a href={link} download>开题报告</a></p>
-              <p><a href={link} download>中期检查表</a></p>
-              <p><a href={link} download>外文文献翻译</a></p>
-              <p><a href={link} download>文献综述</a></p>
-              <p><a href={link} download>论文格式</a></p>
-              <p><a href={link} download>作品说明书</a></p>
-              <p><a href={link} download>诚信承诺书</a></p>
-              <p><a href={link} download>评审答辩成绩表</a></p>
+              {this.docTemplate && this.docTemplate.map((item) => 
+                <p><a href={item.link} download>{item.title}</a></p>
+              )}
             </div>
           }
         </div>

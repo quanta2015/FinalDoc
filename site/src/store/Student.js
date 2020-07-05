@@ -16,6 +16,28 @@ class Student extends BaseActions {
     //双选成功的课题信息
     selectTpInfo = {}
 
+    @observable
+    //时间轴内容
+    timeList = [
+        { title: '开题中期', status: 0, infoList: [{ time: '2020-9-11', content: '开始选题' }, { time: '2020-11-22', content: '选题工作结束' }, { time: '2020-12-7', content: '中期检查表上交截止' }]},
+        { title: '论文审核', status: 0, infoList: [{ time: '2020-12-28', content: '论文初稿提交' }]},
+        { title: '论文答辩', status: 0, infoList: [{ time: '2021-4-10', content: '一次答辩' }, { time: '2021-5-2', content: '二次答辩' }] }
+    ]
+
+    @observable
+    //模板文件
+    docTemplate = [
+        { title: '开题报告', link: ''},
+        { title: '中期检查表', link: '' },
+        { title: '外文文献翻译', link: '' }, 
+        { title: '文献综述', link: '' },
+        { title: '论文格式', link: '' },
+        { title: '作品说明书', link: '' },
+        { title: '诚信承诺书', link: '' },
+        { title: '评审答辩成绩表', link: '' },
+        { title: '延缓答辩申请表', link: '' }
+    ]
+
     @action
     async getTopInfo(params) {
         const r = await this.post(urls.API_STU_GET_TOPINFO, params);

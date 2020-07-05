@@ -131,10 +131,9 @@ class FileUpload extends Component {
         const uploadButton = (
             <div>
                 { this.state.loading ? <LoadingOutlined /> : <PlusOutlined /> }
-                < div className = "ant-upload-text" > 上传</div>
+                < div className = "ant-upload-text" >上传</div>
             </div>
         )
-        console.log(this.props.tpInfo, fileUrl, loading, showDel)
         return (
             <div className="g-file">
                 <div 
