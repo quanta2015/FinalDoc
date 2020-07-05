@@ -101,6 +101,10 @@ class Student extends BaseActions {
         return r.data;
     }
 
+    @action
+    async deleteFile(params) {
+        return await this.post(urls.API_STU_DEL_FILE, params)
+    }
 }
 
 export default new Student()
