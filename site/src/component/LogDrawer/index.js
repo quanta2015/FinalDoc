@@ -125,7 +125,7 @@ class LogDrawer extends Component {
         console.log(comments)
     }
     handleSelChange = (value) => {
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
     }
 
     render() {

@@ -39,7 +39,6 @@ export default class TopicPG extends Component {
     }
 
     showModal = (item) => {
-        console.log(item)
         this.setState({
             showModal: true,
             selectItem: item
