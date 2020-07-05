@@ -7,29 +7,29 @@
     margin-bottom: 2px;
 }
 
-.bold {
+.g-topic .bold {
     font-weight: 550;
 }
 
-.m-topicInfo {
+.g-topic .m-topicInfo {
     border-top: 1px solid #eee;
     padding-top: 10px;
     clear: both;
 }
 
-.m-topicInfo p{
+.g-topic .m-topicInfo p{
     margin-bottom: 5px;
 }
 
-.m-topicInfo h3 {
+.g-topic .m-topicInfo h3 {
     color: #777;
 }
 
-.m-card {
+.g-topic .m-card {
     margin-top: 25px;
 }
 
-.m-cardItem {
+.g-topic .m-cardItem {
     margin-bottom: 25px;
 }
 
@@ -46,15 +46,15 @@
     margin-top: 35px;
 }
 
-.right-interval {
+.g-topic .right-interval {
     margin-right: 20px;
 }
 
-.bottom-interval {
+.g-topic .bottom-interval {
     margin-bottom: 10px;
 }
 
-.spact-bwt {
+.g-topic .spact-bwt {
     justify-content: space-between;
 }
 
@@ -63,23 +63,23 @@
     width: 100%;
 }
 
-.m-submit {
+.g-topic .m-submit {
     text-decoration: underline;
 }
 
-.m-statusItem {
+.g-topic .m-statusItem {
     width: 20%;
     margin-bottom: 5px;
 }
 
-.left-right {
+.g-topic .left-right {
     margin: 0;
     float: right;
     margin-top: -30px;
     margin-right: 10px;
 }
 
-.m-paperInfo {
+.g-topic .m-paperInfo {
     width: 50%;
 }
 
@@ -101,13 +101,13 @@
 }
 
 .g-topic .m-file:first-child .avatar-uploader > .ant-upload {
-    width: 165px;
-    height: 165px;
+    width: 170px;
+    height: 170px;
 }
 
 .g-topic .m-file:first-child .m-bdwrapper {
-    width: 167px;
-    height: 167px;
+    width: 172px;
+    height: 172px;
 }
 
 .g-topic .floatLeft {
