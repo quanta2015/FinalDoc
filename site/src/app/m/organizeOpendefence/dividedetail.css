@@ -9,9 +9,9 @@ tbody.ant-table-tbody {
     display: flex;
 }
 
-.ant-modal-content {
+/* .ant-modal-content {
     width: 520px;
-}
+} */
 
 .dividedetail .ant-table-cell {
     text-align: center;
@@ -47,21 +47,21 @@ tbody.ant-table-tbody {
 }
 
 .topicdetail .ant-table-cell:nth-last-child(4){
-    width: 180px;
+    width: 300px;
 }
 
 .topicdetail .ant-table-cell:nth-last-child(3){
-    width: 100px;
+    width: 150px;
 }
 
 .topicdetail .ant-table-cell:nth-last-child(2){
-    width: 100px;
+    width: 200px;
 }
 
 .topicdetail .ant-table-cell:nth-last-child(1){
-    width: 100px;
+    width: 150px;
 }
 
 .topicdetail .ant-table-placeholder .ant-table-cell{
-    width: 472px;
+    width: 800px;
 }

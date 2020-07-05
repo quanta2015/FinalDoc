@@ -9,11 +9,70 @@ tbody.ant-table-tbody {
     display: flex;
 }
 
+.head_info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
 
 .noTopicNums {
-    position: relative;
-    bottom: -45px;
+    /* position: relative; */
+    /* bottom: -45px; */
     font-size: 16px;
-    font-weight: bold;
-    width: 200px;
+    /* font-weight: bold; */
+    /* width: 200px; */
+}
+
+.manu-table{
+    display: flex;
+    flex-direction: column;
+}
+.manu-btn{
+    text-align: right;
+}
+
+.manu-btn .reset{
+    margin-right: 10px;
+}
+
+.ogp_headAllocate_table .ant-table-cell {
+    /* width: 200px; */
+    text-align: center;
+}
+
+
+ .ogp_headAllocate_table .ant-table-cell:nth-last-child(6) {
+    width: 100px;
+     
+}
+
+.ogp_headAllocate_table .ant-table-cell:nth-last-child(5) {
+    width: 280px;
+    text-align: left;
+     
+}
+
+.ogp_headAllocate_table .ant-table-cell:nth-last-child(4) {
+    width: 130px;
+}
+
+.ogp_headAllocate_table .ant-table-cell:nth-last-child(3) {
+    width: 130px;
+    
+}
+
+.ogp_headAllocate_table .ant-table-cell:nth-last-child(2) {
+    width: 130px;
+}
+
+.ogp_headAllocate_table .ant-table-cell:nth-last-child(1) {
+    width: 130px;
+}
+
+.ogp_headAllocate_table .ant-table-placeholder .ant-table-cell{
+    width: 800px;
+}
+
+.ogp-descrip .ant-descriptions-item-label{
+    width: 120px;
 }

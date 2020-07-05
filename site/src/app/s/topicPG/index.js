@@ -2,11 +2,12 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import { Tag, Button, Modal } from 'antd'
+import { Tag, Button, Modal, Timeline } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
-import { FILE_UPLOAD_TYPE } from '../../../constant/data'
+import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
 import './index.css'
+import LogDrawer from '../../../component/LogDrawer';
 
 @inject('studentStore')
 @observer
@@ -15,7 +16,8 @@ export default class TopicPG extends Component {
         super(props);
         this.state = {
             showModal: false,
-            selectItem: null
+            selectItem: null,
+            showDrawer: false,
         }
     }
 
@@ -24,8 +26,14 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.selectTpInfo);
     }
 
+    @computed
+    get timeList() {
+        return toJS(this.props.studentStore.timeList);
+    }
+
     componentDidMount() {
-        if(!this.selectTpInfo) {
+        //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
+        if (!this.selectTpInfo) {
             route('/s_selectTL')
         }
     }
@@ -37,18 +45,22 @@ export default class TopicPG extends Component {
         })
     }
 
-    handleOk = (e) => {
-        this.setState({
-            showModal: false
-        })
-    }
-
     handleCancel = (e) => {
         this.setState({
             showModal: false
         })
     }
 
+    showDrawer = () => {
+        this.setState({
+            showDrawer: true,
+        })
+    }
+    onClose = () => {
+        this.setState({
+            showDrawer: false,
+        })
+    }
     render() {
         const { selectItem, showModal } = this.state;
         const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
@@ -70,23 +82,36 @@ export default class TopicPG extends Component {
                     <div className="m-topicInfo">
                         <div className="m-line">
                             <span className="m-statusItem">任务下达：<a href={link} download>任务书</a></span>
-                            <span className="m-statusItem">开题中期：<Tag color="green" onClick={() => this.showModal({title: '开题中期', id: 0})}>已通过</Tag></span>
-                            <span className="m-statusItem">论文审核：<Tag color="red" onClick={() => this.showModal({ title: '论文审核', id: 1 })}>待修改</Tag></span>
-                            <span className="m-statusItem">论文答辩：<Tag onClick={() => this.showModal({ title: '论文答辩', id: 2 })}>未提交</Tag></span>
+                            {
+                                this.timeList.map((item) => 
+                                    <span className="m-statusItem">{item.title}：
+                                        <Tag
+                                            color={STU_FU_STATUS[item.status].color} 
+                                            onClick={() => this.showModal(item)}
+                                        >
+                                            {STU_FU_STATUS[item.status].name}
+                                        </Tag>
+                                    </span>
+                                )
+                            }
                             <span className="m-statusItem">成绩审定：暂未发布</span>
                         </div>
                     </div>
                 </div>
                 <div className="interval">
                     <h2 className="m-title bold">材料递交</h2>
-                    <Button type="primary" size="small" className="left-right"><PlusOutlined />指导日志</Button>
+                    <Button type="primary" onClick={this.showDrawer} size="small" className="left-right"><PlusOutlined />指导日志</Button>
+                    <LogDrawer
+                        showDrawer={this.state.showDrawer} 
+                        onClose={this.onClose}
+                    />
                     <div className="m-topicInfo m-line">
-                        {FILE_UPLOAD_TYPE.map((item)=>
+                        {FILE_UPLOAD_TYPE.map((item) =>
                             <div className="m-stage">
                                 <h3 className="bold">{item.stage}</h3>
                                 <div>
                                     {item.file.map((item) =>
-                                        <div className="m-file right-interval bottom-interval floatLeft"><FileUpload type={item} tpInfo={this.selectTpInfo ? this.selectTpInfo: {}} /></div>
+                                        <div className="m-file right-interval bottom-interval floatLeft"><FileUpload type={item} tpInfo={this.selectTpInfo ? this.selectTpInfo : {}} /></div>
                                     )}
                                 </div>
                             </div>
@@ -96,10 +121,16 @@ export default class TopicPG extends Component {
                 <Modal
                     title={selectItem ? selectItem.title : ''}
                     visible={showModal}
-                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    footer={[]}
                 >
-                    <p>timeline</p>
+                    <Timeline mode="left">
+                        {selectItem && selectItem.infoList.map((item) => 
+                            <Timeline.Item label={item.time}>
+                                {item.content}
+                            </Timeline.Item>
+                        )}
+                    </Timeline>
                 </Modal>
             </div>
         );

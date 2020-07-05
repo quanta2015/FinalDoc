@@ -42,8 +42,16 @@ export var FILE_UPLOAD_TYPE =
     { stage: '3. 论文答辩',
       file: [{name: '答辩材料', type: 'f_'}, 
              {name: '答辩记录', type: 'f_' },
-             {name: '答辩成绩表', type: 'f_'}]}]
+             {name: '答辩成绩表', type: 'f_'},
+             {name: '延缓申请表', type: 'f_' }]}]
 
+//学生文件上传状态
+export var STU_FU_STATUS = 
+   [{ name: '未完成', color: '' },
+    { name: '待审核', color: 'blue' },
+    { name: '待修改', color: 'red' },
+    { name: '已通过', color: 'green' }
+   ]
 
 //文件上传类型约束
 export var FILE_UPLOAD_FORMAT = 

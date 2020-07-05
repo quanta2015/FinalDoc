@@ -1,22 +1,14 @@
 import { Component } from 'preact';
-import { Router } from 'preact-router';
+import { Router,route } from 'preact-router';
 import AsyncRoute from 'preact-async-route';
 import { inject, observer } from 'mobx-react';
-import { computed } from 'mobx';
+import { computed,toJS } from 'mobx';
 
 import NavT from './component/NavT'
 import NavS from './component/NavS'
 import NavM from './component/NavM'
 import './style.scss'
-import { toJS } from "mobx";
-import { route } from 'preact-router';
 
-import Login from './app/login'
-
-// var usr = {
-//   name:'专业负责人',
-//   role:2    // 0: teacher 1:student 2: manage
-// }
 
 @inject('userStore')
 @observer
@@ -26,10 +18,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props.userStore.getUser())
-    // if (this.props.userStore.getUser().role == 2) {
-    //   route('/login',true)
-    // }
+
   }
 
   @computed
@@ -39,7 +28,6 @@ class App extends Component {
 
 
   render() {
-    // console.log(toJS(role))
 
     return (
       <div id="app">

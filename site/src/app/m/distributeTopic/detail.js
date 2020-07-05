@@ -13,7 +13,8 @@ const paginationProps = {
 	}),
 }
 
-@inject('manageStore')
+
+@inject('manageStore', 'userStore')
 @observer
 export default class Detail extends Component {
 	state = {
@@ -22,6 +23,23 @@ export default class Detail extends Component {
 		visible: false,
 		own: [],
 	}
+
+	@computed
+	get distributeTopic() {
+		return this.props.manageStore.distributeTopic;
+	}
+
+	@computed
+	get usr() {
+		return this.props.userStore.usr;
+	}
+
+	async componentDidMount() {
+		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
+		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
+		
+	}
+
 	handleChange = (filters) => {//筛选
 		this.setState({
 			filteredInfo: filters,
@@ -98,11 +116,6 @@ export default class Detail extends Component {
 			visible: false,
 		});
 	};
-
-	@computed
-	get distributeTopic() {
-		return this.props.manageStore.distributeTopic;
-	}
 
 	render() {
 		let { filteredInfo } = this.state;
@@ -208,17 +221,18 @@ export default class Detail extends Component {
 			<div>
 				{/* 所有课题审核通过，才可以一键发布课题 */}
 				<div className="release">
-					<Tooltip placement="top" title={this.props.tooltipText}>
-						{(this.props.flag === 0) &&
+					<Tooltip placement="top" title={"仅" + this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, "+this.distributeTopic.topic_info.length+"篇未分配，不能发布所有课题"}>
+						
+						{(this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length === 0) &&
 							<Button type="primary" disabled>发布课题</Button>
 						}
-						{(this.props.flag === 1) &&
+						{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.topic_info.length === 0) &&
 							<Button type="primary">发布课题</Button>
 						}
 					</Tooltip>
 				</div>
 				<div className="detail_table">
-					<Table columns={columns} dataSource={this.props.checklist_info} tableLayout='fixed'
+					<Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
 						onRow={(record) => {
 							return {
 								onClick: () => {
@@ -232,30 +246,33 @@ export default class Detail extends Component {
 						pagination={paginationProps}
 					/>
 				</div>
-				<Modal
-					title="查看详情"
-					visible={this.state.visible}
-					onOk={this.handleOk}
-					onCancel={this.handleCancel}
-					footer={null}
-				>
-					<Descriptions
-						title=""
-						bordered
+				{/* <div className="detail_modal"> */}
+					<Modal
+						title="查看详情"
+						visible={this.state.visible}
+						onOk={this.handleOk}
+						onCancel={this.handleCancel}
+						footer={null}
+						width={900}
 					>
-						<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
-						<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-						<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
-						<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核状态" ><Tag color={color} >
-							{tag}
-						</Tag></Descriptions.Item>
+						<Descriptions
+							title=""
+							bordered
+						>
+							<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
+							<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+							<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
+							<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
+							<Descriptions.Item label="审核状态" ><Tag color={color} >
+								{tag}
+							</Tag></Descriptions.Item>
 
-						<Descriptions.Item label="审核建议">
-							{this.state.own.sugg}
-						</Descriptions.Item>
-					</Descriptions>
-				</Modal>
+							<Descriptions.Item label="审核建议">
+								{this.state.own.sugg}
+							</Descriptions.Item>
+						</Descriptions>
+					</Modal>
+				{/* </div> */}
 			</div>
 		);
 	}

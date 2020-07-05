@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import headAllocate from './headAllocate.css';
+import  './headAllocate.css';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -14,7 +14,7 @@ const paginationProps = {
     position: ['topRight', 'bottomRight']
 }
 
-@inject('manageStore')
+@inject('manageStore','userStore')
 @observer
 export default class HeadAllocate extends Component {
     state = {
@@ -33,6 +33,7 @@ export default class HeadAllocate extends Component {
         checklist_info: [],
         // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
         auditCount: {},
+
     };
 
     @computed
@@ -40,71 +41,15 @@ export default class HeadAllocate extends Component {
         return this.props.manageStore.distributeTopic;
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList();
-        await this.props.manageStore.getTeaList();
+        await this.props.manageStore.getTopicList({"ide":this.usr.uid});
+        await this.props.manageStore.getTeaList({"ide":this.usr.uid});
         await this.props.manageStore.getAreasList();
-        // console.log(toJS(this.distributeTopic.areas_list))
-        // 获取到教师列表
-        let tea = this.distributeTopic.teacher_info;
-        let topic = toJS(this.distributeTopic.topic_info);
-        // console.log(topic[1].areas.split(","))
-        // 将教师列表值变为id+name
-        let teaName = []
-        let topicList = []
-
-        // let area_x=[]
-        // let color_x=[]
-        // let total_x=[]
-
-
-        // topic.map((item) =>
-        //     total_x.push(
-        //         color_x.push(item.color.split(",")[0], item.areas.split(",")[0])
-
-        //     )
-
-
-
-        // )
-        // console.log(total_x)
-
-
-        topic.map((item) =>
-            topicList.push({
-                key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-                areas: item.areas.split(","),
-                color: item.color.split(",")
-            })
-        )
-
-
-        tea.map((item) =>
-            teaName.push({ tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, value: item.maj + "-" + item.Tname + "-" + item.areas })
-        )
-        teaName.sort(function (a, b) {
-            if (a.value < b.value) {
-                return 1;
-            } else if (a.value > b.value) {
-                return -1;
-            }
-            return 0;
-        })
-        // let sort_topic = topic
-        // sort_topic.sort(function (a, b) {
-        //     if (a.tName < b.tName) {
-        //         return 1;
-        //     } else if (a.tName > b.tName) {
-        //         return -1;
-        //     }
-        //     return 0;
-        // })
-
-        // console.log(sort_topic)
-        this.setState({
-            teacher_info: teaName,
-            topic_info: topicList
-        });
     }
 
     onSelectChange = (selectedRowKeys) => {
@@ -194,48 +139,23 @@ export default class HeadAllocate extends Component {
             id = value.split(" ")[0];
         } else {
             id = value
-            /******************** */
-            let topic = toJS(this.distributeTopic.topic_info);
-            let topicList = []
-            topic.map((item) =>
-                topicList.push({
-                    key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-                    areas: item.areas.split(","),
-                    color: item.color.split(",")
-                })
-            )
-            /******************** */
             // 清空选择课题列表
             this.setState({
                 selectedRowKeys: [],
-                topic_info: topicList,
+                topic_info: toJS(this.distributeTopic.topic_info),
             })
         }
         this.setState({
             tea_id: id,
             tea_name: value
         }, () => {
-            /******************** */
             let topic = toJS(this.distributeTopic.topic_info);
-            let topicList = []
-            topic.map((item) =>
-                topicList.push({
-                    key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-                    areas: item.areas.split(","),
-                    color: item.color.split(",")
-                })
-            )
-            /******************** */
-            // let topiclist = toJS(this.distributeTopic.topic_info);
             let newlist = [];
-            // console.log("1 " + topicList.length)
-            topicList.map((item, i) => {
+            topic.map((item, i) => {
                 if (item.tid !== this.state.tea_id) {
                     newlist.push(item);
                 }
             })
-
-            // console.log("2 " + newlist.length)
 
             this.setState({
                 topic_info: newlist,
@@ -244,32 +164,15 @@ export default class HeadAllocate extends Component {
     }
 
     clear = () => {
-        /******************** */
         let topic = toJS(this.distributeTopic.topic_info);
-        let topicList = []
-        topic.map((item) =>
-            topicList.push({
-                key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-                areas: item.areas.split(","),
-                color: item.color.split(",")
-            })
-        )
-        /******************** */
         this.setState({
             selectedRowKeys: [],
             tea_id: "",
             tea_name: undefined,
-            topic_info: topicList,
+            topic_info: topic,
         })
     }
 
-    // 给父组件传值
-    toParent = () => {
-        // console.log(this.props.parent.getChildrenMsg.bind(this, this.state.msg))
-        let msg = {checklist_info:toJS(this.state.checklist_info), auditCount:toJS(this.state.auditCount)}
-        console.log(msg.auditCount);
-        this.props.parent.getChildrenMsg(this, msg)
-    }
 
     // 提交手动分配
     handDistribute = async () => {
@@ -277,36 +180,14 @@ export default class HeadAllocate extends Component {
             message.info("还未选择课题！")
             return;
         }
-        let temp = [{ "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }]
+        let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
             message.info("分配成功！")
-            await this.props.manageStore.getTopicList();
-            // 获取到教师列表
-            // let topic = this.distributeTopic.topic_info;
-            /******************** */
-            let topic = toJS(this.distributeTopic.topic_info);
-            let topicList = []
-            topic.map((item) =>
-                topicList.push({
-                    key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-                    areas: item.areas.split(","),
-                    color: item.color.split(",")
-                })
-            )
-            /******************** */
-
-            await this.props.manageStore.getCheckList()
-            await this.props.manageStore.getAuditCount()
-
-            this.setState({
-                topic_info: topicList,
-                checklist_info: toJS(this.distributeTopic.checklist_info),
-                auditCount: toJS(this.distributeTopic.auditCount),
-            },()=>{
-                this.toParent()
-            });
+            await this.props.manageStore.getTopicList({"ide":this.usr.uid})
+            await this.props.manageStore.getCheckList({"ide":this.usr.uid})
+            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
         } else {
             message.info("分配失败！请重试")
         }
@@ -349,8 +230,6 @@ export default class HeadAllocate extends Component {
                         {topic}
                     </Tooltip>
                 ),
-
-
             },
             {
                 title: '研究领域',
@@ -360,16 +239,11 @@ export default class HeadAllocate extends Component {
                 filterMultiple: false,
                 onFilter: (value, record) =>
                     record.areas.indexOf(value) !== -1,
-
                 render: (areas, record) => (
                     <>
-
-
                         {
                             // console.log(areas),
                             areas.map((tag, i) => {
-
-
                                 return (
                                     <Tag color={record.color[i]} >
                                         {tag}
@@ -378,9 +252,6 @@ export default class HeadAllocate extends Component {
                             })}
                     </>
                 ),
-
-
-
             },
             {
                 title: '操作',
@@ -411,7 +282,7 @@ export default class HeadAllocate extends Component {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                         >
-                            {this.state.teacher_info.map((item, i) =>
+                            {this.distributeTopic.teacher_info.map((item, i) =>
                                 <Select.Option key={item.tid}>{item.value}</Select.Option>
                             )}
                         </Select>
@@ -428,7 +299,7 @@ export default class HeadAllocate extends Component {
                         onChange={this.handleChange}
                         rowSelection={rowSelection}
                         columns={columns}
-                        dataSource={this.state.topic_info}
+                        dataSource={this.distributeTopic.topic_info}
                         pagination={paginationProps}
                         onRow={(record) => {
                             return {
@@ -436,18 +307,12 @@ export default class HeadAllocate extends Component {
                                     console.log(record)
                                     this.state.own = record
                                     console.log(this.state.own)
-
                                 }
                             }
                         }}
-
                     />
                 </div>
 
-                {/* <div className="head_btn">
-                    <Button onClick={this.clear} className="clear">重置</Button>
-                    <Button type="primary" onClick={this.handDistribute}>提交</Button>
-                </div> */}
                 <Modal
                     title="查看详情"
                     visible={this.state.visible}
@@ -455,17 +320,12 @@ export default class HeadAllocate extends Component {
                     onCancel={this.handleCancel}
                     footer={null}
                 >
-
-
                     <Descriptions
                         title=""
                         bordered
-
-
                     >
                         <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
                         <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-
                     </Descriptions>
                 </Modal>
 
