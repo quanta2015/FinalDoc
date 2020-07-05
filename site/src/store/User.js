@@ -3,21 +3,26 @@ import { observable, action } from 'mobx'
 import * as urls from '../constant/urls'
 
 
+var ROLE = 2
 
 class User extends BaseActions {
+  
   @observable
-  // usr = {
-  //   name: '张三',
-  //   uid: '201821020704',
-  //   dep: '杭州国际服务工程学院',
-  //   maj: '计算机科学与技术',
-  //   cls: '计算机183',
-  //   role: 1    // 0: teacher 1:student 2: manage
-  // }
-
   usr = {
-    name:'专业负责人',
-    role:2    // 0: teacher 1:student 2: manage
+    name: undefined,
+    uid: undefined,
+    role: undefined,
+  }
+
+  @action
+  getUser() {
+    return this.usr
+  }
+
+  @action
+  async login() {
+    this.usr.role = ROLE
+    return { role: this.usr.role }
   }
 
   @action

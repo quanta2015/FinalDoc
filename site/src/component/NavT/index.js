@@ -9,7 +9,6 @@ import { MENU_MAIN_T } from '../../constant/data'
 class NavT extends Component {
 	constructor(props) {
 		super(props)
-
     this.state = {
       cur: 0,
     }
@@ -20,6 +19,8 @@ class NavT extends Component {
       route(path)
     })
   }
+
+  
 
 	render(_,{ cur }) {
     return (

@@ -1,0 +1,23 @@
+.g-login {
+  position: fixed;  
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .m-login {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    background: #eee;
+    height: 400px;
+  }
+}
