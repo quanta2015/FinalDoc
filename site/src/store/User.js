@@ -1,14 +1,13 @@
 import BaseActions from '../component/BaseActions'
 import { observable, action } from 'mobx'
+import axios from 'axios'
 import * as urls from '../constant/urls'
-
-
 
 class User extends BaseActions {
   @observable
   // usr = {
   //   name: '张三',
-  //   uid: '201821020704',
+  //   uid: '2018210207004',
   //   dep: '杭州国际服务工程学院',
   //   maj: '计算机科学与技术',
   //   cls: '计算机183',
@@ -27,9 +26,17 @@ class User extends BaseActions {
 
   @action
   async downloadFile(params) {
-    return await this.post(urls.API_SYS_DOWN_FILE, params)
+    return await axios({
+      url: urls.API_SYS_DOWN_FILE,
+      method: 'POST',
+      responseType: 'blob',
+      data: params
+    }).then(r => {
+      return r;
+    }).catch(e => {
+      console.log('网络错误')
+    })
   }
-
 }
 
 export default new User()

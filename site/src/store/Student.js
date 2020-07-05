@@ -30,8 +30,8 @@ class Student extends BaseActions {
     }
 
     @action
-    async getTopicList() {
-        const r = await this.post(urls.API_STU_GET_TTLLIST, null);
+    async getTopicList(params) {
+        const r = await this.post(urls.API_STU_GET_TTLLIST, params);
         if (r && r.code === 200) {
             runInAction(() => {
                 this.topicList = r.data
@@ -101,6 +101,10 @@ class Student extends BaseActions {
         return r.data;
     }
 
+    @action
+    async deleteFile(params) {
+        return await this.post(urls.API_STU_DEL_FILE, params)
+    }
 }
 
 export default new Student()
