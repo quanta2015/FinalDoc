@@ -17,6 +17,7 @@ class User extends BaseActions {
   usr = {
     name: '张三',
     uid: '2018210207004',
+    // uid: '2014214272',
     dep: '杭州国际服务工程学院',
     maj: '计算机科学与技术',
     cls: '计算机183',
