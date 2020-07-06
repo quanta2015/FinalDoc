@@ -5,24 +5,23 @@ import style from './index.scss';
 import FileUpload from '../../FileUpload'
 import FileDownLoad from '../../FileDownLoad'
 
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 import { UserOutlined,BookOutlined ,DownloadOutlined,TagsOutlined } from '@ant-design/icons';
-
-let me={
-  uid:20100119
-}
 
 const tabListNoTitle = [
   {
     key: 'publish',
-    tab: <span><BookOutlined />发布材料</span>,
+    tab: <span><BookOutlined /><span style="margin-left:9px">发布材料</span></span>,
   },
   {
     key: 'download',
-    tab:<span><DownloadOutlined />学生文件下载</span>
+    tab:<span><DownloadOutlined /><span style="margin-left:9px">学生文件下载</span></span>
   }
 ];
 
-
+@inject('teacherStore')
+@observer
 export default class StuMethods extends BaseActions {
   constructor(props) {
     super(props)
@@ -93,8 +92,8 @@ export default class StuMethods extends BaseActions {
           <div className="note-block"> 
           </div>
           <div className="note-block">
-            <span style="width:110px"><span style="margin-right:10px" className=""><BookOutlined /></span>任务发布</span>
-            <Card style={{ width: 700}}>
+            {/* <span style="width:110px"><span style="margin-right:10px" className=""><BookOutlined /></span>任务发布</span> */}
+            <Card style={{ width: 810}}>
             <div className="card-inner">
                 <div className="file-block">
                   <FileUpload type={{name:'任务书',type:'f_task'}} tpInfo={{tid:this.props.tid,sid:this.props.sid}}/>  

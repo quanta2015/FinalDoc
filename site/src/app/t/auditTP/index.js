@@ -46,7 +46,12 @@ export default class Home extends BaseActions {
 		super(props)
 
 		this.state = {
-			subjects: { data:[] },
+			subjects: { data:[{
+				id:1,
+				topic:"aaa",
+				content:"aaa",
+				type:"123"}
+			] },
 			//选题查询变量
 			searchText: '',
 			searchedColumn: '',
@@ -140,10 +145,13 @@ export default class Home extends BaseActions {
 
 	//获取数据
 	async getTopicList() {
+		console.log(this.usr.uid);
+		
 		let data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
 			"uid": this.usr.uid
 		});
 
+		console.log(data)
 		this.setState({
 			subjects: data
 		})
@@ -180,7 +188,7 @@ export default class Home extends BaseActions {
 		];
 
 		return (
-			<div className="context">
+			<div className="context" data-component="autittp">
 				<div class="main">
 					<Table class="table" columns={columns} dataSource={subjects.data} />
 				</div>

@@ -50,7 +50,34 @@ export default class Home extends BaseActions {
 		super(props)
 
 		this.state = {
-			subjects: { data: [] },
+			subjects: {
+				data:[
+					{
+						id: 646,
+						topic: "subjectA",
+						content: "subjectA",
+						type: "fca"
+					},
+					{
+						id: 618,
+						topic: "subjectB",
+						content: "subjectB",
+						type: "fcb"
+					},
+					{
+						id: 619,
+						topic: "subjectC",
+						content: "subjectC",
+						type: "fcc"
+					},
+					{
+						id: 620,
+						topic: "subjectD",
+						content: "subjectD",
+						type: "fcd"
+					}
+				]
+			},
 
 			//选题查询变量
 			searchText: '',
@@ -59,9 +86,9 @@ export default class Home extends BaseActions {
 	}
 
 	@computed
-		get usr() {
-				return this.props.userStore.usr;
-		}
+	get usr() {
+		return this.props.userStore.usr;
+	}
 
 	componentWillMount() {
 		this.getTopicList()
@@ -143,13 +170,13 @@ export default class Home extends BaseActions {
 
 	//获取数据
 	async getTopicList() {
-		var data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
-			"uid": this.usr.uid
-		});
+		// var data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
+		// 	"uid": this.usr.uid
+		// });
 
-		this.setState({
-			subjects: data
-		})
+		// this.setState({
+		// 	subjects: data
+		// })
 	}
 
 	render() {

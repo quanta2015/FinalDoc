@@ -131,7 +131,8 @@ class OpActions extends BaseActions {
 		});
 	};
 
-	render(_,{ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible, modalSubject, passFlag}){
+	render(){
+        const {ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible, modalSubject, passFlag} = this.state;
         return(
             <Space size="middle">
                 <Tooltip placement="top" title="通过">

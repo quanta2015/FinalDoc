@@ -17,7 +17,7 @@ function tagRender(props) {
   );
 }
 
-@inject('userStore')
+@inject('userStore','teacherStore')
 @observer
 class Publish extends BaseActions {
 
@@ -41,6 +41,11 @@ class Publish extends BaseActions {
       return this.props.userStore.usr;
   }
 
+  @computed
+  get me() {
+      return this.props.userStore;
+  }
+
   setBlocks= async ()=>{
     if(!this.cleared){
       let r = confirm("您上次编辑的记录还未提交，是否覆盖/清空？")
@@ -49,6 +54,7 @@ class Publish extends BaseActions {
       this.props.needGoon(false);
     }
     if(!!this.props.tid){
+      //let data = await this.me.getTopicFullInfo(this.props.pid);
       let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.tid});
       data = data.data[0];
       this.name.value = data.topic;
@@ -92,7 +98,7 @@ class Publish extends BaseActions {
         message.error("请输入纯数字！");
         return;
       }
-      let data = await this.post(urls.API_SYS_GET_STU_BY_LIKEID,{num :id});
+      let data = await this.post(urls.API_SYS_GET_STU_BY_LIKEID, {num:id});
       this.setState({stuData:data.data})
     }
     );
@@ -155,7 +161,7 @@ class Publish extends BaseActions {
         area:this.state.area===undefined?[]:this.state.area
       }
     }
-    await this.post(urls.API_SYS_POST_TOPIC_INFO,data);
+    await this.post(urls.API_SYS_POST_TOPIC_INFO, data);;
     this.props.close();
     this.cleared = true;
       this.props.needGoon(false);
