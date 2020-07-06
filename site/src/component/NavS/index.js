@@ -25,14 +25,14 @@ class NavS extends Component {
   }
 
   componentDidMount() {
-    this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
-    .then(r => {
-      if (!r) { //未双选
-        route('/s_selectTL');
-      } else { //已双选
-        route('/s_topicPG');
-      }
-    })
+    // this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
+    // .then(r => {
+    //   if (!r) { //未双选
+    //     route('/s_selectTL');
+    //   } else { //已双选
+    //     route('/s_topicPG');
+    //   }
+    // })
   }
 
   render() {

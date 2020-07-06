@@ -9,7 +9,7 @@ import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
 import './index.css'
 import LogDrawer from '../../../component/LogDrawer';
 
-@inject('studentStore')
+@inject('userStore', 'studentStore')
 @observer
 export default class TopicPG extends Component {
     constructor(props) {
@@ -20,7 +20,10 @@ export default class TopicPG extends Component {
             showDrawer: false,
         }
     }
-
+    @computed
+    get usr() {
+        return toJS(this.props.userStore.usr);
+    }
     @computed
     get selectTpInfo() {
         return toJS(this.props.studentStore.selectTpInfo);
@@ -33,6 +36,9 @@ export default class TopicPG extends Component {
 
     componentDidMount() {
         //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
+        if (!this.usr.uid) {
+            route('/')
+        }
         if (!this.selectTpInfo) {
             route('/s_selectTL')
         }
@@ -83,10 +89,10 @@ export default class TopicPG extends Component {
                         <div className="m-line">
                             <span className="m-statusItem">任务下达：<a href={link} download>任务书</a></span>
                             {
-                                this.timeList.map((item) => 
+                                this.timeList.map((item) =>
                                     <span className="m-statusItem">{item.title}：
                                         <Tag
-                                            color={STU_FU_STATUS[item.status].color} 
+                                            color={STU_FU_STATUS[item.status].color}
                                             onClick={() => this.showModal(item)}
                                         >
                                             {STU_FU_STATUS[item.status].name}
@@ -102,7 +108,7 @@ export default class TopicPG extends Component {
                     <h2 className="m-title bold">材料递交</h2>
                     <Button type="primary" onClick={this.showDrawer} size="small" className="left-right"><PlusOutlined />指导日志</Button>
                     <LogDrawer
-                        showDrawer={this.state.showDrawer} 
+                        showDrawer={this.state.showDrawer}
                         onClose={this.onClose}
                     />
                     <div className="m-topicInfo m-line">
@@ -125,7 +131,7 @@ export default class TopicPG extends Component {
                     footer={[]}
                 >
                     <Timeline mode="left">
-                        {selectItem && selectItem.infoList.map((item) => 
+                        {selectItem && selectItem.infoList.map((item) =>
                             <Timeline.Item label={item.time}>
                                 {item.content}
                             </Timeline.Item>
