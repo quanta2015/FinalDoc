@@ -30,6 +30,7 @@
 .g-file .submitted-p {
   color: rgba(0, 0, 0, 0.65);
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .g-file .m-del {
@@ -42,4 +43,8 @@
 .g-file .m-smile {
     font-size: 32px;
     color: #1891FF;
+}
+
+.ant-upload-text {
+    color: #9e9e9e;
 }

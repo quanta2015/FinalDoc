@@ -21,8 +21,8 @@
     margin-bottom: 5px;
 }
 
-.g-topic .m-topicInfo h3 {
-    color: #777;
+.g-topic h3 {
+    color: #999;
 }
 
 .g-topic .m-card {
@@ -31,11 +31,6 @@
 
 .g-topic .m-cardItem {
     margin-bottom: 25px;
-}
-
-.g-topic .m-line{
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .g-topic .linespace {
@@ -67,16 +62,55 @@
     text-decoration: underline;
 }
 
-.g-topic .m-statusItem {
-    width: 20%;
-    margin-bottom: 5px;
+.g-topic .m-timeLine {
+    list-style-type: none;
+    display: flex;
+    margin-top: 25px;
+    padding: 0;
+    border-top: 2px solid #D6DCE0;
 }
+
+.g-topic .m-timeLine h3{
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.g-topic .m-timeStamp {
+    width: 20%;
+    margin-left: 30px;
+    position: relative;
+}
+
+.g-topic .m-timeStamp:before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    border-radius: 25px;
+    border: 2px solid #D6DCE0;
+    position: absolute;
+    top: -9px;
+    left: 10px;
+}
+
+.g-topic .m-statusItem {
+    margin-top: 15px;
+}
+
+.g-topic .active:before {
+    border: 2px solid #FF3300;
+}
+
+.g-topic .focus:before {
+    border: 2px solid #FF3300;
+    background-color: #FF3300;
+}
+
 
 .g-topic .left-right {
     margin: 0;
     float: right;
     margin-top: -30px;
-    margin-right: 10px;
 }
 
 .g-topic .m-paperInfo {
@@ -101,15 +135,29 @@
 }
 
 .g-topic .m-file:first-child .avatar-uploader > .ant-upload {
-    width: 170px;
-    height: 170px;
+    width: 244px;
 }
 
 .g-topic .m-file:first-child .m-bdwrapper {
-    width: 172px;
-    height: 172px;
+    width: 246px;
 }
 
 .g-topic .floatLeft {
     float: left;
+}
+
+.g-topic .m-pType {
+    background-color: #FF6600;
+    color: #fff;
+    padding: 5px 10px;
+}
+
+.g-topic .m-pTopic {
+    color: #999;
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+.g-topic .m-grade {
+    padding-left: 20px;
 }

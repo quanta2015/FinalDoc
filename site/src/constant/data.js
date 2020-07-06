@@ -34,7 +34,7 @@ export var FILE_UPLOAD_TYPE =
              {name: '查重报告', type: 'f_check'}, 
              {name: '承诺书', type: 'f_prom'}]},
     { stage: '3. 论文答辩',
-      file: [{name: '答辩材料', type: 'f_'}, 
+      file: [{name: '答辩材料', type: 'f_'},
              {name: '答辩记录', type: 'f_' },
              {name: '答辩成绩表', type: 'f_'},
              {name: '延缓申请表', type: 'f_' }]}]
