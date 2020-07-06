@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin, ConfigProvider, Icon } from 'antd';
+import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin, ConfigProvider } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { SmileOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
@@ -63,12 +63,17 @@ export default class TopicList extends Component {
                         isAudi: true,
                     })
                 } else {
-                    this.props.studentStore.getTopicList({ uid: this.usr.id })
+                    this.props.studentStore.getTopicList({ uid: this.usr.uid })
                         .then(r => {
                             if (r.length) {
                                 r.map((item) => {
-
                                     tmp.push({
+                                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                                        phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
+                                        areas: item.areas.split(","),
+                                        color: item.color.split(",")
+                                    })
+                                    rec.push({
                                         key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
                                         phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
                                         areas: item.areas.split(","),
@@ -174,13 +179,20 @@ export default class TopicList extends Component {
                 this.setState({
                     loading: true,
                 })
-                
                 setTimeout(() => {
+                    // 防止数据更改快慢不一
+                    let res = [...rec]
+                    let flag = false
+                    for (let i = 0; i < res.length; i++) {
+                        if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
+                            flag = true
+                        }
+                    }
                     this.setState({
                         loading: false,
-                        topicList: [...tmp, ...rec]
+                        topicList: flag ? [...rec] : [...tmp, ...rec]
                     })
-                }, 600)
+                }, 1000)
                 this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
             } else { // 点击选定后
                 selectedRowKeys.push(0);
@@ -202,7 +214,7 @@ export default class TopicList extends Component {
             cha[0] = "选定"
             del[0] = "primary"
             topicList[0].status = '——';
-            this.props.studentStore.getTopicList({ uid: this.usr.id })
+            this.props.studentStore.getTopicList({ uid: this.usr.uid })
                 .then(r => {
                     tmp[0].status = '——';
                     r.map((item) => {
@@ -216,15 +228,16 @@ export default class TopicList extends Component {
                     this.setState({
                         loading: true,
                     })
-                    // 防止数据更改快慢不一
-                    let res = [...rec]
-                    let flag = false
-                    for (let i = 0; i < res.length; i++) {
-                        if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
-                            flag = true
-                        }
-                    }
+
                     setTimeout(() => {
+                        // 防止数据更改快慢不一
+                        let res = [...rec]
+                        let flag = false
+                        for (let i = 0; i < res.length; i++) {
+                            if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
+                                flag = true
+                            }
+                        }
                         this.setState({
                             loading: false,
                             topicList: flag ? [...rec] : [...tmp, ...rec]
