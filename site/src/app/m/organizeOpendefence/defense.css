@@ -1,0 +1,85 @@
+.defs-select{
+    display: flex;
+    flex-direction: column;
+}
+
+.defs_title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.defs_tea {
+    margin-bottom: 15px;
+}
+
+.select-group {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.select-group .ant-radio-group {
+    line-height: 32px;
+}
+
+.lable{
+    font-size: 16px;
+    line-height: 32px;
+    text-align: right;
+    margin-right: 30px;
+}
+.select{
+    margin-bottom: 35px;
+    display: flex;
+}
+
+.auto-allocate{
+    display: flex;
+    flex-direction: column;
+}
+
+.choose_num {
+    font-size: 16px;
+    line-height: 40px;
+}
+
+.stu_num {
+    margin: 0 5px;
+    font-weight: bold;
+    font-size: 21px;
+    color: #333;
+}
+
+.choose_num .ant-input-number{
+    margin: 0 5px ;
+}
+
+.choose_num .ant-input-number-handler-wrap{
+    display:none
+}
+
+.choose_num .ant-input-number {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid;
+}
+
+.choose_num .ant-input-number-input {
+    font-size: 21px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.reset {
+    margin-right: 10px;
+}
+
+.ant-radio-wrapper span {
+    font-size: 16px;
+}
+
+.btn {
+    margin-top: 15px;
+}

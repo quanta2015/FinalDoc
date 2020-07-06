@@ -1,7 +1,9 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin } from 'antd';
+import { Router,route } from 'preact-router';
+import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin, ConfigProvider } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { SmileOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
 import 'antd/dist/antd.css';
 import './index.css';
@@ -12,6 +14,14 @@ var cha = []
 var tmp = []
 var rec = []
 var click = 0
+
+const customizeRenderEmpty = () => (
+    <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
+        <SmileOutlined type="smile" style={{ fontSize: 30, }} />
+        <br />
+        <p style={{fontSize:20}}>课题尚未发布</p>
+    </div>
+);
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicList extends Component {
@@ -27,16 +37,21 @@ export default class TopicList extends Component {
         searchedColumn: '',
         loading: false,
     }
+
     @computed
     get usr() {
-        return this.props.userStore.usr;
+        return toJS(this.props.userStore.usr);
     }
+
     @computed
     get topicList() {
         return toJS(this.props.studentStore.topicList);
     }
 
     componentDidMount() {
+        if (!this.usr.uid) {
+            route('/')
+        }
         this.props.studentStore.isDurAudit({ uid: this.usr.uid })
             .then(r => {
                 if (r) {
@@ -54,12 +69,17 @@ export default class TopicList extends Component {
                         isAudi: true,
                     })
                 } else {
-                    this.props.studentStore.getTopicList({ uid: this.usr.id })
+                    this.props.studentStore.getTopicList({ uid: this.usr.uid })
                         .then(r => {
                             if (r.length) {
                                 r.map((item) => {
-
                                     tmp.push({
+                                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                                        phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
+                                        areas: item.areas.split(","),
+                                        color: item.color.split(",")
+                                    })
+                                    rec.push({
                                         key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
                                         phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
                                         areas: item.areas.split(","),
@@ -166,11 +186,19 @@ export default class TopicList extends Component {
                     loading: true,
                 })
                 setTimeout(() => {
+                    // 防止数据更改快慢不一
+                    let res = rec
+                    let flag = false
+                    for (let i = 0; i < res.length; i++) {
+                        if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
+                            flag = true
+                        }
+                    }
                     this.setState({
                         loading: false,
-                        topicList: [...tmp, ...rec]
+                        topicList: flag ? rec : [...tmp, ...rec]
                     })
-                }, 600)
+                }, 500)
                 this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
             } else { // 点击选定后
                 selectedRowKeys.push(0);
@@ -192,7 +220,7 @@ export default class TopicList extends Component {
             cha[0] = "选定"
             del[0] = "primary"
             topicList[0].status = '——';
-            this.props.studentStore.getTopicList({ uid: this.usr.id })
+            this.props.studentStore.getTopicList({ uid: this.usr.uid })
                 .then(r => {
                     tmp[0].status = '——';
                     r.map((item) => {
@@ -206,20 +234,26 @@ export default class TopicList extends Component {
                     this.setState({
                         loading: true,
                     })
-                    // 防止数据更改快慢不一
-                    let res = [...rec]
-                    let flag = false
-                    for (let i = 0; i < r.length; i++) {
-                        if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
-                            flag = true
-                        }
-                    }
+
                     setTimeout(() => {
+                        // 防止数据更改快慢不一
+                        let res = rec
+                        let flag = false
+                        let item;
+                        for (let i = 0; i < res.length; i++) {
+                            if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
+                                flag = true
+                                item = res[i]
+                            }
+                        }
+                        if (flag) {
+                            rec.splice(rec.indexOf(item), 1)
+                        }
                         this.setState({
                             loading: false,
-                            topicList: flag ? [...rec] : [...tmp, ...rec]
+                            topicList: [...tmp, ...rec]
                         })
-                    }, 600)
+                    }, 500)
 
                 })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
@@ -358,20 +392,22 @@ export default class TopicList extends Component {
             <div className="g-table">
                 <h3 className="m-title bold">课题列表</h3>
                 <Spin spinning={this.state.loading}>
-                    <Table
-                        columns={columns}
-                        dataSource={this.state.topicList}
-                        rowKey={item => item.id}
-                        pagination={paginationProps}
-                        onRow={record => {
-                            return {
-                                onMouseEnter: e => {
-                                    this.state.rowDetail = record
+                    <ConfigProvider renderEmpty={customizeRenderEmpty}>
+                        <Table
+                            columns={columns}
+                            dataSource={this.state.topicList}
+                            rowKey={item => item.id}
+                            pagination={paginationProps}
+                            onRow={record => {
+                                return {
+                                    onMouseEnter: e => {
+                                        this.state.rowDetail = record
+                                    }
                                 }
                             }
-                        }
-                        }
-                    />
+                            }
+                        />
+                    </ConfigProvider>
                 </Spin>
                 <Modal
                     title="课题详情"

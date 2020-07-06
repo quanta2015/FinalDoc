@@ -1,0 +1,47 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    text-align: center;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(7) {
+    width: 100px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(6) {
+    width: 100px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(5) {
+    width: 160px;
+    text-align: left;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(4) {
+    width: 120px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(3) {
+    width: 120px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(2) {
+    width: 100px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(1) {
+    width: 100px;
+}
+
+.totalSchedule_table .ant-table-placeholder .ant-table-cell{
+    width: 800px;
+}

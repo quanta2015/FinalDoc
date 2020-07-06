@@ -1,0 +1,25 @@
+
+  .file-down-load{
+    width: 80px;
+  }
+
+
+  .f-down-inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .f-down-pic{
+    width: 66px;
+    height: 66px;
+    padding: 8px;
+    font-size: 30px;
+    border: 1px dashed #d9d9d9;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+

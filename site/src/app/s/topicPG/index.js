@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import { Tag, Button, Modal, Timeline } from 'antd'
+import { Tag, Button, Modal, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
 import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
@@ -32,6 +32,11 @@ export default class TopicPG extends Component {
     }
 
     @computed
+    get usr() {
+        return toJS(this.props.userStore.usr);
+    }
+
+    @computed
     get selectTpInfo() {
         return toJS(this.props.studentStore.selectTpInfo);
     }
@@ -48,6 +53,9 @@ export default class TopicPG extends Component {
 
     componentDidMount() {
         //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
+        if (!this.usr.uid) {
+            route('/')
+        }
         if (!this.selectTpInfo) {
             route('/s_selectTL')
         }

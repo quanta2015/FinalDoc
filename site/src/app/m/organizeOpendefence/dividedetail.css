@@ -1,0 +1,67 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+/* .ant-modal-content {
+    width: 520px;
+} */
+
+.dividedetail .ant-table-cell {
+    text-align: center;
+}
+
+.dividedetail .ant-table-cell:nth-last-child(5) {
+    width: 100px;
+}
+
+.dividedetail .ant-table-cell:nth-last-child(4) {
+    width: 120px;
+}
+
+.dividedetail .ant-table-cell:nth-last-child(3) {
+    width: 380px;
+}
+
+.dividedetail .ant-table-cell:nth-last-child(2) {
+    width: 100px;
+}
+
+.dividedetail .ant-table-cell:nth-last-child(1) {
+    width: 100px;
+}
+
+.dividedetail .ant-table-placeholder .ant-table-cell{
+    width: 800px;
+}
+
+/* 模态框内表格 */
+.topicdetail .ant-table-cell {
+    text-align: center;
+}
+
+.topicdetail .ant-table-cell:nth-last-child(4){
+    width: 300px;
+}
+
+.topicdetail .ant-table-cell:nth-last-child(3){
+    width: 150px;
+}
+
+.topicdetail .ant-table-cell:nth-last-child(2){
+    width: 200px;
+}
+
+.topicdetail .ant-table-cell:nth-last-child(1){
+    width: 150px;
+}
+
+.topicdetail .ant-table-placeholder .ant-table-cell{
+    width: 800px;
+}
