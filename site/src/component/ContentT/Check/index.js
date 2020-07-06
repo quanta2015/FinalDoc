@@ -1,5 +1,6 @@
 import { Collapse,Button, Table, message ,Tag} from 'antd';
-
+import { inject, observer } from 'mobx-react';
+import { computed} from 'mobx';
 import style from './index.css'
 import BaseActions from '../../BaseActions';
 const { Panel } = Collapse;
@@ -9,10 +10,6 @@ import DeleteSpan from '../../../component/ContentT/Icons/Delete'
 import ReWrite from '../../../component/ContentT/Icons/ReWrite'
 import Watch from '../../../component/ContentT/Icons/Watch'
 import ReviewLine from '../Review';
-
-let me = {
-  tea_id : '20100119'
-}
 
 
 const PanelHeader = (name,status,id)=>(
@@ -33,12 +30,18 @@ const PanelHeader = (name,status,id)=>(
   </span>
 )
 
+@inject('userStore')
+@observer
 class Check extends BaseActions {
 
   constructor(props){
     super(props);
   }
 
+  @computed
+  get usr() {
+      return this.props.userStore.usr;
+  }
 
   /**
    * 撤销课题
@@ -115,7 +118,7 @@ class Check extends BaseActions {
                     {t.status==3 &&
                       <>
                         {t.sid!=null&&
-                          <StuMethods  sid={t.sid} tid={t.id}/>
+                          <StuMethods  sid={t.sid} tid={this.usr.uid} pid={t.id}/>
                         }
                         {t.sid==null&&this.props.checkList.map((x)=>{return x.id}).indexOf(t.id)<0&&
                           <span>您的课题{t.name}还没有学生选择</span>
