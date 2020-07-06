@@ -11,6 +11,12 @@ var ROLE = 2
 class User extends BaseActions {
   
   @observable
+  // usr = {
+  //   name:'沈珊瑚',
+  //   uid: '20130006',
+  //   maj: '物联网软工系',
+  //   role:2,    // 0: teacher 1:student 2: manage
+  // }
   usr = {
     name: '张三',
     uid: '2018210207004',

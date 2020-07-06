@@ -23,6 +23,8 @@ class manager extends BaseActions {
     areas_list: [],
     // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
     auditCount: {},
+    //查看是否已经发布课题
+    judge_info:[],
   }
 
 
@@ -128,6 +130,19 @@ class manager extends BaseActions {
     const res = await this.post(urls.API_MAN_POST_AREALIST, null);
     runInAction(() => {
       this.distributeTopic.areas_list = res.data;
+    })
+  }
+
+  @action
+  async getRelease(param) {
+    const res = await this.post(urls.API_MAN_POST_RELEASE, param);  
+  }
+
+  @action
+  async getJudge(param) {
+    const res = await this.post(urls.API_MAN_POST_JUDGETOPIC, param);
+    runInAction(() => {
+      this.distributeTopic.judge_info = res.data[0];
     })
   }
 
