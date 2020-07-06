@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-04 15:38:02
+ * @LastEditTime: 2020-07-05 22:30:59
  */ 
 
 const express = require('express');
@@ -134,6 +134,22 @@ router.post('/areaList', async(req, res) => {
 });
 
 
+/**
+ * @name: 
+ * @test: test font
+ * @msg: 一键发布本系课题
+ *        --topic表未替换,
+ *        前端等所有审核通过之后发起请求，后端发布所有已通过(audit表result=1)的同系课题
+ * @param {type} 
+ * @return: 
+ */
+router.post('/releaseTopic', async(req, res) => {
+  let sql = `CALL PROC_RELEASE_TOPIC_M(?)`;
+	let params = req.body;
+	callProc(sql, params, res, (r) => {
+		res.status(200).json({code: 200, data: r, msg: '一键发布课题成功'})
+	});
+});
 
 //迁至auditTp
 // router.post('/checkUpdateYes', async(req, res) => {
