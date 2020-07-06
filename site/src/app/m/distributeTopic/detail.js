@@ -121,7 +121,7 @@ export default class Detail extends Component {
 		let res = await this.props.manageStore.getRelease({"ide": this.usr.uid});
 		if (res && res.code === 200) {
 			message.info("发布成功！")
-			 
+			
 			await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
 			await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
 			await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
@@ -207,7 +207,7 @@ export default class Detail extends Component {
 
 				render: (text, record) => (
 					<Space size="middle">
-						<a onClick={() => this.showModal(record)}>  详情</a>
+						<a onClick={() => this.showModal(record)}>详情</a>
 
 					</Space>
 

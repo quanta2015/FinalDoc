@@ -157,8 +157,6 @@ class manager extends BaseActions {
     group_list: [],
   }
 
-
-  
   @action
   // 参数，系主任id
   // {"ide":"20130006"}
@@ -269,5 +267,78 @@ class manager extends BaseActions {
   async deleteGroup_ogp(param) {
     return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
   }
+
+  @observable
+  stu_list = []
+
+  // 查看该系全体学生的论文进度
+  // {"gid":int}
+  async viewProgress(param){
+    let res = await this.post(urls.API_MAN_POST_VIEWPROGRESS, param)
+    let temp = []
+    res.data.map((item,i)=>{
+      let status = item.status
+      let phase = ""
+      let tag = ""
+      if(status>=-1 && status<=3){
+        phase = "选题阶段"
+        if(status===3){
+          // 学生已选题
+          tag = "已选题"
+        }else {
+          // 学生未选题
+          tag = "未选题"
+        }
+      }else if(status===4 || status===-4){
+        phase = "开题答辩"
+        if(status===4){
+          // 通过开题答辩
+          tag = "已通过"
+        }else if(status===-4){
+          // 未通过开题答辩
+          tag = "未通过"
+        }
+      }else if(status===-5 || status===5 || status===-6 || status===6){
+        phase = "论文定稿"
+        if(status===5 || status===6){
+          // 5教师通过,6系主任通过
+          tag = "已通过"
+        }else if(status===-5 || status===-6){
+          // 5教师未通过,6系主任未通过
+          tag = "未通过"
+        }
+      }else if(status===7 || status===-7){
+        phase = "论文答辩"
+        if(status===7){
+          // 通过论文答辩
+          tag = "已通过"
+        }else if(status===-7){
+          // 未通过论文答辩
+          tag = "未通过"
+        }
+      }else if(status===-8 || status===8 || status===-9 || status===9){
+        phase = "最终审核"
+        if(status===8 || status===9){
+          // 8教师通过,9系主任通过
+          tag = "已通过"
+        }else if(status===-8 || status===-9){
+          // -8教师未通过,-9系主任未通过
+          tag = "未通过"
+        }
+      }
+      temp.push({
+        sName: item.sName,
+        class: item.cls,
+        topic: item.topic,
+        tName: item.tName,
+        phase: phase,
+        status: tag,
+      })
+    })
+    runInAction(() => {
+      this.stu_list = temp;
+    })
+  }
+
 }
 export default new manager()

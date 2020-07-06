@@ -35,6 +35,9 @@ export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
 export const API_MAN_POST_OGP_DELETEGROUP = API_SERVER + '/openGp/deleteGroup'
 
+// 查看论文进度
+export const API_MAN_POST_VIEWPROGRESS = API_SERVER + '/auditMg/viewProgress'
+
 
 
 // 学生接口声明
