@@ -14,7 +14,7 @@ import {
   Checkbox,
 } from "antd";
 import { route } from "preact-router";
-
+import token from "../../util/token.js";
 const { Option } = Select;
 
 @inject("userStore")
@@ -28,11 +28,36 @@ class Login extends Component {
       password: "",
       rememberMe: true,
     };
+    let user = token.getUser();
+    console.log(JSON.stringify(user))
+    if (user) {
+      let values = { uid: user[0].uid, password: user[0].pwd };
+      this.props.userStore.login(values).then((r) => {
+        console.log('=========75==================',r)
+        if (r.data && r.code === 200) {
+
+          message.success(r.msg);
+          if (r.data[0].role == 0)
+            route('/t', true)
+          if (r.data[0].role == 2)
+            route('/m', true)
+          if (r.data[0].role == 1)
+            route('/s', true)
+        } else if (r.code === 301) {
+          message.error(r.msg);
+        }
+
+        //  console.log("Success:", values);
+      })
+
+
+    };
   }
 
   @computed
-  get currUser() {
-    return this.props.userStore.currUser;
+  get usr() {
+    return this.props.userStore.usr;
+    
   }
 
   // doLogin = () => {
