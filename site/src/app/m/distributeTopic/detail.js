@@ -237,12 +237,12 @@ export default class Detail extends Component {
 				<div className="release">
 					 
 						
-						{(this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length !== 0) &&
-						<Tooltip placement="top" title={"仅" + this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, " + this.distributeTopic.topic_info.length + "篇未分配，不能发布所有课题"}>
+					{(this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length !== 0 || this.distributeTopic.auditCount.Passed === 0) &&
+						<Tooltip placement="top" title={this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, " + this.distributeTopic.topic_info.length + "篇未分配，不能发布所有课题"}>
 							<Button type="primary" disabled >发布课题</Button>
 						</Tooltip>
 						}
-						{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag===0 ) &&
+					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0  && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag===0 ) &&
 							<Button type="primary" onClick={this.release}>发布课题</Button>
 						}
 					{
