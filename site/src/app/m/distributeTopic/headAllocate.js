@@ -59,6 +59,10 @@ export default class HeadAllocate extends Component {
 
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
+        if(this.state.tea_name === "" || this.state.tea_name === undefined){
+            selectedRowKeys.pop();
+            message.info("请先选择审核教师！")
+        }
         this.setState({ selectedRowKeys });
     };
     //模态框
