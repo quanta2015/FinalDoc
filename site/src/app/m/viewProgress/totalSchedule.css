@@ -22,16 +22,16 @@ tbody.ant-table-tbody {
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(5) {
-    width: 200px;
+    width: 160px;
     text-align: left;
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(4) {
-    width: 100px;
+    width: 120px;
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(3) {
-    width: 100px;
+    width: 120px;
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(2) {

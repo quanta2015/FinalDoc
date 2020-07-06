@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 import { Modal } from 'antd';
+import UploadImage from '../ImgUpload'
 import './index.scss'
 // import more from './more.svg'
 import { MENU_MAIN_M } from '../../constant/data'
@@ -73,7 +74,9 @@ class NavM extends Component {
           onCancel={this.handleCancel}
           footer={false}
         >
-          <p>Some contents...</p>
+          <div>
+            <UploadImage  />
+          </div>
         </Modal>
 
       </div>
