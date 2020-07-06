@@ -18,7 +18,7 @@ router.post('/getTopicTypes', async (req, res) => {
     callProc(sql, params, res, (r) => {
         res.status(200).json({ code: 200, data: r, msg: '所有选题类型' })
     });
-		res.status(200).json({code: 200, data: r, msg: '取审核列表信息'})
+		
 });
 
 router.post('/searchTopic', async (req, res) => {
