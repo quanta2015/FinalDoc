@@ -187,44 +187,36 @@ router.post('/getStudentUntied', async(req, res) => {
 })
 
 // 上传签名文件
-router.post('/upload', async function (req, res) {
-    let new_path;
+app.post('/upload', async function (req, res) {
     const form = new formidable.IncomingForm()
     form.uploadDir = "./upload/";
-    form.parse(req)
-    let get_data = { t: "json" };
-    form.on('field', function (name, value) {
-        get_data[name] = value
-        console.log(get_data)
-    })
+    let get_data, newpath;
     form.parse(req, (err, fields, files) => {
-        console.log('===========', files, files.avatar)
-        let type = files.avatar.name.split('.').slice(-1)
-        let ttt = `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`;
-        let extname = path.extname(files.avatar.name);
-        let oldpath =  '' + files.avatar.path
-        let newpath =  '' + "./upload/" + ttt;
-        new_path=newpath;
+        if (err || !files.file) {
+            res.status(500);
+        }
+        get_data = fields;
+        let ext = files.file.name.split('.').slice(-1)
+        let ttt = `${get_data.tid}_签名_${moment(new Date()).format('YYYYMMDDhhmmss')}.${ext}`;
+        let oldpath = files.file.path
+        console.log("===============旧地址====================", oldpath)
+        newpath = "./upload/" + ttt;
+        console.log("===============新地址====================", newpath)
+        // console.log(oldpath, newpath)
         fs.rename(oldpath, newpath, function (err) {
-            console.log(err)
             if (err) {
                 console.log(err);
                 throw Error("改名失败");
             }
         });
-        console.log(get_data);
-        let sql = `CALL PROC_UPDATE_USER_SIGN(?)`;
-        get_data.filePath = new_path
-        let params = get_data;
-        console.log("============199===199===199===========")
-        console.log(params)
-
-        callProc(sql, params, res, (r) => {
+        let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
+        get_data.filePath = newpath;
+        callProc(sql, get_data, res, (r) => {
             res.status(200).json({
                 code: 200,
                 msg: `上传签名成功`,
-                data: new_path,
-                mysqldata:r
+                data: newpath,
+                mysqldata: r
             })
         });
     });
