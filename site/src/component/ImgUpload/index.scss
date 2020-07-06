@@ -1,0 +1,17 @@
+[data-component="imgupload"]{
+  .upload-span{
+    cursor: pointer;
+    color: white;
+    text-decoration:underline;
+  }
+
+  .ant-upload-list-picture-card-container{
+    width: 150px;
+    height: 70px;
+  }
+
+  .ant-upload-list-picture-card .ant-upload-list-item{
+    width: 150px;
+    height: 70px;
+  }
+}

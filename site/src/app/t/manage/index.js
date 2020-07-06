@@ -139,7 +139,7 @@ export default class Home extends BaseActions {
         >
           <AllTopicList uid={this.usr.uid}/>
         </Modal>
-        <UploadImg/>
+        
       </div>
 
       

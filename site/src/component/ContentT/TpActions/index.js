@@ -128,7 +128,8 @@ class TpActions extends BaseActions {
 		});
 	};
 
-	render(_,{ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible, modalSubject}){
+	render(){
+        const {ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible, modalSubject} = this.state;
         return(
             <Space size="middle">
                 <Tooltip placement="top" title="通过">

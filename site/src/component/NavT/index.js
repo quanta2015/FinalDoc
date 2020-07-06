@@ -5,6 +5,7 @@ import more from './more.svg'
 import { MENU_MAIN_T } from '../../constant/data'
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
+import UploadImg from '../ImgUpload'
 
 @inject('userStore')
 @observer
@@ -23,7 +24,7 @@ class NavT extends Component {
   }
 
   async componentDidMount(){
-    route('/t_manage');
+    
   }
 
   @computed
@@ -40,6 +41,7 @@ class NavT extends Component {
           <div>姓名：{this.usr.name}</div>
           <div>工号：{this.usr.uid}</div>
           <div>所在系：{this.usr.maj}</div>
+          <div>签名：<UploadImg/></div>
         </div>
         <div className="g-menu">
           {MENU_MAIN_T.map((item,i)=>
