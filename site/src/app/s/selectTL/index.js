@@ -1,7 +1,8 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin } from 'antd';
+import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin, ConfigProvider, Icon } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { SmileOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
 import 'antd/dist/antd.css';
 import './index.css';
@@ -12,6 +13,14 @@ var cha = []
 var tmp = []
 var rec = []
 var click = 0
+
+const customizeRenderEmpty = () => (
+    <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
+        <SmileOutlined type="smile" style={{ fontSize: 20, }} />
+        <br />
+        <p>系主任尚未一键发布</p>
+    </div>
+);
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicList extends Component {
@@ -165,6 +174,7 @@ export default class TopicList extends Component {
                 this.setState({
                     loading: true,
                 })
+                
                 setTimeout(() => {
                     this.setState({
                         loading: false,
@@ -209,7 +219,7 @@ export default class TopicList extends Component {
                     // 防止数据更改快慢不一
                     let res = [...rec]
                     let flag = false
-                    for (let i = 0; i < r.length; i++) {
+                    for (let i = 0; i < res.length; i++) {
                         if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
                             flag = true
                         }
@@ -219,7 +229,7 @@ export default class TopicList extends Component {
                             loading: false,
                             topicList: flag ? [...rec] : [...tmp, ...rec]
                         })
-                    }, 600)
+                    }, 1000)
 
                 })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
@@ -358,20 +368,22 @@ export default class TopicList extends Component {
             <div className="g-table">
                 <h3 className="m-title bold">课题列表</h3>
                 <Spin spinning={this.state.loading}>
-                    <Table
-                        columns={columns}
-                        dataSource={this.state.topicList}
-                        rowKey={item => item.id}
-                        pagination={paginationProps}
-                        onRow={record => {
-                            return {
-                                onMouseEnter: e => {
-                                    this.state.rowDetail = record
+                    <ConfigProvider renderEmpty={customizeRenderEmpty}>
+                        <Table
+                            columns={columns}
+                            dataSource={this.state.topicList}
+                            rowKey={item => item.id}
+                            pagination={paginationProps}
+                            onRow={record => {
+                                return {
+                                    onMouseEnter: e => {
+                                        this.state.rowDetail = record
+                                    }
                                 }
                             }
-                        }
-                        }
-                    />
+                            }
+                        />
+                    </ConfigProvider>
                 </Spin>
                 <Modal
                     title="课题详情"

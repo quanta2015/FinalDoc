@@ -7,26 +7,34 @@ import './index.css'
 const data = [
     {
         content: 'Ant Design Title 1',
-        datetime: moment().format('YYYY年MM月DD日 HH:MM:SS'),
+        // datetime: moment().format('YYYY年MM月DD日'),
+        datetime: '2020年07月04日',
         place: '网络'
     },
     {
         content: 'Ant Design Title 2',
-        datetime: moment().format('YYYY年MM月DD日 HH:MM:SS'),
+        // datetime: moment().format('YYYY年MM月DD日'),
+        datetime: '2020年07月03日',
         place: '学校'
     },
     {
         content: 'Ant Design Title 3',
-        datetime: moment().format('YYYY年MM月DD日 HH:MM:SS'),
+        // datetime: moment().format('YYYY年MM月DD日'),
+        datetime: '2020年07月02日',
         place: '网络'
     },
     {
         content: 'Ant Design Title 4',
-        datetime: moment().format('YYYY年MM月DD日 HH:MM:SS'),
+        // datetime: moment().format('YYYY年MM月DD日'),
+        datetime: '2020年07月01日',
         place: '学校'
     },
 ];
 
+const SEL_PLACE = [
+    {value:"学校",key:"学校"},
+    {value:"网络",key:"网络"}
+]
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -56,7 +64,14 @@ class LogDrawer extends Component {
             sel: '学校',
         }
     }
+    componentDidMount = () => {
+        let comments = [...this.state.comments]
+        comments.map((item) => {
+            if (item.datetime === moment().format('YYYY年MM月DD日')) {
 
+            }
+        })
+    }
     handleSubmit = () => {
         let comments = [...this.state.comments]
         const { editedItemIndex, value } = this.state
@@ -77,7 +92,8 @@ class LogDrawer extends Component {
                             // author: 'Han Solo',
                             // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                             content: this.state.value,
-                            datetime: moment().format('YYYY年MM月DD日 HH:MM:SS'),
+                            datetime: moment().format('YYYY年MM月DD日'),
+                            place: this.state.sel,
                         },
                         ...this.state.comments,
                     ],
@@ -86,7 +102,8 @@ class LogDrawer extends Component {
         } else {
             setTimeout(() => {
                 let datetime = comments[editedItemIndex].datetime
-                comments[editedItemIndex] = { content: value, datetime }
+                let place = this.state.sel
+                comments[editedItemIndex] = { content: value, datetime, place }
                 this.setState({
                     submitting: false,
                     value: '',
@@ -137,6 +154,15 @@ class LogDrawer extends Component {
 
     render() {
         const { comments, submitting, value } = this.state;
+        let hasPost = false
+        let selPlace = null
+        comments.map((item) => {
+            if (item.datetime === moment().format('YYYY年MM月DD日')) {
+                hasPost = true
+                // 使Select Editor中显示最近时间的值
+
+            }
+        })
         return (
             <div className="g-log">
                 <Drawer
@@ -160,55 +186,55 @@ class LogDrawer extends Component {
                         </div>
                     }
                 >
-                    <Select
-                        defaultValue={this.state.sel}
-                        style={{ width: 120 }}
-                        onChange={this.handleSelChange}
-                        onSelect={this.handleSelect}
-                        value={this.state.sel}
-                    // ref={selectItem => this.selectItem = selectItem}
-                    >
-                        <Option value="学校" key="学校">学校</Option>
-                        <Option value="网络" key="网络">网络</Option>
-                    </Select>
-                    <Comment
-                        // avatar={
-                        //     <Avatar
-                        //         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        //         alt="Han Solo"
-                        //     />
-                        // }
-                        content={
-                            <Editor
-                                onChange={this.handleChange}
-                                onSubmit={this.handleSubmit}
-                                submitting={submitting}
-                                value={value}
-                            />
-                        }
-                    />
-                    {/* {comments.length > 0 && <CommentList comments={comments} />} */}
                     {
-                        comments.length > 0 && (
-                            <List
-                                dataSource={comments}
-                                // header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-                                header={`${comments.length} 条记录`}
-                                itemLayout="horizontal"
-                                // renderItem={props => <Comment {...props} />}
-                                renderItem={(item) => (
-                                    <List.Item
-                                        actions={[<Button onClick={() => this.handleEdit(item)}>编辑</Button>,
-                                        <Button onClick={() => this.handleDelete(item)}>删除</Button>]} >
-                                        <List.Item.Meta
-                                            title={<p>{item.datetime} {item.place}</p>}
-                                            description={<p>{item.content}</p>}
-                                        />
-                                    </List.Item>
-                                )}
+                        hasPost ? 
+                        (<div>
+                            <Select >
+
+                            </Select>
+                        </div>) : (<div>
+                            <Select
+                                defaultValue={this.state.sel}
+                                style={{ width: 120 }}
+                                onChange={this.handleSelChange}
+                                onSelect={this.handleSelect}
+                                value={this.state.sel}
+                            >
+                                <Option value="学校" key="学校">学校</Option>
+                                <Option value="网络" key="网络">网络</Option>
+                            </Select>
+                            <Comment
+                                content={
+                                    <Editor
+                                        onChange={this.handleChange}
+                                        onSubmit={this.handleSubmit}
+                                        submitting={submitting}
+                                        value={value}
+                                    />
+                                }
                             />
-                        )
+                            {
+                                comments.length > 0 && (
+                                    <List
+                                        dataSource={comments}
+                                        header={`${comments.length} 条记录`}
+                                        itemLayout="horizontal"
+                                        renderItem={(item) => (
+                                            <List.Item
+                                                actions={[<Button onClick={() => this.handleEdit(item)}>编辑</Button>,
+                                                <Button onClick={() => this.handleDelete(item)}>删除</Button>]} >
+                                                <List.Item.Meta
+                                                    title={<p>{item.datetime} {item.place}</p>}
+                                                    description={<p>{item.content}</p>}
+                                                />
+                                            </List.Item>
+                                        )}
+                                    />
+                                )
+                            }
+                        </div>)
                     }
+
                 </Drawer>
             </div>
         );
