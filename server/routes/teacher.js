@@ -187,7 +187,7 @@ router.post('/getStudentUntied', async(req, res) => {
 })
 
 // 上传签名文件
-app.post('/upload', async function (req, res) {
+router.post('/upload', async function (req, res) {
     const form = new formidable.IncomingForm()
     form.uploadDir = "./upload/";
     let get_data, newpath;
