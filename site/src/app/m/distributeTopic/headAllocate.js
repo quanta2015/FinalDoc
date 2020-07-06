@@ -50,6 +50,11 @@ export default class HeadAllocate extends Component {
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
         await this.props.manageStore.getTeaList({"ide":this.usr.uid});
         await this.props.manageStore.getAreasList();
+        this.setState({
+            teacher_info: toJS(this.distributeTopic.teacher_info),
+            topic_info: toJS(this.distributeTopic.topic_info),
+        });
+        
     }
 
     onSelectChange = (selectedRowKeys) => {
@@ -142,14 +147,14 @@ export default class HeadAllocate extends Component {
             // 清空选择课题列表
             this.setState({
                 selectedRowKeys: [],
-                topic_info: toJS(this.distributeTopic.topic_info),
+                topic_info: toJS(this.state.topic_info),
             })
         }
         this.setState({
             tea_id: id,
             tea_name: value
         }, () => {
-            let topic = toJS(this.distributeTopic.topic_info);
+            let topic = toJS(this.state.topic_info);
             let newlist = [];
             topic.map((item, i) => {
                 if (item.tid !== this.state.tea_id) {
@@ -188,6 +193,10 @@ export default class HeadAllocate extends Component {
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+            this.setState({
+                topic_info: toJS(this.distributeTopic.topic_info),
+                
+            });
         } else {
             message.info("分配失败！请重试")
         }
@@ -282,7 +291,7 @@ export default class HeadAllocate extends Component {
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                         >
-                            {this.distributeTopic.teacher_info.map((item, i) =>
+                            {this.state.teacher_info.map((item, i) =>
                                 <Select.Option key={item.tid}>{item.value}</Select.Option>
                             )}
                         </Select>
@@ -299,7 +308,7 @@ export default class HeadAllocate extends Component {
                         onChange={this.handleChange}
                         rowSelection={rowSelection}
                         columns={columns}
-                        dataSource={this.distributeTopic.topic_info}
+                        dataSource={this.state.topic_info}
                         pagination={paginationProps}
                         onRow={(record) => {
                             return {
