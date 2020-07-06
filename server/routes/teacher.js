@@ -6,6 +6,7 @@ const router = express.Router();
 const callProc = require('../util').callProc;
 const formidable = require('formidable');
 let path = require("path");
+const fs = require('fs');
 
 // 由不完整学号得到学生列表（学号和姓名）：模糊查询
 router.post('/getStuInfoByLikeID', async(req, res) => {
@@ -238,4 +239,4 @@ router.post('/getStudentUntied', async(req, res) => {
 //     res.download('./' + filename)
 // })
 
-  module.exports = router;
+module.exports = router;

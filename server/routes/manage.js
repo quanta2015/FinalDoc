@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 开题阶段 分配审核相关接口
  * @version: 
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-06 11:02:15
+ * @LastEditTime: 2020-07-06 20:23:00
  */ 
 
 const express = require('express');
@@ -21,7 +21,7 @@ const callProc = require('../util').callProc;
  * @return: data
  */
 router.post('/teacherList', async(req, res) => {
-  let sql = `CALL PROC_TEA_LIST_M(?)`;
+  let sql = `CALL MG_M_PROC_TEA_LIST(?)`;
   let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取教师列表'})
@@ -36,7 +36,7 @@ router.post('/teacherList', async(req, res) => {
  * @return: 
  */
 router.post('/topicList', async(req, res) => {
-  let sql = `CALL PROC_TOPIC_LIST_M(?)`;
+  let sql = `CALL MG_M_PROC_TOPIC_LIS(?)`;
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取课题列表'})
@@ -51,7 +51,7 @@ router.post('/topicList', async(req, res) => {
  * @return: 
  */
 router.post('/checkList', async(req, res) => {
-  let sql = `CALL PROC_TOPIC_CHECK_LIST_M(?)`;
+  let sql = `CALL MG_M_PROC_CHECK_LIST(?)`;
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
     r.forEach(element => {
@@ -78,7 +78,7 @@ router.post('/randAllocate',async(req,res) => {
   let resultArr=[];
   for(let i=0;i<req.body.teacher_id.length;i++){
     let params = {ide:_ide,sum:count,teacher_id:req.body.teacher_id[i]};
-    message = await db.Query(`CALL PROC_CHECK_RAND_M(?)`,[JSON.stringify(params)])
+    message = await db.Query(`CALL MG_M_PROC_RAND_CHECK(?)`,[JSON.stringify(params)])
     // let result = JSON.stringify(message[0][0])
     let result = (message[0][0])
     resultArr.push(result);
@@ -96,7 +96,7 @@ router.post('/randAllocate',async(req,res) => {
  */
 router.post('/checkAllocate', async(req, res) => {
   for(let j of req.body.topic_id){
-    let sql = `CALL PROC_CHECK_INSERT_M(?)`;
+    let sql = `CALL MG_M_PROC_HANDLE_CHECK(?)`;
     let params = {teacher_id:req.body.teacher_id,topic_id:j};
     callProc(sql, params, res, (r) => {});
   }
@@ -111,7 +111,7 @@ router.post('/checkAllocate', async(req, res) => {
  * @return: 未审核、未通过、已通过
  */
 router.post('/auditCount', async(req, res) => {
-  let sql = `CALL PROC_AUDIT_COUNT_M(?)`;
+  let sql = `CALL MG_M_PROC_AUDIT_COUNT(?)`;
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取审核相关的三值'})
@@ -126,7 +126,7 @@ router.post('/auditCount', async(req, res) => {
  * @return: 
  */
 router.post('/areaList', async(req, res) => {
-  let sql = `CALL PROC_GET_AREA_LIST_M`;
+  let sql = `CALL MG_M_PROC_AREA_LIST`;
 	let params = req.body;
 	callProc(sql, {}, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '取领域列表'})
@@ -144,7 +144,7 @@ router.post('/areaList', async(req, res) => {
  * @return: 
  */
 router.post('/releaseTopic', async(req, res) => {
-  let sql = `CALL PROC_RELEASE_TOPIC_M(?)`;
+  let sql = `CALL MG_M_PROC_RELEASE_TOPIC(?)`;
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '一键发布课题成功'})
@@ -159,7 +159,7 @@ router.post('/releaseTopic', async(req, res) => {
  * @return: 
  */
 router.post('/judgeTopic', async(req, res) => {
-  let sql = `CALL PROC_JUDGE_RELEASE_M(?)`;
+  let sql = `CALL MG_M_PROC_JUDGE_RELEASE(?)`;
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '发布课题判断'})
