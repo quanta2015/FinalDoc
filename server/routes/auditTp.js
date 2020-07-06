@@ -16,6 +16,7 @@ router.post('/getTopicTypes', async (req, res) => {
     let params = req.body;
     console.log(params)
     callProc(sql, params, res, (r) => {
+      console.log("===所有选题类型====",r)
         res.status(200).json({ code: 200, data: r, msg: '所有选题类型' })
     });
 		
