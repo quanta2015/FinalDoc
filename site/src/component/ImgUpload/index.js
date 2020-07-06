@@ -69,7 +69,7 @@ class UploadImage extends Component {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-          const canvas = document.createElement('canvas');
+          const canvas =document.createElement('canvas');
           canvas.width=150;
           canvas.height=70;
           const img = document.createElement('img');
