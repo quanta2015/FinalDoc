@@ -13,7 +13,6 @@ const paginationProps = {
 	}),
 }
 
-
 @inject('manageStore', 'userStore')
 @observer
 export default class Detail extends Component {
@@ -231,7 +230,6 @@ export default class Detail extends Component {
 			tag = "未通过";
 			color = "red"
 		}
-
 
 		return (
 			<div>

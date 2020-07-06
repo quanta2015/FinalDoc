@@ -14,7 +14,7 @@ export var MENU_MAIN_T =
 
 export var MENU_MAIN_M = 
    [{ title:'分配审核选题', path: '/m_distributeTopic' , icon:home },
-    { title:'组织开题答辩', path: '/m_organizeOpendefence' , icon:home },
-    { title:'组织最终答辩', path: '/m_organizeFinaldefence' , icon:home },
+    { title:'组织答辩小组', path: '/m_organizeOpendefence' , icon:home },
+    { title:'论文审核工作', path: '/m_reviewPaper' , icon:home },
     { title:'查看论文进度', path: '/m_viewProgress' , icon:home },
    ]

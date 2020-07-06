@@ -2,6 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
+import { Modal } from 'antd';
 import './index.scss'
 // import more from './more.svg'
 import { MENU_MAIN_M } from '../../constant/data'
@@ -14,6 +15,7 @@ class NavM extends Component {
 
     this.state = {
       cur: 0,
+      visible: false,
     }
   }
 
@@ -28,6 +30,18 @@ class NavM extends Component {
     })
   }
 
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
     return (
       <div className="g-nav">
@@ -36,6 +50,10 @@ class NavM extends Component {
           <div>姓名：{this.usr.name}</div>
           <div>工号：{this.usr.uid}</div>
           <div>所在系：{this.usr.maj}</div>
+          <div className="sign" 
+            onClick={this.showModal} >
+              查看电子签名
+          </div>
           {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
@@ -45,7 +63,17 @@ class NavM extends Component {
             </div>
           )}
         </div>
+        <Modal
+          title="查看电子签名"
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          footer={false}
+        >
+          <p>Some contents...</p>
+        </Modal>
+
       </div>
+      
     )
   }
 }

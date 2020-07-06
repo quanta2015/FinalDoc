@@ -1,4 +1,3 @@
- 
 table,
 tbody.ant-table-tbody {
     display: flex;
@@ -10,49 +9,39 @@ tbody.ant-table-tbody {
     display: flex;
 }
 
-.totalschedule_table .ant-table-cell:nth-last-child(8) {
-    width: 80px;
+.ant-table-cell {
+    text-align: center;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(7) {
+    width: 100px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(6) {
+    width: 100px;
+}
+
+.totalSchedule_table .ant-table-cell:nth-last-child(5) {
+    width: 200px;
     text-align: left;
-     
 }
 
-.totalschedule_table .ant-table-cell:nth-last-child(7) {
-     width: 80px;
-    text-align: left;
-     
+.totalSchedule_table .ant-table-cell:nth-last-child(4) {
+    width: 100px;
 }
 
-.totalschedule_table .ant-table-cell:nth-last-child(6) {
-     width: 80px;
-    text-align: left;
-     
+.totalSchedule_table .ant-table-cell:nth-last-child(3) {
+    width: 100px;
 }
 
-.totalschedule_table .ant-table-cell:nth-last-child(5) {
-     width: 80px;
-    text-align: left;
-     
+.totalSchedule_table .ant-table-cell:nth-last-child(2) {
+    width: 100px;
 }
 
-.totalschedule_table .ant-table-cell:nth-last-child(4) {
-     width: 80px;
+.totalSchedule_table .ant-table-cell:nth-last-child(1) {
+    width: 100px;
 }
 
-.totalschedule_table .ant-table-cell:nth-last-child(3) {
-     width: 80px;
-    
-}
-
-.totalschedule_table .ant-table-cell:nth-last-child(2) {
-     width: 80px;
-}
-
-.totalschedule_table .ant-table-cell:nth-last-child(1) {
-     width: 80px;
-}
-
-.totalschedule_table .ant-table-placeholder .ant-table-cell{
+.totalSchedule_table .ant-table-placeholder .ant-table-cell{
     width: 800px;
 }
-
- 
