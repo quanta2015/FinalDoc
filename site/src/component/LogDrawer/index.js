@@ -7,41 +7,37 @@ import './index.css'
 const data = [
     {
         content: 'Ant Design Title 1',
-        // datetime: moment().format('YYYY年MM月DD日'),
-        datetime: '2020年07月04日',
+        datetime: '2020年07月06日',
         place: '网络'
     },
     {
         content: 'Ant Design Title 2',
-        // datetime: moment().format('YYYY年MM月DD日'),
         datetime: '2020年07月03日',
         place: '学校'
     },
     {
         content: 'Ant Design Title 3',
-        // datetime: moment().format('YYYY年MM月DD日'),
         datetime: '2020年07月02日',
         place: '网络'
     },
     {
         content: 'Ant Design Title 4',
-        // datetime: moment().format('YYYY年MM月DD日'),
         datetime: '2020年07月01日',
         place: '学校'
     },
 ];
 
 const SEL_PLACE = [
-    {value:"学校",key:"学校"},
-    {value:"网络",key:"网络"}
+    { value: "学校", key: "学校" },
+    { value: "网络", key: "网络" }
 ]
 const { TextArea } = Input;
 const { Option } = Select;
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+const Editor = ({ onChange, onSubmit, submitting, value, defaultValue }) => (
     <>
         <Form.Item>
-            <TextArea rows={4} onChange={onChange} value={value} placeholder="请输入今日的指导日志..." />
+            <TextArea rows={4} onChange={onChange} defaultValue={defaultValue} value={value} placeholder="请输入今日的指导日志..." />
         </Form.Item>
         <Form.Item>
             <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
@@ -50,6 +46,8 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
         </Form.Item>
     </>
 );
+
+// var hasPost = false
 @inject('userStore')
 @observer
 class LogDrawer extends Component {
@@ -65,12 +63,13 @@ class LogDrawer extends Component {
         }
     }
     componentDidMount = () => {
-        let comments = [...this.state.comments]
-        comments.map((item) => {
-            if (item.datetime === moment().format('YYYY年MM月DD日')) {
+        const { comments } = this.state;
 
-            }
-        })
+        if (comments[0].datetime === moment().format('YYYY年MM月DD日'))
+            this.setState({
+                sel: comments[0].place,
+                value: comments[0].content
+            })
     }
     handleSubmit = () => {
         let comments = [...this.state.comments]
@@ -83,35 +82,61 @@ class LogDrawer extends Component {
             submitting: true,
         });
         if (!this.state.isInEdit) {
-            setTimeout(() => {
-                this.setState({
-                    submitting: false,
-                    value: '',
-                    comments: [
-                        {
-                            // author: 'Han Solo',
-                            // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                            content: this.state.value,
-                            datetime: moment().format('YYYY年MM月DD日'),
-                            place: this.state.sel,
-                        },
-                        ...this.state.comments,
-                    ],
-                });
-            }, 1000);
-        } else {
-            setTimeout(() => {
-                let datetime = comments[editedItemIndex].datetime
+            if (comments[0].datetime === moment().format('YYYY年MM月DD日')) {
+                let datetime = comments[0].datetime
                 let place = this.state.sel
-                comments[editedItemIndex] = { content: value, datetime, place }
-                this.setState({
-                    submitting: false,
-                    value: '',
-                    isInEdit: false,
-                    comments
-                })
-                console.log('this is edit', comments)
-            }, 1000)
+                comments[0] = { content: value, datetime, place }
+                setTimeout(() => {
+                    this.setState({
+                        submitting: false,
+                        value: value,
+                        comments: comments,
+                    });
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    this.setState({
+                        submitting: false,
+                        value: value,
+                        comments: [
+                            {
+                                content: this.state.value,
+                                datetime: moment().format('YYYY年MM月DD日'),
+                                place: this.state.sel,
+                            },
+                            ...this.state.comments,
+                        ],
+                    });
+                }, 1000);
+            }
+
+        } else {
+            if (editedItemIndex === 0 && comments[editedItemIndex].datetime === moment().format('YYYY年MM月DD日')) {
+                setTimeout(() => {
+                    let datetime = comments[editedItemIndex].datetime
+                    let place = this.state.sel
+                    comments[editedItemIndex] = { content: value, datetime, place }
+                    this.setState({
+                        submitting: false,
+                        value: value,
+                        isInEdit: false,
+                        comments
+                    })
+                }, 1000)
+            } else {
+                setTimeout(() => {
+                    let datetime = comments[editedItemIndex].datetime
+                    let place = this.state.sel
+                    comments[editedItemIndex] = { content: value, datetime, place }
+                    this.setState({
+                        submitting: false,
+                        value: '',
+                        isInEdit: false,
+                        comments
+                    })
+                }, 1000)
+            }
+
         }
 
     };
@@ -139,11 +164,14 @@ class LogDrawer extends Component {
         if (comments.indexOf(item) >= 0) {
             comments.splice(comments.indexOf(item), 1)
         }
-        this.setState({ comments })
+        this.setState({
+            value: '',
+            isInEdit: false,
+            comments
+        })
         console.log(comments)
     }
     handleSelChange = (value) => {
-        // console.log(`selected ${value}`);
     }
     handleSelect = (value, elem) => {
         console.log(elem.key, elem.value)
@@ -154,15 +182,6 @@ class LogDrawer extends Component {
 
     render() {
         const { comments, submitting, value } = this.state;
-        let hasPost = false
-        let selPlace = null
-        comments.map((item) => {
-            if (item.datetime === moment().format('YYYY年MM月DD日')) {
-                hasPost = true
-                // 使Select Editor中显示最近时间的值
-
-            }
-        })
         return (
             <div className="g-log">
                 <Drawer
@@ -186,55 +205,52 @@ class LogDrawer extends Component {
                         </div>
                     }
                 >
-                    {
-                        hasPost ? 
-                        (<div>
-                            <Select >
-
-                            </Select>
-                        </div>) : (<div>
-                            <Select
-                                defaultValue={this.state.sel}
-                                style={{ width: 120 }}
-                                onChange={this.handleSelChange}
-                                onSelect={this.handleSelect}
-                                value={this.state.sel}
-                            >
-                                <Option value="学校" key="学校">学校</Option>
-                                <Option value="网络" key="网络">网络</Option>
-                            </Select>
-                            <Comment
-                                content={
-                                    <Editor
-                                        onChange={this.handleChange}
-                                        onSubmit={this.handleSubmit}
-                                        submitting={submitting}
-                                        value={value}
-                                    />
-                                }
+                    <Select
+                        defaultValue={this.state.sel}
+                        style={{ width: 120 }}
+                        onChange={this.handleSelChange}
+                        onSelect={this.handleSelect}
+                        value={this.state.sel}
+                    >
+                        {/* <Option value="学校" key="学校">学校</Option>
+                        <Option value="网络" key="网络">网络</Option> */}
+                        {
+                            SEL_PLACE.map((elem) => {
+                                return <Option value={elem.value} key={elem.key}>{elem.value}</Option>
+                            })
+                        }
+                    </Select>
+                    <Comment
+                        content={
+                            <Editor
+                                onChange={this.handleChange}
+                                onSubmit={this.handleSubmit}
+                                submitting={submitting}
+                                value={value}
+                                defaultValue={value}
                             />
-                            {
-                                comments.length > 0 && (
-                                    <List
-                                        dataSource={comments}
-                                        header={`${comments.length} 条记录`}
-                                        itemLayout="horizontal"
-                                        renderItem={(item) => (
-                                            <List.Item
-                                                actions={[<Button onClick={() => this.handleEdit(item)}>编辑</Button>,
-                                                <Button onClick={() => this.handleDelete(item)}>删除</Button>]} >
-                                                <List.Item.Meta
-                                                    title={<p>{item.datetime} {item.place}</p>}
-                                                    description={<p>{item.content}</p>}
-                                                />
-                                            </List.Item>
-                                        )}
-                                    />
-                                )
-                            }
-                        </div>)
+                        }
+                    />
+                    {
+                        comments.length > 0 && (
+                            <List
+                                dataSource={comments}
+                                header={`${comments.length} 条记录`}
+                                itemLayout="horizontal"
+                                renderItem={(item) => (
+                                    <List.Item
+                                        actions={[<Button onClick={() => this.handleEdit(item)}>编辑</Button>,
+                                        <Button onClick={() => this.handleDelete(item)}>删除</Button>]} >
+                                        <List.Item.Meta
+                                            title={<p>{item.datetime} {item.place}</p>}
+                                            description={<p>{item.content}</p>}
+                                        />
+                                        {item.content}
+                                    </List.Item>
+                                )}
+                            />
+                        )
                     }
-
                 </Drawer>
             </div>
         );

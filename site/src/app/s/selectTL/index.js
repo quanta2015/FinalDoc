@@ -16,9 +16,9 @@ var click = 0
 
 const customizeRenderEmpty = () => (
     <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
-        <SmileOutlined type="smile" style={{ fontSize: 20, }} />
+        <SmileOutlined type="smile" style={{ fontSize: 30, }} />
         <br />
-        <p>系主任尚未一键发布</p>
+        <p style={{fontSize:20}}>课题尚未发布</p>
     </div>
 );
 @inject('studentStore', 'userStore')
@@ -181,7 +181,7 @@ export default class TopicList extends Component {
                 })
                 setTimeout(() => {
                     // 防止数据更改快慢不一
-                    let res = [...rec]
+                    let res = rec
                     let flag = false
                     for (let i = 0; i < res.length; i++) {
                         if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
@@ -190,9 +190,9 @@ export default class TopicList extends Component {
                     }
                     this.setState({
                         loading: false,
-                        topicList: flag ? [...rec] : [...tmp, ...rec]
+                        topicList: flag ? rec : [...tmp, ...rec]
                     })
-                }, 1000)
+                }, 500)
                 this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
             } else { // 点击选定后
                 selectedRowKeys.push(0);
@@ -231,18 +231,23 @@ export default class TopicList extends Component {
 
                     setTimeout(() => {
                         // 防止数据更改快慢不一
-                        let res = [...rec]
+                        let res = rec
                         let flag = false
+                        let item;
                         for (let i = 0; i < res.length; i++) {
                             if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
                                 flag = true
+                                item = res[i]
                             }
+                        }
+                        if (flag) {
+                            rec.splice(rec.indexOf(item), 1)
                         }
                         this.setState({
                             loading: false,
-                            topicList: flag ? [...rec] : [...tmp, ...rec]
+                            topicList: [...tmp, ...rec]
                         })
-                    }, 1000)
+                    }, 500)
 
                 })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
