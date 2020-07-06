@@ -20,6 +20,8 @@ export const API_MAN_POST_AUTOALLOCATETOPIC = API_SERVER + '/manage/randAllocate
 export const API_MAN_POST_CHECKLIST = API_SERVER + '/manage/checkList'
 export const API_MAN_POST_AUDITCOUNT = API_SERVER + '/manage/auditCount'
 export const API_MAN_POST_AREALIST = API_SERVER + '/manage/areaList'
+export const API_MAN_POST_RELEASE = API_SERVER + '/manage/releaseTopic'
+export const API_MAN_POST_JUDGETOPIC = API_SERVER + '/manage/judgeTopic'
 
 
 // 组织开题答辩模块

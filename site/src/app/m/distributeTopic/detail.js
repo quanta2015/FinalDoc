@@ -37,6 +37,7 @@ export default class Detail extends Component {
 	async componentDidMount() {
 		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
 		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
+		await this.props.manageStore.getJudge({ "ide": this.usr.uid });
 		
 	}
 
@@ -116,6 +117,21 @@ export default class Detail extends Component {
 			visible: false,
 		});
 	};
+
+	release = async () => {
+		let res = await this.props.manageStore.getRelease({"ide": this.usr.uid});
+		if (res && res.code === 200) {
+			message.info("发布成功！")
+			 
+			await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
+			await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+			await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+			await this.props.manageStore.getJudge({"ide": this.usr.uid })
+		} else {
+			message.info("发布失败！请重试")
+		}
+
+	}
 
 	render() {
 		let { filteredInfo } = this.state;
@@ -221,15 +237,22 @@ export default class Detail extends Component {
 			<div>
 				{/* 所有课题审核通过，才可以一键发布课题 */}
 				<div className="release">
-					<Tooltip placement="top" title={"仅" + this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, "+this.distributeTopic.topic_info.length+"篇未分配，不能发布所有课题"}>
+					 
 						
-						{(this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length === 0) &&
-							<Button type="primary" disabled>发布课题</Button>
+						{(this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length !== 0) &&
+						<Tooltip placement="top" title={"仅" + this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, " + this.distributeTopic.topic_info.length + "篇未分配，不能发布所有课题"}>
+							<Button type="primary" disabled >发布课题</Button>
+						</Tooltip>
 						}
-						{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.topic_info.length === 0) &&
-							<Button type="primary">发布课题</Button>
+						{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag===0 ) &&
+							<Button type="primary" onClick={this.release}>发布课题</Button>
 						}
-					</Tooltip>
+					{
+						
+					(this.distributeTopic.judge_info.flag === 1) &&
+						<Button type="primary" disabled>已发布</Button>
+					}
+					 
 				</div>
 				<div className="detail_table">
 					<Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
