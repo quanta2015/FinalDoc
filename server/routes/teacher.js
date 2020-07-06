@@ -166,4 +166,22 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
   })
 
+  // 通过topicID查询课题所有文件
+  router.post('/getAllTopicFiles', async(req, res) => {
+    let sql = `CALL PROC_GET_TOPICID_ALL_TOPIC_FILES(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '所有课题的文件已返回'});
+    })
+  })
+
+  // 通过topicID解绑学生
+  router.post('/getStudentUntied', async(req, res) => {
+    let sql = `CALL PROC_GET_TOPICID_STUDENT_UNTIED(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '已解绑该课题下学生'});
+    })
+  })
+
   module.exports = router;
