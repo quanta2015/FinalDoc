@@ -60,7 +60,7 @@ class Student extends BaseActions {
             })
             return r.data
         } else {
-            message.error("网络错误")
+            // message.error("网络错误")
         }
         return r;
     }
