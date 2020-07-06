@@ -3,8 +3,11 @@ import { route } from 'preact-router';
 import './index.scss'
 import more from './more.svg'
 import { MENU_MAIN_T } from '../../constant/data'
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 
-
+@inject('userStore')
+@observer
 class NavT extends Component {
 	constructor(props) {
 		super(props)
@@ -19,16 +22,24 @@ class NavT extends Component {
     })
   }
 
-  
+  async componentDidMount(){
+    route('/t_manage');
+  }
 
-	render(_,{ cur }) {
+  @computed
+  get usr() {
+      return this.props.userStore.usr;
+  }
+
+	render() {
+    let cur = this.state.cur
     return (
       <div className="g-nav">
         <div class="g-info">
           <div>身份：教师</div>
-          <div>姓名：王五</div>
-          <div>工号：04080902</div>
-          <div>所在系：计算机科学与技术</div>
+          <div>姓名：{this.usr.name}</div>
+          <div>工号：{this.usr.uid}</div>
+          <div>所在系：{this.usr.maj}</div>
         </div>
         <div className="g-menu">
           {MENU_MAIN_T.map((item,i)=>

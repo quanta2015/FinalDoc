@@ -1,5 +1,6 @@
 import { Component } from 'preact'
-
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 import CheckBlock from '../../../component/ContentT/Check';
 import { Drawer,Modal,Button   } from 'antd';
 import * as urls from '../../../constant/urls'
@@ -11,10 +12,6 @@ import UploadImg from '../../../component/ImgUpload'
 
 import style from './style.scss';
 
-let me = {
-  tea_id : '20100119'
-}
-
 //将收到的topic数据映射为可以展示的列表
 const filter = (t)=>{
   return {id:t.id,name:t.topic,status:(t.pass==2?4:t.pass),sid:t.sid}
@@ -24,7 +21,14 @@ const sorter = (x,y)=>{
   return y.status-x.status;
 }
 
+@inject('userStore')
+@observer
 export default class Home extends BaseActions {
+
+  @computed
+  get usr() {
+      return this.props.userStore.usr;
+  }
 
   constructor(props){
     super(props)
@@ -47,18 +51,19 @@ export default class Home extends BaseActions {
 
   componentDidMount(){
     this.getTopicList();
+    console.log(this.usr)
   }
 
   /**
    * 获取自己的课题列表
    */
   getTopicList = async ()=>{
-    let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID,{tea_id:me.tea_id})
+    let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID,{tea_id:this.usr.uid})
     data = data.data.map(filter);
     data.sort(sorter);
     this.setState({toplist:data});
     //获取申请列表
-    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET,{tea_id:me.tea_id})
+    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET,{tea_id:this.usr.uid})
     data = data.data;
     this.setState({
       checkList:data
@@ -132,7 +137,7 @@ export default class Home extends BaseActions {
         footer={null}
         width={1200}
         >
-          <AllTopicList uid={me.tea_id}/>
+          <AllTopicList uid={this.usr.uid}/>
         </Modal>
         <UploadImg/>
       </div>
