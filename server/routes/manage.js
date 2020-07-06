@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-05 22:30:59
+ * @LastEditTime: 2020-07-06 11:02:15
  */ 
 
 const express = require('express');
@@ -148,6 +148,21 @@ router.post('/releaseTopic', async(req, res) => {
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '一键发布课题成功'})
+	});
+});
+
+/**
+ * @name: 
+ * @test: test font
+ * @msg: 判断是否发布过课题
+ * @param {type} 
+ * @return: 
+ */
+router.post('/judgeTopic', async(req, res) => {
+  let sql = `CALL PROC_JUDGE_RELEASE_M(?)`;
+	let params = req.body;
+	callProc(sql, params, res, (r) => {
+		res.status(200).json({code: 200, data: r, msg: '发布课题判断'})
 	});
 });
 

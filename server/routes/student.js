@@ -96,4 +96,16 @@ router.post('/getStuTopicStatus', async (req, res) => {
     });
 });
 
+router.post('/delFile', async (req, res) => {
+    let sql = `CALL PROC_DEL_TOPIC_FILE(?)`;
+    let params = req.body;
+    console.log(params)
+    callProc(sql, params, res, (r) => {
+        console.log(r)
+
+        res.status(200).json({ code: 200, data: r, msg: '删除字段成功' })
+
+    });
+});
+
 module.exports = router
