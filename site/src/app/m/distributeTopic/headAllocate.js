@@ -154,7 +154,7 @@ export default class HeadAllocate extends Component {
             tea_id: id,
             tea_name: value
         }, () => {
-            let topic = toJS(this.state.topic_info);
+            let topic = toJS(this.distributeTopic.topic_info);
             let newlist = [];
             topic.map((item, i) => {
                 if (item.tid !== this.state.tea_id) {
@@ -193,6 +193,7 @@ export default class HeadAllocate extends Component {
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+            console.log(this.distributeTopic.topic_info.length)
             this.setState({
                 topic_info: toJS(this.distributeTopic.topic_info),
                 

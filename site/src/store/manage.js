@@ -135,7 +135,7 @@ class manager extends BaseActions {
 
   @action
   async getRelease(param) {
-    const res = await this.post(urls.API_MAN_POST_RELEASE, param);  
+    return await this.post(urls.API_MAN_POST_RELEASE, param);  
   }
 
   @action
