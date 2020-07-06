@@ -49,11 +49,6 @@ export default class Home extends BaseActions {
 	constructor(props) {
 		super(props)
 
-		@computed
-		get usr() {
-				return this.props.userStore.usr;
-		}
-
 		this.state = {
 			subjects: { data: [] },
 
@@ -62,6 +57,11 @@ export default class Home extends BaseActions {
 			searchedColumn: '',
 		}
 	}
+
+	@computed
+		get usr() {
+				return this.props.userStore.usr;
+		}
 
 	componentWillMount() {
 		this.getTopicList()
@@ -152,8 +152,8 @@ export default class Home extends BaseActions {
 		})
 	}
 
-	render(_, { subjects}) {
-
+	render() {
+		const subjects = this.state.subjects;
 		const columns = [
 			{
 				title: '选题类型',

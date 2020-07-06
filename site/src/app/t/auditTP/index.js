@@ -155,8 +155,8 @@ export default class Home extends BaseActions {
 		})
 	}
 
-	render(_, { subjects}) {
-
+	render() {
+		const subjects = this.state.subjects;
 		const columns = [
 			{
 				title: '选题类型',

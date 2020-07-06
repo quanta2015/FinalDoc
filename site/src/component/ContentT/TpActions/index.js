@@ -41,6 +41,11 @@ class TpActions extends BaseActions {
         }
     }
 
+    @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
+
     //通过
     yesBtnClick = async (id) => {
 		this.post(urls.API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES, {
