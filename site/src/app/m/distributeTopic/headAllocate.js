@@ -196,7 +196,6 @@ export default class HeadAllocate extends Component {
             console.log(this.distributeTopic.topic_info.length)
             this.setState({
                 topic_info: toJS(this.distributeTopic.topic_info),
-                
             });
         } else {
             message.info("分配失败！请重试")
@@ -329,6 +328,7 @@ export default class HeadAllocate extends Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     footer={null}
+                    width={900}
                 >
                     <Descriptions
                         title=""

@@ -74,7 +74,7 @@ export default class AutoAllocate extends Component {
                 }
             })
             if(flag === 0){
-                message.info("部分分配成功！但"+tname+"老师匹配课题不足，可手动分配")
+                message.info("部分分配成功！但符合"+tname+"老师研究领域的课题不足，可手动分配")
             }else{
                 message.info("分配成功！")
             }
