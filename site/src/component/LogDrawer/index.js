@@ -7,7 +7,7 @@ import './index.css'
 const data = [
     {
         content: 'Ant Design Title 1',
-        datetime: '2020年07月06日',
+        datetime: '2020年07月07日',
         place: '网络'
     },
     {
@@ -154,8 +154,6 @@ class LogDrawer extends Component {
             editedItemIndex: comments.indexOf(item),
             sel: item.place,
             isInEdit: true,
-        }, () => {
-            console.log('edit', comments);
         })
     }
 
@@ -169,12 +167,10 @@ class LogDrawer extends Component {
             isInEdit: false,
             comments
         })
-        console.log(comments)
     }
     handleSelChange = (value) => {
     }
     handleSelect = (value, elem) => {
-        console.log(elem.key, elem.value)
         this.setState({
             sel: elem.key
         })
@@ -212,8 +208,6 @@ class LogDrawer extends Component {
                         onSelect={this.handleSelect}
                         value={this.state.sel}
                     >
-                        {/* <Option value="学校" key="学校">学校</Option>
-                        <Option value="网络" key="网络">网络</Option> */}
                         {
                             SEL_PLACE.map((elem) => {
                                 return <Option value={elem.value} key={elem.key}>{elem.value}</Option>
