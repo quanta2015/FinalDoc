@@ -20,6 +20,7 @@ const topic = require('./routes/topic');
 const auditTp = require('./routes/auditTp');
 const teacher = require('./routes/teacher')
 const visualize = require('./routes/visualize')
+const user = require('./routes/user')
 
 
 app.use(compression())
@@ -37,6 +38,7 @@ app.use('/topic', topic);
 app.use('/auditTp', auditTp);
 app.use('/teacher', teacher);
 app.use('/visualize', visualize);
+app.use('/user',user);
 
 
 const port = 8090;
@@ -159,62 +161,42 @@ app.get('/UserList', async function (req, res) {
 // })
 
 app.post('/upload', async function (req, res) {
-	let new_path;
-	const form = new formidable.IncomingForm()
-	form.uploadDir = "./upload/";
-	form.parse(req)
-	let get_data = { t: "json" };
-	form.on('field', function (name, value) {
-		get_data[name] = value
-		console.log(get_data)
-	})
+    const form = new formidable.IncomingForm()
+    form.uploadDir = "./upload/";
 
-	// form.on('fileBegin', function (name, file) {
-	// 	// let type = file.name.split('.').slice(-1)
-	// 	// console.log(file)
+    let get_data, newpath;
+    form.parse(req, (err, fields, files) => {
+        if (err || !files.file) {
+            res.status(500);
+        }
+        get_data = fields;
+        let ext = files.file.name.split('.').slice(-1)
+        let ttt = `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${ext}`;
 
-	// })
-	form.parse(req, (err, fields, files) => {
-		//重命名
-		//学习笔记：form.parse自带一个反馈，所以不能再另外写一个res
+        let oldpath = files.file.path
+        console.log("===============旧地址====================", oldpath)
+        newpath = "./upload/" + ttt;
+        console.log("===============新地址====================", newpath)
+        // console.log(oldpath, newpath)
+        fs.rename(oldpath, newpath, function (err) {
+            if (err) {
+                console.log(err);
+                throw Error("改名失败");
+            }
+        });
+        let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
 
-		console.log('===========', files, files.avatar)
-		let type = files.avatar.name.split('.').slice(-1)
-		let ttt = `${get_data.type}_${get_data.sid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.${type}`;
+        get_data.filePath = newpath;
 
-		let extname = path.extname(files.avatar.name);
-		let oldpath =  '' + files.avatar.path
-		let newpath =  '' + "./upload/" + ttt;
-		new_path=newpath;
-		fs.rename(oldpath, newpath, function (err) {
-			console.log(err)
-			if (err) {
-				console.log(err);
-				throw Error("改名失败");
-			}
-		});
-		console.log(get_data);
-		let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
-		
-		get_data.filePath = new_path
-		let params = get_data;
-		console.log("============199===199===199===========")
-		console.log(params)
-
-		callProc(sql, params, res, (r) => {
-			res.status(200).json({
-				code: 200,
-				msg: `上传${get_data.type}成功`,
-				data: new_path,
-				mysqldata:r
-			})
-		});
-	});
-	// form.on('file', (name, file) => {
-		
-	// });
-
-
+        callProc(sql, get_data, res, (r) => {
+            res.status(200).json({
+                code: 200,
+                msg: `上传${get_data.type}成功`,
+                data: newpath,
+                mysqldata: r
+            })
+        });
+    });
 })
 app.post('/download', function (req, res, next) {
 
