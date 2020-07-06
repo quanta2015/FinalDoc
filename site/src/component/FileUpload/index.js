@@ -55,12 +55,12 @@ class FileUpload extends Component {
                 type: type
             })
             let blobUrl = window.URL.createObjectURL(data);
-            const a = document.createElement('a');
+            const a = window.document.createElement('a');
             a.download = `${this.props.tpInfo.sid}_${this.props.type.name}`;
             a.href = blobUrl;
-            document.body.appendChild(a)
+            window.document.body.appendChild(a)
             a.click();
-            document.body.removeChild(a)
+            window.document.body.removeChild(a)
             window.URL.revokeObjectURL(href)
         }) 
 
