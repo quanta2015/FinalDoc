@@ -13,7 +13,6 @@ const paginationProps = {
 	}),
 }
 
-
 @inject('manageStore', 'userStore')
 @observer
 export default class Detail extends Component {
@@ -37,7 +36,6 @@ export default class Detail extends Component {
 	async componentDidMount() {
 		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
 		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
-		
 	}
 
 	handleChange = (filters) => {//筛选
@@ -215,7 +213,6 @@ export default class Detail extends Component {
 			tag = "未通过";
 			color = "red"
 		}
-
 
 		return (
 			<div>

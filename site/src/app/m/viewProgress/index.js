@@ -2,13 +2,16 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
 import "./style.css"
+import TotalSchedule from './totalSchedule'
 
 @inject('manageStore')
 @observer
 export default class Home extends Component {
-	render() { 
+	render() {
 		return (
-            <div>查看论文进度</div>
-        );
+			<div className="vp_main">
+				<TotalSchedule />
+			</div>
+		);
 	}
 }
