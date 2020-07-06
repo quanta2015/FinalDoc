@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react'
 import { computed, observable, toJS } from 'mobx'
+import { route } from 'preact-router';
 import style from './style';
 import AutoAllocate from './autoAllocate.js'
 import HeadAllocate from './headAllocate.js'
@@ -9,7 +10,7 @@ import { Radio, Select, Tabs } from 'antd';
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-@inject('manageStore','userStore')
+@inject('manageStore', 'userStore')
 @observer
 export default class Home extends Component {
     state = {
@@ -34,11 +35,14 @@ export default class Home extends Component {
     get usr() {
         return this.props.userStore.usr;
     }
-    
+
     async componentDidMount() {
-        await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getCheckList({"ide":this.usr.uid});
-        await this.props.manageStore.getAuditCount({"ide":this.usr.uid});
+        if (!this.usr.id) {
+            route('/')
+        }
+        await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
+        await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
+        await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
     }
     // 切换自动手动单选框
     onChange = e => {
@@ -58,7 +62,7 @@ export default class Home extends Component {
                             </Radio.Group>
                         </div>
                         {(this.state.value === 1) &&
-                            <AutoAllocate/>
+                            <AutoAllocate />
                         }
                         {(this.state.value === 2) &&
                             <HeadAllocate />
@@ -66,7 +70,7 @@ export default class Home extends Component {
                     </TabPane>
                     <TabPane tab="审核详情" key="2">
                         {/* Content of Tab Pane 2 */}
-                        <Detail/>
+                        <Detail />
                     </TabPane>
                 </Tabs>
             </div>
