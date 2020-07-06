@@ -1,3 +1,5 @@
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 import { Input, Select, Button, Switch, InputNumber, message,Tag } from 'antd';
 const { Option } = Select;
 const { TextArea } = Input;
@@ -5,10 +7,6 @@ import './index.css'
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 const { Search } = Input;
-
-let me = {
-  uid: '20100119'
-}
 
 function tagRender(props) {
   const { label, value, closable, onClose } = props;
@@ -19,6 +17,8 @@ function tagRender(props) {
   );
 }
 
+@inject('userStore')
+@observer
 class Publish extends BaseActions {
 
   cleared=true;
@@ -35,6 +35,11 @@ class Publish extends BaseActions {
   constructor(props) {
     super(props)
   } 
+
+  @computed
+  get usr() {
+      return this.props.userStore.usr;
+  }
 
   setBlocks= async ()=>{
     if(!this.cleared){
@@ -62,7 +67,7 @@ class Publish extends BaseActions {
   }
 
   async componentDidMount(){  
-    let areaData = await this.post(urls.API_SYS_GET_TEACHER_AREA_LIST,{tid:me.uid});
+    let areaData = await this.post(urls.API_SYS_GET_TEACHER_AREA_LIST,{tid:this.usr.uid});
     this.setState({areaList:areaData.data})
   }
 
@@ -130,7 +135,7 @@ class Publish extends BaseActions {
       }else{
         data = {
           //TODO
-          tea_id:me.uid,
+          tea_id:this.usr.uid,
           name:this.name.value,
           type:this.type.base.textContent,
           note:this.note.state.value,
@@ -141,7 +146,7 @@ class Publish extends BaseActions {
       }
     }else{
       data={
-        tea_id:me.uid,
+        tea_id:this.usr.uid,
         name:this.name.value,
         type:this.state.type,
         note:this.note.state.value,

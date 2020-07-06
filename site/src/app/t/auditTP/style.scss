@@ -1,71 +1,68 @@
-[data-component="audittp"]{
+.context {
+  background: #fff;
+  width: 950px;
+  overflow: auto;
+}
 
-  .context {
-    background: #fff;
-    width: 950px;
-    overflow: auto;
-  }
-  
-  .main{
-    padding: 15px 75px;
-    box-sizing: border-box;
-    width: 950px;
-  }
-  
-  .table{
-    margin-top: 46px;
-  }
-  
-  table,tbody.ant-table-body{
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .ant-table-row,
-  .ant-table-thead>tr{
-    display: flex;
-  }
-  
-  .ant-table-row,
-  .ant-table-tbody>tr{
-    width: 100%;
-    text-align: center;
-  }
-  
-  .ant-table-thead>tr th:first-child{
-    width: 150px;
-  }
-  
-  .ant-table-tbody>tr td:first-child{
-    width: 150px;
-  }
-  
-  .ant-table-thead>tr th:nth-child(2){
-    width: 400px;
-  }
-  
-  .ant-table-tbody>tr td:nth-child(2){
-    width: 400px;
-  }
-  
-  .ant-table-thead>tr th:nth-child(3){
-    padding-right: 50px;
-    width: 250px;
-  }
-  
-  .ant-table-tbody>tr td:nth-child(3){
-    width: 250px;
-  }
-  
-  .ant-table-expanded-row td{
-    width: 100% !important;
-  }
-  
-  .ant-modal-mask{
-    background-color: rgba(0, 0, 0, 0.2);
-  }
-  
-  .ant-descriptions-item-label {
-    width: 120px;
-  }
+.main{
+  padding: 15px 75px;
+  box-sizing: border-box;
+  width: 950px;
+}
+
+.table{
+  margin-top: 46px;
+}
+
+table,tbody.ant-table-body{
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr{
+  display: flex;
+}
+
+.ant-table-row,
+.ant-table-tbody>tr{
+  width: 100%;
+  text-align: center;
+}
+
+.ant-table-thead>tr th:first-child{
+  width: 150px;
+}
+
+.ant-table-tbody>tr td:first-child{
+  width: 150px;
+}
+
+.ant-table-thead>tr th:nth-child(2){
+  width: 400px;
+}
+
+.ant-table-tbody>tr td:nth-child(2){
+  width: 400px;
+}
+
+.ant-table-thead>tr th:nth-child(3){
+  padding-right: 50px;
+  width: 250px;
+}
+
+.ant-table-tbody>tr td:nth-child(3){
+  width: 250px;
+}
+
+.ant-table-expanded-row td{
+  width: 100% !important;
+}
+
+.ant-modal-mask{
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.ant-descriptions-item-label {
+  width: 120px;
 }

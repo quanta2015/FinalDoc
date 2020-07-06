@@ -41,7 +41,7 @@ export default class StuMethods extends BaseActions {
 
   async componentDidMount() {
     //获取学生信息
-    let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.tid});
+    let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.pid});
     data = data.data[0];
     this.setState({topic_data:data})
     
@@ -50,7 +50,9 @@ export default class StuMethods extends BaseActions {
     });
 
     //获取学生文件列表
-    //TODO
+    let links = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC,{pid:this.props.pid})
+    console.log(links);
+    
   }
 
   getStuInfo = async ()=>{
@@ -95,7 +97,7 @@ export default class StuMethods extends BaseActions {
             <Card style={{ width: 700}}>
             <div className="card-inner">
                 <div className="file-block">
-                  <FileUpload type={{name:'任务书',type:'f_docs'}}/>  
+                  <FileUpload type={{name:'任务书',type:'f_task'}} tpInfo={{tid:this.props.tid,sid:this.props.sid}}/>  
                 </div>
               </div>
             </Card>

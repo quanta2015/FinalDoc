@@ -1,59 +1,78 @@
 import BaseActions from '../../../component/BaseActions';
+import TpActions from '../../../component/ContentT/TpActions';
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx';
 
 import Highlighter from 'react-highlight-words';
 
 import {
-	Collapse,
-	Button,
-	Modal,
 	Input,
-	message,
-	Descriptions,
-	Table,
 	Space,
-	Tooltip
+	Button,
+	Table,
 } from 'antd';
 
 import {
-	CheckOutlined,
-	CloseOutlined,
-	FileSearchOutlined,
-	SearchOutlined
+	SearchOutlined,
 } from '@ant-design/icons';
 
-import * as urls from '../../../constant/urls'
-
-const { TextArea } = Input;
+import * as urls from '../../../constant/urls';
 
 import style from './style.scss';
 
-//test data
-const user = {
-	id: "20190117"
-}
+const topicTypes = [
+	{
+		text: '毕业设计',
+		value: '毕业设计',
+	},
+	{
+		text: '命题设计',
+		value: '命题设计',
+	},
+	{
+		text: '软件设计',
+		value: '软件设计',
+	},
+	{
+		text: '工程设计',
+		value: '工程设计',
+	}
+]
 
+@inject('studentStore', 'userStore')
+@observer
 export default class Home extends BaseActions {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			subjects: { data: [] },
-
-			ModalText: "您将反对此命题，请在这里提出您的相关建议：",
-			adviceModalVisible: false,
-
-			contentModalVisible: false,
-
-			confirmLoading: false,
-			advice: "",
-
+			subjects: { data:[] },
+			//选题查询变量
 			searchText: '',
 			searchedColumn: '',
-
-			modalSubject: { data: [{ topic: "", content: "", type: "" }] }
 		}
+
+		this.changeTopicList = this.changeTopicList.bind(this) 
 	}
 
+	@computed
+  get usr() {
+      return this.props.userStore.usr;
+  }
+
+	componentWillMount() {
+		this.getTopicList()
+	}
+
+	// 选题类型筛选
+	topicFilter = (value, record) => {
+		if (record.type != null)
+			return record.type.indexOf(value) === 0;
+		else
+			return false;
+	}
+
+	//选题名称查询
 	getColumnSearchProps = dataIndex => ({
 		filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
 			<div style={{ padding: 8 }}>
@@ -104,6 +123,7 @@ export default class Home extends BaseActions {
 				),
 	});
 
+	//按钮选题名称查询
 	handleSearch = (selectedKeys, confirm, dataIndex) => {
 		confirm();
 		this.setState({
@@ -112,137 +132,38 @@ export default class Home extends BaseActions {
 		});
 	};
 
+	//按钮选题名称重置
 	handleReset = clearFilters => {
 		clearFilters();
 		this.setState({ searchText: '' });
-	};
+	};	
 
-	componentWillMount() {
-		//获取数据
-		this.getTopicList()
-	}
-
+	//获取数据
 	async getTopicList() {
-		var data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
-			"uid": user.id
+		let data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
+			"uid": this.usr.uid
 		});
-		// console.log(data.data)
+
 		this.setState({
 			subjects: data
 		})
 	}
 
-	async getTopicById(id) {
-		var data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID, {
-			"userId": user.id,
-			"id": id
-		})
-
-		// console.log(data)
+	changeTopicList(topicList){
 		this.setState({
-			modalSubject: data
+			subjects: topicList
 		})
 	}
 
-	yesBtnClick = async (id) => {
-
-		// console.log(id)
-		this.post(urls.API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES, {
-			"id": id
-		}).then((response) => {
-			// console.log(response)
-			message.success("审题通过 已提交")
-			this.getTopicList()
-		})
-	}
-
-	showAdviceModal = () => {
-		this.setState({
-			adviceModalVisible: true,
-		});
-	};
-
-	showContentModal = (id) => {
-		this.getTopicById(id)
-		this.setState({
-			contentModalVisible: true,
-		});
-	};
-
-	handleAdviceOk = (id, advice) => {
-		this.setState({
-			ModalText: '正在提交相关的建议。',
-			confirmLoading: true,
-		});
-
-		// console.log(id,advice)
-		this.post(urls.API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_NO, {
-			"id": id,
-			"content": advice
-		}).then((response) => {
-			// console.log(response)
-			message.success("审题未通过 已提交")
-			this.getTopicList()
-		})
-
-		setTimeout(() => {
-			this.setState({
-				adviceModalVisible: false,
-				confirmLoading: false,
-			});
-		}, 500);
-	};
-
-	handleAdviceCancel = () => {
-		this.setState({
-			adviceModalVisible: false,
-		});
-	};
-
-	handleContentCancel = () => {
-		this.setState({
-			contentModalVisible: false,
-		});
-	};
-
-	adviceChange = (e) => {
-		this.setState({
-			advice: e.target.value
-		})
-	}
-
-	render(_, { subjects, adviceModalVisible, contentModalVisible, confirmLoading, ModalText, advice, modalSubject }) {
-
+	render() {
+		const subjects = this.state.subjects;
 		const columns = [
 			{
 				title: '选题类型',
 				dataIndex: 'type',
 				key: 'type',
-				filters: [
-					{
-						text: '毕业设计',
-						value: '毕业设计',
-					},
-					{
-						text: '命题设计',
-						value: '命题设计',
-					},
-					{
-						text: '软件设计',
-						value: '软件设计',
-					},
-					{
-						text: '工程设计',
-						value: '工程设计',
-					}
-				],
-				onFilter: (value, record) => {
-					// console.log(value,record.type);
-					if (record.type != null)
-						return record.type.indexOf(value) === 0;
-					else
-						return false;
-				},
+				filters: topicTypes,
+				onFilter: this.topicFilter,
 			},
 			{
 				title: '课题题目',
@@ -253,51 +174,13 @@ export default class Home extends BaseActions {
 			{
 				title: '操作',
 				render: (text, record) => (
-					<Space size="middle">
-						<Tooltip placement="top" title="通过">
-							<Button type="link" size="small" shape="circle" icon={<CheckOutlined />} onClick={this.yesBtnClick.bind(this, record.id)} />
-						</Tooltip>
-
-						<Tooltip placement="top" title="提出建议">
-							<Button type="link" size="small" shape="circle" icon={<CloseOutlined />} onClick={this.showAdviceModal} />
-						</Tooltip>
-
-						<Tooltip title="详情">
-							<Button type="link" size="small" shape="circle" icon={<FileSearchOutlined />} onClick={this.showContentModal.bind(this, record.id)} />
-						</Tooltip>
-
-						<Modal
-							title="提出建议"
-							visible={adviceModalVisible}
-							onOk={this.handleAdviceOk.bind(this, record.id, advice)}
-							confirmLoading={confirmLoading}
-							onCancel={this.handleAdviceCancel}
-						>
-							<p>{ModalText}</p>
-							<TextArea value={advice} onChange={this.adviceChange}></TextArea>
-						</Modal>
-
-						<Modal
-							title="详细内容"
-							visible={contentModalVisible}
-							confirmLoading={confirmLoading}
-							onCancel={this.handleContentCancel}
-							footer={null}
-							width={900}
-						>
-							<Descriptions column={2} bordered>
-								<Descriptions.Item label="课题名称">{modalSubject.data[0].topic}</Descriptions.Item>
-								<Descriptions.Item label="课题类型" span={1}>{modalSubject.data[0].type}</Descriptions.Item>
-								<Descriptions.Item label="课题简介" span={2}>{modalSubject.data[0].content}</Descriptions.Item>
-							</Descriptions>
-						</Modal>
-					</Space>
+					<TpActions record={record} changeTopicList={this.changeTopicList}></TpActions>
 				),
 			}
 		];
 
 		return (
-			<div className="context" data-component="audittp">
+			<div className="context">
 				<div class="main">
 					<Table class="table" columns={columns} dataSource={subjects.data} />
 				</div>

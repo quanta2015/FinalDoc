@@ -76,6 +76,8 @@ export const API_TEACHER_GET_STU_INFO = API_SERVER + '/teacher/getStuPersonalInf
 export const API_TEACHER_GET_SUGG = API_SERVER +'/teacher/getTidToTsugg'
 //获取全部已通过topic
 export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic'
+//获取学生文件列表
+export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
 
 
 // 任课教师-初期审核
