@@ -102,11 +102,8 @@ router.post('/delFile', async (req, res) => {
     console.log(params)
     callProc(sql, params, res, (r) => {
         console.log(r)
-        if (r.length != 0) {
-            res.status(200).json({ code: 200, data: r, msg: '删除字段成功' })
-        } else {
-            res.status(200).json({ code: 200, data: null, msg: '删除字段失败' })
-        }
+
+        res.status(200).json({ code: 200, data: r, msg: '删除字段成功' })
 
     });
 });
