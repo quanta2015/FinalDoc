@@ -26,6 +26,9 @@ class NavM extends Component {
   }
   
   componentDidMount() {
+    if (!this.usr.id) {
+      route('/')
+    }
     route('/m_distributeTopic')
   }
 
