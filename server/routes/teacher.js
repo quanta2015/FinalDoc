@@ -203,8 +203,8 @@ router.post('/uploadSign', async(req, res) => {
     let imgData = req.body.file;
 
     var base64Data = imgData.replace(/^data:image\/\w+;base64,/, '');
-    var dataBuffer = new Buffer(base64Data, 'base64');
-    var path = './' + `${req.body.type}_${req.body.uid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.jpg`;
+    var dataBuffer = Buffer.from(base64Data, 'base64');
+    var path = './upload/' + `${req.body.type}_${req.body.uid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.jpg`;
     fs.writeFile(path, dataBuffer, function (err) {
         if (err) {
             return;
