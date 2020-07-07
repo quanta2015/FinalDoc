@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-02 17:08:24
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-06 20:10:02
+ * @LastEditTime: 2020-07-07 20:49:41
  */ 
 
 
@@ -106,7 +106,7 @@ router.post('/handleGroup', async(req, res) => {
                     topic_id:topic_char,
                     topic_len:topic_len};
       callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组成功'})
+        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组'})
       });
   });
 
@@ -136,7 +136,7 @@ router.post('/randGroup', async(req, res) => {
                   teacher_len:teacher_len,
                   topic_len:topic_len};
     callProc(sql, params, res, (r) => {
-      res.status(200).json({code: 200, data:r, msg: '开题答辩自动分组成功'})
+      res.status(200).json({code: 200, data:r, msg: '开题答辩自动分组'})
     });
 });
   
