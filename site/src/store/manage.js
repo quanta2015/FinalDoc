@@ -34,13 +34,18 @@ class manager extends BaseActions {
   async getTeaList(param) {
     const res = await this.post(urls.API_MAN_GET_TEALIST, param);
     let teaName = [];
-    res.data.map((item) =>
+    res.data.map((item) =>{
+      let areas = ""
+      item.area_list.split(",").map((item)=> {
+        areas += item.split("|")[1] + " "
+      })
       teaName.push({ 
         tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, 
-        value: item.maj + "-" + item.Tname + "-" + item.areas,
+        value: item.maj + "-" + item.Tname + "-" + areas,
         name: item.Tname,
       })
-    )
+    })
+    
     teaName.sort(function (a, b) {
       if (a.value < b.value) {
         return 1;
@@ -61,14 +66,28 @@ class manager extends BaseActions {
   async getTopicList(param) {
     const res = await this.post(urls.API_MAN_GET_TOPICLIST, param);
     let topicList = [];
-   
-    res.data.map((item) =>
-      topicList.push({
-        key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-        areas: item.areas.split(","),
-        color: item.color.split(",")
+    res.data.map((item)=> {
+      let temp = item.area_list.split(",")
+      let color = []
+      let areas = []
+      temp.map((item)=>{
+        item.split("|")
+        areas.push(item.split("|")[1])
+        color.push(item.split("|")[2])
       })
-    )
+      topicList.push({
+        key: item.key, tid: item.tid, tName: item.name, topic: item.topic, content: item.content,
+        areas: areas,
+        color: color,
+      })
+    })
+    // res.data.map((item) =>
+    //   topicList.push({
+    //     key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
+    //     areas: item.areas.split(","),
+    //     color: item.color.split(",")
+    //   })
+    // )
     runInAction(() => {
       this.distributeTopic.topic_info = topicList;
     })
@@ -187,14 +206,18 @@ class manager extends BaseActions {
   async getTeacherList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, param);
     let teacher = []
-    // 同一老师课题放一起，按未通过、通过、未审核排序
-    res.data.map((item) =>
-      teacher.push({
-        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
-        name: item.Tname,
-        value: item.maj + "-" + item.Tname + "-" + item.areas
+    res.data.map((item) =>{
+      let areas = ""
+      item.area_list.split(",").map((item)=> {
+        areas += item.split("|")[1] + " "
       })
-    )
+      teacher.push({ 
+        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, 
+        value: item.maj + "-" + item.Tname + "-" + areas,
+        name: item.Tname,
+      })
+    })
+    // 同一老师课题放一起，按未通过、通过、未审核排序
     teacher.sort(function (a, b) {
       if (a.value === b.value) {
         return 0;
@@ -302,7 +325,10 @@ class manager extends BaseActions {
         if(status===3){
           // 学生已选题
           tag = "已选题"
-        }else {
+        }else if(status===0){
+          // 老师出题时选定学生，但该课题未审核
+          tag = "待审核"
+        }else{
           // 学生未选题
           tag = "未选题"
         }
