@@ -6,7 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { SmileOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
 import 'antd/dist/antd.css';
-import './index.css';
+import './index.scss'
 import { computed, toJS } from 'mobx';
 
 var del = []
@@ -387,6 +387,7 @@ export default class TopicList extends Component {
                     visible={this.state.visible}
                     onCancel={this.handleOk}
                     footer={[]}
+                    width={900}
                 >
                     <Descriptions
                         bordered

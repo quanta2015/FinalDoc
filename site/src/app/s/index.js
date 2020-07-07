@@ -22,7 +22,8 @@ export default class Student extends Component {
         // } else { //已双选
         //   route('/s_topicPG');
         // }
-        route('/s_topicPG')
+        // route('/s_topicPG')
+        route('/s_selectTL')
       })
   }
 

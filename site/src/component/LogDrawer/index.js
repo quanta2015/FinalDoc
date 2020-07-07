@@ -2,7 +2,7 @@ import { Component } from 'preact'
 import { inject, observer } from 'mobx-react'
 import { Drawer, Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message } from 'antd'
 import moment from 'moment'
-import './index.css'
+import './index.scss'
 import { computed } from 'mobx'
 
 const { Title } = Typography;
@@ -200,20 +200,7 @@ class LogDrawer extends Component {
                     onClose={this.props.onClose}
                     visible={this.props.showDrawer}
                     bodyStyle={{ paddingBottom: 80 }}
-                    footer={
-                        <div
-                            style={{
-                                textAlign: 'right',
-                            }}
-                        >
-                            <Button onClick={this.props.onClose} style={{ marginRight: 8 }}>
-                                取消
-                            </Button>
-                            <Button onClick={this.props.onClose} type="primary">
-                                确定
-                            </Button>
-                        </div>
-                    }
+                    footer={[]}
                 >
                     <Space align="baseline">
                         <h4  >{moment().format('YYYY年MM月DD日')}</h4>

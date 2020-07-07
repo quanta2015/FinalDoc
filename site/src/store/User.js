@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2020-07-06 22:53:48
- * @LastEditTime: 2020-07-07 17:23:29
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \FinalDoc\site\src\store\User.js
- */ 
 import BaseActions from '../component/BaseActions'
 import { observable, action, runInAction } from 'mobx'
 import * as urls from '../constant/urls'
