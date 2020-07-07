@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-07 20:18:45
+ * @LastEditTime: 2020-07-08 01:38:11
  */ 
 
 const express = require('express');
@@ -17,7 +17,7 @@ const callProc = require('../util').callProc;
  * @name: 
  * @test: test font
  * @msg: 获取全部教师列表 --权限
- * @param {type} 
+ * @param {ide:String} 
  * @return: data
  */
 router.post('/teacherList', async(req, res) => {
@@ -32,7 +32,7 @@ router.post('/teacherList', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 获取未分配审核的课题列表 --权限
- * @param {type} 
+ * @param {ide:String} 
  * @return: 
  */
 router.post('/topicList', async(req, res) => {
@@ -47,7 +47,7 @@ router.post('/topicList', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 获取审核列表  --权限
- * @param {type} 
+ * @param {ide:String} 
  * @return: 
  */
 router.post('/checkList', async(req, res) => {
@@ -68,7 +68,7 @@ router.post('/checkList', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 审核老师自动分配课题 --权限
- * @param {type} 
+ * @param {ide:String,number:int,teacher_id:[String,String,...]} 
  * @return: 
  */
 router.post('/randAllocate',async(req,res) => {
@@ -91,7 +91,7 @@ router.post('/randAllocate',async(req,res) => {
  * @name: 
  * @test: test font
  * @msg: 给审核老师手动分配课题接口
- * @param {type} 
+ * @param {topic_id: [int,int,...],teacher_id:String}
  * @return: 
  */
 router.post('/checkAllocate', async(req, res) => {
@@ -116,7 +116,7 @@ router.post('/checkAllocate', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 审核相关数值  --权限
- * @param {type} 
+ * @param {null}
  * @return: 未审核、未通过、已通过
  */
 router.post('/auditCount', async(req, res) => {
@@ -131,7 +131,7 @@ router.post('/auditCount', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 取到领域表信息
- * @param {type} 
+ * @param {null} 
  * @return: 
  */
 router.post('/areaList', async(req, res) => {
@@ -149,7 +149,7 @@ router.post('/areaList', async(req, res) => {
  * @msg: 一键发布本系课题
  *        --topic表未替换,
  *        前端等所有审核通过之后发起请求，后端发布所有已通过(audit表result=1)的同系课题
- * @param {type} 
+ * @param {ide:String} 
  * @return: 
  */
 router.post('/releaseTopic', async(req, res) => {
@@ -164,7 +164,7 @@ router.post('/releaseTopic', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 判断是否发布过课题
- * @param {type} 
+ * @param {ide:String} 
  * @return: 
  */
 router.post('/judgeTopic', async(req, res) => {

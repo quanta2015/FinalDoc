@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-02 17:08:24
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-07 20:49:41
+ * @LastEditTime: 2020-07-08 01:40:58
  */ 
 
 
@@ -17,7 +17,7 @@ const callProc = require('../util').callProc;
  * @name: 
  * @test: test font
  * @msg: 获取未分组的教师列表 --权限
- * @param {type} 
+ * @param {ide:String} 
  * @return: data
  */
 router.post('/teacherList', async(req, res) => {
@@ -32,7 +32,7 @@ router.post('/teacherList', async(req, res) => {
    * @name: 
    * @test: test font
    * @msg: 获取未分组的课题列表  --权限
-   * @param {type} 
+   * @param {ide:String} 
    * @return: 
    */
   router.post('/topicList', async(req, res) => {
@@ -48,7 +48,7 @@ router.post('/teacherList', async(req, res) => {
    * @name: 
    * @test: test font
    * @msg: 取分组列表  --权限
-   * @param {type} 
+   * @param {ide:String} 
    * @return: 
    */  
   router.post('/groupList', async(req, res) => {
@@ -64,7 +64,7 @@ router.post('/teacherList', async(req, res) => {
    * @name: 
    * @test: test font
    * @msg: 取组内课题详情
-   * @param {type} 
+   * @param {topic_id:int} 
    * @return: 
    */  
   router.post('/topicDetailList', async(req, res) => {
@@ -79,7 +79,7 @@ router.post('/teacherList', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 开题答辩 手动分组、手动分课题
- * @param {type} 
+ * @param {leader_id:String,teacher_id:[String],topic_id:[int]} 
  * @return: 
  */
 router.post('/handleGroup', async(req, res) => {
@@ -115,7 +115,7 @@ router.post('/handleGroup', async(req, res) => {
  * @name: 
  * @test: test font
  * @msg: 开题答辩 手动分组、自动分课题 --权限
- * @param {type} 
+ * @param {leader_id:String,teacher_id:[String],number:int} 
  * @return: 
  */
 router.post('/randGroup', async(req, res) => {
@@ -144,7 +144,7 @@ router.post('/randGroup', async(req, res) => {
    * @name: 
    * @test: test font
    * @msg: 删除某个分组
-   * @param {type} 
+   * @param {gid:int} 
    * @return: 
    */  
   router.post('/deleteGroup', async(req, res) => {
