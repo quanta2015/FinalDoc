@@ -4,7 +4,7 @@ import { Upload, Tooltip, message } from 'antd';
 import { LoadingOutlined, PlusOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { FILE_UPLOAD_FORMAT } from '../../constant/data'
 import { API_SYS_UPLOAD_FILE } from '../../constant/urls'
-import './index.css'
+import './index.scss'
 
 const isValidFormat = (formatList, fileFormat) => {
     if (formatList.indexOf(fileFormat) === -1) {
@@ -22,6 +22,12 @@ class FileUpload extends Component {
         fileUrl: '',
         showDel: false
     };
+
+    componentDidMount() {
+        this.setState({
+            fileUrl: this.props.tpInfo[this.props.type.type]
+        })
+    }
 
     componentDidUpdate(prevProps) {
         let fileUrl = this.props.tpInfo[this.props.type.type];
@@ -144,7 +150,7 @@ class FileUpload extends Component {
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {(fileUrl && !loading) ? <CheckOutlined className="m-smile"/> : uploadButton}
+                        {(fileUrl && !loading) ? <CheckOutlined className="m-success"/> : uploadButton}
                     </Upload>
                 </div>
                 {   fileUrl ?

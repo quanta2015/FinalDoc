@@ -20,15 +20,11 @@ class Student extends BaseActions {
     //时间轴内容
     timeList = [
         { title: '任务书', time: '2020年10月08日', status: 1, info: '' },
-        { title: '开题中期', time: '2020年12月12日', status: 3, grade: 0, info: [{ name: '开题报告', grade: 90 }, { name: '外文翻译', grade: 95 }, { name: '文献综述', grade: 85 }] },
+        { title: '开题中期', time: '2020年12月12日', status: 2, grade: 0, info: [{ name: '开题报告', grade: 90 }, { name: '外文翻译', grade: 95 }, { name: '文献综述', grade: 85 }] },
         { title: '论文审核', time: '2020年12月28日', status: 1, grade: 0, info: [{ name: '论文定稿', grade: 0 }, { name: '设计作品', grade: 0 }, { name: '作品说明书', grade: 0 }] },
         { title: '论文答辩', time: '2021年04月08日', status: 0, grade: 0, info: [{ name: '导师评分', grade: 0 }, { name: '评阅评分', grade: 0 }, { name: '答辩评分', grade: 0 }] },
         { title: '成绩审定', time: '2021年05月02日', status: 0, info: '' }
     ]
-
-    @observable
-    //所处阶段
-    currStage = 2
 
     @observable
     //模板文件
