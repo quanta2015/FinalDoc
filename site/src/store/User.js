@@ -9,9 +9,9 @@ import token from '../util/token.js'
 var ROLE = 2
 
 class User extends BaseActions {
-  
+
   @observable
-  usr={}
+  usr = {}
   // usr = {
   //   name:'沈珊瑚',
   //   uid: '20130006',
@@ -35,23 +35,24 @@ class User extends BaseActions {
 
 
   @action
-	async login(params) {
-		const r = await this.post(urls.API_USR_LOGIN, params)
-		console.log(r)
-		if (r) {
-			runInAction(() => {
-				token.saveUser(r.data)
-				this.usr = r.data[0]
-				console.log(r.data)
-				console.log(this.usr)
-			})
-			console.log("判断成功")
-			return r
-		} else {
-			message.error('网络错误', 0.7)
-		}
+  async login(params) {
+    const r = await this.post(urls.API_USR_LOGIN, params)
+    console.log(r)
+    if (r) {
+      runInAction(() => {
+        if (params.remember)
+          token.saveUser(r.data)
+        this.usr = r.data[0]
+        console.log(r.data)
+        console.log(this.usr)
+      })
+      console.log("判断成功")
+      return r
+    } else {
+      message.error('网络错误', 0.7)
+    }
 
-	}
+  }
 
   @action
   //example: {file: './upload/aaa.doc', id: '1234', name: '开题报告'}
