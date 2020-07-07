@@ -73,10 +73,7 @@ class User extends BaseActions {
       const a = document.createElement('a');
       a.download = `${params.id}_${params.name}.${ext}`;
       a.href = blobUrl;
-      document.body.appendChild(a)
       a.click();
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(href)
       return true;
     }).catch(e => {
       return false;

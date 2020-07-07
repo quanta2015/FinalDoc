@@ -19,17 +19,19 @@ class Student extends BaseActions {
     @observable
     //时间轴内容
     timeList = [
-        { title: '开题中期', status: 0, infoList: [{ time: '2020-9-11', content: '开始选题' }, { time: '2020-11-22', content: '选题工作结束' }, { time: '2020-12-7', content: '中期检查表上交截止' }]},
-        { title: '论文审核', status: 0, infoList: [{ time: '2020-12-28', content: '论文初稿提交' }]},
-        { title: '论文答辩', status: 0, infoList: [{ time: '2021-4-10', content: '一次答辩' }, { time: '2021-5-2', content: '二次答辩' }] }
+        { title: '任务书', time: '2020年10月08日', status: 1, info: '' },
+        { title: '开题中期', time: '2020年12月12日', status: 2, grade: 0, info: [{ name: '开题报告', grade: 90 }, { name: '外文翻译', grade: 95 }, { name: '文献综述', grade: 85 }] },
+        { title: '论文审核', time: '2020年12月28日', status: 1, grade: 0, info: [{ name: '论文定稿', grade: 0 }, { name: '设计作品', grade: 0 }, { name: '作品说明书', grade: 0 }] },
+        { title: '论文答辩', time: '2021年04月08日', status: 0, grade: 0, info: [{ name: '导师评分', grade: 0 }, { name: '评阅评分', grade: 0 }, { name: '答辩评分', grade: 0 }] },
+        { title: '成绩审定', time: '2021年05月02日', status: 0, info: '' }
     ]
 
     @observable
     //模板文件
     docTemplate = [
-        { title: '开题报告', link: ''},
+        { title: '开题报告', link: '' },
         { title: '中期检查表', link: '' },
-        { title: '外文文献翻译', link: '' }, 
+        { title: '外文文献翻译', link: '' },
         { title: '文献综述', link: '' },
         { title: '论文格式', link: '' },
         { title: '作品说明书', link: '' },
@@ -37,6 +39,10 @@ class Student extends BaseActions {
         { title: '评审答辩成绩表', link: '' },
         { title: '延缓答辩申请表', link: '' }
     ]
+
+    @observable
+    //指导日志
+    insLog = []
 
     @action
     async getTopInfo(params) {
@@ -55,10 +61,41 @@ class Student extends BaseActions {
     async getTopicList(params) {
         const r = await this.post(urls.API_STU_GET_TTLLIST, params);
         if (r && r.code === 200) {
+            let list = []
+
+            if (r.data) {
+                r.data.map((item) => {
+                    let areas = []
+                    let color = []
+                    let area_list = item.area_list.split(",")
+                    area_list.map((elem) => {
+                        let e = elem.split("|")
+                        if (!areas.includes(e[1])) {
+                            areas.push(e[1])
+                        }
+                        if (!color.includes(e[2])) {
+                            color.push(e[2])
+                        }
+
+                    })
+
+                    list.push({
+                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                        phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
+                        areas: areas,
+                        color: color
+                    })
+                })
+
+            }
+
             runInAction(() => {
-                this.topicList = r.data
+                // this.topicList = r.data
+                this.topicList = list
             })
-            return r.data
+            // return r.data
+            return list
+
         } else {
             // message.error("网络错误")
         }
@@ -70,7 +107,37 @@ class Student extends BaseActions {
     async isDurAudit(params) {
         const r = await this.post(urls.API_STU_FIND_ISDURAUDIT, params);
         if (r && r.code === 200) {
-            return r.data
+            let list = []
+            if (r.data) {
+                r.data.map((item) => {
+                    let areas = []
+                    let color = []
+                    let area_list = item.area_list.split(",")
+                    area_list.map((elem) => {
+                        let e = elem.split("|")
+                        if (!areas.includes(e[1])) {
+                            areas.push(e[1])
+                        }
+                        if (!color.includes(e[2])) {
+                            color.push(e[2])
+                        }
+                    })
+
+                    list.push({
+                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                        phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
+                        areas: areas,
+                        color: color
+                    })
+                })
+            }
+            runInAction(() => {
+                // this.topicList = r.data
+                this.topicList = list
+            })
+            return list
+            // return r.data
+
         } else {
             message.error('网络错误')
         }

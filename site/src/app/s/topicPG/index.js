@@ -2,14 +2,26 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import { Tag, Button, Modal, Timeline } from 'antd'
+import { Tag, Button, Modal, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
 import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
-import './index.css'
+import './index.scss'
 import LogDrawer from '../../../component/LogDrawer';
 
-@inject('userStore', 'studentStore')
+//传入列表，返回当前所处阶段
+let getStage = (list) => {
+    for(let i = 0;i < list.length;i ++){
+        let curr = list[i].status;
+        let next = list[i + 1].status;
+        if (( curr !== 0 && next === 0) || (i === list.length - 1 && curr !== 0)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+@inject('studentStore', 'userStore')
 @observer
 export default class TopicPG extends Component {
     constructor(props) {
@@ -20,10 +32,12 @@ export default class TopicPG extends Component {
             showDrawer: false,
         }
     }
+
     @computed
     get usr() {
         return toJS(this.props.userStore.usr);
     }
+
     @computed
     get selectTpInfo() {
         return toJS(this.props.studentStore.selectTpInfo);
@@ -44,6 +58,16 @@ export default class TopicPG extends Component {
         }
     }
 
+    downloadFile = (item) => {
+        let params = { file: item.info, id: this.selectTpInfo.sid, name: item.title };
+        this.props.userStore.downloadFile(params)
+        .then(r => {
+            if (!r) {
+                message.error('网络错误');
+            }
+        })
+    }
+
     showModal = (item) => {
         this.setState({
             showModal: true,
@@ -62,6 +86,7 @@ export default class TopicPG extends Component {
             showDrawer: true,
         })
     }
+
     onClose = () => {
         this.setState({
             showDrawer: false,
@@ -69,55 +94,61 @@ export default class TopicPG extends Component {
     }
     render() {
         const { selectItem, showModal } = this.state;
-        const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
+        const currStage = getStage(this.timeList);
         return (
             <div className="g-topic">
-                <div>
-                    <h2 className="m-title bold">选题信息</h2>
-                    <div className="m-topicInfo">
-                        <p>论文课题：{this.selectTpInfo.topic}</p>
-                        <div className="m-line">
-                            <span className="m-paperInfo">指导老师：{this.selectTpInfo.name}</span>
-                            <span className="m-paperInfo">论文类型：{this.selectTpInfo.type}</span>
-                        </div>
-                    </div>
+                <div className="m-line space-bwt">
+                    <div className="m-pType">{this.selectTpInfo.type}</div>
+                    <h2 className="m-pTopic bold">{this.selectTpInfo.topic}</h2>
+                    <div className="m-pname bold">{this.selectTpInfo.name}</div>
                 </div>
                 <div className="interval">
-                    <h2 className="m-title bold">相关材料</h2>
-                    <p className="left-right">当前进度：开题中期</p>
-                    <div className="m-topicInfo">
-                        <div className="m-line">
-                            <span className="m-statusItem">任务下达：<a href={link} download>任务书</a></span>
+                    <h2 className="m-title bold">论文进度</h2>
+                    <div>
+                        <ul className="m-time-line">
                             {
-                                this.timeList.map((item) =>
-                                    <span className="m-statusItem">{item.title}：
-                                        <Tag
-                                            color={STU_FU_STATUS[item.status].color}
-                                            onClick={() => this.showModal(item)}
-                                        >
-                                            {STU_FU_STATUS[item.status].name}
-                                        </Tag>
-                                    </span>
+                                this.timeList.map((item, id) => 
+                                    <li className={item.status > 0 ? currStage === id ? "m-time-stamp focus": "m-time-stamp active" : "m-time-stamp"}>
+                                        <div className="m-status-item">
+                                            <h3>{item.time}</h3>
+                                            {
+                                                ((item.title === '任务书') || item.title === '成绩审定') ?
+                                                item.status ?
+                                                <p className="download" onClick={() => this.downloadFile(item)}>{item.title}</p>:
+                                                <p>{item.title}</p>:
+                                                <Tag 
+                                                    onClick={() => this.showModal(item)} 
+                                                    color={STU_FU_STATUS[item.status].color}
+                                                >
+                                                    {item.title}
+                                                </Tag>
+                                            }
+                                        </div>
+                                    </li>
                                 )
                             }
-                            <span className="m-statusItem">成绩审定：暂未发布</span>
-                        </div>
+                        </ul>
                     </div>
                 </div>
                 <div className="interval">
                     <h2 className="m-title bold">材料递交</h2>
-                    <Button type="primary" onClick={this.showDrawer} size="small" className="left-right"><PlusOutlined />指导日志</Button>
+                    <Button className="left-right" type="primary" onClick={this.showDrawer} size="small"><PlusOutlined />指导日志</Button>
                     <LogDrawer
-                        showDrawer={this.state.showDrawer}
+                        showDrawer={this.state.showDrawer} 
                         onClose={this.onClose}
                     />
-                    <div className="m-topicInfo m-line">
+                    <div className="m-topic-info m-line space-bwt">
                         {FILE_UPLOAD_TYPE.map((item) =>
                             <div className="m-stage">
                                 <h3 className="bold">{item.stage}</h3>
                                 <div>
                                     {item.file.map((item) =>
-                                        <div className="m-file right-interval bottom-interval floatLeft"><FileUpload type={item} tpInfo={this.selectTpInfo ? this.selectTpInfo : {}} /></div>
+                                        <div className="m-file right-interval float-left">
+                                            <FileUpload 
+                                                type={item} 
+                                                tpInfo={this.selectTpInfo ? this.selectTpInfo : {}} 
+                                            />
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -130,13 +161,16 @@ export default class TopicPG extends Component {
                     onCancel={this.handleCancel}
                     footer={[]}
                 >
-                    <Timeline mode="left">
-                        {selectItem && selectItem.infoList.map((item) =>
-                            <Timeline.Item label={item.time}>
-                                {item.content}
-                            </Timeline.Item>
-                        )}
-                    </Timeline>
+                    {
+                        selectItem && selectItem.info.map((item)=>
+                        <p>
+                            <span>{item.name}:  </span>
+                            {   item.grade === 0 ?
+                                <Tag>暂未通过</Tag>:
+                                <span>{item.grade}</span>
+                            }
+                        </p>
+                    )}
                 </Modal>
             </div>
         );
