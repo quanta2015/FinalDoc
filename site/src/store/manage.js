@@ -190,7 +190,7 @@ class manager extends BaseActions {
         sName: item.sName,
         topic: item.topic,
         content: item.content,
-        tName: item.tName,
+        tName: item.name,
         classname: item.sMaj + item.class,
       })
     )
@@ -297,6 +297,7 @@ class manager extends BaseActions {
 
   // 查看该系全体学生的论文进度
   // {"gid":int}
+  @action
   async viewProgress(param){
     let res = await this.post(urls.API_MAN_POST_VIEWPROGRESS, param)
     let temp = []
@@ -358,6 +359,7 @@ class manager extends BaseActions {
         class: item.cls,
         topic: item.topic,
         tName: item.tName,
+        pid: item.pid,
         phase: phase,
         status: tag,
       })
@@ -367,5 +369,12 @@ class manager extends BaseActions {
     })
   }
 
+  // 查看某位学生上传的文件
+  // {"topic_id":int}
+  @action
+  async viewFiles(param){
+    let res = await this.post(urls.API_MAN_POST_VIEWFILES, param)
+    return res.data
+  }
 }
 export default new manager()

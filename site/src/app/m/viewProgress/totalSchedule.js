@@ -2,8 +2,8 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input, message, Tag } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import FileUpload from './fileModal'
+import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
+import { FILE_DOWNLOAD_TYPE } from '../../../constant/data'
 import "./totalSchedule.css"
 
 const paginationProps = {
@@ -30,7 +30,8 @@ export default class TotalSchedule extends Component {
 		// modal开关
 		visible: false,
 		// 被点击的那一行
-		row: {},
+		row_file: [],
+		row_name: "",
 	}
 
 	@computed
@@ -108,29 +109,37 @@ export default class TotalSchedule extends Component {
 		render: text => text
 	});
 
-	showModal = (record) => {
-		console.log(record)
+	showModal = async (record) => {
+		let res = await this.props.manageStore.viewFiles({ "topic_id": record.pid });
+		console.log(res)
 		this.setState({
 			visible: true,
-			row: record,
+			row_file: res[0],
+			row_name: record.sName,
+		}, () => {
+			console.log(this.state.row_file)
 		});
 	};
 
+	downloadFile = (fileurl,sname,tname) => {
+		let params = { file: fileurl, id: sname, name: tname };
+		console.log(params)
+        this.props.userStore.downloadFile(params)
+        .then(r=>{
+			message.success('下载成功！');
+            if(!r){
+                message.error('网络错误');
+            }
+        }) 
+	}
+	
+	test = (a,b,c) => {
+		console.log(a,b,c)
+	}
+
 	columns = [
 		{
-			title: '姓名',
-			dataIndex: 'sName',
-			key: 'sName',
-			...this.getColumnSearchProps('sName'),
-		},
-		{
-			title: '班级',
-			dataIndex: 'class',
-			key: 'class',
-			...this.getColumnSearchProps('class'),
-		},
-		{
-			title: '课题',
+			title: '论文课题',
 			dataIndex: 'topic',
 			key: 'topic',
 			...this.getColumnSearchProps('topic'),
@@ -142,6 +151,18 @@ export default class TotalSchedule extends Component {
 					{topic}
 				</Tooltip>
 			),
+		},
+		{
+			title: '姓名',
+			dataIndex: 'sName',
+			key: 'sName',
+			...this.getColumnSearchProps('sName'),
+		},
+		{
+			title: '班级',
+			dataIndex: 'class',
+			key: 'class',
+			...this.getColumnSearchProps('class'),
 		},
 		{
 			title: '指导教师',
@@ -197,13 +218,35 @@ export default class TotalSchedule extends Component {
 					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.stu_list)} />
 				</div>
 				<Modal
-					title={this.state.row.sName + "同学已上交的文件"}
+					title={this.state.row_name + "同学已上交的文件"}
 					visible={this.state.visible}
 					onCancel={this.handleCancel}
 					footer={null}
-					width={900}
+					width={600}
 				>
-					<FileUpload info={this.state.row}/>
+					<div className="filemodal">
+						{FILE_DOWNLOAD_TYPE.map((item) =>
+							<div className="fm_item">
+								<h3 className="">{item.stage}</h3>
+								{item.file.map((item) =>
+									<div className="file_btn">
+										{(this.state.row_file[item.type] === null) && 
+											<Tooltip placement="top" title="未上传该文件">
+												<Button icon={<DownloadOutlined />} size="small" disabled>
+													{item.name}
+												</Button>
+											</Tooltip>
+										}
+										{(this.state.row_file[item.type] !== null) && 
+											<Button icon={<DownloadOutlined />} size="small" onClick={() => this.downloadFile(this.state.row_file[item.type],this.state.row_name,item.name)}>
+												{item.name}
+											</Button>
+										}
+									</div>
+								)}
+							</div>
+						)}
+					</div>
 				</Modal>
 			</div>
 		);

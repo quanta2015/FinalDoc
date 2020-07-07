@@ -14,7 +14,8 @@ tbody.ant-table-tbody {
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(7) {
-    width: 100px;
+    width: 160px;
+    text-align: left;
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(6) {
@@ -22,8 +23,7 @@ tbody.ant-table-tbody {
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(5) {
-    width: 160px;
-    text-align: left;
+    width: 100px;
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(4) {
@@ -44,4 +44,19 @@ tbody.ant-table-tbody {
 
 .totalSchedule_table .ant-table-placeholder .ant-table-cell{
     width: 800px;
+}
+
+ /* Modal */
+.filemodal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fm_item {
+    /* width: 284px; */
+    box-sizing: border-box;
+}
+
+.file_btn {
+    margin-bottom: 10px;
 }
