@@ -34,15 +34,7 @@ export default class TotalSchedule extends Component {
 		row_name: "",
 	}
 
-	@computed
-	get stu_list() {
-		return this.props.manageStore.stu_list;
-	}
 
-	@computed
-	get usr() {
-		return this.props.userStore.usr;
-	}
 
 	async componentDidMount() {
 		await this.props.manageStore.viewProgress({ "ide": this.usr.uid });
@@ -67,6 +59,20 @@ export default class TotalSchedule extends Component {
 			visible: false,
 		});
 	};
+
+	@computed
+	get viewProgress() {
+		return this.props.manageStore.viewProgress;
+	}
+
+	@computed
+	get usr() {
+		return this.props.userStore.usr;
+	}
+
+	async componentDidMount() {
+		await this.props.manageStore.getViewProgress({ "ide": this.usr.uid });
+	}
 
 	// 表格中的搜索功能
 	getColumnSearchProps = dataIndex => ({
@@ -215,7 +221,7 @@ export default class TotalSchedule extends Component {
 		return (
 			<div>
 				<div class="totalSchedule_table">
-					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.stu_list)} />
+					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.viewProgress.stu_list)} />
 				</div>
 				<Modal
 					title={this.state.row_name + "同学已上交的文件"}

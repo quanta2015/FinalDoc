@@ -257,17 +257,25 @@ export default class HeadAllocate extends Component {
                 filterMultiple: false,
                 onFilter: (value, record) =>
                     record.areas.indexOf(value) !== -1,
-                render: (areas, record) => (
+                render: (areas) => (
                     <>
                         {
                             // console.log(areas),
-                            areas.map((tag, i) => {
+                            areas.map((tag) => {
                                 return (
                                     <Tag color={record.color[i]} >
                                         {tag}
                                     </Tag>
                                 );
-                            })}
+                            })
+                            // areas.map((tag, i) => {
+                            //     return (
+                            //         <Tag color={record.color[i]} >
+                            //             {tag}
+                            //         </Tag>
+                            //     );
+                            // })
+                        }
                     </>
                 ),
             },

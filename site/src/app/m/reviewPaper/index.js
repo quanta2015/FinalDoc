@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
 import { route } from 'preact-router';
 import "./style.css"
+import Ass from "./ass.js"
 import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
@@ -25,7 +26,7 @@ export default class Home extends Component {
 			<div className="rp_main">
 				<Tabs defaultActiveKey="1">
 					<TabPane tab="审核任务书" key="1">
-						Content of Tab Pane 1
+						<Ass/>
     				</TabPane>
 					<TabPane tab="审核论文定稿" key="2">
 						Content of Tab Pane 2
