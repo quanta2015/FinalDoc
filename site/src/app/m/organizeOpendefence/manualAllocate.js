@@ -126,12 +126,16 @@ export default class ManualAllocate extends Component {
         console.log(temp)
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
-            message.info("成功添加答辩小组！")
+            if(res.data[0].err === 0){
+                message.success("成功添加答辩小组！")
+            }else {
+                message.err("添加答辩小组失败！请重试")
+            }
             await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
             await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
             await this.props.manageStore.getGroupList_ogp({"ide": this.usr.uid });
         } else {
-            message.info("分配失败！请重试")
+            message.err("添加答辩小组失败！请重试")
         }
         this.clear()
     }
