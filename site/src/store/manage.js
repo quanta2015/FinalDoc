@@ -396,11 +396,21 @@ class manager extends BaseActions {
   // {"ide":"20130006"}
   async getTaskList(param) {
     const res = await this.post(urls.API_MAN_POST_RP_TASKLIST, param);
+    let temp = []
+    res.data.map((item, i) => {
+      temp.push({
+        name: item.name,
+        topic: item.topic,
+        key: item.key,
+
+      
+      })
+    })
      
     // 同一老师课题放一起，按未通过、通过、未审核排序
 
     runInAction(() => {
-      this.reviewPaper.task_info = res.data;
+      this.reviewPaper.task_info = temp;
     })
 
   }

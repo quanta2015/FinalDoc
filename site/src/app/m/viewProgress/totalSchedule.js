@@ -33,15 +33,7 @@ export default class TotalSchedule extends Component {
 		row: {},
 	}
 
-	@computed
-	get stu_list() {
-		return this.props.manageStore.stu_list;
-	}
 
-	@computed
-	get usr() {
-		return this.props.userStore.usr;
-	}
 
 	async componentDidMount() {
 		await this.props.manageStore.viewProgress({ "ide": this.usr.uid });

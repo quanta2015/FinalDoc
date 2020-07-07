@@ -14,6 +14,9 @@ const paginationProps = {
     position: ['bottomRight']
 }
 
+
+
+
 @inject('manageStore', 'userStore')
 @observer
 export default class Ass extends Component {
@@ -100,55 +103,36 @@ export default class Ass extends Component {
         });
     };
 
-    handleReset = clearFilters => {
-        clearFilters();
-        this.setState({ searchText: '' });
-    };
+    // handleReset = clearFilters => {
+    //     clearFilters();
+    //     this.setState({ searchText: '' });
+    // };
 
-    selectOnlyTea = (value) => {
-        let id
-        if (value !== "" && value !== undefined) {
-            id = value.split(" ")[0];
-        } else {
-            id = value
-            // 清空选择课题列表
-            this.setState({
-                selectedRowKeys: [],
-                topic_info: toJS(this.state.topic_info),
-            })
-        }
-        this.setState({
-            tea_id: id,
-            tea_name: value
-        }, () => {
-            let topic = toJS(this.distributeTopic.topic_info);
-            let newlist = [];
-            topic.map((item, i) => {
-                if (item.tid !== this.state.tea_id) {
-                    newlist.push(item);
-                }
-            })
-
-            this.setState({
-                topic_info: newlist,
-            })
-        })
-    }
+    // selectOnlyTea = (value) => {
+    //     let id
+    //     if (value !== "" && value !== undefined) {
+    //         id = value.split(" ")[0];
+    //     } else {
+    //         id = value
+    //         // 清空选择课题列表
+    //         this.setState({
+    //             selectedRowKeys: [],
+                 
+    //         })
+    //     }
+        
+    // }
 
     clear = () => {
-        let topic = toJS(this.distributeTopic.topic_info);
         this.setState({
             selectedRowKeys: [],
-            tea_id: "",
-            tea_name: undefined,
-            topic_info: topic,
         })
     }
     
-    onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
-    };
+    // onSelectChange = (selectedRowKeys) => {
+    //     console.log('selectedRowKeys changed: ', selectedRowKeys);
+    //     this.setState({ selectedRowKeys });
+    // };
 
 
     // 提交手动分配
@@ -165,10 +149,7 @@ export default class Ass extends Component {
             await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
             await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
             await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
-            console.log(this.distributeTopic.topic_info.length)
-            this.setState({
-                topic_info: toJS(this.distributeTopic.topic_info),
-            });
+           
         } else {
             message.info("分配失败！请重试")
         }
@@ -179,17 +160,46 @@ export default class Ass extends Component {
         })
     }
 
+    
+
     render() {
         const { selectedRowKeys } = this.state;
 
         const rowSelection = {
+             
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            // onChange: this.onSelectChange,
+            onChange: (selectedRowKeys) => {
+                console.log(`selectedRowKeyshhh: ${selectedRowKeys}`);
+                this.setState({ selectedRowKeys });
+
+            },
+            getCheckboxProps: record => ({
+                disabled: record.name === '谢琪', // Column configuration not to be checked
+
+            }),
             selections: [
                 Table.SELECTION_ALL,
                 Table.SELECTION_INVERT,
+                {
+                    key: 'odd',
+                    text: 'Select Odd Row',
+                    onSelect: changableRowKeys => {
+                        let newSelectedRowKeys = [];
+                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+                            if (index % 2 !== 0) {
+                                return false;
+                            }
+                            return true;
+                        });
+                        console.log(newSelectedRowKeys,"new")
+                        this.setState({ selectedRowKeys: newSelectedRowKeys });
+                    },
+                },
             ],
+            
         };
+
 
         const columns = [
             {
@@ -239,19 +249,24 @@ export default class Ass extends Component {
                 <div className="ass_table">
                     <Table
                         onChange={this.handleChange}
-                        rowSelection={rowSelection}
+                        
+                        // rowSelection={rowSelection}
+                        rowSelection={{
+                            // type: selectionType,
+                            ...rowSelection,
+                        }}
                         columns={columns}
                         dataSource={this.reviewPaper.task_info}
                         pagination={paginationProps}
-                        onRow={(record) => {
-                            return {
-                                onClick: () => {
-                                    console.log(record)
-                                    this.state.own = record
-                                    console.log(this.state.own)
-                                }
-                            }
-                        }}
+                        // onRow={(record) => {
+                        //     return {
+                        //         onClick: () => {
+                        //             console.log(record)
+                        //             this.state.own = record
+                        //             console.log(this.state.own)
+                        //         }
+                        //     }
+                        // }}
                     />
                 </div>
 
