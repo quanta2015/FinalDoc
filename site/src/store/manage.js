@@ -191,7 +191,7 @@ class manager extends BaseActions {
         topic: item.topic,
         content: item.content,
         tName: item.name,
-        classname: item.sMaj + item.class,
+        classname: item.class,
       })
     )
     runInAction(() => {

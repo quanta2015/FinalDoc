@@ -60,7 +60,7 @@ export default class HeadAllocate extends Component {
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         if(this.state.tea_name === "" || this.state.tea_name === undefined){
-            selectedRowKeys.pop();
+            selectedRowKeys = [];
             message.info("请先选择审核教师！")
         }
         this.setState({ selectedRowKeys });
@@ -193,7 +193,12 @@ export default class HeadAllocate extends Component {
         console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
-            message.info("分配成功！")
+            if(res.data[0].err === 0){
+                message.success("分配成功！")
+            }else if(res.data[0].err === 1){
+                message.err("分配失败！请重试")
+            }
+            
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
@@ -202,7 +207,7 @@ export default class HeadAllocate extends Component {
                 topic_info: toJS(this.distributeTopic.topic_info),
             });
         } else {
-            message.info("分配失败！请重试")
+            message.err("分配失败！请重试")
         }
         this.setState({
             selectedRowKeys: [],
@@ -317,9 +322,9 @@ export default class HeadAllocate extends Component {
                         onRow={(record) => {
                             return {
                                 onClick: () => {
-                                    console.log(record)
+                                    // console.log(record)
                                     this.state.own = record
-                                    console.log(this.state.own)
+                                    // console.log(this.state.own)
                                 }
                             }
                         }}
