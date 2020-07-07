@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-06 20:23:00
+ * @LastEditTime: 2020-07-07 20:18:45
  */ 
 
 const express = require('express');
@@ -95,12 +95,21 @@ router.post('/randAllocate',async(req,res) => {
  * @return: 
  */
 router.post('/checkAllocate', async(req, res) => {
-  for(let j of req.body.topic_id){
-    let sql = `CALL MG_M_PROC_HANDLE_CHECK(?)`;
-    let params = {teacher_id:req.body.teacher_id,topic_id:j};
-    callProc(sql, params, res, (r) => {});
+  let topic_char = "";
+  let topic_len = 0;
+  for(let i of req.body.topic_id){      //数据格式处理
+    topic_char += (i+",");
+    topic_len++;
   }
-  res.status(200).json({code: 200,msg: '手动课题审核分配'})
+  topic_char = topic_char.substring(0, topic_char.length - 1);
+
+  let sql = `CALL MG_M_PROC_HANDLE_CHECK(?)`;
+  let params = {teacher_id:req.body.teacher_id,
+                topic_id:topic_char,
+                topic_len:topic_len};
+  callProc(sql, params, res, (r) => {
+    res.status(200).json({code: 200, data: r, msg: '手动课题审核分配'})
+  });
 });
 
 /**
