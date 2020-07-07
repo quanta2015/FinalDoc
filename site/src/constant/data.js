@@ -32,24 +32,23 @@ export var FILE_UPLOAD_TYPE =
       file: [{name: '开题报告', type: 'f_open'},  
              {name: '外文翻译', type: 'f_tran'}, 
              {name: '文献综述', type: 'f_docs'},
-             {name: '中期检查表', type: 'f_' }] },
+             {name: '中期检查表', type: 'f_midcheck' }] },
     { stage: '2. 论文审核',
       file: [{name: '论文定稿', type: 'f_paper'}, 
-             {name: '设计作品', type: 'f_' },
-             {name: '作品说明书', type: 'f_'}, 
-             {name: '查重报告', type: 'f_check'}, 
-             {name: '承诺书', type: 'f_prom'}]},
+             {name: '设计作品', type: 'f_design_opus' },
+             {name: '作品说明书', type: 'f_manual'}, 
+             {name: '查重报告', type: 'f_check'},
+             {name: '承诺书', type: 'f_prom' }]},
     { stage: '3. 论文答辩',
-      file: [{name: '答辩材料', type: 'f_'},
-             {name: '答辩记录', type: 'f_' },
-             {name: '答辩成绩表', type: 'f_'},
-             {name: '延缓申请表', type: 'f_' }]}]
+      file: [{name: '答辩材料', type: 'f_reply_source'},
+             {name: '答辩记录', type: 'f_reply_log' },
+             {name: '答辩成绩表', type: 'f_reply_score'},
+             {name: '延缓申请表', type: 'f_reply_delay_apply' }]}]
 
 //学生文件上传状态
 export var STU_FU_STATUS = 
    [{ name: '未完成', color: '' },
     { name: '待审核', color: 'blue' },
-    { name: '待修改', color: 'red' },
     { name: '已通过', color: 'green' }
    ]
 

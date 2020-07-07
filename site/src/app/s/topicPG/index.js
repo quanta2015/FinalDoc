@@ -6,13 +6,15 @@ import { Tag, Button, Modal, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
 import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
-import './index.css'
+import './index.scss'
 import LogDrawer from '../../../component/LogDrawer';
 
 //传入列表，返回当前所处阶段
 let getStage = (list) => {
     for(let i = 0;i < list.length;i ++){
-        if ((list[i] !== 0 && list[i + 1] === 0) || (i === list.length - 1 && list[i] !== 0)) {
+        let curr = list[i].status;
+        let next = list[i + 1].status;
+        if (( curr !== 0 && next === 0) || (i === list.length - 1 && curr !== 0)) {
             return i;
         }
     }
@@ -46,11 +48,6 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.timeList);
     }
 
-    @computed
-    get currStage() {
-        return this.props.studentStore.currStage;
-    }
-
     componentDidMount() {
         //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
         if (!this.usr.uid) {
@@ -69,7 +66,6 @@ export default class TopicPG extends Component {
                 message.error('网络错误');
             }
         })
-
     }
 
     showModal = (item) => {
@@ -98,29 +94,34 @@ export default class TopicPG extends Component {
     }
     render() {
         const { selectItem, showModal } = this.state;
-        const link = 'https://youth.hznu.edu.cn/upload/resources/file/2020/06/24/7589612.doc'
+        const currStage = getStage(this.timeList);
         return (
             <div className="g-topic">
-                <div className="m-line">
+                <div className="m-line space-bwt">
                     <div className="m-pType">{this.selectTpInfo.type}</div>
-                    <div className="m-pTopic bold">{this.selectTpInfo.topic}</div>
-                    <div className="bold">{this.selectTpInfo.name}</div>
+                    <h2 className="m-pTopic bold">{this.selectTpInfo.topic}</h2>
+                    <div className="m-pname bold">{this.selectTpInfo.name}</div>
                 </div>
                 <div className="interval">
                     <h2 className="m-title bold">论文进度</h2>
                     <div>
-                        <ul className="m-timeLine">
+                        <ul className="m-time-line">
                             {
                                 this.timeList.map((item, id) => 
-                                    <li className={item.status > 0 ? this.currStage === id ? "m-timeStamp focus": "m-timeStamp active" : "m-timeStamp"}>
-                                        <div className="m-statusItem">
+                                    <li className={item.status > 0 ? currStage === id ? "m-time-stamp focus": "m-time-stamp active" : "m-time-stamp"}>
+                                        <div className="m-status-item">
                                             <h3>{item.time}</h3>
                                             {
                                                 ((item.title === '任务书') || item.title === '成绩审定') ?
                                                 item.status ?
-                                                <p onClick={() => this.downloadFile(item)} style={{ textDecoration: "underline", cursor: "pointer"}}>{item.title}</p>:
+                                                <p className="download" onClick={() => this.downloadFile(item)}>{item.title}</p>:
                                                 <p>{item.title}</p>:
-                                                <Tag onClick={() => this.showModal(item)} color={STU_FU_STATUS[item.status].color}>{item.title}</Tag>
+                                                <Tag 
+                                                    onClick={() => this.showModal(item)} 
+                                                    color={STU_FU_STATUS[item.status].color}
+                                                >
+                                                    {item.title}
+                                                </Tag>
                                             }
                                         </div>
                                     </li>
@@ -131,18 +132,23 @@ export default class TopicPG extends Component {
                 </div>
                 <div className="interval">
                     <h2 className="m-title bold">材料递交</h2>
-                    <Button type="primary" onClick={this.showDrawer} size="small" className="left-right"><PlusOutlined />指导日志</Button>
+                    <Button className="left-right" type="primary" onClick={this.showDrawer} size="small"><PlusOutlined />指导日志</Button>
                     <LogDrawer
                         showDrawer={this.state.showDrawer} 
                         onClose={this.onClose}
                     />
-                    <div className="m-topicInfo m-line">
+                    <div className="m-topic-info m-line space-bwt">
                         {FILE_UPLOAD_TYPE.map((item) =>
                             <div className="m-stage">
                                 <h3 className="bold">{item.stage}</h3>
                                 <div>
                                     {item.file.map((item) =>
-                                        <div className="m-file right-interval bottom-interval floatLeft"><FileUpload type={item} tpInfo={this.selectTpInfo ? this.selectTpInfo : {}} /></div>
+                                        <div className="m-file right-interval float-left">
+                                            <FileUpload 
+                                                type={item} 
+                                                tpInfo={this.selectTpInfo ? this.selectTpInfo : {}} 
+                                            />
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -160,8 +166,8 @@ export default class TopicPG extends Component {
                         <p>
                             <span>{item.name}:  </span>
                             {   item.grade === 0 ?
-                                <Tag className="m-grade">暂未通过</Tag>:
-                                <span className="m-grade">{item.grade}</span>
+                                <Tag>暂未通过</Tag>:
+                                <span>{item.grade}</span>
                             }
                         </p>
                     )}
