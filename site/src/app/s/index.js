@@ -15,15 +15,13 @@ export default class Student extends Component {
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
       .then(r => {
-        // if (!this.usr.uid) {
-        //   route('/');
-        // }else if (!r ) { //未双选
-        //   route('/s_selectTL');
-        // } else { //已双选
-        //   route('/s_topicPG');
-        // }
-        // route('/s_topicPG')
-        route('/s_selectTL')
+        if (!this.usr.uid) {
+          route('/');
+        }else if (!r ) { //未双选
+          route('/s_selectTL');
+        } else { //已双选
+          route('/s_topicPG');
+        }
       })
   }
 
