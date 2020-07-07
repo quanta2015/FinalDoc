@@ -25,11 +25,11 @@ export default class Student extends Component {
       })
   }
 
-	render() { 
-		return (
+  render() {
+    return (
       <div className="g-s">
         <div className="m-s">Student info</div>
       </div>
     );
-	}
+  }
 }

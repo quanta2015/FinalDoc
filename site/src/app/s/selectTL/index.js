@@ -1,12 +1,12 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Router,route } from 'preact-router';
+import { Router, route } from 'preact-router';
 import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin, ConfigProvider } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { SmileOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
 import 'antd/dist/antd.css';
-import './index.css';
+import './index.scss'
 import { computed, toJS } from 'mobx';
 
 var del = []
@@ -19,7 +19,7 @@ const customizeRenderEmpty = () => (
     <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
         <SmileOutlined type="smile" style={{ fontSize: 30, }} />
         <br />
-        <p style={{fontSize:20}}>课题尚未发布</p>
+        <p style={{ fontSize: 20 }}>课题尚未发布</p>
     </div>
 );
 @inject('studentStore', 'userStore')
@@ -54,16 +54,8 @@ export default class TopicList extends Component {
         }
         this.props.studentStore.isDurAudit({ uid: this.usr.uid })
             .then(r => {
-                if (r) {
-                    r.map((item) => {
-                        tmp.push({
-                            key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
-                            phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
-                            areas: item.areas.split(","),
-                            color: item.color.split(",")
-                        })
-                    })
-
+                if (r && r.length > 0) {
+                    tmp = r
                     this.setState({
                         topicList: tmp,
                         isAudi: true,
@@ -72,20 +64,8 @@ export default class TopicList extends Component {
                     this.props.studentStore.getTopicList({ uid: this.usr.uid })
                         .then(r => {
                             if (r.length) {
-                                r.map((item) => {
-                                    tmp.push({
-                                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
-                                        phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
-                                        areas: item.areas.split(","),
-                                        color: item.color.split(",")
-                                    })
-                                    rec.push({
-                                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
-                                        phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
-                                        areas: item.areas.split(","),
-                                        color: item.color.split(",")
-                                    })
-                                })
+                                tmp = r
+                                rec = r
                                 this.setState({
                                     topicList: tmp,
                                 })
@@ -198,7 +178,7 @@ export default class TopicList extends Component {
                         loading: false,
                         topicList: flag ? rec : [...tmp, ...rec]
                     })
-                }, 500)
+                }, 200)
                 this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
             } else { // 点击选定后
                 selectedRowKeys.push(0);
@@ -223,14 +203,7 @@ export default class TopicList extends Component {
             this.props.studentStore.getTopicList({ uid: this.usr.uid })
                 .then(r => {
                     tmp[0].status = '——';
-                    r.map((item) => {
-                        rec.push({
-                            key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
-                            phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
-                            areas: item.areas.split(","),
-                            color: item.color.split(",")
-                        })
-                    })
+                    rec = r;
                     this.setState({
                         loading: true,
                     })
@@ -253,7 +226,7 @@ export default class TopicList extends Component {
                             loading: false,
                             topicList: [...tmp, ...rec]
                         })
-                    }, 500)
+                    }, 300)
 
                 })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
@@ -345,7 +318,7 @@ export default class TopicList extends Component {
                 dataIndex: 'areas',
                 key: 'areas',
                 filters: _field,
-                onFilter: (value, record) => record.areas.indexOf(value) === 0,
+                onFilter:(value,record) => record.areas.includes(value),
                 render: (areas, record) => (
                     <>
                         {
@@ -414,6 +387,7 @@ export default class TopicList extends Component {
                     visible={this.state.visible}
                     onCancel={this.handleOk}
                     footer={[]}
+                    width={900}
                 >
                     <Descriptions
                         bordered

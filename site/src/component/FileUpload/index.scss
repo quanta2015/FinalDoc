@@ -1,0 +1,55 @@
+.g-file {
+    position: relative;
+    text-align: center;
+
+    .avatar-uploader > .ant-upload {
+        width: 66px;
+        height: 66px;
+    }
+
+    .ant-upload.ant-upload-select-picture-card {
+        margin: 0;
+        border: none;
+    }
+
+    .ant-upload-text {
+        color: #9e9e9e;
+    }
+
+    .m-bdwrapper {
+        box-sizing: border-box;
+        width: 68px;
+        height: 68px;
+        border: 1px dashed #d9d9d9;
+
+        &:hover {
+            border: 1px dashed #1891FF;
+        }
+    }
+
+    .submitted-wp {
+        border: 1px solid #d9d9d9;
+
+        &:hover {
+            border: 1px solid #1891FF;
+        }
+    }
+
+    .submitted-p {
+        text-decoration: underline;
+        cursor: pointer;
+        // color: rgba(0, 0, 0, 0.65);
+    }
+
+    .m-del {
+        position: absolute;
+        right: 3px;
+        top: 3px;
+        color: #999;
+    }
+
+    .m-success {
+        font-size: 24px;
+        color: #1891FF;
+    }
+}

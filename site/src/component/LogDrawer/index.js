@@ -1,8 +1,11 @@
 import { Component } from 'preact'
 import { inject, observer } from 'mobx-react'
-import { Drawer, Form, Button, Input, List, Comment, Select } from 'antd'
+import { Drawer, Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message } from 'antd'
 import moment from 'moment'
-import './index.css'
+import './index.scss'
+import { computed } from 'mobx'
+
+const { Title } = Typography;
 
 const data = [
     {
@@ -47,7 +50,6 @@ const Editor = ({ onChange, onSubmit, submitting, value, defaultValue }) => (
     </>
 );
 
-// var hasPost = false
 @inject('userStore')
 @observer
 class LogDrawer extends Component {
@@ -61,6 +63,10 @@ class LogDrawer extends Component {
             isInEdit: false,
             sel: '学校',
         }
+    }
+    @computed
+    get insLog() {
+        return this.props.studentStore.insLog;
     }
     componentDidMount = () => {
         const { comments } = this.state;
@@ -92,6 +98,7 @@ class LogDrawer extends Component {
                         value: value,
                         comments: comments,
                     });
+                    // 调用后端接口update本条comment 按日期查
                 }, 1000);
             } else {
                 setTimeout(() => {
@@ -107,6 +114,7 @@ class LogDrawer extends Component {
                             ...this.state.comments,
                         ],
                     });
+                    //调用后端接口insert本条comment
                 }, 1000);
             }
 
@@ -122,6 +130,7 @@ class LogDrawer extends Component {
                         isInEdit: false,
                         comments
                     })
+                    // 调用后端接口update本条comment
                 }, 1000)
             } else {
                 setTimeout(() => {
@@ -134,6 +143,7 @@ class LogDrawer extends Component {
                         isInEdit: false,
                         comments
                     })
+                    // 调用后端接口update本条comment
                 }, 1000)
             }
 
@@ -154,6 +164,10 @@ class LogDrawer extends Component {
             editedItemIndex: comments.indexOf(item),
             sel: item.place,
             isInEdit: true,
+        })
+        message.info({
+            content: '请在输入框内编辑',
+            duration: 1.2,
         })
     }
 
@@ -181,39 +195,33 @@ class LogDrawer extends Component {
         return (
             <div className="g-log">
                 <Drawer
-                    title="指导日志"
+                    title={<Title level={4}>指导日志</Title>}
                     width={720}
                     onClose={this.props.onClose}
                     visible={this.props.showDrawer}
                     bodyStyle={{ paddingBottom: 80 }}
-                    footer={
-                        <div
-                            style={{
-                                textAlign: 'right',
-                            }}
-                        >
-                            <Button onClick={this.props.onClose} style={{ marginRight: 8 }}>
-                                取消
-                            </Button>
-                            <Button onClick={this.props.onClose} type="primary">
-                                确定
-                            </Button>
-                        </div>
-                    }
+                    footer={[]}
                 >
-                    <Select
-                        defaultValue={this.state.sel}
-                        style={{ width: 120 }}
-                        onChange={this.handleSelChange}
-                        onSelect={this.handleSelect}
-                        value={this.state.sel}
-                    >
-                        {
-                            SEL_PLACE.map((elem) => {
-                                return <Option value={elem.value} key={elem.key}>{elem.value}</Option>
-                            })
-                        }
-                    </Select>
+                    <Space align="baseline">
+                        <h4  >{moment().format('YYYY年MM月DD日')}</h4>
+                        <p type="text" className="m-sintro">请选择指导地点/指导方式</p>
+                        <Select
+                            className="m-sintro"
+                            defaultValue={this.state.sel}
+                            style={{ width: 80 }}
+                            onChange={this.handleSelChange}
+                            onSelect={this.handleSelect}
+                            value={this.state.sel}
+                            bordered={false}
+                            size="small"
+                        >
+                            {
+                                SEL_PLACE.map((elem) => {
+                                    return <Option value={elem.value} key={elem.key}>{elem.value}</Option>
+                                })
+                            }
+                        </Select>
+                    </Space>
                     <Comment
                         content={
                             <Editor
@@ -231,10 +239,16 @@ class LogDrawer extends Component {
                                 dataSource={comments}
                                 header={`${comments.length} 条记录`}
                                 itemLayout="horizontal"
+                                pagination={{
+                                    pageSize: 2,
+                                }}
                                 renderItem={(item) => (
                                     <List.Item
-                                        actions={[<Button onClick={() => this.handleEdit(item)}>编辑</Button>,
-                                        <Button onClick={() => this.handleDelete(item)}>删除</Button>]} >
+                                        actions={[<Button type="primary" size="small" onClick={() => this.handleEdit(item)}>编辑</Button>,
+                                        <Popconfirm title="删除此记录？" onConfirm={() => this.handleDelete(item)} okText="确认" cancelText="取消">
+                                            <Button size="small">删除</Button>
+                                        </Popconfirm>
+                                        ]} >
                                         <List.Item.Meta
                                             title={<p>{item.datetime} {item.place}</p>}
                                             description={<p>{item.content}</p>}
