@@ -1,9 +1,0 @@
-.filemodal {
-    display: flex;
-    justify-content: space-between;
-}
-
-.fm_item {
-    width: 284px;
-    box-sizing: border-box;
-}

@@ -56,6 +56,31 @@ class User extends BaseActions {
   @action
   //example: {file: './upload/aaa.doc', id: '1234', name: '开题报告'}
   //action: 下载aaa.doc文件，重命名为 1234_开题报告.doc
+  // async downloadFile(params) {
+  //   return await axios({
+  //     url: urls.API_SYS_DOWN_FILE,
+  //     method: 'POST',
+  //     responseType: 'blob',
+  //     data: params
+  //   }).then(r => {
+  //     let type = r.headers['content-type'];
+  //     let data = new Blob([r.data], {
+  //       type: type
+  //     })
+  //     let blobUrl = window.URL.createObjectURL(data);
+  //     const a = document.createElement('a');
+  //     a.download = `${params.id}_${params.name}`;
+  //     a.href = blobUrl;
+  //     document.body.appendChild(a)
+  //     a.click();
+  //     window.URL.revokeObjectURL(href);
+  //     document.body.removeChild(a);
+  //     return true;
+  //   }).catch(e => {
+  //     console.log('aaaa')
+  //     return false;
+  //   })
+  // }
   async downloadFile(params) {
     return await axios({
       url: urls.API_SYS_DOWN_FILE,
@@ -67,14 +92,15 @@ class User extends BaseActions {
       let data = new Blob([r.data], {
         type: type
       })
+      let ext = params.file.split('.').slice(-1);
       let blobUrl = window.URL.createObjectURL(data);
       const a = document.createElement('a');
-      a.download = `${params.id}_${params.name}`;
+      a.download = `${params.id}_${params.name}.${ext}`;
       a.href = blobUrl;
-      document.body.appendChild(a)
+      // document.body.appendChild(a)
       a.click();
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(href)
+      // document.body.removeChild(a)
+      // window.URL.revokeObjectURL(href)
       return true;
     }).catch(e => {
       return false;

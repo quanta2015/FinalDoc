@@ -45,6 +45,24 @@ export var FILE_UPLOAD_TYPE =
              {name: '答辩成绩表', type: 'f_'},
              {name: '延缓申请表', type: 'f_' }]}]
 
+//系主任端查看论文进度表中，能下载的学生上传的文件
+export var FILE_DOWNLOAD_TYPE = 
+   [{ stage: '1. 开题中期', 
+      file: [{name: '开题报告', type: 'f_open'},  
+             {name: '外文翻译', type: 'f_tran'}, 
+             {name: '文献综述', type: 'f_docs'},
+             {name: '中期检查表', type: 'f_midcheck' }] },
+    { stage: '2. 论文审核',
+      file: [{name: '论文定稿', type: 'f_paper'}, 
+             {name: '设计作品', type: 'f_design_opus' },
+             {name: '作品说明书', type: 'f_manual'}, 
+             {name: '查重报告', type: 'f_check'}, 
+             {name: '承诺书', type: 'f_prom'}]},
+    { stage: '3. 论文答辩',
+      file: [{name: '答辩材料', type: 'f_reply_source'}, 
+             {name: '答辩记录', type: 'f_reply_log' },
+             {name: '答辩成绩表', type: 'f_reply_score'}]}]
+             
 //学生文件上传状态
 export var STU_FU_STATUS = 
    [{ name: '未完成', color: '' },
