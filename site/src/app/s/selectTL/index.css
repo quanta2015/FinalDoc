@@ -5,7 +5,7 @@
 }
 .m-title {
 	font-weight: bold;
-	font-size:18px;
+	font-size: 18px;
 }
 
 table,
@@ -41,25 +41,30 @@ table {
 .ant-descriptions-item-label {
 	width: 120px;
 }
+
+/* td.ant-table-cell {
+	vertical-align: middle;
+} */
 .ant-table-cell:nth-last-child(6) {
-	width: 130px;
+	width: 150px;
 }
 
 .ant-table-cell:nth-last-child(5) {
-	width: 300px;
+	width: 350px;
 	text-align: left;
 }
 .ant-table-cell:nth-last-child(4) {
-	width: 250px;
+	width: 150px;
+	text-align: left;
 }
 .ant-table-cell:nth-last-child(3) {
 	width: 100px;
 }
 .ant-table-cell:nth-last-child(2) {
-	width: 80px;
+	width: 100px;
 }
 .ant-table-cell:nth-last-child(1) {
-	width: 90px;
+	width: 100px;
 }
 
 td.ant-table-cell:nth-last-child(3) {

@@ -45,7 +45,6 @@ export const API_STU_GET_TOPINFO = API_SERVER + '/student/getStuInfo' //用户�
 export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' //用户可选的课题列表
 export const API_STU_UPDATE_TTLLIST = API_SERVER + '/student/addStuTopic'
 export const API_STU_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
-export const API_STU_FIND_ISINPROJ = API_SERVER + '/student/calStuTopicStateZero'
 export const API_STU_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
 export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuTopicStateThree' //双选成功的课题信息 
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
