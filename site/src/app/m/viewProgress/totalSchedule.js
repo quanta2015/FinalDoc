@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input, message, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import FileUpload from './fileModal'
 import "./totalSchedule.css"
 
 const paginationProps = {
@@ -26,8 +27,24 @@ export default class TotalSchedule extends Component {
 		// 表格中搜索功能
 		searchText: '',
 		searchedColumn: '',
-
+		// modal开关
 		visible: false,
+		// 被点击的那一行
+		row: {},
+	}
+
+	@computed
+	get stu_list() {
+		return this.props.manageStore.stu_list;
+	}
+
+	@computed
+	get usr() {
+		return this.props.userStore.usr;
+	}
+
+	async componentDidMount() {
+		await this.props.manageStore.viewProgress({ "ide": this.usr.uid });
 	}
 
 	handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -49,20 +66,6 @@ export default class TotalSchedule extends Component {
 			visible: false,
 		});
 	};
-
-	@computed
-	get stu_list() {
-		return this.props.manageStore.stu_list;
-	}
-
-	@computed
-	get usr() {
-		return this.props.userStore.usr;
-	}
-
-	async componentDidMount() {
-		await this.props.manageStore.viewProgress({ "ide": this.usr.uid });
-	}
 
 	// 表格中的搜索功能
 	getColumnSearchProps = dataIndex => ({
@@ -109,6 +112,7 @@ export default class TotalSchedule extends Component {
 		console.log(record)
 		this.setState({
 			visible: true,
+			row: record,
 		});
 	};
 
@@ -164,6 +168,8 @@ export default class TotalSchedule extends Component {
 					color = "green"
 				} else if (status === "未选题" || status === "未通过") {
 					color = "red"
+				} else if (status === "待审核") {
+					color = "blue"
 				}
 				// console.log(tag);
 				return (
@@ -191,12 +197,13 @@ export default class TotalSchedule extends Component {
 					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.stu_list)} />
 				</div>
 				<Modal
-					title="查看详情"
+					title={this.state.row.sName + "同学已上交的文件"}
 					visible={this.state.visible}
 					onCancel={this.handleCancel}
 					footer={null}
+					width={900}
 				>
-					<div>123</div>
+					<FileUpload info={this.state.row}/>
 				</Modal>
 			</div>
 		);
