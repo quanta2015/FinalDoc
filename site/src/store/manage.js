@@ -61,6 +61,7 @@ class manager extends BaseActions {
   async getTopicList(param) {
     const res = await this.post(urls.API_MAN_GET_TOPICLIST, param);
     let topicList = [];
+   
     res.data.map((item) =>
       topicList.push({
         key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
@@ -269,11 +270,27 @@ class manager extends BaseActions {
   }
 
   @observable
-  stu_list = []
+  viewProgress={
+     stu_list : [],
+     file_list:[]
+      
 
+  }
+ //论文文件
+  @action  async getTaskList_rp(param) {
+    const res = await this.post(urls.API_MAN_POST_VIEWFILES, param);
+
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+
+    runInAction(() => {
+      this.viewProgress.file_list = res.data;
+    })
+
+  }
   // 查看该系全体学生的论文进度
   // {"gid":int}
-  async viewProgress(param){
+  @action
+  async getViewProgress(param){
     let res = await this.post(urls.API_MAN_POST_VIEWPROGRESS, param)
     let temp = []
     res.data.map((item,i)=>{
@@ -336,8 +353,30 @@ class manager extends BaseActions {
       })
     })
     runInAction(() => {
-      this.stu_list = temp;
+      this.viewProgress.stu_list = temp;
     })
+  }
+
+
+  @observable
+  reviewPaper = {
+    // 教师列表
+    task_info: [],
+     
+  }
+
+  @action
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTaskList(param) {
+    const res = await this.post(urls.API_MAN_POST_RP_TASKLIST, param);
+     
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+
+    runInAction(() => {
+      this.reviewPaper.task_info = res.data;
+    })
+
   }
 
 }

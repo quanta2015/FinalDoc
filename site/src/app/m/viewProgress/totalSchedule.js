@@ -51,8 +51,8 @@ export default class TotalSchedule extends Component {
 	};
 
 	@computed
-	get stu_list() {
-		return this.props.manageStore.stu_list;
+	get viewProgress() {
+		return this.props.manageStore.viewProgress;
 	}
 
 	@computed
@@ -61,7 +61,7 @@ export default class TotalSchedule extends Component {
 	}
 
 	async componentDidMount() {
-		await this.props.manageStore.viewProgress({ "ide": this.usr.uid });
+		await this.props.manageStore.getViewProgress({ "ide": this.usr.uid });
 	}
 
 	// 表格中的搜索功能
@@ -188,7 +188,7 @@ export default class TotalSchedule extends Component {
 		return (
 			<div>
 				<div class="totalSchedule_table">
-					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.stu_list)} />
+					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.viewProgress.stu_list)} />
 				</div>
 				<Modal
 					title="查看详情"

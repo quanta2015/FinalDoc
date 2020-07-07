@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import  './headAllocate.css';
+import './ass.css';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -11,12 +11,12 @@ const paginationProps = {
     showTotal: ((total) => {
         return `共 ${total} 条`;
     }),
-    position: ['topRight', 'bottomRight']
+    position: ['bottomRight']
 }
 
-@inject('manageStore','userStore')
+@inject('manageStore', 'userStore')
 @observer
-export default class HeadAllocate extends Component {
+export default class Ass extends Component {
     state = {
         selectedRowKeys: [],// Check here to configure the default column
         // tid,value
@@ -37,8 +37,8 @@ export default class HeadAllocate extends Component {
     };
 
     @computed
-    get distributeTopic() {
-        return this.props.manageStore.distributeTopic;
+    get reviewPaper() {
+        return this.props.manageStore.reviewPaper;
     }
 
     @computed
@@ -47,46 +47,9 @@ export default class HeadAllocate extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getTeaList({"ide":this.usr.uid});
-        await this.props.manageStore.getAreasList();
-        this.setState({
-            teacher_info: toJS(this.distributeTopic.teacher_info),
-            topic_info: toJS(this.distributeTopic.topic_info),
-        });
-        
+        await this.props.manageStore.getTaskList({ "ide": this.usr.uid });
     }
 
-    onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        if(this.state.tea_name === "" || this.state.tea_name === undefined){
-            selectedRowKeys.pop();
-            message.info("请先选择审核教师！")
-        }
-        this.setState({ selectedRowKeys });
-    };
-    //模态框
-    showModal = (record) => {
-        console.log(record.topicTOPIC)
-        this.setState({
-            visible: true,
-            own: record,
-        });
-    };
-
-    handleOk = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
-
-    handleCancel = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
 
     // 搜索框功能
     getColumnSearchProps = dataIndex => ({
@@ -181,6 +144,11 @@ export default class HeadAllocate extends Component {
             topic_info: topic,
         })
     }
+    
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    };
 
 
     // 提交手动分配
@@ -194,8 +162,8 @@ export default class HeadAllocate extends Component {
         let res = await this.props.manageStore.allocateTopic(temp);
         if (res && res.code === 200) {
             message.info("分配成功！")
-            await this.props.manageStore.getTopicList({"ide":this.usr.uid})
-            await this.props.manageStore.getCheckList({"ide":this.usr.uid})
+            await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
+            await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
             await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
             console.log(this.distributeTopic.topic_info.length)
             this.setState({
@@ -226,9 +194,9 @@ export default class HeadAllocate extends Component {
         const columns = [
             {
                 title: '出题教师',
-                dataIndex: 'tName',
-                key: 'tName',
-                ...this.getColumnSearchProps('tName'),
+                dataIndex: 'name',
+                key: 'name',
+                ...this.getColumnSearchProps('name'),
             },
             {
                 title: '课题题目',
@@ -245,82 +213,35 @@ export default class HeadAllocate extends Component {
                 ),
             },
             {
-                title: '研究领域',
-                dataIndex: 'areas',
-                key: 'areas',
-                filters: toJS(this.distributeTopic.areas_list),
-                filterMultiple: false,
-                onFilter: (value, record) =>
-                    record.areas.indexOf(value) !== -1,
-                render: (areas) => (
-                    <>
-                        {
-                            // console.log(areas),
-                            areas.map((tag) => {
-                                return (
-                                    <Tag color={record.color[i]} >
-                                        {tag}
-                                    </Tag>
-                                );
-                            })
-                            // areas.map((tag, i) => {
-                            //     return (
-                            //         <Tag color={record.color[i]} >
-                            //             {tag}
-                            //         </Tag>
-                            //     );
-                            // })
-                        }
-                    </>
-                ),
-            },
-            {
                 title: '操作',
                 dataIndex: '',
                 key: 'topic',
                 render: (text, record) => (
                     <Space size="middle">
-                        <a onClick={() => this.showModal(record)}>  详情</a>
+                        <a > 下载</a>
                     </Space>
                 ),
             },
         ];
         return (
             <div>
-                <div className="top_box">
-                    <div class="checkTeacher">
-                        <div class="title">审核教师</div>
-                        <Select
-                            value={this.state.tea_name}
-                            allowClear
-                            showSearch
-                            defaultActiveFirstOption={false}
-                            style={{ width: 400 }}
-                            placeholder="请选择审核教师"
-                            optionFilterProp="children"
-                            onChange={this.selectOnlyTea}
-                            filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                        >
-                            {this.state.teacher_info.map((item, i) =>
-                                <Select.Option key={item.tid}>{item.value}</Select.Option>
-                            )}
-                        </Select>
-                    </div>
-                    <div className="head_btn">
-                        <Button onClick={this.clear} className="clear">重置</Button>
-                        <Button type="primary" onClick={this.handDistribute}>提交</Button>
+
+                <div className="ass_top_box">
+
+                    <div className="ass_noTopicNum">{this.reviewPaper.task_info.length}篇未审核
+                            已选{selectedRowKeys.length}篇</div>
+                    <div className="ass_head_btn">
+                        <Button onClick={this.clear} className="ass_clear">重置</Button>
+                        <Button type="primary" onClick={this.handDistribute}>通过</Button>
                     </div>
                 </div>
-                <div className="noTopicNum">{this.distributeTopic.topic_info.length}篇未分配
-                            已选{selectedRowKeys.length}篇</div>
-                <div className="headAllocate_table">
+
+                <div className="ass_table">
                     <Table
                         onChange={this.handleChange}
                         rowSelection={rowSelection}
                         columns={columns}
-                        dataSource={this.state.topic_info}
+                        dataSource={this.reviewPaper.task_info}
                         pagination={paginationProps}
                         onRow={(record) => {
                             return {
