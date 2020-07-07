@@ -60,7 +60,7 @@ export default class HeadAllocate extends Component {
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         if(this.state.tea_name === "" || this.state.tea_name === undefined){
-            selectedRowKeys = [];
+            selectedRowKeys = []
             message.info("请先选择审核教师！")
         }
         this.setState({ selectedRowKeys });
@@ -195,10 +195,9 @@ export default class HeadAllocate extends Component {
         if (res && res.code === 200) {
             if(res.data[0].err === 0){
                 message.success("分配成功！")
-            }else if(res.data[0].err === 1){
+            } else if (res.data[0].err === 1){
                 message.err("分配失败！请重试")
             }
-            
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
@@ -207,7 +206,7 @@ export default class HeadAllocate extends Component {
                 topic_info: toJS(this.distributeTopic.topic_info),
             });
         } else {
-            message.err("分配失败！请重试")
+            message.success("分配失败！请重试")
         }
         this.setState({
             selectedRowKeys: [],
@@ -257,11 +256,11 @@ export default class HeadAllocate extends Component {
                 filterMultiple: false,
                 onFilter: (value, record) =>
                     record.areas.indexOf(value) !== -1,
-                render: (areas) => (
+                render: (areas,record) => (
                     <>
                         {
                             // console.log(areas),
-                            areas.map((tag) => {
+                            areas.map((tag,i) => {
                                 return (
                                     <Tag color={record.color[i]} >
                                         {tag}

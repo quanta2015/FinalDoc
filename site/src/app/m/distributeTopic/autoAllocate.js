@@ -63,6 +63,7 @@ export default class AutoAllocate extends Component {
         let param = {"ide":this.usr.uid,"number":this.state.num,"teacher_id":tea_id}
         // console.log(param)
         let res = await this.props.manageStore.autoAllocateTopic(param);
+        console.log(res)
         if (res && res.code === 200) {
             console.log(res.data[0].result)
             let flag = 1
