@@ -50,16 +50,16 @@ class FileUpload extends Component {
     downloadFile = () => {
         let params = { file: this.state.fileUrl, id: this.props.tpInfo.sid, name: this.props.type.name };
         this.props.userStore.downloadFile(params)
-        .then(r=>{
-            if(!r){
-                message.error('网络错误');
-            }
-        }) 
+            .then(r => {
+                if (!r) {
+                    message.error('网络错误');
+                }
+            })
 
     }
 
     beforeUpload = (file) => {
-        if(!file) {
+        if (!file) {
             this.setState({ fileUrl: '' })
             return;
         }
@@ -74,15 +74,15 @@ class FileUpload extends Component {
         }
         // 文件大小约束
         const isLt10M = file.size / 1024 / 1024 < 10;
-        if(!isLt10M) {
+        if (!isLt10M) {
             message.error('请重新选择文件，文件不得大于10M');
         }
-        
+
         return tag && isLt10M;
     }
 
     handleHover = () => {
-        if(this.state.fileUrl) {
+        if (this.state.fileUrl) {
             this.setState({
                 showDel: true
             })
@@ -98,20 +98,20 @@ class FileUpload extends Component {
     }
 
     handleDel = () => {
-        let params = { type: this.props.type.type, tid: this.props.tpInfo.tid, sid: this.props.tpInfo.sid};
+        let params = { type: this.props.type.type, tid: this.props.tpInfo.tid, sid: this.props.tpInfo.sid };
         this.props.studentStore.deleteFile(params)
-        .then(r => {
-            if(r.code === 200) {
-                this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
-                this.setState({
-                    fileUrl: "",
-                    showDel: false,
-                    loading: false
-                })
-            }else {
-                message.error('网络错误');
-            }
-        })
+            .then(r => {
+                if (r.code === 200) {
+                    this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
+                    this.setState({
+                        fileUrl: "",
+                        showDel: false,
+                        loading: false
+                    })
+                } else {
+                    message.error('网络错误');
+                }
+            })
     }
 
     render() {
@@ -122,35 +122,35 @@ class FileUpload extends Component {
         const text = "点击下载已提交文件";
         const uploadButton = (
             <div>
-                { this.state.loading ? <LoadingOutlined /> : <PlusOutlined /> }
-                < div className = "ant-upload-text" >上传</div>
+                {this.state.loading ? <LoadingOutlined /> : <PlusOutlined />}
+                < div className="ant-upload-text" >上传</div>
             </div>
         )
         return (
             <div className="g-file">
-                <div 
-                    className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"} 
-                    onMouseOver={this.handleHover} 
-                    onMouseLeave={this.handleMouseOut} 
+                <div
+                    className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"}
+                    onMouseOver={this.handleHover}
+                    onMouseLeave={this.handleMouseOut}
                 >
-                    {showDel && !loading && <CloseOutlined className="m-del" onClick={this.handleDel}/>}
+                    {showDel && !loading && <CloseOutlined className="m-del" onClick={this.handleDel} />}
                     <Upload
                         name="file"
                         listType="picture-card"
                         className="avatar-uploader"
                         showUploadList={false}
                         action={API_SYS_UPLOAD_FILE}
-                        data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid}}}
+                        data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid } }}
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {(fileUrl && !loading) ? <CheckOutlined className="m-smile"/> : uploadButton}
+                        {(fileUrl && !loading) ? <CheckOutlined className="m-smile" /> : uploadButton}
                     </Upload>
                 </div>
-                {   fileUrl ?
+                {fileUrl ?
                     <Tooltip placement="bottom" title={text}>
                         <p className="submitted-p" onClick={this.downloadFile}>{fileType.name}</p>
-                    </Tooltip>:
+                    </Tooltip> :
                     <p>{fileType.name}</p>
                 }
             </div>

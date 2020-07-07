@@ -2,7 +2,7 @@ import BaseActions from '../BaseActions';
 import * as urls from '../../constant/urls'
 import { Card,Input,Tag, Tooltip  } from 'antd';
 import style from './index.css';
-
+import { inject, observer } from 'mobx-react';
 import { UserOutlined,CheckCircleOutlined,CloseCircleOutlined} from '@ant-design/icons';
 
 const tiptitle = (url)=>{
@@ -21,6 +21,9 @@ const tiptitle = (url)=>{
   }
 }
 
+
+//props:{name:"",url:"",sid:""}
+@inject('userStore')
 export default class FileDownLoad extends BaseActions{
 
   // name：文件名，topic：课题id
@@ -32,6 +35,13 @@ export default class FileDownLoad extends BaseActions{
     url:null
   }
 
+  download=()=>{
+    let params = {file:this.props.url,id:this.props.sid,name:this.props.name}
+    console.log(params);
+    
+    this.props.userStore.downloadFile(params)
+  }
+
   render(){
     return(
       <div className="file-down-load" data-component="filedownload">
@@ -39,7 +49,7 @@ export default class FileDownLoad extends BaseActions{
           <div className="f-down-inner">
             {
               (!!this.props.url)&&
-              <a href={this.props.url}>
+              <a onClick={this.download}>
                 <div className="f-down-pic">
                   <CheckCircleOutlined />
                 </div>
