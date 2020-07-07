@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-06 22:53:48
- * @LastEditTime: 2020-07-07 17:23:29
+ * @LastEditTime: 2020-07-07 19:47:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FinalDoc\site\src\store\User.js
@@ -80,10 +80,7 @@ class User extends BaseActions {
       const a = document.createElement('a');
       a.download = `${params.id}_${params.name}.${ext}`;
       a.href = blobUrl;
-      document.body.appendChild(a)
       a.click();
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(href)
       return true;
     }).catch(e => {
       return false;
