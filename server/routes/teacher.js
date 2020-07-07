@@ -188,55 +188,55 @@ router.post('/getStudentUntied', async(req, res) => {
 })
 
 // 上传签名文件
-router.post('/upload', async function (req, res) {
-    const form = new formidable.IncomingForm()
-    form.uploadDir = "./upload/";
-    let get_data, newpath;
-    form.parse(req, (err, fields, files) => {
-        if (err || !files.file) {
-            res.status(500);
-        }
-        get_data = fields;
-        let ext = files.file.name.split('.').slice(-1)
-        let ttt = `${get_data.tid}_签名_${moment(new Date()).format('YYYYMMDDhhmmss')}.${ext}`;
-        let oldpath = files.file.path
-        console.log("===============旧地址====================", oldpath)
-        newpath = "./upload/" + ttt;
-        console.log("===============新地址====================", newpath)
-        // console.log(oldpath, newpath)
-        fs.rename(oldpath, newpath, function (err) {
-            if (err) {
-                console.log(err);
-                throw Error("改名失败");
-            }
-        });
-        let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
-        get_data.filePath = newpath;
-        callProc(sql, get_data, res, (r) => {
-            res.status(200).json({
-                code: 200,
-                msg: `上传签名成功`,
-                data: newpath,
-                mysqldata: r
-            })
-        });
-    });
-})
+// router.post('/upload', async function (req, res) {
+//     const form = new formidable.IncomingForm()
+//     form.uploadDir = "./upload/";
+//     let get_data, newpath;
+//     form.parse(req, (err, fields, files) => {
+//         if (err || !files.file) {
+//             res.status(500);
+//         }
+//         get_data = fields;
+//         let ext = files.file.name.split('.').slice(-1)
+//         let ttt = `${get_data.tid}_签名_${moment(new Date()).format('YYYYMMDDhhmmss')}.${ext}`;
+//         let oldpath = files.file.path
+//         console.log("===============旧地址====================", oldpath)
+//         newpath = "./upload/" + ttt;
+//         console.log("===============新地址====================", newpath)
+//         // console.log(oldpath, newpath)
+//         fs.rename(oldpath, newpath, function (err) {
+//             if (err) {
+//                 console.log(err);
+//                 throw Error("改名失败");
+//             }
+//         });
+//         let sql = `CALL PROC_UPDATE_TOPIC_DATA(?)`;
+//         get_data.filePath = newpath;
+//         callProc(sql, get_data, res, (r) => {
+//             res.status(200).json({
+//                 code: 200,
+//                 msg: `上传签名成功`,
+//                 data: newpath,
+//                 mysqldata: r
+//             })
+//         });
+//     });
+// })
 
-// 返回签名文件位置
-router.post('/getTeacherSignPath', async(req, res) => {
-    let sql = `CALL PROC_GET_TOPICID_SIGN_PATH(?)`;
-    let params = req.body;
-    callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '签名文件位置已返回'});
-    })
-})
+// // 返回签名文件位置
+// router.post('/getTeacherSignPath', async(req, res) => {
+//     let sql = `CALL PROC_GET_TOPICID_SIGN_PATH(?)`;
+//     let params = req.body;
+//     callProc(sql, params, res, (r) => {
+//         res.status(200).json({code: 200, data: r, msg: '签名文件位置已返回'});
+//     })
+// })
 
-// 下载签名文件
-router.post('/download', function (req, res, next) {
-    let filename = req.body.file
-    console.log(res);
-    res.download('./' + filename)
-})
+// // 下载签名文件
+// router.post('/download', function (req, res, next) {
+//     let filename = req.body.file
+//     console.log(res);
+//     res.download('./' + filename)
+// })
 
 module.exports = router;
