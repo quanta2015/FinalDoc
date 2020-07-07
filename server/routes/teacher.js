@@ -2,6 +2,10 @@ const url = require('url');
 const express = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
+const formidable = require('formidable');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const moment = require('moment');
 
 // 由不完整学号得到学生列表（学号和姓名）：模糊查询
 router.post('/getStuInfoByLikeID', async(req, res) => {
@@ -193,8 +197,29 @@ router.post('/getStudentUntied', async(req, res) => {
 })
 
 // 上传教师签名文件
-// router.post('/uploadSign', async(req, res) => {
-//     let sql = `CALL PROC_UPDATE_USER_SIGN`;
-// })
+router.use(bodyParser.json({limit: '10mb'}));
+router.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+router.post('/uploadSign', async(req, res) => {
+    let imgData = req.body.file;
+
+    var base64Data = imgData.replace(/^data:image\/\w+;base64,/, '');
+    var dataBuffer = new Buffer(base64Data, 'base64');
+    var path = './' + `${req.body.type}_${req.body.uid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.jpg`;
+    fs.writeFile(path, dataBuffer, function (err) {
+        if (err) {
+            return;
+        }
+        console.log('图片保存成功');
+    })
+    let sql = `CALL PROC_UPDATE_USER_SIGN(?)`;
+    let params = req.body;
+    params.filePath = path;
+    delete params.file;
+    callProc(sql, params, res, (r) => {
+        console.log(params)
+        res.status(200).json({code: 200, data: r, msg: '签名文件已上传'});
+        console.log(r);
+    })
+})
 
 module.exports = router;
