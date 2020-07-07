@@ -14,6 +14,8 @@ export const API_SYS_UPLOAD_FILE = API_SERVER + '/upload'
 export const API_SYS_DOWN_FILE = API_SERVER + '/download'
 //查询签名状态
 export const API_SYS_GET_SIGN_STATE = API_SERVER + '/checkSign'
+//上传签名图片
+export const API_SYS_UPLOAD_SIGN = API_SERVER + '/teacher/uploadSign'
 
 // 专业负责人接口声明
 export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'

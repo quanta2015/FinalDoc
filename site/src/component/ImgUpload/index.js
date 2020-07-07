@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ImgCrop from 'antd-img-crop';
-import {API_SYS_UPLOAD_FILE,API_SYS_GET_SIGN_STATE} from '../../constant/urls'
+import {API_SYS_UPLOAD_SIGN,API_SYS_GET_SIGN_STATE} from '../../constant/urls'
 import BaseActions from '../BaseActions'
 import { Upload, Button, Modal, message, Tooltip } from 'antd';
 import style from './index.scss'
@@ -103,15 +103,17 @@ class UploadImage extends BaseActions {
 
     onUpload = async (img)=>{
         this.setState({})
-        await this.post("http://localhost:8090/upload",{uid:this.props.uid,type:"sign",file:img})
-        //await this.post(API_SYS_UPLOAD_FILE,{uid:this.props.uid,type:"sign",file:img})
+        //await this.post("http://localhost:8090/upload",{uid:this.props.uid,type:"sign",file:img})
+        let x = await this.post(API_SYS_UPLOAD_SIGN,{uid:this.props.uid,type:"sign",file:img})
+        this.setState({uploaded:true})
+        
     }
 
-    // async componentWillMount(){
-    //     let data = await this.post(API_SYS_GET_SIGN_STATE,{uid:this.props.uid})
-    //     let s = data.data==0;
-    //     this.setState({uploaded:s})
-    // }
+    async componentWillMount(){
+        let data = await this.post(API_SYS_GET_SIGN_STATE,{uid:this.props.uid})
+        let s = data.data==0;
+        this.setState({uploaded:s})
+    }
 
     render() {
         const { previewVisible, previewImage, fileList } = this.state;

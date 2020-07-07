@@ -42,7 +42,7 @@ export default class Home extends Component {
 	}
 
 	componentWillMount() {
-		// this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
+		this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
 	}
 
 	//选题名称查询
