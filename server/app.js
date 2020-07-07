@@ -206,6 +206,24 @@ app.post('/download', function (req, res, next) {
 
 })
 
+// 判断教师是否上传过签名
+app.post('/checkSign', async function (req, res) {
+        let sql = `CALL PROC_GET_TOPICID_SIGN_PATH(?)`;
+        let get_data = req.body;
+        callProc(sql, get_data, res, (r) => {
+            if (r[0].sign != null) {
+                r[0].sign = 1;
+            } else {
+                r[0].sign = 0;
+            }
+            res.status(200).json({
+                code: 200,
+                data: r,
+                msg: '签名状态已返回'
+            })
+        })
+})
+
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
