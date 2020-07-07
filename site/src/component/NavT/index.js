@@ -37,11 +37,11 @@ class NavT extends Component {
     return (
       <div className="g-nav">
         <div class="g-info">
-          <div>身份：教师</div>
-          <div>姓名：{this.usr.name}</div>
-          <div>工号：{this.usr.uid}</div>
-          <div>所在系：{this.usr.maj}</div>
-          <div>签名：<UploadImg/></div>
+          <div><span>身份：</span>教师</div>
+          <div><span>姓名：</span>{this.usr.name}</div>
+          <div><span>工号：</span>{this.usr.uid}</div>
+          <div><span>所在系：</span>{this.usr.maj}</div>
+          <div><span>签名：</span><UploadImg/></div>
         </div>
         <div className="g-menu">
           {MENU_MAIN_T.map((item,i)=>

@@ -1,13 +1,13 @@
-import BaseActions from '../../../component/BaseActions';
+import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed} from 'mobx';
+import { computed } from 'mobx';
+
 import {
     Button,
     Input,
     Modal,
     message,
 	Descriptions,
-	Space,
 	Tooltip
 } from 'antd';
 
@@ -19,25 +19,21 @@ import {
 
 const { TextArea } = Input;
 
-import * as urls from '../../../constant/urls';
+import style from './index.css';
 
-
-@inject('userStore')
+@inject('teacherStore', 'userStore')
 @observer
-class TpActions extends BaseActions { 
+class TpActions extends Component { 
 
     constructor(props) {
         super(props)
         this.state = {
 
-            ModalText: "您将反对此命题，请在这里提出您的相关建议：",
             adviceModalVisible: false,
-            advice: "",
-            
-            confirmLoading: false,
-
             contentModalVisible: false,
-            modalSubject: { data: [{ topic: "", content: "", type: "" }] }
+            confirmLoading: false,
+            ModalText: "您将反对此命题，请在这里提出您的相关建议：",
+            advice: "",
         }
     }
 
@@ -46,18 +42,16 @@ class TpActions extends BaseActions {
         return this.props.userStore.usr;
     }
 
-    //通过
-    yesBtnClick = async (id) => {
-		this.post(urls.API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES, {
-			"id": id
-		}).then(async(response) => {
-            message.success("审题通过 已提交")
-            let data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
-				"uid": this.usr.uid
-			});
-            this.props.changeTopicList(data)
-        })
-	}
+    @computed
+    get selectedTopic() {
+        return this.props.teacherStore.selectedTopic;
+    }
+
+    handleBtnPass = (id) => {
+        console.log(id)
+        // this.props.teacherStore.AuditTp_passTopic( {"id": id} )
+        // .then(this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} ))
+    }
 
     //提出建议
     showAdviceModal = () => {
@@ -78,15 +72,9 @@ class TpActions extends BaseActions {
 			confirmLoading: true,
 		});
 
-		// console.log(id,advice)
-		this.post(urls.API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_NO, {
-			"id": id,
-			"content": advice
-		}).then((response) => {
-			// console.log(response)
-			message.success("审题未通过 已提交")
-			this.props.getTopicList()
-		})
+        console.log(id,advice)
+        // this.props.teacherStore.AuditTp_opposeTopic({ "id": id, "content": advice})
+        // .then(this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} ))
 
 		setTimeout(() => {
 			this.setState({
@@ -102,21 +90,8 @@ class TpActions extends BaseActions {
 		})
 	}
 
-    //详情
-    async getTopicById(id) {
-		var data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID, {
-			"userId": this.usr.uid,
-			"id": id
-		})
-
-		// console.log(data)
-		this.setState({
-			modalSubject: data
-		})
-	}
-
     showContentModal = (id) => {
-		this.getTopicById(id)
+        this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
 		this.setState({
 			contentModalVisible: true,
 		});
@@ -129,11 +104,12 @@ class TpActions extends BaseActions {
 	};
 
 	render(){
-        const {ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible, modalSubject} = this.state;
+
+        const {ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible} = this.state;
         return(
-            <Space size="middle">
+            <div>
                 <Tooltip placement="top" title="通过">
-                    <Button type="link" size="small" shape="circle" icon={<CheckOutlined />} onClick={this.yesBtnClick.bind(this, this.props.record.id)} />
+                    <Button type="link" size="small" shape="circle" icon={<CheckOutlined />} onClick={this.handleBtnPass.bind(this, this.props.record.id)} />
                 </Tooltip>
 
                 <Tooltip placement="top" title="提出建议">
@@ -164,12 +140,12 @@ class TpActions extends BaseActions {
                     width={900}
                 >
                     <Descriptions column={2} bordered>
-                        <Descriptions.Item label="课题名称">{modalSubject.data[0].topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题类型" span={1}>{modalSubject.data[0].type}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={2}>{modalSubject.data[0].content}</Descriptions.Item>
+                        <Descriptions.Item label="课题名称">{this.selectedTopic.topic}</Descriptions.Item>
+                        <Descriptions.Item label="课题类型" span={1}>{this.selectedTopic.type}</Descriptions.Item>
+                        <Descriptions.Item label="课题简介" span={2}>{this.selectedTopic.content}</Descriptions.Item>
                     </Descriptions>
                 </Modal>
-            </Space>
+            </div>
         )
     }
 }

@@ -12,6 +12,8 @@ export const API_SYS_XXXXXX = API_SERVER + '/sysXXXXXX'
 export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
 export const API_SYS_UPLOAD_FILE = API_SERVER + '/upload'
 export const API_SYS_DOWN_FILE = API_SERVER + '/download'
+//查询签名状态
+export const API_SYS_GET_SIGN_STATE = API_SERVER + '/checkSign'
 
 // 专业负责人接口声明
 export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'
@@ -78,6 +80,8 @@ export const API_TEACHER_GET_SUGG = API_SERVER +'/teacher/getTidToTsugg'
 export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic'
 //获取学生文件列表
 export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
+//解绑学生
+export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
 
 
 // 任课教师-初期审核

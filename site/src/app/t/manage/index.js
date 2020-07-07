@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import CheckBlock from '../../../component/ContentT/Check';
 import { Drawer,Modal,Button   } from 'antd';
+import { route } from 'preact-router';
 import * as urls from '../../../constant/urls'
 import BaseActions from '../../../component/BaseActions';
 import PublishBlock from '../../../component/ContentT/Publish'
@@ -50,6 +51,9 @@ export default class Home extends BaseActions {
   }
 
   componentDidMount(){
+    if (!this.usr.id) {
+			route('/')
+		}
     this.getTopicList();
     console.log(this.usr)
   }

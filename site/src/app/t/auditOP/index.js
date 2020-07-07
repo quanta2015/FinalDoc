@@ -1,7 +1,9 @@
-import BaseActions from '../../../component/BaseActions';
+import { Component } from 'preact';
 import OpActions from '../../../component/ContentT/OpActions';
+
 import { inject, observer } from 'mobx-react';
-import { computed} from 'mobx';
+import { computed, toJS } from 'mobx';
+
 import Highlighter from 'react-highlight-words';
 
 import {
@@ -15,70 +17,14 @@ import {
 	SearchOutlined,
 } from '@ant-design/icons';
 
-import * as urls from '../../../constant/urls';
+import './style.scss';
 
-import style from './style.scss';
-
-//test data
-const user = {
-	id: "20190106"
-}
-
-const topicTypes = [
-	{
-		text: '毕业设计',
-		value: '毕业设计',
-	},
-	{
-		text: '命题设计',
-		value: '命题设计',
-	},
-	{
-		text: '软件设计',
-		value: '软件设计',
-	},
-	{
-		text: '工程设计',
-		value: '工程设计',
-	}
-]
-
-@inject('userStore')
+@inject('teacherStore', 'userStore')
 @observer
-export default class Home extends BaseActions {
+export default class Home extends Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
-			subjects: {
-				data:[
-					{
-						id: 646,
-						topic: "subjectA",
-						content: "subjectA",
-						type: "fca"
-					},
-					{
-						id: 618,
-						topic: "subjectB",
-						content: "subjectB",
-						type: "fcb"
-					},
-					{
-						id: 619,
-						topic: "subjectC",
-						content: "subjectC",
-						type: "fcc"
-					},
-					{
-						id: 620,
-						topic: "subjectD",
-						content: "subjectD",
-						type: "fcd"
-					}
-				]
-			},
-
 			//选题查询变量
 			searchText: '',
 			searchedColumn: '',
@@ -90,16 +36,13 @@ export default class Home extends BaseActions {
 		return this.props.userStore.usr;
 	}
 
-	componentWillMount() {
-		this.getTopicList()
+	@computed
+	get topicList() {
+		return toJS(this.props.teacherStore.auditTP_topicList);
 	}
 
-	// 选题类型筛选
-	topicFilter = (value, record) => {
-		if (record.type != null)
-			return record.type.indexOf(value) === 0;
-		else
-			return false;
+	componentWillMount() {
+		// this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
 	}
 
 	//选题名称查询
@@ -168,26 +111,14 @@ export default class Home extends BaseActions {
 		this.setState({ searchText: '' });
 	};	
 
-	//获取数据
-	async getTopicList() {
-		// var data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
-		// 	"uid": this.usr.uid
-		// });
-
-		// this.setState({
-		// 	subjects: data
-		// })
-	}
-
 	render() {
-		const subjects = this.state.subjects;
 		const columns = [
 			{
 				title: '选题类型',
 				dataIndex: 'type',
 				key: 'type',
-				filters: topicTypes,
-				onFilter: this.topicFilter,
+				filters: this.props.teacherStore.auditTP_topicTypes,
+				onFilter: this.props.teacherStore.AuditTP_topicFilter,
 			},
 			{
 				title: '课题题目',
@@ -204,9 +135,9 @@ export default class Home extends BaseActions {
 		];
 
 		return (
-			<div className="context">
-				<div class="main">
-					<Table class="table" columns={columns} dataSource={subjects.data} />
+			<div className="g-content" data-component="t-auditOP">
+				<div class="m-main">
+					<Table class="m-main-table" columns={columns} dataSource={this.topicList} />
 				</div>
 			</div>
 		);

@@ -1,6 +1,6 @@
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
-import { Card,Input,Tag  } from 'antd';
+import { Card,Input,Tag, Button  } from 'antd';
 import style from './index.scss';
 import FileUpload from '../../FileUpload'
 import FileDownLoad from '../../FileDownLoad'
@@ -63,6 +63,14 @@ export default class StuMethods extends BaseActions {
     })
   }
 
+  onTied = async ()=>{
+    let r = confirm("您确定要解绑该学生么？")
+    if(r){
+      await this.post(urls.API_TEACHER_UNTIED,{pid:this.props.pid});
+      this.props.freshList();
+    }
+  }
+
 
   render() {
     {if(this.props.sid!=this.state.sid){
@@ -74,11 +82,12 @@ export default class StuMethods extends BaseActions {
       <div data-component="stumethods">
         <div className="note-block">
           <span style="width:110px"><span style="margin-right:20px" className=""><UserOutlined /></span>学生信息</span>
-          <Card style={{ width: 700}}>
+          <Card style={{ width: 600}}>
             <span style="margin:10px">{this.props.sid}</span>
             <span style="margin:10px">{this.state.name}</span>
             <span style="margin:10px">{this.state.cls}</span>
           </Card>
+          <Button style={{marginLeft:20}} onClick={this.onTied}>解绑</Button>
         </div>
       
       <Card 

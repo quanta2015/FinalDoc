@@ -48,20 +48,12 @@ class FileUpload extends Component {
     }
 
     downloadFile = () => {
-        this.props.userStore.downloadFile({ file: this.state.fileUrl })
+        let params = { file: this.state.fileUrl, id: this.props.tpInfo.sid, name: this.props.type.name };
+        this.props.userStore.downloadFile(params)
         .then(r=>{
-            let type = r.headers['content-type'];
-            let data = new Blob([r.data],{
-                type: type
-            })
-            let blobUrl = window.URL.createObjectURL(data);
-            const a = document.createElement('a');
-            a.download = `${this.props.tpInfo.sid}_${this.props.type.name}`;
-            a.href = blobUrl;
-            document.body.appendChild(a)
-            a.click();
-            document.body.removeChild(a)
-            window.URL.revokeObjectURL(href)
+            if(!r){
+                message.error('网络错误');
+            }
         }) 
 
     }

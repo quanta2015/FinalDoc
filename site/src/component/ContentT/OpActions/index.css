@@ -1,0 +1,41 @@
+.ant-descriptions-view>table>tbody{
+    display: flex;
+    flex-direction: column;
+}
+
+.t-ContentT-OpActions-Modal .ant-modal-body{
+    padding-bottom: 0px;
+}
+
+.file_btn{
+    width: 74px;
+    height: 74px;
+    padding: 8px;
+    margin: 1px;
+    margin-right: 10px;
+}
+
+.unchecked{
+    background-color: rgb(255, 242, 240);
+    border-color: rgb(255, 204, 199);
+}
+
+.checked{
+    background-color: rgb(246, 255, 237);
+    border-color: rgb(183, 235, 143);
+}
+
+.unsubmitted{
+    background-color: rgb(255, 251, 230);
+    border-color: rgb(255, 229, 143);
+}
+
+.score_block{
+    margin: 10px;
+    margin-left: 700px;
+}
+
+.score_title{
+    margin-right: 10px;
+    display: inline;
+}

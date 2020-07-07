@@ -1,0 +1,4 @@
+.ant-descriptions-view>table>tbody{
+    display: flex;
+    flex-direction: column;
+}

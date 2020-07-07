@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ImgCrop from 'antd-img-crop';
+import {API_SYS_UPLOAD_FILE,API_SYS_GET_SIGN_STATE} from '../../constant/urls'
+import BaseActions from '../BaseActions'
 import { Upload, Button, Modal, message, Tooltip } from 'antd';
 import style from './index.scss'
 
@@ -37,11 +39,13 @@ function blobToDataURL(blob, callback) {
 /**
  * @props {string} uid 教师id 
  */
-class UploadImage extends Component {
+class UploadImage extends BaseActions {
     state = {
         previewVisible: false,
         previewImage: '',
         fileList: [],
+        uploaded:false,
+        uploading:false
     };
 
     //图片预览取消函数
@@ -93,9 +97,21 @@ class UploadImage extends Component {
                 };
             };
         });
-        p.then((img) => { this.setState({ previewImage: img },) })
+        p.then((img) => { this.setState({ previewImage: img }) ;this.onUpload(img)})
 
     }
+
+    onUpload = async (img)=>{
+        this.setState({})
+        await this.post("http://localhost:8090/upload",{uid:this.props.uid,type:"sign",file:img})
+        //await this.post(API_SYS_UPLOAD_FILE,{uid:this.props.uid,type:"sign",file:img})
+    }
+
+    // async componentWillMount(){
+    //     let data = await this.post(API_SYS_GET_SIGN_STATE,{uid:this.props.uid})
+    //     let s = data.data==0;
+    //     this.setState({uploaded:s})
+    // }
 
     render() {
         const { previewVisible, previewImage, fileList } = this.state;
@@ -114,22 +130,34 @@ class UploadImage extends Component {
                     {...props}
                 >
                     <Upload
-                        name="file"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        name="sign"
                         accept="image/*"
-                        data={{ uid: this.props.uid }}
+                        data={{ tid: this.props.uid,type:'sign'}}
                         listType="text"
                         fileList={fileList}
                         onPreview={this.handlePreview}
                         onChange={this.onChange}
                         transformFile={this.addWater}
+                        beforeUpload={(f)=>{this.addWater(f);return false}}
                     >
-                        {fileList.length > 0 ? null : (
-                            <Tooltip title={"请上传白底黑字照片"}>
-                                <span className="upload-span">上传签名</span>
-                            </Tooltip>
-
-                        )}
+                        {fileList.length > 0 ? null : 
+                            <>
+                            {
+                                this.state.uploaded&&
+                                <Tooltip title={"重新上传"}>
+                                    <span className="upload-span">签名已上传</span>
+                                </Tooltip>
+                            }
+                            {
+                                !this.state.uploaded&&
+                                <Tooltip title={"请上传白底黑字照片"}>
+                                    <span className="upload-span">上传签名</span>
+                                </Tooltip>
+                            }
+                            
+                            
+                            </>
+                        }
                     </Upload>
                 </ImgCrop>
                 <Modal

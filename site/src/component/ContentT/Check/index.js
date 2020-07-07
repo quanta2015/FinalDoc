@@ -118,7 +118,7 @@ class Check extends BaseActions {
                     {t.status==3 &&
                       <>
                         {t.sid!=null&&
-                          <StuMethods  sid={t.sid} tid={this.usr.uid} pid={t.id}/>
+                          <StuMethods  sid={t.sid} tid={this.usr.uid} pid={t.id} freshList={this.props.freshList}/>
                         }
                         {t.sid==null&&this.props.checkList.map((x)=>{return x.id}).indexOf(t.id)<0&&
                           <span>您的课题{t.name}还没有学生选择</span>
