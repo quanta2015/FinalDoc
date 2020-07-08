@@ -42,6 +42,6 @@
     "preact-render-to-string": "^5.1.2",
     "preact-router": "^3.2.1",
     "react-highlight-words": "^0.16.0",
-    "sass-loader": "^9.0.2"
+    "sass-loader": "^8.0.2"
   }
 }
