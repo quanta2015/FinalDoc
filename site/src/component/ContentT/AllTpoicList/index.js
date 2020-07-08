@@ -1,7 +1,7 @@
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 import { Card,Input,Tag,Table,Tooltip  } from 'antd';
-import style from './index.css'
+import style from './index.scss'
 
 const {TextArea} = Input;
 import { UserOutlined,BookOutlined ,AlignLeftOutlined,TagsOutlined } from '@ant-design/icons';
@@ -83,7 +83,7 @@ export default class AllTopicList extends BaseActions{
 
   render(){
     return(
-      <div>
+      <div data-component="alltopic">
         <Table className="all-topic-list"
         pagination={ {pageSize:8} }
         columns={this.columns} 

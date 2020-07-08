@@ -111,7 +111,7 @@ class UploadImage extends BaseActions {
 
     async componentWillMount(){
         let data = await this.post(API_SYS_GET_SIGN_STATE,{uid:this.props.uid})
-        let s = data.data==0;
+        let s = data.data[0]==1;
         this.setState({uploaded:s})
     }
 

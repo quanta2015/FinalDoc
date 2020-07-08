@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 import TpActions from '../../../component/ContentT/TpActions';
 
+import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 
@@ -25,6 +26,8 @@ export default class Home extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+
+			topicTypes: null,
 			//选题查询变量
 			searchText: '',
 			searchedColumn: '',
@@ -42,7 +45,16 @@ export default class Home extends Component {
 	}
 
 	componentWillMount() {
+		if (!this.usr.id) {
+			route('/')
+		}
 		this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
+		this.props.teacherStore.getAllTopic().then(()=>{
+			this.setState({
+				topicTypes:this.props.teacherStore.auditTP_topicTypes
+			})
+		});
+		
 	}
 
 	//选题名称查询
@@ -117,7 +129,7 @@ export default class Home extends Component {
 				title: '选题类型',
 				dataIndex: 'type',
 				key: 'type',
-				filters: this.props.teacherStore.auditTP_topicTypes,
+				filters: this.state.topicTypes,
 				onFilter: this.props.teacherStore.AuditTP_topicFilter,
 			},
 			{

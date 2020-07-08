@@ -8,23 +8,35 @@ class Teacher extends BaseActions {
 
   // 选题类型列表
   auditTP_topicTypes = [
-    {
-      text: '毕业设计',
-      value: '毕业设计',
-    },
-    {
-      text: '命题设计',
-      value: '命题设计',
-    },
-    {
-      text: '软件设计',
-      value: '软件设计',
-    },
-    {
-      text: '工程设计',
-      value: '工程设计',
-    }
+    // {
+    //   text: '毕业设计',
+    //   value: '毕业设计',
+    // },
+    // {
+    //   text: '命题设计',
+    //   value: '命题设计',
+    // },
+    // {
+    //   text: '软件设计',
+    //   value: '软件设计',
+    // },
+    // {
+    //   text: '工程设计',
+    //   value: '工程设计',
+    // }
   ]
+
+  @action
+	getAllTopic = async ()=>{
+    let typeData = await this.get(urls.API_SYS_GET_ALL_TYPE);
+    if (typeData && typeData.code === 200) {
+      typeData = typeData.data.map((x)=>{return {text:x.name,value:x.name}});
+      this.auditTP_topicTypes = typeData;
+    }else{
+      message.error("获取课题类型错误！")
+    }
+
+  }
 
   // 选题类型筛选
 	AuditTP_topicFilter = (value, record) => {
