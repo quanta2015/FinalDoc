@@ -171,18 +171,26 @@ router.post('/getTidToTsugg', async(req, res) => {
 router.get('/getAllPassedTopic', async(req, res) => {
     let sql = `CALL PROC_GET_ALL_PASSED_TOPIC`;
     callProc(sql, {}, res, (r) => {
+        var result = [];
         for (let i = 0; i < r.length; i++) {
-            var areas = r[i]["areas"].split(",");
-            var color = r[i]["color"].split(",");
+            var element = {};
             var area = [];
+            element.name = r[i].name;
+            element.id = r[i].id;
+            element.tid = r[i].tid;
+            var areas = r[i].area_list.split(',');
             for (let j = 0; j < areas.length; j++) {
-                area.push({name: areas[j], color: color[j]});
+                var items = areas[j].split('|');
+                var item = {};
+                item.name = items[1];
+                item.color = items[2];
+                area.push(item);
             }
-            r[i].area = area;
-            delete r[i].areas;
-            delete r[i].color
+            element.area = area;
+            result.push(element);
         }
-        res.status(200).json({code: 200, data: r, msg: '所有通过审核的课题信息已返回'});
+        console.log(result);
+        res.status(200).json({code: 200, data: result, msg: '所有通过审核的课题信息已返回'});
     })
 })
 
