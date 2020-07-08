@@ -35,6 +35,7 @@ export default class AutoAllocate extends Component {
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
         await this.props.manageStore.getTeaList({"ide":this.usr.uid});
         let tea_num = Math.ceil(this.distributeTopic.topic_info.length / this.state.num);
+        
         this.setState({ teaNum: tea_num });
     }
 

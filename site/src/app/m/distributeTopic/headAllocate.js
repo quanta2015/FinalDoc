@@ -196,7 +196,7 @@ export default class HeadAllocate extends Component {
             if(res.data[0].err === 0){
                 message.success("分配成功！")
             } else if (res.data[0].err === 1){
-                message.err("分配失败！请重试")
+                message.error("分配失败！请重试")
             }
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
