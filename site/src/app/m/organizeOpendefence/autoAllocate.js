@@ -46,9 +46,9 @@ export default class AutoAllocate extends Component {
         console.log(temp)
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
-            if (res.data[0].err === 1) {
-                message.err("新增答辩小组失败！请重试")
-            } else if (res.data[0].err === 0 && res.data[0].cnt !== this.state.num) {
+            if(res.data[0].err === 1){
+                message.error("新增答辩小组失败！请重试")
+            } else if (res.data[0].err === 0 && res.data[0].cnt !== this.state.num){
                 message.info("仅为该小组选择" + res.data[0].cnt + "位参与答辩学生")
             } else if (res.data[0].err === 0 && res.data[0].cnt === this.state.num) {
                 message.success("成功添加答辩小组！")
@@ -65,7 +65,7 @@ export default class AutoAllocate extends Component {
                 num: stu_num,
             })
         } else {
-            message.err("新增答辩小组失败！请重试")
+            message.error("新增答辩小组失败！请重试")
         }
         this.clear()
     }

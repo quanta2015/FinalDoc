@@ -2,9 +2,9 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react'
 import { computed, observable, toJS } from 'mobx'
 import { route } from 'preact-router';
-import style from './style';
+import './style.scss'
 import AutoAllocate from './autoAllocate.js'
-import HeadAllocate from './headAllocate.js'
+import ManualAllocate from './manualAllocate.js'
 import Detail from './detail.js'
 import { Radio, Select, Tabs } from 'antd';
 const { Option } = Select;
@@ -52,10 +52,10 @@ export default class Home extends Component {
     };
     render() {
         return (
-            <div className="main">
+            <div className="g-dt">
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="分配课题" key="1">
-                        <div className="choose">
+                        <div className="m-choose">
                             <Radio.Group onChange={this.onChange} value={this.state.value}>
                                 <Radio value={1}>自动分配</Radio>
                                 <Radio value={2}>手动分配</Radio>
@@ -65,11 +65,10 @@ export default class Home extends Component {
                             <AutoAllocate />
                         }
                         {(this.state.value === 2) &&
-                            <HeadAllocate />
+                            <ManualAllocate />
                         }
                     </TabPane>
                     <TabPane tab="审核详情" key="2">
-                        {/* Content of Tab Pane 2 */}
                         <Detail />
                     </TabPane>
                 </Tabs>
