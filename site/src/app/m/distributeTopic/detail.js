@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './detail.scss';
-import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip } from 'antd';
+import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip,Popconfirm } from 'antd';
 
 import { SearchOutlined,ExclamationCircleOutlined  } from '@ant-design/icons';
 
@@ -140,9 +140,9 @@ export default class Detail extends Component {
 		} else {
 			message.info("发布失败！请重试")
 		}
-		this.setState({
-			check_visible: false,
-		});
+		// this.setState({
+		// 	check_visible: false,
+		// });
 	}
 
 	render() {
@@ -255,7 +255,9 @@ export default class Detail extends Component {
 						</Tooltip>
 					}
 					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag === 0) &&
-						<Button type="primary" onClick={this.showCheckModal}>发布课题</Button>
+					 <Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消"> 
+						<Button type="primary" >发布课题</Button>
+					</Popconfirm>
 					}
 					{
 
@@ -304,7 +306,7 @@ export default class Detail extends Component {
 					</Descriptions>
 				</Modal>
 
-				<Modal
+				{/* <Modal
 					title="信息确认"
 					visible={this.state.check_visible}
 					onOk={this.release}
@@ -312,7 +314,7 @@ export default class Detail extends Component {
 				>
 					<ExclamationCircleOutlined />
 					点击确认后，不能再次发布课题！
-				</Modal>
+				</Modal> */}
 			</div>
 		);
 	}
