@@ -6,36 +6,37 @@ const IconFont = createFromIconfontCN({
     '//at.alicdn.com/t/font_1907726_g4uqtocpzea.js'
   ],
 });
-import style from '../index.css';
+import style from '../index.scss';
 
-class Watch extends Component{
+class Watch extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
-  state={
-    show:false
+  state = {
+    show: false
   }
 
-  render(){
-    return(
-    <span className="m-icon">
-      <span
-        onMouseEnter={()=>{this.setState({show:true})}} 
-        onMouseLeave={()=>{this.setState({show:false})}}
-      >
-        <IconFont type="iconchakan"/>
-      </span>
-      {
-        this.state.show&&
-        <span className="tip">
-          查看意见
+  render() {
+    return (
+      <span data-component="teaicon">
+        <span className="m-icon">
+          <span
+            onMouseEnter={() => { this.setState({ show: true }) }}
+            onMouseLeave={() => { this.setState({ show: false }) }}
+          >
+            <IconFont type="iconchakan" />
+          </span>
+          {
+            this.state.show &&
+            <span className="tip">
+              查看意见
         </span>
-      }
-    </span>
+          }
+        </span></span>
     )
-    
+
   }
 }
 

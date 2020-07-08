@@ -17,6 +17,7 @@ export const API_SYS_GET_SIGN_STATE = API_SERVER + '/checkSign'
 //上传签名图片
 export const API_SYS_UPLOAD_SIGN = API_SERVER + '/teacher/uploadSign'
 
+
 // 专业负责人接口声明
 export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'
 export const API_MAN_GET_TOPICLIST = API_SERVER + '/manage/topicList'
@@ -84,7 +85,8 @@ export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic
 export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
 //解绑学生
 export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
-
+//获取所有选题类型(get)
+export const API_SYS_GET_ALL_TYPE = API_SERVER + '/teacher/getAllType'
 
 // 任课教师-初期审核
 

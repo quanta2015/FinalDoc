@@ -19,7 +19,7 @@ import {
 
 const { TextArea } = Input;
 
-import style from './index.css';
+import style from './index.scss';
 
 @inject('teacherStore', 'userStore')
 @observer
@@ -48,9 +48,8 @@ class TpActions extends Component {
     }
 
     handleBtnPass = (id) => {
-        console.log(id)
-        // this.props.teacherStore.AuditTp_passTopic( {"id": id} )
-        // .then(this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} ))
+        this.props.teacherStore.AuditTp_passTopic( {"id": id} )
+        .then(() => {this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )})
     }
 
     //提出建议
@@ -72,9 +71,8 @@ class TpActions extends Component {
 			confirmLoading: true,
 		});
 
-        console.log(id,advice)
-        // this.props.teacherStore.AuditTp_opposeTopic({ "id": id, "content": advice})
-        // .then(this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} ))
+        this.props.teacherStore.AuditTp_opposeTopic({ "id": id, "content": advice})
+        .then( () => {this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )})
 
 		setTimeout(() => {
 			this.setState({
@@ -132,6 +130,7 @@ class TpActions extends Component {
                 </Modal>
 
                 <Modal
+                    className="t-ContentT-TpActions-Modal"
                     title="详细内容"
                     visible={contentModalVisible}
                     confirmLoading={confirmLoading}

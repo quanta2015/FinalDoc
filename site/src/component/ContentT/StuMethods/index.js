@@ -12,11 +12,11 @@ import { UserOutlined, BookOutlined, DownloadOutlined, TagsOutlined } from '@ant
 const tabListNoTitle = [
   {
     key: 'publish',
-    tab: <span><BookOutlined /><span style="margin-left:9px">发布材料</span></span>,
+    tab: <span><BookOutlined /><span className="tab-title">发布材料</span></span>,
   },
   {
     key: 'download',
-    tab: <span><DownloadOutlined /><span style="margin-left:9px">学生文件下载</span></span>
+    tab: <span><DownloadOutlined /><span className="tab-title">学生文件下载</span></span>
   }
 ];
 
@@ -106,13 +106,13 @@ export default class StuMethods extends BaseActions {
     return (
       <div data-component="stumethods">
         <div className="note-block">
-          <span style="width:110px"><span style="margin-right:20px" className=""><UserOutlined /></span>学生信息</span>
+          <span className="note-title"><span  className="mr-long"><UserOutlined /></span>学生信息</span>
           <Card style={{ width: 600 }}>
-            <span style="margin:10px">{this.props.sid}</span>
-            <span style="margin:10px">{this.state.name}</span>
-            <span style="margin:10px">{this.state.cls}</span>
+            <span className="note-info-span">{this.props.sid}</span>
+            <span className="note-info-span">{this.state.name}</span>
+            <span className="note-info-span">{this.state.cls}</span>
           </Card>
-          <Button style={{ marginLeft: 20 }} onClick={this.onTied}>解绑</Button>
+          <Button onClick={this.onTied} className="ml-long">解绑</Button>
         </div>
 
         <Card
@@ -126,7 +126,6 @@ export default class StuMethods extends BaseActions {
               <div className="note-block">
               </div>
               <div className="note-block">
-                {/* <span style="width:110px"><span style="margin-right:10px" className=""><BookOutlined /></span>任务发布</span> */}
                 <Card style={{ width: 810 }}>
                   <div className="card-inner">
                     <div className="file-block">

@@ -1,0 +1,7 @@
+/* [data-component="tsystem"]{ */
+  .sign-line{
+    width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+/* } */

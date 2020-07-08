@@ -1,7 +1,7 @@
 import { Collapse,Button, Table, message ,Tag} from 'antd';
 import { inject, observer } from 'mobx-react';
 import { computed} from 'mobx';
-import style from './index.css'
+import style from './index.scss'
 import BaseActions from '../../BaseActions';
 const { Panel } = Collapse;
 import * as urls from '../../../constant/urls'
@@ -14,16 +14,16 @@ import ReviewLine from '../Review';
 
 const PanelHeader = (name,status,id)=>(
 <span>
-    {status!=3&&<span style="display: inline-block;margin-left:40px;width:30px">{id}</span>}
-    {status==3&&<span style="display: inline-block;margin-left:10px;width:30px">{id}</span>}
+    {status!=3&&<span  className="check-long-pid">{id}</span>}
+    {status==3&&<span  className="check-short-pid">{id}</span>}
     {status!=3&&
-    <span style="margin-left:10px;cursor:default">
+    <span className="check-default-pname">
       {name}
     </span>
     }
     {
       status==3&&
-      <span style="margin-left:10px;cursor:pointer">
+      <span className="check-pointer-pname">
         {name}
       </span>
     }
@@ -78,7 +78,7 @@ class Check extends BaseActions {
           (t.status==0||t.status==1||t.status==4)&&<span onClick={()=>{this.deleteTopic(t.id,t.name)}}><DeleteSpan /></span>
         }
         {
-          (t.status==4||t.status==0)&&<span onClick={()=>{this.props.change(t.id)}}><ReWrite/></span>
+          (t.status==0||t.status==1||t.status==4)&&<span onClick={()=>{this.props.change(t.id)}}><ReWrite/></span>
         }
         {
           (t.status==4)&&<span onClick={()=>{this.getSugg(t.id)}}><Watch/></span>
@@ -90,7 +90,7 @@ class Check extends BaseActions {
 
   render() {
     return (
-      <div className="check-block">
+      <div className="check-block" data-component="checkBlock">
         <div className="title">
           <span>我的课题</span>
           <span>

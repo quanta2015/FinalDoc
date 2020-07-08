@@ -108,7 +108,7 @@ export default class Home extends BaseActions {
 	render() {
     const { placement, visible,tid } = this.state;
 		return (
-      <div className="t-manage-home">
+      <div className="g-content" data-component="t-manage-home">
 
         <CheckBlock 
           change={this.showDrawer} 

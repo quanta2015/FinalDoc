@@ -6,36 +6,37 @@ const IconFont = createFromIconfontCN({
     '//at.alicdn.com/t/font_1907726_g4uqtocpzea.js'
   ],
 });
-import style from '../index.css';
+import style from '../index.scss';
 
-class ReWrite extends Component{
+class ReWrite extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
-  state={
-    show:false
+  state = {
+    show: false
   }
 
-  render(){
-    return(
-    <span className="m-icon">
-      <span 
-        onMouseEnter={()=>{this.setState({show:true})}} 
-        onMouseLeave={()=>{this.setState({show:false})}}
-      >
-        <IconFont type="iconwrite"/>
+  render() {
+    return (
+      <span data-component="teaicon">
+        <span className="m-icon">
+          <span
+            onMouseEnter={() => { this.setState({ show: true }) }}
+            onMouseLeave={() => { this.setState({ show: false }) }}
+          >
+            <IconFont type="iconwrite" />
+          </span>
+          {
+            this.state.show &&
+            <span className="tip">
+              重新编辑
         </span>
-      {
-        this.state.show&&
-        <span className="tip">
-          重新编辑
-        </span>
-      }
-    </span>
+          }
+        </span></span>
     )
-    
+
   }
 }
 
