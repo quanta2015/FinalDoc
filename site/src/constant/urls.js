@@ -50,7 +50,7 @@ export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' //用户
 export const API_STU_UPDATE_TTLLIST = API_SERVER + '/student/addStuTopic'
 export const API_STU_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
 export const API_STU_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
-export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuTopicStateThree' //双选成功的课题信息 
+export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' //双选成功的课题信息 
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
 
 // 获取选择了自己的学生的列表

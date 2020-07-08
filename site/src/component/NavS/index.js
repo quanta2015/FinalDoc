@@ -1,7 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { route } from 'preact-router';
 import { PushpinOutlined } from '@ant-design/icons';
 import './index.scss'
 
@@ -46,7 +45,7 @@ class NavS extends Component {
             {this.usr.cls && <p>班级：{this.usr.cls}</p>}
           </div>
           {!this.selectTpInfo.topic ?
-            <div className='m-menuItem active'>
+            <div className='m-menu-item active'>
               <PushpinOutlined />
               <span>选择课题</span>
             </div>:

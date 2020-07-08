@@ -32,7 +32,7 @@ class FileUpload extends Component {
     componentDidUpdate(prevProps) {
         let fileUrl = this.props.tpInfo[this.props.type.type];
         //有课题信息 && 该文件已上传 && 传入值与state值不一 && 传入值有变化
-        if (this.props.tpInfo.id && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
+        if (this.props.tpInfo.tid && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
             this.setState({
                 fileUrl: fileUrl
             })
@@ -123,6 +123,7 @@ class FileUpload extends Component {
     render() {
         // example: {name: "文献综述", type: "f_docs"}
         const fileType = this.props.type;
+        // example: {sid: '123', tid: '456', f_docs: './upload/test.doc'}
         const tpInfo = this.props.tpInfo;
         const { fileUrl, showDel, loading } = this.state;
         const text = "点击下载已提交文件";
@@ -133,13 +134,13 @@ class FileUpload extends Component {
             </div>
         )
         return (
-            <div className="g-file">
+            <div className="g-upload">
                 <div
-                    className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"}
+                    className={fileUrl ? "m-filewp z-submit-wp" : "m-filewp"}
                     onMouseOver={this.handleHover}
                     onMouseLeave={this.handleMouseOut}
                 >
-                    {showDel && !loading && <CloseOutlined className="m-del" onClick={this.handleDel} />}
+                    {showDel && !loading && <CloseOutlined className="u-del" onClick={this.handleDel} />}
                     <Upload
                         name="file"
                         listType="picture-card"
@@ -150,12 +151,12 @@ class FileUpload extends Component {
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {(fileUrl && !loading) ? <CheckOutlined className="m-success"/> : uploadButton}
+                        {(fileUrl && !loading) ? <CheckOutlined className="z-success"/> : uploadButton}
                     </Upload>
                 </div>
-                {fileUrl ?
+                {   fileUrl ?
                     <Tooltip placement="bottom" title={text}>
-                        <p className="submitted-p" onClick={this.downloadFile}>{fileType.name}</p>
+                        <p className="z-submit-p" onClick={this.downloadFile}>{fileType.name}</p>
                     </Tooltip> :
                     <p>{fileType.name}</p>
                 }
