@@ -112,19 +112,23 @@ router.post('/getTidgetTopic', async(req, res) => {
                 case 4:// 开题答辩 通过
                     r[index].pass = 6;
                     break;
-                case -1:// 学生被拒绝
-                    r[index].pass = -5;
-                    r[index].sid = null;
-                    break;
+                // case -1:// 学生被拒绝
+                //     r[index].pass = -5;
+                //     r[index].sid = null;
+                //     break;
                 case 3:// 学生通过课题
-                    r[index].pass = 5;
+                    r[index].pass = 4;
                     break;
                 case 2:// 学生选择课题
-                    r[index].pass = 4;
+                    r[index].pass = 5;
                     r[index].sid = null;
                     break;
                 case 1:// 教师课题 通过
-                    r[index].pass = 3;
+                    if (r[index].sid == null) {
+                        r[index].pass = 3;
+                    } else {
+                        r[index].pass = 4;
+                    }
                     break;
                 case 0:// 教师已新建课题
                     if (r[index].sel == 0) {// 未分配
