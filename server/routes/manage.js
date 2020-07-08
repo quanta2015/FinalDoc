@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-06-27 21:54:36
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-08 20:28:44
+ * @LastEditTime: 2020-07-08 20:55:25
  */ 
 
 const express = require('express');
@@ -55,12 +55,12 @@ router.post('/checkList', async(req, res) => {
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
     r.forEach(element => {
-      if (!element.result && element.sugg===null){
+      if (element.sel!=-1 && !element.result && element.sugg===null){
         element.result=2; //待审核
       }else{
-        if(element.stuId===null){
+        if(element.sel===-1 && element.stuId===null){
           element.result=3; //没有选定学生时--待选
-        }else{
+        }if(element.sel===-1 && element.stuId!=null){
           element.result=4; //学生选定成功--已选
         }
       }
