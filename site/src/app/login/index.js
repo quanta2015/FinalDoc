@@ -36,9 +36,11 @@ class Login extends Component {
         
         if (r.data && r.code === 200) {
           message.success(r.msg);
+          console.log("身份是==========",r.data[0].role)
           if (r.data[0].role == 0) route("/t", true);
           if (r.data[0].role == 2) route("/m", true);
           if (r.data[0].role == 1) route("/s", true);
+          if (r.data[0].role == 3) route("/admin", true);
         } else if (r.code === 301) {
           message.error(r.msg);
         }
@@ -102,9 +104,11 @@ class Login extends Component {
         //console.log('=========75==================',r)
         if (r.data && r.code === 200) {
           message.success(r.msg);
+          console.log("身份是==========",r.data[0].role)
           if (r.data[0].role == 0) route("/t", true);
           if (r.data[0].role == 2) route("/m", true);
           if (r.data[0].role == 1) route("/s", true);
+          if (r.data[0].role == 3) route("/admin", true);
         } else if (r.code === 301) {
           message.error(r.msg);
         }

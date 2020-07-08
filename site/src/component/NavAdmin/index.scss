@@ -1,0 +1,50 @@
+.g-mg-nav {
+  width: 250px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #333;
+  color: #fff;
+  align-items: center;
+  
+  .g-info {
+      margin: 30px 15px;
+  }
+
+  .g-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    .m-menu-item {
+      width: 100%;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: .3s;
+      font-size: 16px;
+
+      &.active {
+        background: #336699!important;
+      }
+
+      &:hover {
+        background:#cc3300;
+      }
+
+      &>img {
+        width: 16px;
+        margin-right: 6px;
+      }
+    }
+  }
+}
+
+.sign {
+  text-align: center;
+  margin-top: 10px;
+  color: #336699;
+  cursor: pointer;
+}
