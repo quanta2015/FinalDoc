@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import  './headAllocate.css';
+import  './manualAllocate.scss';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -16,7 +16,7 @@ const paginationProps = {
 
 @inject('manageStore','userStore')
 @observer
-export default class HeadAllocate extends Component {
+export default class ManualAllocate extends Component {
     state = {
         selectedRowKeys: [],// Check here to configure the default column
         // tid,value
@@ -47,6 +47,7 @@ export default class HeadAllocate extends Component {
     }
 
     async componentDidMount() {
+        await this.props.manageStore.getJudge({"ide":this.usr.uid});
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
         await this.props.manageStore.getTeaList({"ide":this.usr.uid});
         await this.props.manageStore.getAreasList();
@@ -192,11 +193,12 @@ export default class HeadAllocate extends Component {
         let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }
         console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
+        console.log(res)
         if (res && res.code === 200) {
             if(res.data[0].err === 0){
                 message.success("分配成功！")
             } else if (res.data[0].err === 1){
-                message.err("分配失败！请重试")
+                message.error("分配失败！请重试")
             }
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
@@ -206,7 +208,7 @@ export default class HeadAllocate extends Component {
                 topic_info: toJS(this.distributeTopic.topic_info),
             });
         } else {
-            message.success("分配失败！请重试")
+            message.error("分配失败！请重试")
         }
         this.setState({
             selectedRowKeys: [],
@@ -267,13 +269,6 @@ export default class HeadAllocate extends Component {
                                     </Tag>
                                 );
                             })
-                            // areas.map((tag, i) => {
-                            //     return (
-                            //         <Tag color={record.color[i]} >
-                            //             {tag}
-                            //         </Tag>
-                            //     );
-                            // })
                         }
                     </>
                 ),
@@ -290,10 +285,11 @@ export default class HeadAllocate extends Component {
             },
         ];
         return (
-            <div>
-                <div className="top_box">
-                    <div class="checkTeacher">
+            <div className="g-manual">
+                <div className="m-top">
+                    <div class="check_teacher">
                         <div class="title">审核教师</div>
+                        {(this.distributeTopic.judge_info.flag === 0) && 
                         <Select
                             value={this.state.tea_name}
                             allowClear
@@ -311,14 +307,24 @@ export default class HeadAllocate extends Component {
                                 <Select.Option key={item.tid}>{item.value}</Select.Option>
                             )}
                         </Select>
+                        }
+                        {(this.distributeTopic.judge_info.flag === 1) && 
+                        <Select
+                            disabled
+                            style={{ width: 400 }}
+                            placeholder="已发布课题，不能再分配审核"
+                        >
+                        </Select>
+                        }
                     </div>
-                    <div className="head_btn">
+                    <div className="m-btn">
                         <Button onClick={this.clear} className="clear">重置</Button>
                         <Button type="primary" onClick={this.handDistribute}>提交</Button>
                     </div>
                 </div>
-                <div className="noTopicNum">{this.distributeTopic.topic_info.length}篇未分配
-                            已选{selectedRowKeys.length}篇</div>
+                <div className="topic_num">{this.distributeTopic.topic_info.length}篇未分配
+                            已选{selectedRowKeys.length}篇
+                </div>
                 <div className="headAllocate_table">
                     <Table
                         onChange={this.handleChange}
