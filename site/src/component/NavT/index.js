@@ -35,7 +35,8 @@ class NavT extends Component {
 	render() {
     let cur = this.state.cur
     return (
-      <div className="g-nav">
+      <div data-component="navt">
+      <div className="g-nav" >
         <div class="g-info">
           <div><span>身份：</span>教师</div>
           <div><span>姓名：</span>{this.usr.name}</div>
@@ -50,6 +51,7 @@ class NavT extends Component {
             </div>
           )}
         </div>
+      </div>
       </div>
     )
   }

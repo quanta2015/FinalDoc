@@ -47,15 +47,17 @@ export default class Home extends BaseActions {
     //审核列表
     checkList:[],
     //发布课题的抽屉是否修改过
-    pbChanged:false
+    pbChanged:false,
+    judgeTopic:true
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     if (!this.usr.id) {
 			route('/')
 		}
     this.getTopicList();
     console.log(this.usr)
+    
   }
 
   /**

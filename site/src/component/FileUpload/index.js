@@ -23,10 +23,16 @@ class FileUpload extends Component {
         showDel: false
     };
 
+    componentDidMount() {
+        this.setState({
+            fileUrl: this.props.tpInfo[this.props.type.type]
+        })
+    }
+
     componentDidUpdate(prevProps) {
         let fileUrl = this.props.tpInfo[this.props.type.type];
         //有课题信息 && 该文件已上传 && 传入值与state值不一 && 传入值有变化
-        if (this.props.tpInfo.id && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
+        if (this.props.tpInfo.tid && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
             this.setState({
                 fileUrl: fileUrl
             })

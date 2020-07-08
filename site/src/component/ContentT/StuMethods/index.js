@@ -41,6 +41,10 @@ const fileListThree = [
   { name: '答辩成绩表', type: 'f_reply_score' },
 ]
 
+const uploadFiles = [
+  {name: '任务书',type:'f_task'}
+]
+
 @inject('teacherStore')
 @observer
 export default class StuMethods extends BaseActions {
@@ -72,9 +76,10 @@ export default class StuMethods extends BaseActions {
 
     //获取学生文件列表
     let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
-    console.log(l);
     l = (l.data)[0];
     this.setState({ links: l })
+    
+    
   }
 
   getStuInfo = async () => {
@@ -129,7 +134,7 @@ export default class StuMethods extends BaseActions {
                 <Card style={{ width: 810 }}>
                   <div className="card-inner">
                     <div className="file-block">
-                      <FileUpload type={{ name: '任务书', type: 'f_task' }} tpInfo={{ tid: this.props.tid, sid: this.props.sid }} />
+                      <FileUpload type={{ name: '任务书', type: 'f_task'}} tpInfo={{ tid: this.props.tid, sid: this.props.sid ,f_task:this.state.links['f_task']}} />
                     </div>
                   </div>
                 </Card>

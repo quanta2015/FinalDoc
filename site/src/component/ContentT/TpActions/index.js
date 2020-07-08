@@ -55,6 +55,7 @@ class TpActions extends Component {
     //提出建议
     showAdviceModal = () => {
 		this.setState({
+            advice: "",
 			adviceModalVisible: true,
 		});
     };

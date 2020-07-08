@@ -78,7 +78,6 @@ class Publish extends BaseActions {
     let areaData = await this.post(urls.API_SYS_GET_TEACHER_AREA_LIST,{tid:this.usr.uid});
     this.setState({areaList:areaData.data})
     let typeData = await this.get(urls.API_SYS_GET_ALL_TYPE);
-    console.log(typeData);
     typeData = typeData.data.map((x)=>x.name)
     this.setState({typeList:typeData,type:typeData[0]})
     this.name.focus();
@@ -140,11 +139,11 @@ class Publish extends BaseActions {
       alert("请选择研究方向！")
       return;
     }
-    if(this.name.value==""){
+    if(this.name.value.trim()==""){
       alert("请输入课题名！")
       return;
     }
-    if(this.note.state.value==""){
+    if(this.note.state.value.trim()==""){
       alert("请输入简介！")
       return;
     }

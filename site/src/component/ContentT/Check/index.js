@@ -1,4 +1,4 @@
-import { Collapse,Button, Table, message ,Tag} from 'antd';
+import { Collapse,Button, Table, message ,Tag,Modal} from 'antd';
 import { inject, observer } from 'mobx-react';
 import { computed} from 'mobx';
 import style from './index.scss'
@@ -43,6 +43,17 @@ class Check extends BaseActions {
       return this.props.userStore.usr;
   }
 
+  state={
+    judgeTopic:true
+  }
+
+  async componentDidMount(){
+    let x = await this.post(urls.API_MAN_POST_JUDGETOPIC,{ide:this.usr.uid})
+    if(x.data[0].flag==1){
+      this.setState({judgeTopic:false})
+    }
+  }
+
   /**
    * 撤销课题
    * @param {string} id 课题id
@@ -64,7 +75,19 @@ class Check extends BaseActions {
 
   getSugg = async (id)=>{
     let data = await this.post(urls.API_TEACHER_GET_SUGG,{pid:id})
-    message.info("意见信息："+data.data[0].sugg)
+    let arr = data.data[0].sugg.split('\n');
+    Modal.info({
+      title:"意见信息",
+      content:(
+      <div>
+        {
+          arr.map((x)=>{
+            return <span>{x}<br/></span>
+          })
+        }
+      </div>
+      )
+    })
   }
 
   StateExtra = (t) => (
@@ -98,7 +121,7 @@ class Check extends BaseActions {
               this.props.pbChanged&&
               <Button type="dashed"  onClick={()=>{this.props.justOpenDrawer()}}>继续编辑</Button>
             }
-            {this.props.toplist.length<8&&
+            {this.props.toplist.length<8&&this.state.judgeTopic&&
               <Button type="dashed" onClick={()=>{this.props.change(null)}}>发布新课题</Button>
             }
             <Button type="default" onClick={()=>{this.props.showAllTopic()}}>查看全部课题</Button>
