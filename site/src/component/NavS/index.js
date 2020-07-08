@@ -36,7 +36,7 @@ class NavS extends Component {
 
   render() {
     return (
-      <div className="g-nav">
+      <div className="g-stu-nav">
         <div className="g-menu">
           <div className="m-info">
             <h2 className="m-title bold">基本信息</h2>

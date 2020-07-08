@@ -26,10 +26,10 @@ class NavM extends Component {
   }
   
   componentDidMount() {
-    if (!this.usr.id) {
-      route('/')
-    }
-    route('/m_distributeTopic')
+    // if (!this.usr.uid) {
+    //   route('/')
+    // }
+    // route('/m_distributeTopic')
   }
 
   doMenu = (path, i) => {
@@ -52,7 +52,7 @@ class NavM extends Component {
 
   render() {
     return (
-      <div className="g-nav">
+      <div className="g-mg-nav">
         <div className="g-info">
           <div>身份：系主任</div>
           <div>姓名：{this.usr.name}</div>

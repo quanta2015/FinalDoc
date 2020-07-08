@@ -41,7 +41,8 @@ class App extends Component {
   render() {
     console.log(this.usr)
     return (
-      <div id={this.handleapp()}>
+      // <div id={this.handleapp()}>
+      <div id="app"> 
         { (this.usr.role == 0) && <NavT/> }
         { (this.usr.role == 1) && <NavS /> }
         { (this.usr.role == 2) && <NavM /> }
