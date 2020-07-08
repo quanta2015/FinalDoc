@@ -37,10 +37,16 @@ const SEL_PLACE = [
 const { TextArea } = Input;
 const { Option } = Select;
 
+const focusInputField = input => {
+    if (input) {
+        setTimeout(() => { input.focus() }, 100);
+    }
+};
+
 const Editor = ({ onChange, onSubmit, submitting, value, defaultValue }) => (
     <>
         <Form.Item>
-            <TextArea rows={4} onChange={onChange} defaultValue={defaultValue} value={value} placeholder="请输入今日的指导日志..." />
+            <TextArea rows={4} onChange={onChange} defaultValue={defaultValue} value={value} placeholder="请输入今日的指导日志..." ref={focusInputField} />
         </Form.Item>
         <Form.Item>
             <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
