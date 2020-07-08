@@ -47,7 +47,7 @@ class NavT extends Component {
         <div className="g-menu">
           {MENU_MAIN_T.map((item,i)=>
             <div className={(cur==i)?'m-menu-item active':'m-menu-item'} key={i} onClick={this.doMenu.bind(this,item.path,i)}>
-              <img src={item.icon} /><span>{item.title}</span> 
+              <img src={item.icon} /><span className="m-menu-span">{item.title}</span> 
             </div>
           )}
         </div>

@@ -23,15 +23,18 @@
     flex-direction: column;
     
     .m-menu-item {
-      width: 140px;
+      width: 100%;
       padding: 5px 10px;
-      margin: 0 auto;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       cursor: pointer;
       transition: .3s;
-      font-size: 16px;
+      font-size: 16px;  
+
+      .m-menu-span{
+        width: 96px;
+      }
 
       &.active {
         background: #336699!important;
