@@ -7,6 +7,14 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const moment = require('moment');
 
+// 获取所有选题类型
+router.get('/getAllType', async(req, res) => {
+    let sql = `CALL RROC_GET_ALL_TOPIC_TYPES`;
+    callProc(sql, {}, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '取所有选题类型'});
+    })
+})
+
 // 由不完整学号得到学生列表（学号和姓名）：模糊查询
 router.post('/getStuInfoByLikeID', async(req, res) => {
     let sql = `CALL PROC_STUID_INFO_FUZZY(?)`;
