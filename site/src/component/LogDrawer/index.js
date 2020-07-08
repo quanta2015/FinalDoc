@@ -37,10 +37,16 @@ const SEL_PLACE = [
 const { TextArea } = Input;
 const { Option } = Select;
 
+const focusInputField = input => {
+    if (input) {
+        setTimeout(() => { input.focus() }, 100);
+    }
+};
+
 const Editor = ({ onChange, onSubmit, submitting, value, defaultValue }) => (
     <>
         <Form.Item>
-            <TextArea rows={4} onChange={onChange} defaultValue={defaultValue} value={value} placeholder="请输入今日的指导日志..." />
+            <TextArea rows={4} onChange={onChange} defaultValue={defaultValue} value={value} placeholder="请输入今日的指导日志..." ref={focusInputField} />
         </Form.Item>
         <Form.Item>
             <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
@@ -193,8 +199,9 @@ class LogDrawer extends Component {
     render() {
         const { comments, submitting, value } = this.state;
         return (
-            <div className="g-log">
+            <div className="g-stu-log">
                 <Drawer
+                    className="g-stu-drawer"
                     title={<Title level={4}>指导日志</Title>}
                     width={720}
                     onClose={this.props.onClose}
@@ -204,9 +211,9 @@ class LogDrawer extends Component {
                 >
                     <Space align="baseline">
                         <h4  >{moment().format('YYYY年MM月DD日')}</h4>
-                        <p type="text" className="m-sintro">请选择指导地点/指导方式</p>
+                        <p type="text" className="m-pos">请选择指导地点/指导方式</p>
                         <Select
-                            className="m-sintro"
+                            className="m-pos"
                             defaultValue={this.state.sel}
                             style={{ width: 80 }}
                             onChange={this.handleSelChange}
