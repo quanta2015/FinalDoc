@@ -1,0 +1,17 @@
+[data-component="teaicon"]{
+  .tip{
+    position: absolute;
+    transform: translate(-60px,-40px);
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    width: 100px;
+    text-align: center;
+    background-color: white;
+  }
+  
+  .m-icon{
+    position: relative;
+    margin: 0 5px;
+  }
+}

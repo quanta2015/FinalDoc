@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { computed } from 'mobx';
-import "./style.css"
+import "./style.scss"
 
 export default class Teacher extends Component {
 	render() { 

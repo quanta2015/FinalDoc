@@ -3,7 +3,7 @@ import { computed, toJS } from 'mobx';
 import { Input, Select, Button, Switch, InputNumber, message,Tag } from 'antd';
 const { Option } = Select;
 const { TextArea } = Input;
-import './index.css'
+import './index.scss'
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 const { Search } = Input;
@@ -26,10 +26,11 @@ class Publish extends BaseActions {
   state = {
     stuData: [],
     selectStu: false,
-    type:'工程设计',
+    type:'',
     selected_stu_data:null,
     area:[],
-    areaList:[]
+    areaList:[],
+    typeList:[]
   }
 
   constructor(props) {
@@ -70,11 +71,16 @@ class Publish extends BaseActions {
     }else{
       this.clear();
     }
+    this.name.focus();
   }
 
   async componentDidMount(){  
     let areaData = await this.post(urls.API_SYS_GET_TEACHER_AREA_LIST,{tid:this.usr.uid});
     this.setState({areaList:areaData.data})
+    let typeData = await this.get(urls.API_SYS_GET_ALL_TYPE);
+    typeData = typeData.data.map((x)=>x.name)
+    this.setState({typeList:typeData,type:typeData[0]})
+    this.name.focus();
   }
 
   clear = e => {
@@ -86,7 +92,7 @@ class Publish extends BaseActions {
       area:this.state.areaList.map((x)=>x.id)
     })
     this.cleared = true;
-      this.props.needGoon(false);
+    this.props.needGoon(false);
   }
 
   handleSearchStu = async (e) => {
@@ -133,6 +139,14 @@ class Publish extends BaseActions {
       alert("请选择研究方向！")
       return;
     }
+    if(this.name.value.trim()==""){
+      alert("请输入课题名！")
+      return;
+    }
+    if(this.note.state.value.trim()==""){
+      alert("请输入简介！")
+      return;
+    }
     if(this.state.selectStu){
       let addr = this.state.selected_stu_data;
       if(addr<13){
@@ -169,18 +183,18 @@ class Publish extends BaseActions {
 
   render() {
     return (
-      <div className="publish-block"  onChange={()=>{this.cleared=false;this.props.needGoon(true)}}>
+      <div className="publish-block"  onChange={()=>{this.cleared=false;this.props.needGoon(true)}} data-component="publish">
           <div className="input-line">
-            <div className="input-left"><span>课</span><span>题</span><span>名</span><span>称</span></div>
+            <div className="input-left">课题名称</div>
             <div className="input-right">
               <input
-                style={{ width: 500 }}
+                style={{ width: 600 }}
                 ref={name => this.name = name}
                 className="have-placehoder" type="text" placeholder="请输入课题名" />
             </div>
           </div>
           <div className="input-line">
-            <div className="input-left"><span>项</span><span>目</span><span>类</span><span>别</span></div>
+            <div className="input-left">项目类别</div>
             <div className="input-right">
               <Select
                 ref={type => this.type = type}
@@ -189,22 +203,21 @@ class Publish extends BaseActions {
                 showSearch
                 onChange={this.handleTypeChange}
                 defaultValue={"工程设计"}
-                style={{ width: 500 }}
+                style={{ width: 600 }}
                 placeholder="选择项目类别"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
               >
-                <Option value="工程设计">工程设计</Option>
-                <Option value="命题设计">命题设计</Option>
-                <Option value="软件设计">软件设计</Option>
-                <Option value="毕业设计">毕业设计</Option>
+                {
+                  this.state.typeList.map((x)=><Option value={x}>{x}</Option>)
+                }
               </Select>
             </div>
           </div>
           <div className="input-line">
-            <div className="input-left"><span>研</span><span>究</span><span>方</span><span>向</span></div>
+            <div className="input-left">研究方向</div>
             <div className="input-right">
               <Select
                 ref={area => this.area = area}
@@ -214,7 +227,7 @@ class Publish extends BaseActions {
                 tagRender={tagRender}
                 mode="multiple"
                 onChange={this.handleAreaChange}
-                style={{ width: 500 }}
+                style={{ width: 600 }}
                 placeholder="选择研究方向"
                 optionFilterProp="children"
                 filterOption={(input, option) =>  
@@ -227,16 +240,16 @@ class Publish extends BaseActions {
             </div>
           </div>
           <div className="input-line">
-            <div className="input-left"><span>简</span>介</div>
+            <div className="input-left">简介</div>
             <div className="input-right">
               <TextArea
                 ref={note => this.note = note}
-                style={{ width: 500 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
+                style={{ width: 600 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
             </div>
           </div>
 
-          <div className="input-line">
-            <div className="input-left"><span>手</span><span>动</span><span>选</span><span>择</span><span>学</span><span>生</span></div>
+          <div className="input-line-row">
+            <div className="input-left">手动选择学生</div>
             <div className="input-right">
               <Switch 
               ref={e=>this.switch=e}
@@ -249,14 +262,14 @@ class Publish extends BaseActions {
           {this.state.selectStu &&
             <>
             <div className="input-line">
-              <div className="input-left"><span>选</span><span>择</span><span>学</span><span>生</span></div>
+              <div className="input-left">选择学生</div>
               <div className="input-right">
 
                 <Select
                   ref={stu => this.stuId = stu}
                   value={this.state.selected_stu_data}
                   className="have-placehoder"
-                  style={{ width: 500 }}
+                  style={{ width: 600 }}
                   placeholder="按学号搜索学生"
                   optionFilterProp="children"
                   onChange={this.handleStuChange}
@@ -272,8 +285,8 @@ class Publish extends BaseActions {
             </>
           }
 
-          <div className="input-line">
-            <div className="input-left"></div>
+          <div className="input-line-row">
+            {/* <div className="input-left"></div> */}
             <div className="input-left">
               <Button type="primary" onClick={this.postInfo}>提交</Button>
             </div>

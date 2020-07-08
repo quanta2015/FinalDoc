@@ -1,3 +1,4 @@
+[data-component="navt"]{
 .g-nav {
   width: 250px;
   height: 100%;
@@ -22,10 +23,11 @@
     flex-direction: column;
     
     .m-menu-item {
-      width: 100%;
+      width: 140px;
       padding: 5px 10px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       cursor: pointer;
       transition: .3s;
@@ -48,3 +50,4 @@
   }
 }
 
+}
