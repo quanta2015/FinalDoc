@@ -16,13 +16,13 @@
     .root {
       margin: 0 auto;
       width: 1200px;
-      height: 1080px;
+      height: 1vh;
 
       padding: 0px;
       display: flex;
       background-color: white;
       position: relative;
-      top: 50%;
+     
 
       .fake_background {
         background-color: #333;
@@ -30,65 +30,66 @@
         align-content: center;
 
         width: 741.6px;
-        height: 1080px;
+        height:100vh;
         margin: 0px;
         padding: 0px;
         .cap_logo {
           width: 230px;
-          height: 230px;
+          height: 21.29vh;
           background-image: url(../../static/public/毕业1.svg);
           background-size: 100% 100%;
           margin: 0 auto;
-          margin-top: 215px;
+          margin-top: 19.9vh;
         }
         .xiaoxun {
           width: 457px;
-          height: 51px;
+          height: 4.7vh;
           background-image: url(../../static/public/xiaoxun.svg);
           background-size: 100% 100%;
           margin: 0 auto;
-          margin-top: 215px;
+          margin-top: 19.9vh;
         }
       }
       .right_box {
         width: 458.4px;
-        height: 1080px;
+        height: 100vh;
         background-color: white;
         align-content: center;
         text-align: center;
 
         .logo_box {
           width: 458.4px;
-          height: 413px;
+          height: 38.24vh;
           background-color: #ffffff;
           align-content: center;
           text-align: center;
           align-items: center;
           .logo {
             margin: 0 auto;
-            width: 255px;
-            height: 255px;
+            width: 23.6vh;
+            height: 23.6vh;
             background-image: url(../../static/public/scl_logo.png);
             background-size: auto 100%;
+            background-repeat: no-repeat;
             position: relative;
-            top: 79px;
+            top: 7.3vh;
           }
         }
         .login_body {
           background: #fff;
           //background: #333;
           width: 458.4px;
-          height: 667px;
+          height: 61.7vh;
           margin: 0px;
           padding: 0px;
           align-content: center;
           text-align: center;
           .login_box {
             width: 458.4px;
-            height: 412px;
+            height: 38.1vh;
           }
           .login_title {
-            height: 255px;
+            height: 23.6vh;
             width: 458.4px;
             align-content: center;
             text-align: center;
@@ -104,16 +105,20 @@
   }
   .subit_buttom {
     position: relative;
-    top: 22px;
+    top: 2vh;
     left: 42px;
     width: 358px !important ;
-    height: 47px !important ;
+    height: 4.3vh !important ;
     border-radius: 8px;
     background-color: #0585d0;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    
   }
   .input_box {
     width: 358px !important ;
-    height: 47px !important ;
+    height: 4.3vh !important ;
     border-radius: 8px;
   }
   .label-text {
@@ -126,7 +131,7 @@
     display: flex;
     position: relative;
     left: 42px;
-    margin-top: 47px;
+    margin-top: 4.3vh;
     .remember {
       display: flex;
 
@@ -151,7 +156,7 @@
     }
   }
   .url_login {
-    margin-top: 6px;
+    margin-top: 0.55vh;
 
     span {
       color: #0585d0;

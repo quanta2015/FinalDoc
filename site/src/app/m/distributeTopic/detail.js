@@ -1,10 +1,10 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import './detail.css';
-import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip } from 'antd';
+import './detail.scss';
+import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip,Popconfirm } from 'antd';
 
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined,ExclamationCircleOutlined  } from '@ant-design/icons';
 
 
 const paginationProps = {
@@ -20,6 +20,7 @@ export default class Detail extends Component {
 		filteredInfo: null,
 		// value: [],
 		visible: false,
+		check_visible: false,
 		own: [],
 	}
 
@@ -37,7 +38,7 @@ export default class Detail extends Component {
 		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
 		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
 		await this.props.manageStore.getJudge({ "ide": this.usr.uid });
-		
+
 	}
 
 	handleChange = (filters) => {//筛选
@@ -103,33 +104,45 @@ export default class Detail extends Component {
 	};
 
 	showModal = (record) => {
-		console.log(record.topicTOPIC)
 		this.setState({
 			visible: true,
 			own: record,
 		});
 	};
 
+	showCheckModal = () => {
+		this.setState({
+			check_visible: true,
+		});
+	};
+
+	handleCheckCancel = e => {
+		this.setState({
+			check_visible: false,
+		});
+	};
+
 	handleCancel = e => {
-		console.log(e);
 		this.setState({
 			visible: false,
 		});
 	};
 
 	release = async () => {
-		let res = await this.props.manageStore.getRelease({"ide": this.usr.uid});
+		let res = await this.props.manageStore.getRelease({ "ide": this.usr.uid });
 		if (res && res.code === 200) {
 			message.info("发布成功！")
-			
+
 			await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
 			await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
 			await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
-			await this.props.manageStore.getJudge({"ide": this.usr.uid })
+			await this.props.manageStore.getJudge({ "ide": this.usr.uid })
 		} else {
 			message.info("发布失败！请重试")
 		}
-
+		// this.setState({
+		// 	check_visible: false,
+		// });
 	}
 
 	render() {
@@ -232,25 +245,26 @@ export default class Detail extends Component {
 		}
 
 		return (
-			<div>
+			<div className="g-detail">
 				{/* 所有课题审核通过，才可以一键发布课题 */}
-				<div className="release">
-					 
-						
-					{((this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length !== 0 || this.distributeTopic.auditCount.Passed === 0 ) && this.distributeTopic.judge_info.flag!==1) &&
+				<div className="release_btn">
+
+					{((this.distributeTopic.auditCount.unAudit !== 0 || this.distributeTopic.auditCount.unPassed !== 0 || this.distributeTopic.topic_info.length !== 0 || this.distributeTopic.auditCount.Passed === 0) && this.distributeTopic.judge_info.flag !== 1) &&
 						<Tooltip placement="top" title={this.distributeTopic.auditCount.Passed + "篇已通过，" + this.distributeTopic.auditCount.unAudit + "篇未审核，" + this.distributeTopic.auditCount.unPassed + "篇未通过, " + this.distributeTopic.topic_info.length + "篇未分配，不能发布所有课题"}>
 							<Button type="primary" disabled >发布课题</Button>
 						</Tooltip>
-						}
-					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0  && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag===0 ) &&
-							<Button type="primary" onClick={this.release}>发布课题</Button>
-						}
+					}
+					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag === 0) &&
+					 <Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消"> 
+						<Button type="primary" >发布课题</Button>
+					</Popconfirm>
+					}
 					{
-						
-					(this.distributeTopic.judge_info.flag === 1) &&
+
+						(this.distributeTopic.judge_info.flag === 1) &&
 						<Button type="primary" disabled>已发布</Button>
 					}
-					 
+
 				</div>
 				<div className="detail_table">
 					<Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
@@ -267,33 +281,40 @@ export default class Detail extends Component {
 						pagination={paginationProps}
 					/>
 				</div>
-				{/* <div className="detail_modal"> */}
-					<Modal
-						title="查看详情"
-						visible={this.state.visible}
-						onOk={this.handleOk}
-						onCancel={this.handleCancel}
-						footer={null}
-						width={900}
+				<Modal
+					title="查看详情"
+					visible={this.state.visible}
+					onCancel={this.handleCancel}
+					footer={null}
+					width={900}
+				>
+					<Descriptions
+						title=""
+						bordered
 					>
-						<Descriptions
-							title=""
-							bordered
-						>
-							<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
-							<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-							<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
-							<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
-							<Descriptions.Item label="审核状态" ><Tag color={color} >
-								{tag}
-							</Tag></Descriptions.Item>
+						<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
+						<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
+						<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
+						<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
+						<Descriptions.Item label="审核状态" ><Tag color={color} >
+							{tag}
+						</Tag></Descriptions.Item>
 
-							<Descriptions.Item label="审核建议">
-								{this.state.own.sugg}
-							</Descriptions.Item>
-						</Descriptions>
-					</Modal>
-				{/* </div> */}
+						<Descriptions.Item label="审核建议">
+							{this.state.own.sugg}
+						</Descriptions.Item>
+					</Descriptions>
+				</Modal>
+
+				{/* <Modal
+					title="信息确认"
+					visible={this.state.check_visible}
+					onOk={this.release}
+					onCancel={this.handleCheckCancel}
+				>
+					<ExclamationCircleOutlined />
+					点击确认后，不能再次发布课题！
+				</Modal> */}
 			</div>
 		);
 	}

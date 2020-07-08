@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import './dividedetail.css';
+import './dividedetail.scss';
 
 const paginationProps = {
     showTotal: ((total) => {
@@ -19,7 +19,7 @@ const topic_paginationProps = {
     pageSize: 5,
 }
 
-@inject('manageStore','userStore')
+@inject('manageStore', 'userStore')
 @observer
 export default class DivideDetail extends Component {
     state = {
@@ -116,19 +116,19 @@ export default class DivideDetail extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
+        await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
     }
 
     // 表格中的删除 
     handleDelete = async (key) => {
-        let res = await this.props.manageStore.deleteGroup_ogp({"gid":key});
-        if(res && res.code === 200){
+        let res = await this.props.manageStore.deleteGroup_ogp({ "gid": key });
+        if (res && res.code === 200) {
             message.info("删除成功！")
             // 刷新分组列表
-            await this.props.manageStore.getGroupList_ogp({"ide":this.usr.uid});
-            await this.props.manageStore.getTeacherList_ogp({"ide":this.usr.uid});
-            await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
-        }else {
+            await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
+            await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
+            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
+        } else {
             message.info("删除失败！")
         }
     };
@@ -209,12 +209,12 @@ export default class DivideDetail extends Component {
         ];
 
         return (
-            <div>
-                <div className="dividedetail">
+            <div class="g-div-dtl">
+                <div className="m-table">
                     <Table pagination={paginationProps} dataSource={this.openDefenseGroup.group_list} columns={columns} />
                 </div>
 
-                <div className="dd_modal">
+                <div className="m-modal">
                     <Modal
                         title="答辩课题详情"
                         visible={this.state.visible}
@@ -222,7 +222,7 @@ export default class DivideDetail extends Component {
                         footer={false}
                         width={800}
                     >
-                        <div className="topicdetail">
+                        <div className="table">
                             <Table pagination={topic_paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
                         </div>
                     </Modal>

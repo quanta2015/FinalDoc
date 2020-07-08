@@ -1,0 +1,10 @@
+.t-ContentT-TpActions-Modal{
+    .ant-descriptions-view>table>tbody{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ant-descriptions-item-label{
+        min-width: 104px;
+    }
+}

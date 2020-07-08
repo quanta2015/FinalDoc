@@ -21,7 +21,7 @@ const { TextArea } = Input;
 
 import * as urls from '../../../constant/urls';
 
-import style from './index.css'
+import style from './index.scss'
 
 @inject('teacherStore', 'userStore')
 @observer
@@ -73,8 +73,7 @@ class OpActions extends BaseActions {
 	render(){
         const {confirmLoading, visible}=this.state;
         return(
-            <div>
-
+            <div data-component="t-ContentT-OpActions">
                 <Tooltip title="详情">
                     <Button type="link" size="small" shape="circle" icon={<FileSearchOutlined />} onClick={this.showModal.bind(this, this.props.record.id)} />
                 </Tooltip>

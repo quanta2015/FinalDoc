@@ -58,10 +58,10 @@ class NavM extends Component {
           <div>姓名：{this.usr.name}</div>
           <div>工号：{this.usr.uid}</div>
           <div>所在系：{this.usr.maj}</div>
-          <div className="sign" 
+          {/* <div className="sign" 
             onClick={this.showModal} >
               查看电子签名
-          </div>
+          </div> */}
           {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
@@ -71,7 +71,7 @@ class NavM extends Component {
             </div>
           )}
         </div>
-        <Modal
+        {/* <Modal
           title="查看电子签名"
           visible={this.state.visible}
           onCancel={this.handleCancel}
@@ -80,7 +80,7 @@ class NavM extends Component {
           <div>
             <UploadImage  />
           </div>
-        </Modal>
+        </Modal> */}
 
       </div>
       
