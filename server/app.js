@@ -210,12 +210,12 @@ app.post('/download', function (req, res, next) {
 app.post('/checkSign', async function (req, res) {
     let sql = 'CALL PROC_GET_TOPICID_SIGN_PATH(?)';
     let get_data = req.body;
-    console.log(get_data);
     callProc(sql, get_data, res, (r) => {
+        console.log(r);
         if (r[0].sign != null) {
-            r[0].sign = 1;
+            r[0] = 1;
         } else {
-            r[0].sign = 0;
+            r[0] = 0;
         }
         console.log(r);
         res.status(200).json({
