@@ -81,13 +81,6 @@ class manager extends BaseActions {
         color: color,
       })
     })
-    // res.data.map((item) =>
-    //   topicList.push({
-    //     key: item.key, tid: item.tid, tName: item.tName, topic: item.topic, content: item.content,
-    //     areas: item.areas.split(","),
-    //     color: item.color.split(",")
-    //   })
-    // )
     runInAction(() => {
       this.distributeTopic.topic_info = topicList;
     })
@@ -159,6 +152,8 @@ class manager extends BaseActions {
   }
 
   @action
+  // 参数，系主任id
+  // {"ide":"20130006"}
   async getJudge(param) {
     const res = await this.post(urls.API_MAN_POST_JUDGETOPIC, param);
     runInAction(() => {
@@ -396,9 +391,6 @@ class manager extends BaseActions {
       
       })
     })
-     
-    // 同一老师课题放一起，按未通过、通过、未审核排序
-
     runInAction(() => {
       this.reviewPaper.task_info = temp;
     })

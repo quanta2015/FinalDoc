@@ -2,6 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { InputNumber, Select, Button, message, Form } from 'antd';
+import "./autoAllocate.scss"
 
 @inject('manageStore', 'userStore')
 @observer
@@ -46,10 +47,10 @@ export default class AutoAllocate extends Component {
         let res = await this.props.manageStore.autoAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
             if(res.data[0].err === 1){
-                message.err("新增答辩小组失败！请重试")
+                message.error("新增答辩小组失败！请重试")
             } else if (res.data[0].err === 0 && res.data[0].cnt !== this.state.num){
                 message.info("仅为该小组选择" + res.data[0].cnt + "位参与答辩学生")
-            } else if (res.data[0].err === 0 && res.data[0].cnt === this.state.num){
+            } else if (res.data[0].err === 0 && res.data[0].cnt === this.state.num) {
                 message.success("成功添加答辩小组！")
             }
             await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
@@ -64,7 +65,7 @@ export default class AutoAllocate extends Component {
                 num: stu_num,
             })
         } else {
-            message.err("新增答辩小组失败！请重试")
+            message.error("新增答辩小组失败！请重试")
         }
         this.clear()
     }
@@ -88,10 +89,10 @@ export default class AutoAllocate extends Component {
 
     render() {
         return (
-            <div class="auto-allocate">
-                <div class="select-group">
-
-                    <div class="choose_num">还有<span class="stu_num">{this.openDefenseGroup.topic_info.length}</span>位学生未被选择 为该组选择
+            <div class="g-ogp-al">
+                <div class="m-select-gp">
+                    <div class="choose-num">
+                        还有<span class="stu-num">{this.openDefenseGroup.topic_info.length}</span>位学生未被选择 为该组选择
                         <InputNumber
                             style={{ width: 50 }}
                             min={1}
@@ -99,11 +100,12 @@ export default class AutoAllocate extends Component {
                             value={this.state.num}
                             onChange={this.setNum}
                         />
-                    位</div>
+                    位
+                    </div>
                 </div>
-                <div class="btn">
-                    <Button className="reset" onClick={this.clear}>重置</Button>
-                    <Button type="primary" onClick={this.autoDistribute}> 提交</Button>
+                <div className="m-btn-gp">
+                    <Button onClick={this.clear}>重置</Button>
+                    <Button className="btn-sbm" type="primary" onClick={this.autoDistribute}> 提交</Button>
                 </div>
             </div>
         );

@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed,toJS } from 'mobx';
 import { InputNumber, Select, Button, message } from 'antd';
-import "./autoAllocate.css"
+import "./autoAllocate.scss"
 const { Option } = Select;
 
 @inject('manageStore','userStore')
@@ -32,9 +32,21 @@ export default class AutoAllocate extends Component {
     }
 
     async componentDidMount() {
+        await this.props.manageStore.getJudge({"ide":this.usr.uid});
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
         await this.props.manageStore.getTeaList({"ide":this.usr.uid});
+        // if (this.distributeTopic.topic_info.length < this.state.num){
+        //     this.state.num = this.distributeTopic.topic_info.length
+        //     this.setState({
+        //         num: this.distributeTopic.topic_info.length,
+        //     })
+        // }
+        // let tea_num = 0
+        // if(this.state.num !== 0){
+        //     tea_num = Math.ceil(this.distributeTopic.topic_info.length / this.state.num);
+        // }
         let tea_num = Math.ceil(this.distributeTopic.topic_info.length / this.state.num);
+        
         this.setState({ teaNum: tea_num });
     }
 
@@ -85,6 +97,7 @@ export default class AutoAllocate extends Component {
         } else {
             message.info("分配失败！请重试")
         }
+        
         // 清空已选教师列表
         this.setState({
             select_teacher: [],
@@ -127,7 +140,7 @@ export default class AutoAllocate extends Component {
 
     render() {
         return (
-            <div>
+            <div className="g-auto">
                 <div class="info">
                     共<span class="num">{this.distributeTopic.topic_info.length}</span>篇课题&nbsp;&nbsp;
                     每位<InputNumber size="small" value={this.state.num} style={{ width: 50 }} min={1} max={this.state.maxNum} onChange={this.maxNum} />篇&nbsp;&nbsp;
@@ -135,6 +148,7 @@ export default class AutoAllocate extends Component {
                     已选<span class="num">{this.state.select_teacher.length}</span>位
                 </div>
                 <div class="select_tea">
+                    {(this.distributeTopic.judge_info.flag === 0) && 
                     <Select
                         value={this.state.select_teacher}
                         defaultActiveFirstOption={false}
@@ -150,9 +164,18 @@ export default class AutoAllocate extends Component {
                             <Select.Option label={item.name} key={item.tid}>{item.value}</Select.Option>
                         )}
                     </Select>
+                    }
+                    {(this.distributeTopic.judge_info.flag === 1) && 
+                    <Select
+                        disabled
+                        style={{ width: 500 }}
+                        placeholder="已发布课题，不能再分配审核"
+                    >
+                    </Select>
+                    }
                 </div>
-                <div className="btn">
-                    <Button onClick={this.clear} id="clear">重置</Button>
+                <div className="m-btn">
+                    <Button onClick={this.clear} className="clear">重置</Button>
                     <Button type="primary" onClick={this.autoDistribute}>提交</Button>
                 </div>
             </div>

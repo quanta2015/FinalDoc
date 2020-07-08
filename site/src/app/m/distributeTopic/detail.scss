@@ -1,0 +1,27 @@
+.g-detail {
+    .release_btn {
+        margin-bottom: 15px;
+        text-align: right;
+    }
+    
+    .detail_table {
+        .ant-table-cell:nth-last-child(4) {
+            width: 170px;
+        }
+        .ant-table-cell:nth-last-child(3) {
+            width: 340px;
+            text-align: left;
+        }
+        .ant-table-cell:nth-last-child(2) {
+            width: 170px;
+        }
+        .ant-table-cell:nth-last-child(1) {
+            width: 120px;
+        }
+        // 表格中无数据时的默认样式
+        .ant-table-placeholder .ant-table-cell{
+            width: 800px;
+        }
+    }
+
+}
