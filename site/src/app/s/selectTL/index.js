@@ -318,7 +318,7 @@ export default class TopicList extends Component {
                 dataIndex: 'areas',
                 key: 'areas',
                 filters: _field,
-                onFilter:(value,record) => record.areas.includes(value),
+                onFilter: (value, record) => record.areas.includes(value),
                 render: (areas, record) => (
                     <>
                         {
@@ -362,11 +362,12 @@ export default class TopicList extends Component {
             }
         ]
         return (
-            <div className="g-table">
-                <h3 className="m-title bold">课题列表</h3>
+            <div className="g-stu-sel">
+                <h3 className="u-title">课题列表</h3>
                 <Spin spinning={this.state.loading}>
                     <ConfigProvider renderEmpty={customizeRenderEmpty}>
                         <Table
+                            className="g-stu-table"
                             columns={columns}
                             dataSource={this.state.topicList}
                             rowKey={item => item.id}
@@ -383,6 +384,7 @@ export default class TopicList extends Component {
                     </ConfigProvider>
                 </Spin>
                 <Modal
+                    className="g-stu-modal"
                     title="课题详情"
                     visible={this.state.visible}
                     onCancel={this.handleOk}

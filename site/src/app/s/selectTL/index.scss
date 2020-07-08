@@ -1,12 +1,13 @@
-.g-table {
+.g-stu-sel {
     width: 950px;
     margin-top: 10px;
     padding: 16px;
-    .m-title {
+    .u-title {
         font-weight: bold;
         font-size: 18px;
     }
-
+}
+.g-stu-table {
     table,
     tbody.ant-table-tbody {
         display: flex;
@@ -31,17 +32,8 @@
     }
     .ant-table-cell {
         text-align: center;
-        /* margin: 0 auto; */
     }
-    // .ant-modal-content {
-    //     width: 900px;
-    //     margin-left: -170px;
-    // }
 
-
-    /* td.ant-table-cell {
-        vertical-align: middle;
-    } */
     .ant-table-cell:nth-last-child(6) {
         width: 150px;
     }
@@ -73,6 +65,8 @@
         padding-right: 22px;
     }
 }
-.ant-descriptions-item-label {
-    width: 120px;
+.g-stu-nodal {
+    .ant-descriptions-item-label {
+        width: 120px;
+    }
 }

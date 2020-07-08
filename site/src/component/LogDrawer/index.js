@@ -193,8 +193,9 @@ class LogDrawer extends Component {
     render() {
         const { comments, submitting, value } = this.state;
         return (
-            <div className="g-log">
+            <div className="g-stu-log">
                 <Drawer
+                    className="g-stu-drawer"
                     title={<Title level={4}>指导日志</Title>}
                     width={720}
                     onClose={this.props.onClose}
@@ -204,9 +205,9 @@ class LogDrawer extends Component {
                 >
                     <Space align="baseline">
                         <h4  >{moment().format('YYYY年MM月DD日')}</h4>
-                        <p type="text" className="m-sintro">请选择指导地点/指导方式</p>
+                        <p type="text" className="m-pos">请选择指导地点/指导方式</p>
                         <Select
-                            className="m-sintro"
+                            className="m-pos"
                             defaultValue={this.state.sel}
                             style={{ width: 80 }}
                             onChange={this.handleSelChange}
