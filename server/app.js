@@ -18,9 +18,10 @@ const auditMg = require('./routes/auditMg');
 const student = require('./routes/student');
 const topic = require('./routes/topic');
 const auditTp = require('./routes/auditTp');
-const teacher = require('./routes/teacher')
-const visualize = require('./routes/visualize')
-const user = require('./routes/user')
+const teacher = require('./routes/teacher');
+const visualize = require('./routes/visualize');
+const user = require('./routes/user');
+const admin = require('./routes/admin');
 
 
 app.use(compression())
@@ -39,6 +40,7 @@ app.use('/auditTp', auditTp);
 app.use('/teacher', teacher);
 app.use('/visualize', visualize);
 app.use('/user',user);
+app.use('/admin', admin);
 
 
 const port = 8090;
