@@ -108,11 +108,58 @@ export var FILE_UPLOAD_FORMAT = {
 //管理端
 //管理端nav
 export var ADMIN_NAV_DATA = [
-  { title: "公告文档", childData:[{title:"公告管理"
-  },{title:"文档管理"}],path: "/admin_ann", icon: "BankOutlined" },
-  { title: "选题管理", path: "/admin_file", icon: "BankOutlined" },
-  { title: "中期检查", path: "/admin_ann", icon: "BankOutlined" },
-  { title: "评阅答辩", path: "/admin_file", icon: "BankOutlined" },
-  { title: "成绩分析", path: "/admin_ann", icon: "BankOutlined" },
-  { title: "系统设置", path: "/admin_file", icon: "BankOutlined" },
+  {
+    title: "公告文档",
+    childData: [
+      { title: "公告管理", path: "/admin_ann" },
+      { title: "文档管理", path: "/admin_file" },
+    ],
+    path: "/admin_ann",
+    icon: "BankOutlined",
+  },
+  {
+    title: "选题管理",
+    childData: [
+      { title: "option1", path: "/admin" },
+      { title: "option2", path: "/admin" },
+    ],
+    path: "/admin_file",
+    icon: "BankOutlined",
+  },
+  {
+    title: "中期检查",
+    childData: [
+      { title: "option1", path: "/admin" },
+      { title: "option2", path: "/admin" },
+    ],
+    path: "/admin_ann",
+    icon: "BankOutlined",
+  },
+  {
+    title: "评阅答辩",
+    childData: [
+      { title: "option1", path: "/admin" },
+      { title: "option2", path: "/admin" },
+    ],
+    path: "/admin_file",
+    icon: "BankOutlined",
+  },
+  {
+    title: "成绩分析",
+    childData: [
+      { title: "option1", path: "/admin" },
+      { title: "option2", path: "/admin" },
+    ],
+    path: "/admin_ann",
+    icon: "BankOutlined",
+  },
+  {
+    title: "系统设置",
+    childData: [
+      { title: "option1", path: "/admin" },
+      { title: "option2", path: "/admin" },
+    ],
+    path: "/admin_file",
+    icon: "BankOutlined",
+  },
 ];

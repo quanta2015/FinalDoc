@@ -2,13 +2,14 @@ import { Component } from "preact";
 import { inject, observer } from "mobx-react";
 import { computed, toJS } from "mobx";
 import { route } from "preact-router";
-import { Modal } from "antd";
+import { Modal, Menu } from "antd";
 import UploadImage from "../ImgUpload";
-import {BankOutlined} from '@ant-design/icons';
+import { BankOutlined } from "@ant-design/icons";
 
 import "./index.scss";
 // import more from './more.svg'
 import { ADMIN_NAV_DATA } from "../../constant/data";
+const { SubMenu } = Menu;
 
 @inject("manageStore", "userStore")
 @observer
@@ -17,7 +18,7 @@ class NavM extends Component {
     super(props);
 
     this.state = {
-      cur: 0,
+      cur: null,
       visible: false,
     };
   }
@@ -34,8 +35,9 @@ class NavM extends Component {
     // route('/m_distributeTopic')
   }
 
-  doMenu = (path, i) => {
-    this.setState({ cur: i }, () => {
+  doMenu = (path, key) => {
+    console.log(this.state.cur, key);
+    this.setState({ cur: key }, () => {
       route(path);
     });
   };
@@ -51,7 +53,9 @@ class NavM extends Component {
       visible: false,
     });
   };
-
+  handleMenuClick = (e) => {
+    console.log("click ", e);
+  };
   render() {
     return (
       <div className="g-admin-nav">
@@ -61,32 +65,47 @@ class NavM extends Component {
           <div>工号：{this.usr.uid}</div>
         </div>
         <div className="g-menu">
-          {ADMIN_NAV_DATA.map((item, i) => {
-            return (
-              <div
-                className={
-                  this.state.cur == i ? "m-menu-item active" : "m-menu-item"
-                }
-                key={i}
-                onClick={this.doMenu.bind(this, item.path, i)}
-              >
-                <BankOutlined className="iconStyle"/>
-                <span>{item.title}</span>
-
-              </div>
-            );
-          })}
+          <Menu
+            mode="inline"
+            className="main-menu"
+            // onClick={this.handleMenuClick}
+          >
+            {ADMIN_NAV_DATA.map((item, index) => {
+              console.log(item, index);
+              return (
+                <SubMenu
+                  key={index}
+                  title={
+                    <span>
+                      <BankOutlined className="iconStyle" />
+                      {item.title}
+                    </span>
+                  }
+                >
+                  {item.childData.map((citem, cindex) => {
+                    return (
+                      <Menu.Item
+                        className={
+                          this.state.cur == index
+                            ? "ant-menu-item-selected"
+                            : "ant-menu-submenu-title"
+                        }
+                        onClick={this.doMenu.bind(
+                          this,
+                          citem.path,
+                          `${index}+${cindex}`
+                        )}
+                        key={`${index}+${cindex}`}
+                      >
+                        <span>{citem.title}</span>
+                      </Menu.Item>
+                    );
+                  })}
+                </SubMenu>
+              );
+            })}
+          </Menu>
         </div>
-        {/* <Modal
-          title="查看电子签名"
-          visible={this.state.visible}
-          onCancel={this.handleCancel}
-          footer={false}
-        >
-          <div>
-            <UploadImage  />
-          </div>
-        </Modal> */}
       </div>
     );
   }
