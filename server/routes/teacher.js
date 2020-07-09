@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 第一阶段 教师端相关接口
+ * @version: 1.0
+ * @Author: East Wind
+ * @Date: 2020-07-09 10:05:28
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-07-09 14:21:37
+ */ 
+
 const url = require('url');
 const express = require('express');
 const router = express.Router();
@@ -7,7 +16,13 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const moment = require('moment');
 
-// 获取所有选题类型
+/**
+ * @name: getAllType
+ * @test: 
+ * @msg: 获取所有选题类型
+ * @param {} 
+ * @return: [{id: int, name: string}]
+ */
 router.get('/getAllType', async(req, res) => {
     let sql = `CALL RROC_GET_ALL_TOPIC_TYPES`;
     callProc(sql, {}, res, (r) => {
@@ -15,7 +30,13 @@ router.get('/getAllType', async(req, res) => {
     })
 })
 
-// 由不完整学号得到学生列表（学号和姓名）：模糊查询
+/**
+ * @name: getStuInfoByLikeID
+ * @test: 
+ * @msg: 由不完整学号得到学生列表（学号和姓名）：模糊查询
+ * @param {num: int} 
+ * @return: [{uid: string, name: string, topic: string}]
+ */
 router.post('/getStuInfoByLikeID', async(req, res) => {
     let sql = `CALL PROC_STUID_INFO_FUZZY(?)`;
     let params = req.body;
@@ -24,7 +45,13 @@ router.post('/getStuInfoByLikeID', async(req, res) => {
     })
 })
 
-// 发布教师课题（或修改）
+/**
+ * @name: postTopicInfo
+ * @test: test font
+ * @msg: 发布教师课题（或修改）
+ * @param {topic_id: int, tea_id: string, stuId: string, name: string, type: string, area: [int], note: string} 
+ * @return: 
+ */
 router.post('/postTopicInfo', async(req, res) => {
     let params = req.body;
     var area = "";
@@ -47,7 +74,13 @@ router.post('/postTopicInfo', async(req, res) => {
     })
 })
 
-// 由教师id获取topic内容（课题id，课题状态）
+/**
+ * @name: getTidgetTopic
+ * @test: test font
+ * @msg: 由教师id获取topic内容（课题id，课题状态）
+ * @param {tea_id: string} 
+ * @return: [{id: int, topic: string, sid: string, status: int, sel: int, result: int, sugg: string, pass: int}]
+ */
 router.post('/getTidgetTopic', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STATUS(?)`;
     let params = req.body;
@@ -150,7 +183,13 @@ router.post('/getTidgetTopic', async(req, res) => {
     })
 })
 
-// 由课题pid获取课题内容（课题名称，课题类别，课题简介，学生id，学生名字）
+/**
+ * @name: getTopicFullInfo
+ * @test: test font
+ * @msg: 由课题pid获取课题内容（课题名称，课题类别，课题简介，学生id，学生名字）
+ * @param {pid: string} 
+ * @return: [{tid: str, topic: str, type: str, note: str, sid: str, name: str, area: [int]}]
+ */
 router.post('/getTopicFullInfo', async(req, res) => {
     let sql = `CALL PROC_PID_GET_TOPIC_INFO(?)`;
     let params = req.body;
@@ -168,7 +207,13 @@ router.post('/getTopicFullInfo', async(req, res) => {
     })
 })
 
-// 根据课题id删除课题
+/**
+ * @name: delOneTopicWithID
+ * @test: test font
+ * @msg: 根据课题id删除课题
+ * @param {id: str} 
+ * @return: 
+ */
 router.post('/delOneTopicWithID', async(req, res) => {
     let sql = `CALL PROC_DEL_ONE_TOPIC(?)`;
     let params = req.body;
@@ -186,7 +231,13 @@ router.post('/delOneTopicWithID', async(req, res) => {
 //     })
 //   })
 
-// 根据学生id获取学生个人信息
+/**
+ * @name: getStuPersonalInfo
+ * @test: test font
+ * @msg: 根据学生id获取学生个人信息
+ * @param {sid: str} 
+ * @return: [{id: int, uid: str, name: str, pwd: str, dep: str, maj: str, cls: str, tel: str, area: str, role: int, sign: str}]
+ */
 router.post('/getStuPersonalInfo', async(req, res) => {
     let sql = `CALL PROC_GET_STUDENT_PERSONAL_INFO(?)`;
     let params = req.body;
@@ -195,7 +246,14 @@ router.post('/getStuPersonalInfo', async(req, res) => {
     })
 })
 
-// 根据教师id获取课题审核
+// 
+/**
+ * @name: getTopicCheckStudent
+ * @test: test font
+ * @msg: 根据教师id获取学生正在申请的课题
+ * @param {tea_id} 
+ * @return: [{id: int, topic: str, sid: str, name: str}]
+ */
 router.post('/getTopicCheckStudent', async(req, res) => {
     let sql = `CALL PROC_GET_TID_TOPIC_CHECKED(?)`;
     let params = req.body;
@@ -204,7 +262,13 @@ router.post('/getTopicCheckStudent', async(req, res) => {
     })
 })
 
-// 记录学生是否被教师拒绝
+/**
+ * @name: getTopicStudentAlter
+ * @test: test font
+ * @msg: 记录学生是否被教师拒绝
+ * @param {topic_id: str, sid: str, val: int} 
+ * @return: 
+ */
 router.post('/getTopicStudentAlter', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STUDENT_PASS(?)`;
     let params = req.body;
@@ -213,7 +277,13 @@ router.post('/getTopicStudentAlter', async(req, res) => {
     })
 })
 
-// 根据教师id返回研究方向
+/**
+ * @name: getTeacherAreas
+ * @test: test font
+ * @msg: 根据教师id返回研究方向
+ * @param {tid: str} 
+ * @return: [{id: int, area: str, color: str}]
+ */
 router.post('/getTeacherAreas', async(req, res) => {
     let sql = `CALL PROC_GET_TEACHER_AREAS(?)`;
     let params = req.body;
@@ -232,7 +302,13 @@ router.post('/getTeacherAreas', async(req, res) => {
     })
 })
 
-// 根据课题id返回被审核意见
+/**
+ * @name: getTidToTsugg
+ * @test: test font
+ * @msg: 根据课题id返回被审核意见
+ * @param {pid: str} 
+ * @return: [{sugg: str}]
+ */
 router.post('/getTidToTsugg', async(req, res) => {
     let sql = `CALL PROC_GET_TID_TSUGG(?)`;
     let params = req.body;
@@ -241,7 +317,13 @@ router.post('/getTidToTsugg', async(req, res) => {
     })
 })
 
-// 返回所有通过审核的课题
+/**
+ * @name: getAllPassedTopic
+ * @test: test font
+ * @msg: 返回所有通过审核的课题
+ * @param {} 
+ * @return: [{name: str, id: int, tie: str, area: [{name: str, color: str}]}]
+ */
 router.get('/getAllPassedTopic', async(req, res) => {
     let sql = `CALL PROC_GET_ALL_PASSED_TOPIC`;
     callProc(sql, {}, res, (r) => {
@@ -268,7 +350,13 @@ router.get('/getAllPassedTopic', async(req, res) => {
     })
 })
 
-// 通过topicID查询课题所有文件
+/**
+ * @name: getAllTopicFiles
+ * @test: test font
+ * @msg: 通过topicID查询课题所有文件
+ * @param {pid: str} 
+ * @return: [{f_task: str, f_open: str, f_docs: str, f_tran: str, f_paper: str, ...}]
+ */
 router.post('/getAllTopicFiles', async(req, res) => {
     let sql = `CALL PROC_GET_TOPICID_ALL_TOPIC_FILES(?)`;
     let params = req.body;
@@ -277,7 +365,13 @@ router.post('/getAllTopicFiles', async(req, res) => {
     })
 })
 
-// 通过topicID解绑学生
+/**
+ * @name: getStudentUntied
+ * @test: test font
+ * @msg: 通过topicID解绑学生
+ * @param {pid: str} 
+ * @return: 
+ */
 router.post('/getStudentUntied', async(req, res) => {
     let sql = `CALL PROC_GET_TOPICID_STUDENT_UNTIED(?)`;
     let params = req.body;
@@ -286,7 +380,13 @@ router.post('/getStudentUntied', async(req, res) => {
     })
 })
 
-// 上传教师签名文件
+/**
+ * @name: uploadSign
+ * @test: test font
+ * @msg: 上传教师签名文件
+ * @param {uid: str, file: str, } 
+ * @return: 
+ */
 router.use(bodyParser.json({limit: '10mb'}));
 router.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 router.post('/uploadSign', async(req, res) => {
