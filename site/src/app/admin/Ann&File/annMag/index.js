@@ -5,7 +5,7 @@
  * @Date: 2020-07-09 09:44:03
  * @LastEditors: wyx
  * @LastEditTime: 2020-07-09 14:16:04
- */ 
+ */
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
@@ -22,12 +22,12 @@ const { TabPane } = Tabs;
 export default class Ann extends Component {
 
   state = {
-    value:1,
+    value: 1,
   }
 
   @computed
   get usr() {
-      return this.props.userStore.usr;
+    return this.props.userStore.usr;
   }
 
   componentDidMount() {
@@ -44,17 +44,22 @@ export default class Ann extends Component {
 
   render() {
     return (
-      <div className="g-ann">
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="公告详情" key="1">
-            <AnnounceManage />
-          </TabPane>
-          <TabPane tab="文档管理" key="2">
-          <FileManage />
-          </TabPane>
-        </Tabs>
-        {/* <div className="m-m">公告模块</div> */}
-      </div>
+      <>
+        <div className="admin-content">
+          <div className="g-ann">
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="公告详情" key="1">
+                <AnnounceManage />
+              </TabPane>
+              <TabPane tab="文档管理" key="2">
+                <FileManage />
+              </TabPane>
+            </Tabs>
+            {/* <div className="m-m">公告模块</div> */}
+          </div>
+        </div>
+
+      </>
     );
   }
 }
