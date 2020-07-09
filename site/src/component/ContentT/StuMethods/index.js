@@ -134,7 +134,7 @@ export default class StuMethods extends BaseActions {
                 {/* <Card style={{ width: 810 }}> */}
                   <div className="card-inner">
                     <div className="file-block">
-                      <FileUpload type={{ name: '任务书', type: 'f_task'}} tpInfo={{ tid: this.props.tid, sid: this.props.sid ,f_task:this.state.links['f_task']}} />
+                      <FileUpload freshOuter={this.props.freshList} type={{ name: '任务书', type: 'f_task'}} tpInfo={{ tid: this.props.tid, sid: this.props.sid ,f_task:this.state.links['f_task']}} />
                     </div>
                   </div>
                 {/* </Card> */}

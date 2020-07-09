@@ -50,6 +50,9 @@ class FileUpload extends Component {
                 fileUrl: info.file.response.data
             })
             message.success(`成功上传文件《${info.file.name}》`)
+            if(!!this.props.freshOuter){
+                this.props.freshOuter();
+            }
         }
     }
 
