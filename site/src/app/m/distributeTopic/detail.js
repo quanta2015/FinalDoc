@@ -318,8 +318,8 @@ export default class Detail extends Component {
 							<div class="u-tea-name">{this.state.own.teaName}</div>
 						</div>
 						<div class="m-cont">
-							<div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.state.own.content}</div>
-							<div class="dtl"><span class="expln">审核建议:&nbsp;</span>
+							<div class="dtl"><span class="expln">课题简介:</span>{this.state.own.content}</div>
+							<div class="dtl"><span class="expln">审核建议:</span>
 								{
 									(this.state.own.sugg === null) && <span>无</span>
 								}
@@ -327,6 +327,34 @@ export default class Detail extends Component {
 									(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>
 								}
 							</div>
+							<div class="dtl"><span class="expln">审核状态:</span>
+								{
+									(this.state.own.result === 1) && <Tag color={"green"} >
+										通过
+									</Tag>
+								}
+								{
+									(this.state.own.result === 0) && <Tag color={"red"} >
+										未通过
+									</Tag>
+								}
+								{
+									(this.state.own.result === 2) && <Tag color={"blue"} >
+										待审核
+									</Tag>
+								}
+								{
+									(this.state.own.result === 3) && <Tag color={"blue"} >
+										待学生选择
+									</Tag>
+								}
+								{
+									(this.state.own.result === 4) && <Tag color={"green"} >
+										有学生选择
+									</Tag>
+								}
+							</div>
+							 
 						</div>
 
 					</div>

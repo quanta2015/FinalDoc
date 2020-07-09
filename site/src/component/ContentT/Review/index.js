@@ -1,7 +1,7 @@
 import './index.scss'
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
-import { Table, Tag, Space ,Tooltip} from 'antd';
+import { Table, Tag, Space ,Tooltip, Button} from 'antd';
 import { StarOutlined, CloseOutlined, CheckOutlined,UserOutlined } from '@ant-design/icons';
 
 
@@ -30,15 +30,18 @@ export default class Review extends BaseActions{
       render:(text,record)=>{
         return(
           <div className="review-tool">
-          <Tooltip placement="top" title={"通过"}>
-            <CheckOutlined onClick={()=>{this.pass(record.sid,record.name,record.id)}} className="blue-font"/>
-          </Tooltip>
-          <Tooltip placement="top" title={"拒绝"}  >
+            <Button onClick={()=>{this.pass(record.sid,record.name,record.id)}}>通过</Button>
+            <Button onClick={()=>{this.refuse(record.sid,record.name,record.id)}}>拒绝</Button>
+            
+          {/* <Tooltip placement="top" title={"通过"}> 
+                <CheckOutlined onClick={()=>{this.pass(record.sid,record.name,record.id)}} className="blue-font"/> 
+              </Tooltip>*/}
+          {/* <Tooltip placement="top" title={"拒绝"}  >
             <span onClick={()=>{this.refuse(record.sid,record.name,record.id)}}>
               <CloseOutlined className="red-font"/>
-            </span>
+            </span> 
             
-          </Tooltip>
+          </Tooltip> */}
           </div>
         )
       }
@@ -46,7 +49,6 @@ export default class Review extends BaseActions{
   ]
   constructor(props){
     super(props)
-    console.log(this.props.list)
   }
 
   /**
@@ -89,8 +91,8 @@ export default class Review extends BaseActions{
           <span className="m-short">姓名： {this.props.list.name}</span>
         </span>
         
-        <div className="icons">
-          <Tooltip placement="top" title={"通过"}>
+        <div className="btns">
+          {/* <Tooltip placement="top" title={"通过"}>
             <span className="m-icon">
               <CheckOutlined onClick={()=>{this.pass(this.props.list.sid,this.props.list.name,this.props.list.id)}}  className="blue-font"/>
             </span>
@@ -99,7 +101,9 @@ export default class Review extends BaseActions{
             <span  className="m-icon">
             <CloseOutlined onClick={()=>{this.refuse(this.props.list.sid,this.props.list.name,this.props.list.id)}} className="red-font"/>
             </span>
-          </Tooltip>
+          </Tooltip> */}
+          <Button className="ml-long" onClick={()=>{this.pass(this.props.list.sid,this.props.list.name,this.props.list.id)}}>通过</Button>
+            <Button className="ml-long" onClick={()=>{this.refuse(this.props.list.sid,this.props.list.name,this.props.list.id)}}>拒绝</Button>
         </div>
       </div>
       </div>

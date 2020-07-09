@@ -39,7 +39,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.usr)
     return (
       // <div id={this.handleapp()}>
       <div id="app"> 

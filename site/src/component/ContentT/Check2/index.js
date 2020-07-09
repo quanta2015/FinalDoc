@@ -6,31 +6,20 @@ import BaseActions from '../../BaseActions';
 const { Panel } = Collapse;
 import * as urls from '../../../constant/urls'
 import StuMethods from '../StuMethods'
-import DeleteSpan from '../../../component/ContentT/Icons/Delete'
-import ReWrite from '../../../component/ContentT/Icons/ReWrite'
-import Watch from '../../../component/ContentT/Icons/Watch'
+import DeleteSpan from '../../../icon/Icons/Delete'
+import ReWrite from '../../../icon/Icons/ReWrite'
+import Watch from '../../../icon/Icons/Watch'
 import ReviewLine from '../Review';
 
 
-const PanelHeader = (name,status,id)=>{
-  let sb = (status==3||status==4||status==5);
-  return(
+const PanelHeader = (name,status,id)=>(
 <span>
-    {!sb&&<span  className="check-long-pid">{id}</span>}
-    {sb&&<span  className="check-short-pid">{id}</span>}
-    {!sb&&
+    <span className="check-short-pid">{id}</span>
     <span className="check-default-pname">
       {name}
     </span>
-    }
-    {
-      sb&&
-      <span className="check-pointer-pname">
-        {name}
-      </span>
-    }
   </span>
-)}
+)
 
 @inject('userStore')
 @observer
@@ -134,24 +123,25 @@ class Check extends BaseActions {
           </span>
         </div>
         {this.props.toplist.length==0&&<span>您还没有课题！</span>}
-        <Collapse 
-          defaultActiveKey={[]} 
-          expandIconPosition={'left'}
-        >
-          
+        <ul className="check-ul">
           {
             this.props.toplist.map(
               (t)=>
-                <Panel 
-                header={PanelHeader(t.name,t.status,t.id)} 
-                key={t.id} 
-                extra={this.StateExtra(t)} 
-                showArrow={(t.status==3||t.status==4||t.status==5)?true:false} 
-                disabled={(t.status==3||t.status==4||t.status==5)?false:true}>
+              <>
+                <li 
+                // header={PanelHeader(t.name,t.status,t.id)} 
+                // key={t.id} 
+                // extra={this.StateExtra(t)} 
+                >
                 
                   <div className="stu">
+                    <div className="stu-header">
+                      {PanelHeader(t.name,t.status,t.id)}
+                      {this.StateExtra(t)}
+                    </div>
+                    
                     {(t.status==3||t.status==4||t.status==5) &&
-                      <>
+                      <div className="stu-body">
                         {t.sid!=null&&
                           <StuMethods  sid={t.sid} tid={this.usr.uid} pid={t.id} freshList={this.props.freshList}/>
                         }
@@ -162,14 +152,18 @@ class Check extends BaseActions {
                           t.sid==null&&this.props.checkList.map((x)=>{return x.id}).indexOf(t.id)>=0&&
                           <ReviewLine list={this.props.checkList[this.props.checkList.map((x)=>x.id).indexOf(t.id)]} freshList={this.props.freshList}/>
                         }
-                      </>
+                      </div>
                     }
+                    
+                    
+                    
                   </div>
-                </Panel>
+                </li>
+                </>
               
             )
           }
-        </Collapse>
+        </ul>
         
       </div>
     );
