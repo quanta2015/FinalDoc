@@ -357,11 +357,12 @@ export default class TopicList extends Component {
                     title="课题详情"
                     visible={this.state.visible}
                     onCancel={this.handleOk}
+                    closable={false}
                     footer={
                         [
                             <Button onClick={() => this.handleOk()}>关闭</Button>,
-                            isAudi ?<Button onClick={() => this.handleClick(rowDetail)} >取消选定</Button>:
-                            <Button onClick={() => this.handleClick(rowDetail)} type="primary">选定</Button>
+                            isAudi ? <Button onClick={() => this.handleClick(rowDetail)} danger>取消选定</Button> :
+                                <Button onClick={() => this.handleClick(rowDetail)} type="primary">选定</Button>
                         ]}
                     width={900}
                 >

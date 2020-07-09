@@ -9,22 +9,22 @@ const { Title } = Typography;
 
 const data = [
     {
-        content: 'Ant Design Title 1',
+        content: 'This is content asdasdasdasd asdasdasd ',
         datetime: '2020年07月07日',
         place: '网络'
     },
     {
-        content: 'Ant Design Title 2',
+        content: 'This is content asdasdasdasd asdadasd ',
         datetime: '2020年07月03日',
         place: '学校'
     },
     {
-        content: 'Ant Design Title 3',
+        content: 'This is content asdasdasdasd asdasdsd ',
         datetime: '2020年07月02日',
         place: '网络'
     },
     {
-        content: 'Ant Design Title 4',
+        content: 'Ant Design Title 4asdasd',
         datetime: '2020年07月01日',
         place: '学校'
     },
@@ -258,7 +258,7 @@ class LogDrawer extends Component {
                                         ]} >
                                         <List.Item.Meta
                                             title={<p>{item.datetime} {item.place}</p>}
-                                            description={<p>{item.content}</p>}
+                                            // description={<p>{item.content}</p>}
                                         />
                                         {item.content}
                                     </List.Item>
