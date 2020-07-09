@@ -11,10 +11,6 @@ import { computed, toJS } from 'mobx';
 
 var del = []
 var cha = []
-var tmp = []
-var rec = []
-var click = 0
-
 const customizeRenderEmpty = () => (
     <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
         <SmileOutlined type="smile" style={{ fontSize: 30, }} />
@@ -26,11 +22,8 @@ const customizeRenderEmpty = () => (
 @observer
 export default class TopicList extends Component {
     state = {
-        filteredInfo: null,
         visible: false,
-        selectedRowKeys: [],
         topicList: [],
-        tmpList: [],
         rowDetail: [],
         isAudi: false,
         searchText: '',
@@ -55,19 +48,16 @@ export default class TopicList extends Component {
         this.props.studentStore.isDurAudit({ uid: this.usr.uid })
             .then(r => {
                 if (r && r.length > 0) {
-                    tmp = r
                     this.setState({
-                        topicList: tmp,
+                        topicList: r,
                         isAudi: true,
                     })
                 } else {
                     this.props.studentStore.getTopicList({ uid: this.usr.uid })
                         .then(r => {
                             if (r.length) {
-                                tmp = r
-                                rec = r
                                 this.setState({
-                                    topicList: tmp,
+                                    topicList: r,
                                 })
                             }
                         })
@@ -139,99 +129,55 @@ export default class TopicList extends Component {
     };
 
     showModal = () => {
-        click++;
         this.setState({
             visible: true,
         });
 
     };
     handleOk = e => {
-        click++;
         this.setState({
             visible: false,
         });
     };
     handleClick = (record) => {
-        const selectedRowKeys = [...this.state.selectedRowKeys];
         let { topicList, isAudi } = this.state;
-        if (!isAudi) {
-            if (selectedRowKeys.indexOf(0) >= 0) { // 点击取消后
-                selectedRowKeys.splice(selectedRowKeys.indexOf(0), 1);
-                topicList[record.key].status = '——';
-                for (let i = 0; i < del.length; i++) {
-                    cha[i] = "选定"
-                    del[i] = "primary"
-                }
-                this.setState({
-                    loading: true,
-                })
-                setTimeout(() => {
-                    // 防止数据更改快慢不一
-                    let res = rec
-                    let flag = false
-                    for (let i = 0; i < res.length; i++) {
-                        if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
-                            flag = true
-                        }
-                    }
-                    this.setState({
-                        loading: false,
-                        topicList: flag ? rec : [...tmp, ...rec]
-                    })
-                }, 200)
-                this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
-            } else { // 点击选定后
-                selectedRowKeys.push(0);
-                for (let i = 0; i < del.length; i++) {
-                    cha[i] = "取消"
-                    del[i] = "text"
-                }
-                topicList[record.key].status = 1
-                this.setState({
-                    tmpList: this.topicList,
-                    topicList: [topicList[record.key]] // 选中后表格中只显示此项
-                })
-                this.props.studentStore.upStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[record.key].id })
+        if (!isAudi) { // 学生不在审核状态中，此时按钮均为选定，点击后显示一条数据，按钮变为取消，进入审核状态
+            for (let i = 0; i < del.length; i++) {
+                cha[i] = "取消"
+                del[i] = "text"
             }
-        } else {
+            topicList[record.key].status = 1
             this.setState({
+                isAudi: true,
+                topicList: [topicList[record.key]] // 选中后表格中只显示此项
+            })
+            this.props.studentStore.upStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[record.key].id })
+        } else {
+            for (let i = 0; i < del.length; i++) {
+                cha[i] = "选定"
+                del[i] = "primary"
+            }
+            this.setState({
+                loading: true,
                 isAudi: false,
             })
-            cha[0] = "选定"
-            del[0] = "primary"
-            topicList[0].status = '——';
-            this.props.studentStore.getTopicList({ uid: this.usr.uid })
-                .then(r => {
-                    tmp[0].status = '——';
-                    rec = r;
-                    this.setState({
-                        loading: true,
-                    })
-
-                    setTimeout(() => {
-                        // 防止数据更改快慢不一
-                        let res = rec
-                        let flag = false
-                        let item;
-                        for (let i = 0; i < res.length; i++) {
-                            if (tmp[0].instructor === res[i].instructor && tmp[0].topic === res[i].topic) {
-                                flag = true
-                                item = res[i]
-                            }
-                        }
-                        if (flag) {
-                            rec.splice(rec.indexOf(item), 1)
-                        }
-                        this.setState({
-                            loading: false,
-                            topicList: [...tmp, ...rec]
-                        })
-                    }, 300)
-
-                })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
+                .then(res => {
+                    this.props.studentStore.getTopicList({ uid: this.usr.uid })
+                        .then(r => {
+                            this.setState({
+                                loading: true,
+                            })
+                            setTimeout(() => {
+                                this.setState({
+                                    loading: false,
+                                    topicList: r,
+                                })
+                            }, 150)
+
+                        })
+                })
         }
-        this.setState({ selectedRowKeys });
     }
 
     render() {
@@ -255,19 +201,16 @@ export default class TopicList extends Component {
             }
 
         } else {
-            if (!click) {
-                for (let i = 0; i < topicList.length; i++) {
-                    topicList[i].key = i;
-                    topicList[i].status = 1
-                    del.push("text")
-                    cha.push("取消")
-                    if (!tea.includes(topicList[i].instructor)) {
-                        tea.push(topicList[i].instructor)
-                    }
-                    if (!field.includes(topicList[i].areas)) {
-                        field.push(topicList[i].areas)
-                    }
-
+            for (let i = 0; i < topicList.length; i++) {
+                topicList[i].key = i;
+                topicList[i].status = 1
+                del.push("text")
+                cha.push("取消")
+                if (!tea.includes(topicList[i].instructor)) {
+                    tea.push(topicList[i].instructor)
+                }
+                if (!field.includes(topicList[i].areas)) {
+                    field.push(topicList[i].areas)
                 }
             }
         }
@@ -287,8 +230,10 @@ export default class TopicList extends Component {
         }
 
         const paginationProps = {
+            hideOnSinglePage: true,
             showSizeChanger: false,
             pageSize: 8,
+
         }
         const columns = [
             {
@@ -314,23 +259,34 @@ export default class TopicList extends Component {
 
             },
             {
-                title: '领域',
-                dataIndex: 'areas',
-                key: 'areas',
-                filters: _field,
-                onFilter: (value, record) => record.areas.includes(value),
-                render: (areas, record) => (
-                    <>
-                        {
-                            areas.map((tag, i) => {
-                                return (
-                                    <Tag color={record.color[i]}>
-                                        {tag}
-                                    </Tag>
-                                );
-                            })}
-                    </>
-                ),
+                title: '详情',
+                dataIndex: 'detail',
+                key: 'detail',
+
+                render: (record) =>
+                    <a style={{ paddingLeft: 20 }} onClick={() => this.showModal()}>查看</a>
+            },
+            {
+                title: '操作',
+                dataIndex: 'operation',
+                key: 'operation',
+                render: (text, record) =>
+                    <Button size="small" type={del[record.key]} onClick={() => this.handleClick(record)} >{cha[record.key]}</Button>
+            }
+        ]
+        const aft_column = [
+            {
+                title: '指导教师',
+                dataIndex: 'instructor',
+                key: 'instructor',
+            },
+            {
+                title: '课题名称',
+                dataIndex: 'topic',
+                key: 'topic',
+                ellipsis: {
+                    showTitle: false,
+                },
             },
             {
                 title: '状态',
@@ -338,11 +294,7 @@ export default class TopicList extends Component {
                 key: 'status',
                 align: 'center',
                 render: d => <span style={{ paddingLeft: 25 }}>
-                    {
-                        typeof (d) === "string" ?
-                            <span >{d}</span> :
-                            <Tag color={STU_ST_STATUS[d] && STU_ST_STATUS[d].color}>{STU_ST_STATUS[d] && STU_ST_STATUS[d].name}</Tag>
-                    }
+                    <Tag color={STU_ST_STATUS[d] && STU_ST_STATUS[d].color}>{STU_ST_STATUS[d] && STU_ST_STATUS[d].name}</Tag>
                 </span>
             },
             {
@@ -363,24 +315,41 @@ export default class TopicList extends Component {
         ]
         return (
             <div className="g-stu-sel">
-                <h3 className="u-title">课题列表</h3>
+                {isAudi ? <h3 className="u-title">已选课题</h3> : <h3 className="u-title">课题列表</h3>}
                 <Spin spinning={this.state.loading}>
                     <ConfigProvider renderEmpty={customizeRenderEmpty}>
-                        <Table
-                            className="g-stu-table"
-                            columns={columns}
-                            dataSource={this.state.topicList}
-                            rowKey={item => item.id}
-                            pagination={paginationProps}
-                            onRow={record => {
-                                return {
-                                    onMouseEnter: e => {
-                                        this.state.rowDetail = record
+                        {isAudi ?
+                            <Table
+                                className="g-stu-tb-after"
+                                columns={aft_column}
+                                dataSource={topicList}
+                                rowKey={item => item.id}
+                                pagination={paginationProps}
+                                onRow={record => {
+                                    return {
+                                        onMouseEnter: e => {
+                                            this.state.rowDetail = record
+                                        }
                                     }
                                 }
-                            }
-                            }
-                        />
+                                }
+                            /> :
+                            <Table
+                                className="g-stu-tb"
+                                columns={columns}
+                                dataSource={topicList}
+                                rowKey={item => item.id}
+                                pagination={paginationProps}
+                                onRow={record => {
+                                    return {
+                                        onMouseEnter: e => {
+                                            this.state.rowDetail = record
+                                        }
+                                    }
+                                }
+                                }
+                            />
+                        }
                     </ConfigProvider>
                 </Spin>
                 <Modal
@@ -388,7 +357,12 @@ export default class TopicList extends Component {
                     title="课题详情"
                     visible={this.state.visible}
                     onCancel={this.handleOk}
-                    footer={[]}
+                    footer={
+                        [
+                            <Button onClick={() => this.handleOk()}>关闭</Button>,
+                            isAudi ?<Button onClick={() => this.handleClick(rowDetail)} >取消选定</Button>:
+                            <Button onClick={() => this.handleClick(rowDetail)} type="primary">选定</Button>
+                        ]}
                     width={900}
                 >
                     <Descriptions
