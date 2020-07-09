@@ -6,7 +6,7 @@ import { route } from 'preact-router';
 
 @inject('userStore')
 @observer
-export default class file extends Component {
+export default class fileManage extends Component {
 
   @computed
   get usr() {
