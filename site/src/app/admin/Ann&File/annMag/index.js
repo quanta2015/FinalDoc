@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-09 09:44:03
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-09 14:16:04
+ * @LastEditTime: 2020-07-09 15:32:35
  */ 
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
@@ -34,12 +34,6 @@ export default class Ann extends Component {
       route('/')
     }
   }
-
-  // onChange = e => {
-  //   this.setState({
-  //     value: e.target.value,
-  //   })
-  // }
 
   render() {
     return (
