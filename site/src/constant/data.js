@@ -6,19 +6,29 @@ export const MONTH_FORMAT = 'YYYY/MM'
 
 import home  from '../icon/icon_setting.svg';
 
-export var MENU_MAIN_T = 
-   [{ title:'毕业设计管理', path: '/t_manage' , icon:home },
-    { title:'初期命题审核', path: '/t_auditTP', icon:home },
-    { title:'中期开题审核', path: '/t_auditOP', icon:home },
-    { title:'终期论文审核', path: '/t_auditFD', icon:home },
-    { title:'系统设置 ', path: '/t_system', icon:home }
+import group from '../icon/icon_m_group.svg';
+import divide from '../icon/icon_m_divide.svg';
+import article from '../icon/icon_m_article.svg';
+import progress from '../icon/icon_m_progress.svg';
+
+
+export var MENU_MAIN_T =
+   [{ title: '毕业设计管理', path: '/t_manage', icon: home },
+   { title: '系统设置 ', path: '/t_system', icon: home },
+   ]
+
+export var MENU_MAIN_T_AUDIT = [
+   { title: '初期命题审核', path: '/t_auditTP', icon: home },
+   { title: '中期开题审核', path: '/t_auditOP', icon: home },
+   { title: '终期论文审核', path: '/t_auditFD', icon: home },
+
 ]
 
 export var MENU_MAIN_M = 
-   [{ title:'分配审核选题', path: '/m_distributeTopic' , icon:home },
-    { title:'组织答辩小组', path: '/m_organizeOpendefence' , icon:home },
-    { title:'论文审核工作', path: '/m_reviewPaper' , icon:home },
-    { title:'查看论文进度', path: '/m_viewProgress' , icon:home },
+   [{ title:'分配审核选题', path: '/m_distributeTopic' , icon:divide },
+    { title:'组织答辩小组', path: '/m_organizeOpendefence' , icon:group },
+    { title:'论文审核工作', path: '/m_reviewPaper' , icon:progress },
+    { title:'查看论文进度', path: '/m_viewProgress' , icon:article },
    ]
 export var MENU_MAIN_S = 
    [{ title:'毕业设计管理', path: '/t_manage' , icon:home }]
