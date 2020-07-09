@@ -59,5 +59,61 @@
         .ant-table-selection-column {
             width: 60px;
         }
-    }
+    } 
 }
+
+.g-mod-close  .m-dtl-mod{
+
+
+.m-title{
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px ;
+        .u-type{
+            color:white;
+            font-size: 14px;
+            padding: 2px 6px;
+            
+            background-color: orangered;
+        }
+        .u-topic{
+            font-weight: bolder;
+            font-size: 24px;
+            color:#999;
+        }
+        .u-tea-name{
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+  
+    .m-cont{
+        padding: 20px;
+        .dtl{
+            font-size: 16px;
+            margin-top:20px ;
+        }
+        .expln{
+        font-weight: bold;
+
+    }
+
+    }
+      .m-mod-icon{
+        font-size: 24px;
+        color: gray;
+    }
+    
+
+     
+}
+
+.g-mod-close .ant-modal-close{
+     
+        position: absolute;
+        top: -24px;
+        right: -30px;       
+    }  
+
+

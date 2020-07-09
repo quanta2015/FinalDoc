@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import  './manualAllocate.scss';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -346,19 +346,28 @@ export default class ManualAllocate extends Component {
 
                 <Modal
                     title="查看详情"
+                    title={null}
+                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+                        fontSize: '28px',
+                    }} />}
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     footer={null}
                     width={900}
+                    className="g-mod-close"
                 >
-                    <Descriptions
-                        title=""
-                        bordered
-                    >
-                        <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-                    </Descriptions>
+                    <div class="m-dtl-mod">
+                        <div class="m-title">
+                            <div class="u-type">{this.state.own.type}</div>
+                            <div class="u-topic">{this.state.own.topic}</div>
+                            <div class="u-tea-name">{this.state.own.tName}</div>
+                        </div>
+                        <div class="m-cont">
+                            <div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.state.own.content}</div>
+                        </div>
+
+                    </div>
                 </Modal>
 
             </div>

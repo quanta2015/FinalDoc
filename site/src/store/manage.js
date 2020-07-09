@@ -76,7 +76,7 @@ class manager extends BaseActions {
         color.push(item.split("|")[2])
       })
       topicList.push({
-        key: item.key, tid: item.tid, tName: item.name, topic: item.topic, content: item.content,
+        key: item.key, tid: item.tid, tName: item.name, topic: item.topic, content: item.content, type: item.type,
         areas: areas,
         color: color,
       })

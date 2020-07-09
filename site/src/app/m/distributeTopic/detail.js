@@ -2,9 +2,9 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './detail.scss';
-import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip,Popconfirm } from 'antd';
+import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip, Popconfirm } from 'antd';
 
-import { SearchOutlined,ExclamationCircleOutlined  } from '@ant-design/icons';
+import { SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
 
 
 const paginationProps = {
@@ -12,6 +12,8 @@ const paginationProps = {
 		return `共 ${total} 条`;
 	}),
 }
+
+
 
 @inject('manageStore', 'userStore')
 @observer
@@ -255,9 +257,9 @@ export default class Detail extends Component {
 						</Tooltip>
 					}
 					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag === 0) &&
-					 <Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消"> 
-						<Button type="primary" >发布课题</Button>
-					</Popconfirm>
+						<Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消">
+							<Button type="primary" >发布课题</Button>
+						</Popconfirm>
 					}
 					{
 
@@ -281,40 +283,43 @@ export default class Detail extends Component {
 						pagination={paginationProps}
 					/>
 				</div>
+
 				<Modal
-					title="查看详情"
+					title={null}
+					closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+						fontSize: '28px',
+					}} />}
 					visible={this.state.visible}
 					onCancel={this.handleCancel}
 					footer={null}
 					width={900}
+					className="g-mod-close"
 				>
-					<Descriptions
-						title=""
-						bordered
-					>
-						<Descriptions.Item label="课题名称" span={3}>{this.state.own.topicTOPIC}</Descriptions.Item>
-						<Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-						<Descriptions.Item label="出题教师" >{this.state.own.teaName}</Descriptions.Item>
-						<Descriptions.Item label="审核教师" >{this.state.own.checkTeacher}</Descriptions.Item>
-						<Descriptions.Item label="审核状态" ><Tag color={color} >
-							{tag}
-						</Tag></Descriptions.Item>
+					<div class="m-dtl-mod">
+						<div class="m-title">
+							<div class="u-type">{this.state.own.type}</div>
+							<div class="u-topic">{this.state.own.topicTOPIC}</div>
+							<div class="u-tea-name">{this.state.own.teaName}</div>
+						</div>
+						<div class="m-cont">
+							<div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.state.own.content}</div>
+							<div class="dtl"><span class="expln">审核建议:&nbsp;</span>
+								{
+									(this.state.own.sugg === null) && <span>无</span>
+								}
+								{
+									(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>
+								}
+							</div>
+						</div>
 
-						<Descriptions.Item label="审核建议">
-							{this.state.own.sugg}
-						</Descriptions.Item>
-					</Descriptions>
+					</div>
+
+
+
 				</Modal>
 
-				{/* <Modal
-					title="信息确认"
-					visible={this.state.check_visible}
-					onOk={this.release}
-					onCancel={this.handleCheckCancel}
-				>
-					<ExclamationCircleOutlined />
-					点击确认后，不能再次发布课题！
-				</Modal> */}
+
 			</div>
 		);
 	}
