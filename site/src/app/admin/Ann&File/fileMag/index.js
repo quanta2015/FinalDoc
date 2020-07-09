@@ -2,8 +2,11 @@ import { Component } from "preact";
 import { inject, observer } from "mobx-react";
 import { computed, toJS } from "mobx";
 import { route } from "preact-router";
-import { Card,Divider  } from "antd";
-
+import { Card, Divider, Col, Row } from "antd";
+import {
+  UploadOutlined,
+  
+} from '@ant-design/icons';
 @inject("userStore")
 @observer
 export default class fileManage extends Component {
@@ -23,44 +26,36 @@ export default class fileManage extends Component {
       <>
         <div className="g-m">
           <div className="m-m"></div>
-          <Card title="已经上传项目">
-            <Card
-              type="inner"
-              title="Inner Card title"
-              extra={<a href="#">More</a>}
-            >
-              Inner Card content
-            </Card>
-            <Card
-              style={{ marginTop: 16 }}
-              type="inner"
-              title="Inner Card title"
-              extra={<a href="#">More</a>}
-            >
-              Inner Card content
-            </Card>
+          <Card title="已经上传项目"    extra={<a href="#">  <UploadOutlined /></a>}>
+       
+              <Row gutter={[8, 8]}>
+                <Col span={6}>
+                  <Card type="inner" title="名称" extra={<a href="#">More</a>}>
+                    学生名单
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card type="inner" title="名称" extra={<a href="#">More</a>}>
+                    学生名单
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card type="inner" title="名称" extra={<a href="#">More</a>}>
+                    学生名单
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card type="inner" title="名称" extra={<a href="#">More</a>}>
+                    学生名单
+                  </Card>
+                </Col>
+              </Row>
+        
           </Card>
+
           
-          <br></br>
           <Divider />
-          <br></br>
-          <Card title="尚未上传项目">
-            <Card
-              type="inner"
-              title="Inner Card title"
-              extra={<a href="#">More</a>}
-            >
-              Inner Card content
-            </Card>
-            <Card
-              style={{ marginTop: 16 }}
-              type="inner"
-              title="Inner Card title"
-              extra={<a href="#">More</a>}
-            >
-              Inner Card content
-            </Card>
-          </Card>
+         
         </div>
       </>
     );
