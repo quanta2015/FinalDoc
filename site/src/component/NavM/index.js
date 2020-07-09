@@ -6,7 +6,7 @@ import { Modal } from 'antd';
 import UploadImage from '../ImgUpload'
 import './index.scss'
 // import more from './more.svg'
-import { MENU_MAIN_M } from '../../constant/data'
+import { MENU_MAIN_M, MENU_MAIN_T, MENU_MAIN_T_AUDIT} from '../../constant/data'
 
 @inject('manageStore', 'userStore')
 @observer
@@ -65,11 +65,23 @@ class NavM extends Component {
           {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
+          {/* {MENU_MAIN_T.map((item, i) =>
+            <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
+              <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+            </div>
+          )}
+          <br /> */}
           {MENU_MAIN_M.map((item, i) =>
             <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
               <img src={item.icon} /><span>{item.title}</span>
             </div>
           )}
+          {/* <br />
+          {MENU_MAIN_T_AUDIT.map((item, i) =>
+            <div className={(this.state.cur == i +6 ) ? 'm-menu-item active' : 'm-menu-item'} key={i + 6} onClick={this.doMenu.bind(this, item.path, i + 6)}>
+              <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+            </div>
+          )} */}
         </div>
         {/* <Modal
           title="查看电子签名"
