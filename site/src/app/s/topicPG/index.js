@@ -83,7 +83,6 @@ export default class TopicPG extends Component {
     }
     render() {
         const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
-        console.log(currStage);
         return (
             <div className="g-stu-prog">
                 <div className="m-hd">

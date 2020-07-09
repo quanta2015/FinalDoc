@@ -7,37 +7,9 @@
         justify-content: space-between;
         
         &>.u-type {
-            //实底
             padding: 5px 10px;
-            // background-color: #1890ff;
-            // color: #fff;
-
-            //线形1
-            color: #1890ff;
-            border-left: 3px solid #1890ff;
-
-            //线形2
-            // border: 1px solid #1890ff;
-            // border-radius: 3px;
-
-            // 标签式
-            // position: relative;
-            // height: 30px;
-            // padding: 0 35px 0 20px;
-            // background: #1890ff;
-            // color: #fff;
-            // line-height: 30px;
-            // margin-left: -26px;
-
-            // &:before {
-            //     content: "";
-            //     position: absolute;
-            //     right: 0; 
-            //     bottom: 0;
-            //     border-right: 20px solid white;
-            //     border-top: 15px solid transparent;
-            //     border-bottom: 15px solid transparent;
-            // } 
+            background-color: #ff653e;
+            color: #fff;
         }
 
         &>.u-topic {
@@ -95,14 +67,14 @@
         }
 
         .z-active:before {
-            border: 2px solid #5ecc62;
+            border: 2px solid #F90006;
         }
 
         .z-focus:before {
             //橙 #FF3300 #FC7F4F #fb8a2e #FF7946
             //绿 #41E8BB #7BC5D0 #1cc7d0 #5ecc62 #2DA754
-            border: 2px solid #5ecc62;
-            background-color: #5ecc62;
+            border: 2px solid #F90006;
+            background-color: #F90006;
         }
 
         .u-status {
