@@ -4,9 +4,11 @@
  * @Author: East Wind
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-07-09 10:37:18
+ * @LastEditTime: 2020-07-09 10:49:58
  */ 
 
 const express = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
+
+module.exports = router;
