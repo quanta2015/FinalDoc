@@ -1,0 +1,13 @@
+//.g-ann {
+    table,
+    tbody.ant-table-tbody {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ant-table-row,
+    .ant-table-thead>tr {
+        display: flex;
+    }
+//}
+
