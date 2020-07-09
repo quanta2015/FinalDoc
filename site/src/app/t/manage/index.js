@@ -15,7 +15,7 @@ import style from './style.scss';
 
 //将收到的topic数据映射为可以展示的列表
 const filter = (t)=>{
-  return {id:t.id,name:t.topic,status:(t.pass==2?4:t.pass),sid:t.sid}
+  return {id:t.id,name:t.topic,status:(t.pass==2?100:t.pass),sid:t.sid}
 }
 //按照通过状态排序topic列表
 const sorter = (x,y)=>{
@@ -56,8 +56,6 @@ export default class Home extends BaseActions {
 			route('/')
 		}
     this.getTopicList();
-    console.log(this.usr)
-    
   }
 
   /**
@@ -65,6 +63,7 @@ export default class Home extends BaseActions {
    */
   getTopicList = async ()=>{
     let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID,{tea_id:this.usr.uid})
+    // let data = await this.post("http://localhost:8090/teacher/getTidgetTopic",{tea_id:this.usr.uid})
     data = data.data.map(filter);
     data.sort(sorter);
     this.setState({toplist:data});
@@ -74,6 +73,8 @@ export default class Home extends BaseActions {
     this.setState({
       checkList:data
     })
+
+    
 
   }
 
@@ -125,7 +126,7 @@ export default class Home extends BaseActions {
         <Drawer
           forceRender={true}
           width={720}
-          title="课题发布"
+          title={<b>课题发布</b>}
           placement={placement}
           closable={false}
           onClose={this.onClose}

@@ -43,8 +43,8 @@ class User extends BaseActions {
         if (params.remember)
           token.saveUser(r.data)
         this.usr = r.data[0]
-        console.log(r.data)
-        console.log(this.usr)
+        // console.log(r.data)
+        // console.log(this.usr)
       })
       console.log("判断成功")
       return r

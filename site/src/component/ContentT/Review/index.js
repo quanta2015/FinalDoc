@@ -46,7 +46,6 @@ export default class Review extends BaseActions{
   ]
   constructor(props){
     super(props)
-    console.log(this.props.list)
   }
 
   /**

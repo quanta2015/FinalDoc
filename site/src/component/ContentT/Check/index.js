@@ -12,23 +12,25 @@ import Watch from '../../../component/ContentT/Icons/Watch'
 import ReviewLine from '../Review';
 
 
-const PanelHeader = (name,status,id)=>(
+const PanelHeader = (name,status,id)=>{
+  let sb = (status==3||status==4||status==5);
+  return(
 <span>
-    {status!=3&&<span  className="check-long-pid">{id}</span>}
-    {status==3&&<span  className="check-short-pid">{id}</span>}
-    {status!=3&&
+    {!sb&&<span  className="check-long-pid">{id}</span>}
+    {sb&&<span  className="check-short-pid">{id}</span>}
+    {!sb&&
     <span className="check-default-pname">
       {name}
     </span>
     }
     {
-      status==3&&
+      sb&&
       <span className="check-pointer-pname">
         {name}
       </span>
     }
   </span>
-)
+)}
 
 @inject('userStore')
 @observer
@@ -44,7 +46,7 @@ class Check extends BaseActions {
   }
 
   state={
-    judgeTopic:true
+    judgeTopic:true,
   }
 
   async componentDidMount(){
@@ -52,6 +54,8 @@ class Check extends BaseActions {
     if(x.data[0].flag==1){
       this.setState({judgeTopic:false})
     }
+    
+    
   }
 
   /**
@@ -92,19 +96,21 @@ class Check extends BaseActions {
 
   StateExtra = (t) => (
     <div className="state-extra">
-      {t.status==3 && <Tag color="green">已通过</Tag>}
+      {t.status==3 && <Tag color="blue">审核已通过</Tag>}
       {t.status==1 && <Tag color="orange">待审核</Tag>}
-      {t.status==4 && <Tag color="red">未通过</Tag>}
+      {t.status==100 && <Tag color="red">审核未通过</Tag>}
       {t.status==0 && <Tag color="orange">待分配</Tag>}
+      {t.status==4 && <Tag color="green">双选成功</Tag>}
+      {t.status==5 && <Tag color="orange">学生已选定</Tag>}
       <div className="icons">
         {
-          (t.status==0||t.status==1||t.status==4)&&<span onClick={()=>{this.deleteTopic(t.id,t.name)}}><DeleteSpan /></span>
+          (t.status==0||t.status==1||t.status==100)&&<span onClick={()=>{this.deleteTopic(t.id,t.name)}}><DeleteSpan /></span>
         }
         {
-          (t.status==0||t.status==1||t.status==4)&&<span onClick={()=>{this.props.change(t.id)}}><ReWrite/></span>
+          (t.status==0||t.status==1||t.status==100)&&<span onClick={()=>{this.props.change(t.id)}}><ReWrite/></span>
         }
         {
-          (t.status==4)&&<span onClick={()=>{this.getSugg(t.id)}}><Watch/></span>
+          (t.status==100)&&<span onClick={()=>{this.getSugg(t.id)}}><Watch/></span>
         }
       </div>
       
@@ -136,9 +142,15 @@ class Check extends BaseActions {
           {
             this.props.toplist.map(
               (t)=>
-                <Panel header={PanelHeader(t.name,t.status,t.id)} key={t.id} extra={this.StateExtra(t)} showArrow={t.status==3?true:false} disabled={t.status==3?false:true}>
+                <Panel 
+                header={PanelHeader(t.name,t.status,t.id)} 
+                key={t.id} 
+                extra={this.StateExtra(t)} 
+                showArrow={(t.status==3||t.status==4||t.status==5)?true:false} 
+                disabled={(t.status==3||t.status==4||t.status==5)?false:true}>
+                
                   <div className="stu">
-                    {t.status==3 &&
+                    {(t.status==3||t.status==4||t.status==5) &&
                       <>
                         {t.sid!=null&&
                           <StuMethods  sid={t.sid} tid={this.usr.uid} pid={t.id} freshList={this.props.freshList}/>

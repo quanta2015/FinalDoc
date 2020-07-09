@@ -58,7 +58,7 @@ class Publish extends BaseActions {
       //let data = await this.me.getTopicFullInfo(this.props.pid);
       let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID,{pid:this.props.tid});
       data = data.data[0];
-      this.name.value = data.topic;
+      this.name.setState({value : data.topic});
       this.setState({type:data.type,area:data.area})
       this.note.setState({value:data.note})    
       if((data.sid==null||data.sid=="null")&&this.state.selectStu){this.switch.click();}
@@ -84,7 +84,7 @@ class Publish extends BaseActions {
   }
 
   clear = e => {
-    this.name.value = "";
+    this.name.setState({value : ""});
     this.note.setState({ value: "" })
     this.setState({
       selected_stu_data:null,
@@ -135,11 +135,13 @@ class Publish extends BaseActions {
 
   postInfo = async () => {
     let data;
+    console.log(this.name);
+    
     if(this.state.area.length==0){
       alert("请选择研究方向！")
       return;
     }
-    if(this.name.value.trim()==""){
+    if(this.name.state.value.trim()==""){
       alert("请输入课题名！")
       return;
     }
@@ -156,7 +158,7 @@ class Publish extends BaseActions {
         data = {
           //TODO
           tea_id:this.usr.uid,
-          name:this.name.value,
+          name:this.name.state.value,
           type:this.type.base.textContent,
           note:this.note.state.value,
           stuId:this.state.selected_stu_data,
@@ -167,7 +169,7 @@ class Publish extends BaseActions {
     }else{
       data={
         tea_id:this.usr.uid,
-        name:this.name.value,
+        name:this.name.state.value,
         type:this.state.type,
         note:this.note.state.value,
         stuId:null,
@@ -187,23 +189,25 @@ class Publish extends BaseActions {
           <div className="input-line">
             <div className="input-left">课题名称</div>
             <div className="input-right">
-              <input
+              <Input
                 style={{ width: 600 }}
+                size="large"
                 ref={name => this.name = name}
-                className="have-placehoder" type="text" placeholder="请输入课题名" />
+                className="have-placehoder"  placeholder="请输入课题名" />
             </div>
           </div>
           <div className="input-line">
             <div className="input-left">项目类别</div>
             <div className="input-right">
               <Select
+                size="large"
                 ref={type => this.type = type}
                 className="have-placehoder"
                 value={this.state.type}
                 showSearch
                 onChange={this.handleTypeChange}
                 defaultValue={"工程设计"}
-                style={{ width: 600 }}
+                style={{ width: 600,height:40 }}
                 placeholder="选择项目类别"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
@@ -220,6 +224,7 @@ class Publish extends BaseActions {
             <div className="input-left">研究方向</div>
             <div className="input-right">
               <Select
+                size="large"
                 ref={area => this.area = area}
                 className="have-placehoder"
                 value={this.state.area}
@@ -243,18 +248,18 @@ class Publish extends BaseActions {
             <div className="input-left">简介</div>
             <div className="input-right">
               <TextArea
+                
                 ref={note => this.note = note}
-                style={{ width: 600 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
+                style={{ width: 600 }} rows={11} placeholder="输入您的简介" className="have-placehoder" />
             </div>
           </div>
 
           <div className="input-line-row">
-            <div className="input-left">手动选择学生</div>
             <div className="input-right">
               <Switch 
               ref={e=>this.switch=e}
-              checkedChildren="开启" 
-              unCheckedChildren="关闭" 
+              checkedChildren="手动选择学生" 
+              unCheckedChildren="暂不选择学生" 
               onChange={this.handleSwitchChange} />
             </div>
           </div>
@@ -266,6 +271,7 @@ class Publish extends BaseActions {
               <div className="input-right">
 
                 <Select
+                size="large"
                   ref={stu => this.stuId = stu}
                   value={this.state.selected_stu_data}
                   className="have-placehoder"
@@ -286,11 +292,10 @@ class Publish extends BaseActions {
           }
 
           <div className="input-line-row">
-            {/* <div className="input-left"></div> */}
-            <div className="input-left">
+            <div className="input-button">
               <Button type="primary" onClick={this.postInfo}>提交</Button>
             </div>
-            <div className="input-left">
+            <div className="input-button">
               <Button onClick={this.clear}>清空</Button>
             </div>
           </div>

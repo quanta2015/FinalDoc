@@ -8,37 +8,47 @@
     .input-line{
         display: flex;
         flex-direction: column;
-        padding-bottom: 5px;
         border-bottom: 1px solid #fafafa;
         color: #000;
-        margin: 25px;
+        margin: 0 10px 25px 10px;
     }
 
     .input-line-row{
         display: flex;
-        padding-bottom: 5px;
         border-bottom: 1px solid #fafafa;
         color: #000;
-        margin: 25px;
+        margin: 20px 10px;
     }
     
     .input-left{
-        margin-bottom: 10px;
-        width: 100px;
-        margin-right: 60px;
-        display: flex;
-        justify-content: space-between;
+        z-index: 2;
+        background-color: white;
+        font-size: 10px;
+        width: 80px;
+        color: #666;
+        padding: 0 10px;
+        margin: 0 0 -5px 10px;
+        display: inline;
         letter-spacing: 2px;
     }
-    
-    .input-right>input{
-        border: 0;
+
+    .input-button{
+        width: 100px;
+        margin-right: 20px;
+    }
+
+    .input-button>button{
+        width: 100%;
     }
     
-    .input-right>input:focus{
-        border: 0;
-        outline: 0;
-    }
+    // .input-right>input{
+    //     border: 0;
+    // }
+    
+    // .input-right>input:focus{
+    //     border: 0;
+    //     outline: 0;
+    // }
     
     .have-placehoder::placeholder{
         color: #bbb; 
