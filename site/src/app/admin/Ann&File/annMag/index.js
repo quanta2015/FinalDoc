@@ -13,6 +13,7 @@ import { route } from 'preact-router';
 
 import { Tabs } from 'antd';
 import AnnounceManage from './annMg.js'
+import FileManage from '../fileMag'
 
 const { TabPane } = Tabs;
 
@@ -49,7 +50,7 @@ export default class Ann extends Component {
             <AnnounceManage />
           </TabPane>
           <TabPane tab="文档管理" key="2">
-            Content of Tab Pane 2
+          <FileManage />
           </TabPane>
         </Tabs>
         {/* <div className="m-m">公告模块</div> */}
