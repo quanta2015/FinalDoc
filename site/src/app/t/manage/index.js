@@ -1,7 +1,7 @@
 import { Component } from 'preact'
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import CheckBlock from '../../../component/ContentT/Check';
+import CheckBlock from '../../../component/ContentT/Check2';
 import { Drawer,Modal,Button   } from 'antd';
 import { route } from 'preact-router';
 import * as urls from '../../../constant/urls'
@@ -38,7 +38,7 @@ export default class Home extends BaseActions {
   state={
     //发布课题抽屉可见性
     visible: false, 
-    //抽屉位置
+    //抽屉位置  
     placement: 'right',
     //当前选中的课题id
     tid:null,
@@ -73,9 +73,6 @@ export default class Home extends BaseActions {
     this.setState({
       checkList:data
     })
-
-    
-
   }
 
   /**

@@ -250,7 +250,7 @@ class Publish extends BaseActions {
               <TextArea
                 
                 ref={note => this.note = note}
-                style={{ width: 600 }} rows={11} placeholder="输入您的简介" className="have-placehoder" />
+                style={{ width: 600 }} rows={10} placeholder="输入您的简介" className="have-placehoder" />
             </div>
           </div>
 
