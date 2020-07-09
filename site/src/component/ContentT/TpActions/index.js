@@ -7,14 +7,14 @@ import {
     Input,
     Modal,
     message,
-	Descriptions,
 	Tooltip
 } from 'antd';
 
 import {
 	CheckOutlined,
 	CloseOutlined,
-	FileSearchOutlined,
+    FileSearchOutlined,
+    CloseCircleTwoTone,
 } from '@ant-design/icons';
 
 const { TextArea } = Input;
@@ -50,6 +50,11 @@ class TpActions extends Component {
     handleBtnPass = (id) => {
         this.props.teacherStore.AuditTp_passTopic( {"id": id} )
         .then(() => {this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )})
+        .then(() => {
+            this.setState({
+                contentModalVisible: false,
+			});
+        })
     }
 
     //提出建议
@@ -77,7 +82,8 @@ class TpActions extends Component {
 
 		setTimeout(() => {
 			this.setState({
-				adviceModalVisible: false,
+                adviceModalVisible: false,
+                contentModalVisible: false,
 				confirmLoading: false,
 			});
 		}, 500);
@@ -132,18 +138,35 @@ class TpActions extends Component {
 
                 <Modal
                     className="t-ContentT-TpActions-Modal"
-                    title="详细内容"
+                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+                        fontSize: '28px',
+                    }} />}
+                    title={null}
                     visible={contentModalVisible}
                     confirmLoading={confirmLoading}
                     onCancel={this.handleContentCancel}
                     footer={null}
                     width={900}
                 >
-                    <Descriptions column={2} bordered>
-                        <Descriptions.Item label="课题名称">{this.selectedTopic.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题类型" span={1}>{this.selectedTopic.type}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={2}>{this.selectedTopic.content}</Descriptions.Item>
-                    </Descriptions>
+                    <div>
+                        <div class="m-title">
+							<div class="u-type">{this.selectedTopic.type}</div>
+							<div class="u-topic">{this.selectedTopic.topic}</div>
+							<div class="u-none">{this.selectedTopic.type}</div>
+						</div>
+                    </div>
+                    <div class="m-cont">
+                        <div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.selectedTopic.content}</div>
+                    </div>
+                    <div class="m-footer">
+                        <Button className="u-pass" type="primary" shape="round" onClick={this.handleBtnPass.bind(this, this.props.record.id)}>
+                            通过选题
+                        </Button>
+
+                        <Button className="u-oppose" shape="round" onClick={this.showAdviceModal}>
+                            提出建议
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         )

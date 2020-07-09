@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { route } from 'preact-router';
 import './index.scss'
 import more from './more.svg'
-import { MENU_MAIN_T } from '../../constant/data'
+import { MENU_MAIN_T,MENU_MAIN_T_AUDIT } from '../../constant/data'
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 
@@ -49,8 +49,14 @@ class NavT extends Component {
             <div className={(cur==i)?'m-menu-item active':'m-menu-item'} key={i} onClick={this.doMenu.bind(this,item.path,i)}>
               <img src={item.icon} /><span className="m-menu-span">{item.title}</span> 
             </div>
+          )}<br/>
+          {MENU_MAIN_T_AUDIT.map((item,i)=>
+            <div className={(cur==i+2)?'m-menu-item active':'m-menu-item'} key={i+2} onClick={this.doMenu.bind(this,item.path,i+2)}>
+              <img src={item.icon} /><span className="m-menu-span">{item.title}</span> 
+            </div>
           )}
         </div>
+        
       </div>
       </div>
     )

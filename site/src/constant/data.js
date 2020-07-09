@@ -5,13 +5,20 @@ export const DATE_FORMAT  = 'YYYY/MM/DD'
 export const MONTH_FORMAT = 'YYYY/MM'
 
 import home  from '../icon/icon_setting.svg';
+import manage from '../icon/icon_manage.svg';
+import audit from '../icon/icon_audit.svg';
+import cp from '../icon/icon_cp.svg';
 
 export var MENU_MAIN_T = 
-   [{ title:'毕业设计管理', path: '/t_manage' , icon:home },
-    { title:'初期命题审核', path: '/t_auditTP', icon:home },
-    { title:'中期开题审核', path: '/t_auditOP', icon:home },
-    { title:'终期论文审核', path: '/t_auditFD', icon:home },
-    { title:'系统设置 ', path: '/t_system', icon:home }
+   [{ title:'毕业设计管理', path: '/t_manage' , icon:manage},
+   { title:'系统设置 ', path: '/t_system', icon:home },
+]
+
+export var MENU_MAIN_T_AUDIT = [
+      { title:'初期命题审核', path: '/t_auditTP', icon:cp },
+    { title:'中期开题审核', path: '/t_auditOP', icon:audit },
+    { title:'终期论文审核', path: '/t_auditFD', icon:audit },
+    
 ]
 
 export var MENU_MAIN_M = 
