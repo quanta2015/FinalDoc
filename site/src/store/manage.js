@@ -1,5 +1,6 @@
 import BaseActions from '../component/BaseActions'
 import { observable, action, runInAction } from 'mobx'
+import axios from 'axios'
 import * as urls from '../constant/urls'
 
 class manager extends BaseActions {
@@ -403,6 +404,32 @@ class manager extends BaseActions {
   async viewFiles(param){
     let res = await this.post(urls.API_MAN_POST_VIEWFILES, param)
     return res.data
+  }
+
+  @action
+  //仅支持pdf
+  // {"file": string}
+  async previewFile(param) {
+    return await axios({
+      url: urls.API_SYS_DOWN_FILE,
+      method: 'POST',
+      responseType: 'blob',
+      data: param
+    }).then(r => {
+      let type = r.headers['content-type'];
+      let data = new Blob([r.data], {
+        type: type
+      })
+      let blobUrl = window.URL.createObjectURL(data);
+      let ext = param.file.split('.').slice(-1);
+      let newWindow = window.open();
+      let item = '<iframe width="100%" height="100%" src="' + blobUrl + '" frameborder="0" allowfullscreen></iframe>'
+      newWindow.document.write(item);
+      newWindow.document.title = `预览${param.id}_${param.name}.${ext}`;
+      return true;
+    }).catch(e => {
+      return false;
+    })
   }
 }
 export default new manager()
