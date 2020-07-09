@@ -4,7 +4,7 @@ import { computed, toJS } from "mobx";
 import { route } from "preact-router";
 import { Modal } from "antd";
 import UploadImage from "../ImgUpload";
-import Icon from '@ant-design/icons';
+import {BankOutlined} from '@ant-design/icons';
 
 import "./index.scss";
 // import more from './more.svg'
@@ -54,17 +54,11 @@ class NavM extends Component {
 
   render() {
     return (
-      <div className="g-mg-nav">
+      <div className="g-admin-nav">
         <div className="g-info">
           <div>身份：教务处</div>
           <div>姓名：{this.usr.name}</div>
           <div>工号：{this.usr.uid}</div>
-          {/* <div>所在系：{this.usr.maj}</div> */}
-          {/* <div className="sign" 
-            onClick={this.showModal} >
-              查看电子签名
-          </div> */}
-          {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
           {ADMIN_NAV_DATA.map((item, i) => {
@@ -76,8 +70,9 @@ class NavM extends Component {
                 key={i}
                 onClick={this.doMenu.bind(this, item.path, i)}
               >
-                <item.icon />
+                <BankOutlined className="iconStyle"/>
                 <span>{item.title}</span>
+
               </div>
             );
           })}

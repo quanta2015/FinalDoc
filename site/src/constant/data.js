@@ -112,7 +112,7 @@ export var ADMIN_NAV_DATA = [
   },{title:"文档管理"}],path: "/admin_ann", icon: "BankOutlined" },
   { title: "选题管理", path: "/admin_file", icon: "BankOutlined" },
   { title: "中期检查", path: "/admin_ann", icon: "BankOutlined" },
-  { title: " 评阅答辩", path: "/admin_file", icon: "BankOutlined" },
-  { title: " 成绩分析", path: "/admin_ann", icon: "BankOutlined" },
-  { title: " 系统设置", path: "/admin_file", icon: "BankOutlined" },
+  { title: "评阅答辩", path: "/admin_file", icon: "BankOutlined" },
+  { title: "成绩分析", path: "/admin_ann", icon: "BankOutlined" },
+  { title: "系统设置", path: "/admin_file", icon: "BankOutlined" },
 ];
