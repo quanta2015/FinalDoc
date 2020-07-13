@@ -5,7 +5,7 @@ import { route } from 'preact-router';
 import { Tag, Button, Modal, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
-import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
+import { FILE_UPLOAD_TYPE, STU_FU_STATUS, STU_OP_SCORE } from '../../../constant/data'
 import './index.scss'
 import LogRecord from '../../../component/LogRecord';
 
@@ -13,8 +13,8 @@ import LogRecord from '../../../component/LogRecord';
 let getStage = (status, info) => {
     let tmp = Math.abs(status) - 4;
     if (tmp < 0 && !info) {
-        return -1; 
-    } else if (tmp < 0 && info){ 
+        return -1;
+    } else if (tmp < 0 && info) {
         return 0;
     } else if (tmp < 2 && info) {
         return tmp + 1;
@@ -50,6 +50,11 @@ export default class TopicPG extends Component {
     @computed
     get timeList() {
         return toJS(this.props.studentStore.timeList);
+    }
+
+    @computed
+    get opScore() {
+        return toJS(this.props.studentStore.opScore);
     }
 
     componentDidMount() {
@@ -103,15 +108,15 @@ export default class TopicPG extends Component {
                                             <h3>{item.time}</h3>
                                             {
                                                 (item.title === '任务书' || item.title === '成绩审定') && (id <= currStage) ?
-                                                <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                <div>
-                                                    <p>
-                                                        {item.title}
-                                                        {   id === currStage && this.selectTpInfo.status < 0 &&
-                                                            <span className="u-status">未通过</span>
-                                                        }
-                                                    </p>
-                                                </div>
+                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                    <div>
+                                                        <p>
+                                                            {item.title}
+                                                            {id === currStage && this.selectTpInfo.status < 0 &&
+                                                                <span className="u-status">未通过</span>
+                                                            }
+                                                        </p>
+                                                    </div>
                                             }
                                         </div>
                                     </li>
@@ -141,6 +146,25 @@ export default class TopicPG extends Component {
                                         </div>
                                     )}
                                 </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="m-op-score">
+                    <div className="m-nm-lst">
+                        {STU_OP_SCORE.map((item) =>
+                            <div className="u-nm-itm">
+                                {item.name}
+                            </div>
+                        )}
+                    </div>
+                    <div className="m-sc-lst">
+                        {this.opScore.map((item) =>
+                            <div className="u-sc-itm">
+                                <span className="score">
+                                    {item.score}
+                                </span>
+                                <span className="char">&nbsp;分</span>
                             </div>
                         )}
                     </div>

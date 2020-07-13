@@ -5,21 +5,21 @@
     .m-hd {
         display: flex;
         justify-content: space-between;
-        
-        &>.u-type {
+
+        & > .u-type {
             padding: 5px 10px;
             background-color: #ff653e;
             color: #fff;
         }
 
-        &>.u-topic {
+        & > .u-topic {
             margin: 0;
             padding-bottom: 2px;
             color: #999;
             font-weight: 550;
         }
 
-        &>.u-name {
+        & > .u-name {
             font-weight: 550;
         }
     }
@@ -27,6 +27,19 @@
     .m-cont {
         padding-top: 35px;
         width: 100%;
+        .ant-btn {
+            padding: 0 4px;
+        }
+        .ant-btn > span {
+            height: 24px;
+            position: relative;
+            top: -3px;
+            margin: 2px 0;
+        }
+        .ant-btn > .anticon + span,
+        .ant-btn > span + .anticon {
+            margin-left: 1px;
+        }
     }
 
     .m-time-line {
@@ -34,7 +47,7 @@
         position: relative;
         top: 25px;
         padding: 0;
-        border-top: 2px solid #D6DCE0;
+        border-top: 2px solid #d6dce0;
         list-style-type: none;
 
         .u-time-stamp {
@@ -47,12 +60,12 @@
                 position: absolute;
                 top: -9px;
                 left: 10px;
-                content: '';
+                content: "";
                 width: 15px;
                 height: 15px;
                 background-color: #fff;
                 border-radius: 25px;
-                border: 2px solid #D6DCE0;
+                border: 2px solid #d6dce0;
             }
         }
 
@@ -67,22 +80,22 @@
         }
 
         .z-active:before {
-            border: 2px solid #F90006;
+            border: 2px solid #f90006;
         }
 
         .z-focus:before {
             //橙 #FF3300 #FC7F4F #fb8a2e #FF7946
             //绿 #41E8BB #7BC5D0 #1cc7d0 #5ecc62 #2DA754
-            border: 2px solid #F90006;
-            background-color: #F90006;
+            border: 2px solid #f90006;
+            background-color: #f90006;
         }
 
         .u-status {
             margin-left: 12px;
             padding: 2px;
-            border: 1px solid #FE1B10;
+            border: 1px solid #fe1b10;
             border-radius: 3px;
-            color: #FE1B10;
+            color: #fe1b10;
             font-size: 11px;
         }
     }
@@ -98,7 +111,7 @@
     .m-stage {
         width: 270px;
 
-        &>.u-title {
+        & > .u-title {
             color: #999;
         }
     }
@@ -127,5 +140,32 @@
         float: right;
         margin: 0;
         margin-top: -30px;
-    }   
+    }
+
+    .m-op-score {
+        width: 270px;
+        position: relative;
+        top: -90px;
+        .m-nm-lst {
+            display: inline-block;
+            .u-nm-itm {
+                line-height: 38px;
+            }
+        }
+        .m-sc-lst {
+            display: inline-block;
+            position: relative;
+            .u-sc-itm {
+                line-height: 38px;
+                position: relative;
+                left: 32px;
+                .score {
+                    font-family: Georgia, "Times New Roman", Times, serif;
+                    font-weight: bold;
+                    font-size: 20px;
+                    color: #ff653e;
+                }
+            }
+        }
+    }
 }

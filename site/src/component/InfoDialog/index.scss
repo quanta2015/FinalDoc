@@ -4,17 +4,18 @@
     .m-hd {
         display: flex;
         justify-content: space-between;
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        // border-bottom: 1px solid rgba(0, 0, 0, .1);
         padding-bottom: 15px;
 
         .m-type {
             padding: 3px 8px;
             background-color: #ff653e;
             color: #fff;
+            height: fit-content;
         }
 
         .m-topic {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
             color: #888;
         }
@@ -32,13 +33,17 @@
 
     .m-tag {
         padding-bottom: 10px;
+        .ant-tag {
+            padding: 3px 8px;
+            font-size: 14px;
+        }
     }
 
     .m-teainfo {
         display: flex;
         padding: 10px 0;
 
-        &>div {
+        & > div {
             width: 300px;
         }
     }

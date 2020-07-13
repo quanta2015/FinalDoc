@@ -11,17 +11,17 @@
 
 @media screen and (min-width: 1000px) {
     .g-stu-mdl-dt {
-        .m-pos {
-            // position: relative;
-            // left: 310px;
-        }
         .ant-modal-content {
             width: 720px;
             position: absolute;
-            // height: calc(100vh);
             overflow: scroll;
             height: 100vh;
-            // flex-direction: column;
+        }
+        .ant-btn > span {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            top: -1px;
         }
     }
 }

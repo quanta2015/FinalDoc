@@ -46,6 +46,14 @@
     }
     .ant-table-cell:nth-last-child(1) {
         width: 200px;
+        .ant-btn-sm {
+            padding: 0px 5px;
+        }
+        .ant-btn > span {
+            height: 24px;
+            position: relative;
+            top: -1px;
+        }
     }
 
     td.ant-table-cell:nth-last-child(2) {
@@ -94,6 +102,14 @@
     }
     .ant-table-cell:nth-last-child(1) {
         width: 200px;
+        .ant-btn-sm {
+            padding: 0px 5px;
+        }
+        .ant-btn > span {
+            height: 24px;
+            position: relative;
+            top: -1px;
+        }
     }
     td.ant-table-cell:nth-last-child(3) {
         padding-left: 1px;
@@ -108,4 +124,6 @@
     .ant-descriptions-item-label {
         width: 120px;
     }
+}
+.ant-btn {
 }

@@ -1,6 +1,6 @@
 import { Component } from 'preact'
 import { inject, observer } from 'mobx-react'
-import { Drawer, Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message, Modal } from 'antd'
+import { Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message, Modal } from 'antd'
 import moment from 'moment'
 import './index.scss'
 import { computed } from 'mobx'
@@ -200,73 +200,6 @@ class LogRecord extends Component {
         const { comments, submitting, value } = this.state;
         return (
             <div className="g-stu-log">
-                {/* <Drawer
-                    className="g-stu-drawer"
-                    title={<Title level={4}>指导日志</Title>}
-                    width={720}
-                    onClose={this.props.onClose}
-                    visible={this.props.showDrawer}
-                    bodyStyle={{ paddingBottom: 80 }}
-                    footer={[]}
-                >
-                    <Space align="baseline">
-                        <h4  >{moment().format('YYYY年MM月DD日')}</h4>
-                        <p type="text" className="m-pos">请选择指导地点/指导方式</p>
-                        <Select
-                            className="m-pos"
-                            defaultValue={this.state.sel}
-                            style={{ width: 80 }}
-                            onChange={this.handleSelChange}
-                            onSelect={this.handleSelect}
-                            value={this.state.sel}
-                            bordered={false}
-                            size="small"
-                        >
-                            {
-                                SEL_PLACE.map((elem) => {
-                                    return <Option value={elem.value} key={elem.key}>{elem.value}</Option>
-                                })
-                            }
-                        </Select>
-                    </Space>
-                    <Comment
-                        content={
-                            <Editor
-                                onChange={this.handleChange}
-                                onSubmit={this.handleSubmit}
-                                submitting={submitting}
-                                value={value}
-                                defaultValue={value}
-                            />
-                        }
-                    />
-                    {
-                        comments.length > 0 && (
-                            <List
-                                dataSource={comments}
-                                header={`${comments.length} 条记录`}
-                                itemLayout="horizontal"
-                                pagination={{
-                                    pageSize: 2,
-                                }}
-                                renderItem={(item) => (
-                                    <List.Item
-                                        actions={[<Button type="primary" size="small" onClick={() => this.handleEdit(item)}>编辑</Button>,
-                                        <Popconfirm title="删除此记录？" onConfirm={() => this.handleDelete(item)} okText="确认" cancelText="取消">
-                                            <Button size="small">删除</Button>
-                                        </Popconfirm>
-                                        ]} >
-                                        <List.Item.Meta
-                                            title={<p>{item.datetime} {item.place}</p>}
-                                            // description={<p>{item.content}</p>}
-                                        />
-                                        {item.content}
-                                    </List.Item>
-                                )}
-                            />
-                        )
-                    }
-                </Drawer> */}
                 <Modal
                     className="g-stu-mdl-dt"
                     visible={this.props.showLog}

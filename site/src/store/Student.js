@@ -41,6 +41,13 @@ class Student extends BaseActions {
     ]
 
     @observable
+    //开题答辩成绩
+    opScore = [
+        { score: 83, type: 'op_ins_score' },
+        { score: 80, type: 'op_grp_score' }
+    ]
+
+    @observable
     //指导日志
     insLog = []
 
