@@ -18,14 +18,6 @@ class User extends BaseActions {
   //   maj: '物联网软工系',
   //   role:2,    // 0: teacher 1:student 2: manage
   // }
-  // usr = {
-  //   name: '张三',
-  //   uid: '2018210207004',
-  //   dep: '杭州国际服务工程学院',
-  //   maj: '计算机科学与技术',
-  //   cls: '计算机183',
-  //   role: undefined,
-  // }
 
   @action
   getUser() {

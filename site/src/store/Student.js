@@ -19,11 +19,11 @@ class Student extends BaseActions {
     @observable
     //时间轴内容
     timeList = [
-        { title: '任务书', type: 'f_task', time: '2020年10月08日', status: 1, info: '' },
-        { title: '开题中期', time: '2020年12月12日', status: 2, grade: 0, info: [{ name: '开题报告', grade: 90 }, { name: '外文翻译', grade: 95 }, { name: '文献综述', grade: 85 }] },
-        { title: '论文审核', time: '2020年12月28日', status: 1, grade: 0, info: [{ name: '论文定稿', grade: 0 }, { name: '设计作品', grade: 0 }, { name: '作品说明书', grade: 0 }] },
-        { title: '论文答辩', time: '2021年04月08日', status: 0, grade: 0, info: [{ name: '导师评分', grade: 0 }, { name: '评阅评分', grade: 0 }, { name: '答辩评分', grade: 0 }] },
-        { title: '成绩审定', type: 'f_score_check', time: '2021年05月02日', status: 0, info: '' }
+        { title: '任务书', type: 'f_task', time: '2020-10-08' },
+        { title: '开题中期', time: '2020-12-12' },
+        { title: '论文审核', time: '2020-12-28' },
+        { title: '论文答辩', time: '2021-04-08' },
+        { title: '成绩审定', type: 'f_score_check', time: '2021-05-02' }
     ]
 
     @observable
@@ -39,6 +39,14 @@ class Student extends BaseActions {
         { title: '评审答辩成绩表', link: '' },
         { title: '延缓答辩申请表', link: '' }
     ]
+
+    @observable
+    //当前所处阶段细分
+    currStage = {
+        name: '选题阶段',
+        index: 1,
+        stage: ['发布课题', '选择课题', '双选成功']
+    }
 
     @observable
     //指导日志
