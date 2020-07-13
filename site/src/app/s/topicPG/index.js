@@ -10,15 +10,19 @@ import './index.scss'
 import LogRecord from '../../../component/LogRecord';
 
 //传入列表，返回当前所处阶段
-let getStage = (list) => {
-    for (let i = 0; i < list.length; i++) {
-        let curr = list[i].status;
-        let next = list[i + 1].status;
-        if ((curr !== 0 && next === 0) || (i === list.length - 1 && curr !== 0)) {
-            return i;
-        }
+let getStage = (status, info) => {
+    let tmp = Math.abs(status) - 4;
+    if (tmp < 0 && !info) {
+        return -1; 
+    } else if (tmp < 0 && info){ 
+        return 0;
+    } else if (tmp < 2 && info) {
+        return tmp + 1;
+    } else if (tmp < 5 && info) {
+        return tmp;
+    } else if (tmp === 5 && info) {
+        return tmp - 1;
     }
-    return -1;
 }
 
 @inject('studentStore', 'userStore')
@@ -29,7 +33,6 @@ export default class TopicPG extends Component {
         this.state = {
             showModal: false,
             selectItem: null,
-            // showDrawer: false,
             showLog: false,
         }
     }
@@ -60,26 +63,13 @@ export default class TopicPG extends Component {
     }
 
     downloadFile = (item) => {
-        let params = { file: item.info, id: this.selectTpInfo.sid, name: item.title };
+        let params = { file: this.selectTpInfo[item.type], id: this.selectTpInfo.sid, name: item.title };
         this.props.userStore.downloadFile(params)
             .then(r => {
                 if (!r) {
                     message.error('网络错误');
                 }
             })
-    }
-
-    showModal = (item) => {
-        this.setState({
-            showModal: true,
-            selectItem: item
-        })
-    }
-
-    handleCancel = (e) => {
-        this.setState({
-            showModal: false
-        })
     }
 
     showLog = () => {
@@ -94,35 +84,34 @@ export default class TopicPG extends Component {
         })
     }
     render() {
-        const { selectItem, showModal } = this.state;
-        const currStage = getStage(this.timeList);
+        const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         return (
-            <div className="g-topic">
-                <div className="m-line space-bwt">
-                    <div className="m-pType">{this.selectTpInfo.type}</div>
-                    <h2 className="m-pTopic bold">{this.selectTpInfo.topic}</h2>
-                    <div className="m-pname bold">{this.selectTpInfo.name}</div>
+            <div className="g-stu-prog">
+                <div className="m-hd">
+                    <div className="u-type">{this.selectTpInfo.type}</div>
+                    <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
+                    <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                <div className="interval">
-                    <h2 className="m-title bold">论文进度</h2>
+                <div className="m-cont">
+                    <h2 className="u-title">论文进度</h2>
                     <div>
                         <ul className="m-time-line">
                             {
                                 this.timeList.map((item, id) =>
-                                    <li className={item.status > 0 ? currStage === id ? "m-time-stamp focus" : "m-time-stamp active" : "m-time-stamp"}>
-                                        <div className="m-status-item">
+                                    <li className={id <= currStage ? currStage === id ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
+                                        <div>
                                             <h3>{item.time}</h3>
                                             {
-                                                ((item.title === '任务书') || item.title === '成绩审定') ?
-                                                    item.status ?
-                                                        <p className="download" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                        <p>{item.title}</p> :
-                                                    <Tag
-                                                        onClick={() => this.showModal(item)}
-                                                        color={STU_FU_STATUS[item.status].color}
-                                                    >
+                                                (item.title === '任务书' || item.title === '成绩审定') && (id <= currStage) ?
+                                                <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                <div>
+                                                    <p>
                                                         {item.title}
-                                                    </Tag>
+                                                        {   id === currStage && this.selectTpInfo.status < 0 &&
+                                                            <span className="u-status">未通过</span>
+                                                        }
+                                                    </p>
+                                                </div>
                                             }
                                         </div>
                                     </li>
@@ -131,25 +120,20 @@ export default class TopicPG extends Component {
                         </ul>
                     </div>
                 </div>
-                <div className="interval">
-                    <h2 className="m-title bold">材料递交</h2>
-                    <Button className="left-right" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
-                    {/* <LogDrawer
-                        showDrawer={this.state.showDrawer}
-                        onClose={this.onClose}
-                    /> */}
+                <div className="m-cont">
+                    <h2 className="u-title">材料递交</h2>
+                    <Button className="u-log" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
                     <LogRecord
                         showLog={this.state.showLog}
                         onCancel={this.onClose}
                     />
-
-                    <div className="m-topic-info m-line space-bwt">
+                    <div className="m-topic-info">
                         {FILE_UPLOAD_TYPE.map((item) =>
                             <div className="m-stage">
-                                <h3 className="bold">{item.stage}</h3>
+                                <h3 className="u-title">{item.stage}</h3>
                                 <div>
                                     {item.file.map((item) =>
-                                        <div className="m-file right-interval float-left">
+                                        <div className="m-upload">
                                             <FileUpload
                                                 type={item}
                                                 tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
@@ -161,23 +145,6 @@ export default class TopicPG extends Component {
                         )}
                     </div>
                 </div>
-                <Modal
-                    title={selectItem ? selectItem.title : ''}
-                    visible={showModal}
-                    onCancel={this.handleCancel}
-                    footer={[]}
-                >
-                    {
-                        selectItem && selectItem.info.map((item) =>
-                            <p>
-                                <span>{item.name}:  </span>
-                                {item.grade === 0 ?
-                                    <Tag>暂未通过</Tag> :
-                                    <span>{item.grade}</span>
-                                }
-                            </p>
-                        )}
-                </Modal>
             </div>
         );
     }

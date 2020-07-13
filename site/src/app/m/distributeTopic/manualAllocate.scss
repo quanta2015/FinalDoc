@@ -1,0 +1,119 @@
+.g-manual {
+    .m-top {
+        display: flex;
+        justify-content: space-between;
+
+        .check_teacher {
+            margin-bottom: 20px;
+            display: flex;
+
+            .title {
+                font-size: 16px;
+                line-height: 32px;
+                text-align: right;
+                margin-right: 30px;
+            }
+        }
+    }
+
+    .m-btn {
+        .clear {
+            margin-right: 15px;
+        }
+    }
+
+    .topic_num {
+        position: relative;
+        bottom: -45px;
+        font-size: 16px;
+        font-weight: bold;
+        width: 200px;
+    }
+
+    .headAllocate_table {
+
+        .ant-table-cell:nth-last-child(4) {
+            width: 120px;
+        }
+
+        .ant-table-cell:nth-last-child(3) {
+            width: 290px;
+            text-align: left;
+        }
+
+        .ant-table-cell:nth-last-child(2) {
+            width: 250px;
+            text-align: left;
+        }
+        
+        .ant-table-cell:nth-last-child(1) {
+            width: 100px;
+        }
+
+        // 表格中无数据时的默认样式
+        .ant-table-placeholder .ant-table-cell{
+            width: 800px;
+        }
+        
+        // 表格选择列
+        .ant-table-selection-column {
+            width: 60px;
+        }
+    } 
+}
+
+.g-mod-close  .m-dtl-mod{
+
+
+.m-title{
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px ;
+        .u-type{
+            color:white;
+            font-size: 14px;
+            padding: 2px 6px;
+            
+            background-color: orangered;
+        }
+        .u-topic{
+            font-weight: bolder;
+            font-size: 24px;
+            color:#999;
+        }
+        .u-tea-name{
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+  
+    .m-cont{
+        padding: 20px;
+        .dtl{
+            font-size: 16px;
+            margin-top:20px ;
+        }
+        .expln{
+        font-weight: bold;
+
+    }
+
+    }
+      .m-mod-icon{
+        font-size: 24px;
+        color: gray;
+    }
+    
+
+     
+}
+
+.g-mod-close .ant-modal-close{
+     
+        position: absolute;
+        top: -24px;
+        right: -30px;       
+    }  
+
+

@@ -1,5 +1,7 @@
-import BaseActions from '../../../component/BaseActions';
+import { Component } from 'preact';
 import TpActions from '../../../component/ContentT/TpActions';
+
+import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 
@@ -16,65 +18,43 @@ import {
 	SearchOutlined,
 } from '@ant-design/icons';
 
-import * as urls from '../../../constant/urls';
+import './style.scss';
 
-import style from './style.scss';
-
-const topicTypes = [
-	{
-		text: '毕业设计',
-		value: '毕业设计',
-	},
-	{
-		text: '命题设计',
-		value: '命题设计',
-	},
-	{
-		text: '软件设计',
-		value: '软件设计',
-	},
-	{
-		text: '工程设计',
-		value: '工程设计',
-	}
-]
-
-@inject('studentStore', 'userStore')
+@inject('teacherStore', 'userStore')
 @observer
-export default class Home extends BaseActions {
+export default class Home extends Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
-			subjects: { data:[{
-				id:1,
-				topic:"aaa",
-				content:"aaa",
-				type:"123"}
-			] },
+
+			topicTypes: null,
 			//选题查询变量
 			searchText: '',
 			searchedColumn: '',
 		}
-
-		this.changeTopicList = this.changeTopicList.bind(this) 
 	}
 
 	@computed
-  get usr() {
-      return this.props.userStore.usr;
-  }
-
-	componentWillMount() {
-		this.getTopicList()
+	get usr() {
+		return this.props.userStore.usr;
 	}
 
-	// 选题类型筛选
-	topicFilter = (value, record) => {
-		if (record.type != null)
-			return record.type.indexOf(value) === 0;
-		else
-			return false;
+	@computed
+	get topicList() {
+		return toJS(this.props.teacherStore.auditTP_topicList);
+	}
+
+	componentWillMount() {
+		if (!this.usr.id) {
+			route('/')
+		}
+		this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
+		this.props.teacherStore.getAllTopic().then(()=>{
+			this.setState({
+				topicTypes:this.props.teacherStore.auditTP_topicTypes
+			})
+		});
+		
 	}
 
 	//选题名称查询
@@ -143,35 +123,14 @@ export default class Home extends BaseActions {
 		this.setState({ searchText: '' });
 	};	
 
-	//获取数据
-	async getTopicList() {
-		console.log(this.usr.uid);
-		
-		let data = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
-			"uid": this.usr.uid
-		});
-
-		console.log(data)
-		this.setState({
-			subjects: data
-		})
-	}
-
-	changeTopicList(topicList){
-		this.setState({
-			subjects: topicList
-		})
-	}
-
 	render() {
-		const subjects = this.state.subjects;
 		const columns = [
 			{
 				title: '选题类型',
 				dataIndex: 'type',
 				key: 'type',
-				filters: topicTypes,
-				onFilter: this.topicFilter,
+				filters: this.state.topicTypes,
+				onFilter: this.props.teacherStore.AuditTP_topicFilter,
 			},
 			{
 				title: '课题题目',
@@ -182,15 +141,15 @@ export default class Home extends BaseActions {
 			{
 				title: '操作',
 				render: (text, record) => (
-					<TpActions record={record} changeTopicList={this.changeTopicList}></TpActions>
+					<TpActions record={record}></TpActions>
 				),
 			}
 		];
 
 		return (
-			<div className="context" data-component="autittp">
-				<div class="main">
-					<Table class="table" columns={columns} dataSource={subjects.data} />
+			<div className="g-content" data-component="t-auditTP">
+				<div class="m-main">
+					<Table class="m-main-table" columns={columns} dataSource={this.topicList} />
 				</div>
 			</div>
 		);

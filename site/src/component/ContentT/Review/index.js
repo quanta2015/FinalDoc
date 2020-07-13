@@ -1,7 +1,7 @@
-import './index.css'
+import './index.scss'
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
-import { Table, Tag, Space ,Tooltip} from 'antd';
+import { Table, Tag, Space ,Tooltip, Button} from 'antd';
 import { StarOutlined, CloseOutlined, CheckOutlined,UserOutlined } from '@ant-design/icons';
 
 
@@ -29,16 +29,19 @@ export default class Review extends BaseActions{
       key:'do',
       render:(text,record)=>{
         return(
-          <div style="margin:0 auto;width:60px;display:flex;justify-content: space-around;">
-          <Tooltip placement="top" title={"通过"}>
-            <CheckOutlined onClick={()=>{this.pass(record.sid,record.name,record.id)}} style="color:blue"/>
-          </Tooltip>
-          <Tooltip placement="top" title={"拒绝"}  >
-            <span onClick={()=>{console.log("????");this.refuse(record.sid,record.name,record.id)}}>
-              <CloseOutlined style="color:red"/>
-            </span>
+          <div className="review-tool">
+            <Button onClick={()=>{this.pass(record.sid,record.name,record.id)}}>通过</Button>
+            <Button onClick={()=>{this.refuse(record.sid,record.name,record.id)}}>拒绝</Button>
             
-          </Tooltip>
+          {/* <Tooltip placement="top" title={"通过"}> 
+                <CheckOutlined onClick={()=>{this.pass(record.sid,record.name,record.id)}} className="blue-font"/> 
+              </Tooltip>*/}
+          {/* <Tooltip placement="top" title={"拒绝"}  >
+            <span onClick={()=>{this.refuse(record.sid,record.name,record.id)}}>
+              <CloseOutlined className="red-font"/>
+            </span> 
+            
+          </Tooltip> */}
           </div>
         )
       }
@@ -46,7 +49,6 @@ export default class Review extends BaseActions{
   ]
   constructor(props){
     super(props)
-    console.log(this.props.list)
   }
 
   /**
@@ -80,26 +82,30 @@ export default class Review extends BaseActions{
 
   render(){
     return (
+      <div  data-component="review">
       <div className="review-line">
         <span>
-          <span style="margin-right:20px"><UserOutlined /></span>
-          申请学生：
-          <span style="margin:0 10px">学号： {this.props.list.sid}</span>
-          <span style="margin:0 10px">姓名： {this.props.list.name}</span>
+          <span className="mr-long"><UserOutlined /></span>
+          <span className="m-short">申请学生：</span>
+          <span className="m-short">学号： {this.props.list.sid}</span>
+          <span className="m-short">姓名： {this.props.list.name}</span>
         </span>
         
-        <div className="icons">
-          <Tooltip placement="top" title={"通过"}>
+        <div className="btns">
+          {/* <Tooltip placement="top" title={"通过"}>
             <span className="m-icon">
-              <CheckOutlined onClick={()=>{this.pass(this.props.list.sid,this.props.list.name,this.props.list.id)}} style="color:blue"/>
+              <CheckOutlined onClick={()=>{this.pass(this.props.list.sid,this.props.list.name,this.props.list.id)}}  className="blue-font"/>
             </span>
           </Tooltip>
           <Tooltip placement="top" title={"拒绝"}>
             <span  className="m-icon">
-            <CloseOutlined onClick={()=>{this.refuse(this.props.list.sid,this.props.list.name,this.props.list.id)}} style="color:red"/>
+            <CloseOutlined onClick={()=>{this.refuse(this.props.list.sid,this.props.list.name,this.props.list.id)}} className="red-font"/>
             </span>
-          </Tooltip>
+          </Tooltip> */}
+          <Button className="ml-long" onClick={()=>{this.pass(this.props.list.sid,this.props.list.name,this.props.list.id)}}>通过</Button>
+            <Button className="ml-long" onClick={()=>{this.refuse(this.props.list.sid,this.props.list.name,this.props.list.id)}}>拒绝</Button>
         </div>
+      </div>
       </div>
     )
   }

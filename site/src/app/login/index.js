@@ -26,38 +26,31 @@ class Login extends Component {
       loading: false,
       username: "",
       password: "",
-      rememberMe: true,
+      rememberMe: false,
     };
     let user = token.getUser();
-    console.log(JSON.stringify(user))
+    console.log(JSON.stringify(user));
     if (user) {
       let values = { uid: user[0].uid, password: user[0].pwd };
       this.props.userStore.login(values).then((r) => {
-        console.log('=========75==================',r)
+        
         if (r.data && r.code === 200) {
-
           message.success(r.msg);
-          if (r.data[0].role == 0)
-            route('/t', true)
-          if (r.data[0].role == 2)
-            route('/m', true)
-          if (r.data[0].role == 1)
-            route('/s', true)
+          if (r.data[0].role == 0) route("/t", true);
+          if (r.data[0].role == 2) route("/m", true);
+          if (r.data[0].role == 1) route("/s", true);
         } else if (r.code === 301) {
           message.error(r.msg);
         }
 
         //  console.log("Success:", values);
-      })
-
-
-    };
+      });
+    }
   }
 
   @computed
   get usr() {
     return this.props.userStore.usr;
-    
   }
 
   // doLogin = () => {
@@ -95,28 +88,29 @@ class Login extends Component {
     };
     return tailLayout;
   };
-
+  checkeChange=()=>{
+    this.setState({
+      rememberMe:!this.state.rememberMe
+    })
+  }
   getonFinish = () => {
     const onFinish = (values) => {
+      values.remember=this.state.rememberMe;
+  //    console.log(values);
+
       this.props.userStore.login(values).then((r) => {
         //console.log('=========75==================',r)
         if (r.data && r.code === 200) {
-
           message.success(r.msg);
-          if (r.data[0].role == 0)
-            route('/t', true)
-          if (r.data[0].role == 2)
-            route('/m', true)
-          if (r.data[0].role == 1)
-            route('/s', true)
+          if (r.data[0].role == 0) route("/t", true);
+          if (r.data[0].role == 2) route("/m", true);
+          if (r.data[0].role == 1) route("/s", true);
         } else if (r.code === 301) {
           message.error(r.msg);
         }
 
         //  console.log("Success:", values);
-      })
-
-
+      });
     };
     return onFinish;
   };
@@ -131,16 +125,15 @@ class Login extends Component {
   render() {
     return (
       <div data-component="login">
-        <div className="rootbody" >
+        <div className="rootbody">
           <div className="root">
             <div className="fake_background">
-              <div className='cap_logo'></div>
-              <div className='xiaoxun'></div>
+              <div className="cap_logo"></div>
+              <div className="xiaoxun"></div>
             </div>
             <div className="right_box">
               <div className="logo_box">
-                <div className="logo">
-                </div>
+                <div className="logo"></div>
               </div>
               <div className="login_box">
                 <div className="login_body">
@@ -186,7 +179,6 @@ class Login extends Component {
                           type="primary"
                           htmlType="submit"
                           className="subit_buttom"
-
                         >
                           Submit
                         </Button>
@@ -194,7 +186,13 @@ class Login extends Component {
                     </Form>
                     <div className="under_sign">
                       <div className="remember">
-                        <Checkbox>Remember me?</Checkbox>
+                        <Checkbox
+                        onChange={this.checkeChange}
+                          checked={this.state.rememberMe}
+                         
+                        >
+                          Remember me?
+                        </Checkbox>
                       </div>
                       <div>
                         <span>Forgot password?</span>
@@ -219,5 +217,4 @@ class Login extends Component {
   }
 }
 
-
-export default Login
+export default Login;

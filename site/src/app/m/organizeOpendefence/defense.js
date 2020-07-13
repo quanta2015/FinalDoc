@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS, autorun } from 'mobx';
 import { Radio, Form, Button, message, Select, InputNumber } from 'antd';
-import "./defense.css"
+import "./defense.scss"
 import ManualAllocate from "./manualAllocate.js"
 import AutoAllocate from './autoAllocate.js';
 
@@ -73,11 +73,10 @@ export default class Defense extends Component {
         }
 
         return (
-            <div>
-                <div class="defs-select">
-                    <div class="defs_tea">
-                        <div class="defs_title">请选择开题答辩小组成员：</div>
-                        <div class="select-group">
+            <div class="g-defense">
+                    <div class="m-group">
+                        <div class="title">请选择开题答辩小组成员：</div>
+                        <div class="m-select">
                             <div class="lable">组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长</div>
                             <div>
                                 <Select
@@ -101,7 +100,7 @@ export default class Defense extends Component {
                                 </Select>
                             </div>
                         </div>
-                        <div class="select-group">
+                        <div class="m-select">
                         <div class="lable">组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;员</div>
                         <div>
                             <Select
@@ -121,9 +120,9 @@ export default class Defense extends Component {
                             </Select>
                         </div>
                     </div>
-                    </div>
-                    <div class="defs_title">请选择参加该组答辩的学生：</div>
-                    <div class="select-group">
+                    <div class="m-group">
+                    <div class="title">请选择参加该组答辩的学生：</div>
+                    <div class="m-select">
                         <div class="lable">选择方式</div>
                         <div>
                             <Radio.Group onChange={this.onChange} value={this.state.value}>
@@ -152,6 +151,8 @@ export default class Defense extends Component {
                     }
                 </div>
             </div>
+                
+         </div>
         );
     }
 }

@@ -32,7 +32,7 @@ class FileUpload extends Component {
     componentDidUpdate(prevProps) {
         let fileUrl = this.props.tpInfo[this.props.type.type];
         //有课题信息 && 该文件已上传 && 传入值与state值不一 && 传入值有变化
-        if (this.props.tpInfo.id && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
+        if (this.props.tpInfo.tid && fileUrl && fileUrl !== this.state.fileUrl && fileUrl !== prevProps.tpInfo[this.props.type.type]) {
             this.setState({
                 fileUrl: fileUrl
             })
@@ -50,6 +50,9 @@ class FileUpload extends Component {
                 fileUrl: info.file.response.data
             })
             message.success(`成功上传文件《${info.file.name}》`)
+            if(!!this.props.freshOuter){
+                this.props.freshOuter();
+            }
         }
     }
 
@@ -65,7 +68,7 @@ class FileUpload extends Component {
     }
 
     beforeUpload = (file) => {
-        if(!file) {
+        if (!file) {
             this.setState({ fileUrl: '' })
             return;
         }
@@ -80,15 +83,15 @@ class FileUpload extends Component {
         }
         // 文件大小约束
         const isLt10M = file.size / 1024 / 1024 < 10;
-        if(!isLt10M) {
+        if (!isLt10M) {
             message.error('请重新选择文件，文件不得大于10M');
         }
-        
+
         return tag && isLt10M;
     }
 
     handleHover = () => {
-        if(this.state.fileUrl) {
+        if (this.state.fileUrl) {
             this.setState({
                 showDel: true
             })
@@ -104,59 +107,60 @@ class FileUpload extends Component {
     }
 
     handleDel = () => {
-        let params = { type: this.props.type.type, tid: this.props.tpInfo.tid, sid: this.props.tpInfo.sid};
+        let params = { type: this.props.type.type, tid: this.props.tpInfo.tid, sid: this.props.tpInfo.sid };
         this.props.studentStore.deleteFile(params)
-        .then(r => {
-            if(r.code === 200) {
-                this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
-                this.setState({
-                    fileUrl: "",
-                    showDel: false,
-                    loading: false
-                })
-            }else {
-                message.error('网络错误');
-            }
-        })
+            .then(r => {
+                if (r.code === 200) {
+                    this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
+                    this.setState({
+                        fileUrl: "",
+                        showDel: false,
+                        loading: false
+                    })
+                } else {
+                    message.error('网络错误');
+                }
+            })
     }
 
     render() {
         // example: {name: "文献综述", type: "f_docs"}
         const fileType = this.props.type;
+        // example: {sid: '123', tid: '456', f_docs: './upload/test.doc'}
         const tpInfo = this.props.tpInfo;
         const { fileUrl, showDel, loading } = this.state;
         const text = "点击下载已提交文件";
         const uploadButton = (
             <div>
-                { this.state.loading ? <LoadingOutlined /> : <PlusOutlined /> }
-                < div className = "ant-upload-text" >上传</div>
+                {this.state.loading ? <LoadingOutlined /> : <PlusOutlined />}
+                < div className="ant-upload-text" >上传</div>
             </div>
         )
         return (
-            <div className="g-file">
-                <div 
-                    className={fileUrl ? "m-bdwrapper submitted-wp" : "m-bdwrapper"} 
-                    onMouseOver={this.handleHover} 
-                    onMouseLeave={this.handleMouseOut} 
+            <div className="g-upload">
+                <div
+                    className={fileUrl ? "m-filewp z-submit-wp" : "m-filewp"}
+                    onMouseOver={this.handleHover}
+                    onMouseLeave={this.handleMouseOut}
                 >
-                    {showDel && !loading && <CloseOutlined className="m-del" onClick={this.handleDel}/>}
+                    {showDel && !loading && <CloseOutlined className="u-del" onClick={this.handleDel} />}
                     <Upload
                         name="file"
                         listType="picture-card"
                         className="avatar-uploader"
                         showUploadList={false}
                         action={API_SYS_UPLOAD_FILE}
-                        data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid}}}
+                        data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid } }}
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
                     >
-                        {(fileUrl && !loading) ? <CheckOutlined className="m-success"/> : uploadButton}
+                        {(fileUrl && !loading) ? <CheckOutlined className="z-success"/> : uploadButton}
                     </Upload>
                 </div>
                 {   fileUrl ?
                     <Tooltip placement="bottom" title={text}>
-                        <p className="submitted-p" onClick={this.downloadFile}>{fileType.name}</p>
-                    </Tooltip>:
+                        <p className="z-submit-p" onClick={this.downloadFile}>{fileType.name}</p>
+                    </Tooltip> :
                     <p>{fileType.name}</p>
                 }
             </div>

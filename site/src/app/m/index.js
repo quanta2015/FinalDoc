@@ -14,7 +14,7 @@ export default class Manage extends Component {
   }
 
   componentDidMount() {
-    if (!this.usr.id) {
+    if (!this.usr.uid) {
       route('/')
     }
   }

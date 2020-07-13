@@ -1,0 +1,61 @@
+.t-ContentT-TpActions-Modal{
+    .ant-descriptions-view>table>tbody{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ant-descriptions-item-label{
+        min-width: 104px;
+    }
+
+    .m-title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px 10px 20px;
+        .u-type{
+            color:white;
+            font-size: 14px;
+            padding: 2px 6px;
+            
+            background-color: orangered;
+        }
+        .u-topic{
+            font-weight: bolder;
+            font-size: 24px;
+            color:#999;
+        }
+        .u-none{
+            visibility: hidden;
+            font-size: 14px;
+            padding: 2px 6px;
+        }
+        border-bottom: 1px solid #aaa;
+    }
+
+    .m-cont{
+        padding: 20px;
+        .dtl{
+            font-size: 16px;
+            margin-top:20px ;
+        }
+        .expln{
+            font-weight: bold;
+        }
+    }
+
+    .m-footer{
+        display: flex;
+        flex-direction: row-reverse;
+        .u-oppose{
+            margin-right: 10px;
+        }
+    }
+
+    .ant-modal-close{
+        position: absolute;
+        top: -24px;
+        right: -30px;       
+    }
+}
+    

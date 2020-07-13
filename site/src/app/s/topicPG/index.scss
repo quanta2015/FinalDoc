@@ -1,166 +1,131 @@
-.g-topic {
+.g-stu-prog {
     padding: 26px;
     width: 950px;
 
-    .bold {
-        font-weight: 550;
-    }
-
-    .download {
-        text-decoration: underline;
-        cursor: pointer;
-    }
-
-    .interval {
-        margin-top: 45px;
-    }
-
-    .left-right {
-        float: right;
-        margin: 0;
-        margin-top: -30px;
-    }
-
-    .float-left {
-        float: left;
-    }
-
-    .right-interval {
-        margin-right: 20px;
-    }
-
-    .space-bwt {
-        justify-content: space-between;
-    }
-
-    h2 {
-        margin-bottom: 2px;
-    }
-
-    h3 {
-        color: #999;
-    }
-
-    // .ant-btn-primary {
-    //     //蓝 #1890ff #59ABF5 #00aeff #00aeef #66acfd
-    //     background-color: #00aeef;
-    //     border-color: #00aeef;
-    // }
-
-    .m-line {
+    .m-hd {
         display: flex;
+        justify-content: space-between;
+        
+        &>.u-type {
+            padding: 5px 10px;
+            background-color: #ff653e;
+            color: #fff;
+        }
+
+        &>.u-topic {
+            margin: 0;
+            padding-bottom: 2px;
+            color: #999;
+            font-weight: 550;
+        }
+
+        &>.u-name {
+            font-weight: 550;
+        }
+    }
+
+    .m-cont {
+        padding-top: 35px;
         width: 100%;
-    }
-
-    .m-title {
-        font-size: 18px;
-    }
-
-    .m-pType {
-        //实底
-        padding: 5px 10px;
-        background-color: #1890ff;
-        color: #fff;
-
-        //线形1
-        // color: #1890ff;
-        // border-left: 3px solid #1890ff;
-
-        //线形2
-        // border: 1px solid #1890ff;
-        // border-radius: 3px;
-
-        //标签式
-        // position: relative;
-        // height: 30px;
-        // padding: 0 35px 0 20px;
-        // background: #1890ff;
-        // color: #fff;
-        // line-height: 30px;
-        // margin-left: -26px;
-
-        // &:before {
-        //     content: "";
-        //     position: absolute;
-        //     right: 0; 
-        //     bottom: 0;
-        //     border-right: 20px solid white;
-        //     border-top: 15px solid transparent;
-        //     border-bottom: 15px solid transparent;
-        // }
-    }
-
-    .m-pTopic {
-        color: #999;
-    }
-
-    .m-pname {
-        line-height: 25px;
-    }
-
-    .m-topic-info {
-        clear: both;
-        padding-top: 10px;
-        border-top: 1px solid #eee;
     }
 
     .m-time-line {
         display: flex;
-        margin-top: 25px;
+        position: relative;
+        top: 25px;
         padding: 0;
         border-top: 2px solid #D6DCE0;
         list-style-type: none;
+
+        .u-time-stamp {
+            position: relative;
+            left: 30px;
+            width: 20%;
+            padding: 15px 0;
+
+            &:before {
+                position: absolute;
+                top: -9px;
+                left: 10px;
+                content: '';
+                width: 15px;
+                height: 15px;
+                background-color: #fff;
+                border-radius: 25px;
+                border: 2px solid #D6DCE0;
+            }
+        }
 
         h3 {
             margin-bottom: 2px;
             color: #555;
         }
-    }
 
-    .m-time-stamp {
-        position: relative;
-        width: 20%;
-        margin-left: 30px;
+        .u-link-file {
+            text-decoration: underline;
+            cursor: pointer;
+        }
 
-        &:before {
-            position: absolute;
-            top: -9px;
-            left: 10px;
-            content: '';
-            width: 15px;
-            height: 15px;
-            background-color: #fff;
-            border-radius: 25px;
-            border: 2px solid #D6DCE0;
+        .z-active:before {
+            border: 2px solid #F90006;
+        }
+
+        .z-focus:before {
+            //橙 #FF3300 #FC7F4F #fb8a2e #FF7946
+            //绿 #41E8BB #7BC5D0 #1cc7d0 #5ecc62 #2DA754
+            border: 2px solid #F90006;
+            background-color: #F90006;
+        }
+
+        .u-status {
+            margin-left: 12px;
+            padding: 2px;
+            border: 1px solid #FE1B10;
+            border-radius: 3px;
+            color: #FE1B10;
+            font-size: 11px;
         }
     }
 
-    .active:before {
-        border: 2px solid #5ecc62;
-    }
-
-    .focus:before {
-        //橙 #FF3300 #FC7F4F #fb8a2e #FF7946
-        //绿 #41E8BB #7BC5D0 #1cc7d0 #5ecc62 #2DA754
-        border: 2px solid #5ecc62;
-        background-color: #5ecc62;
-    }
-
-    .m-status-item {
-        margin-top: 15px;
+    .m-topic-info {
+        display: flex;
+        justify-content: space-between;
+        clear: both;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
     }
 
     .m-stage {
         width: 270px;
+
+        &>.u-title {
+            color: #999;
+        }
     }
 
-    .m-file:first-child {
+    .m-upload {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .m-upload:first-child {
         .avatar-uploader > .ant-upload {
             width: 244px;
         }
 
-        .m-bdwrapper {
+        .m-filewp {
             width: 246px;
         }
     }
+
+    .u-title {
+        font-size: 18px;
+        font-weight: 550;
+    }
+
+    .u-log {
+        float: right;
+        margin: 0;
+        margin-top: -30px;
+    }   
 }

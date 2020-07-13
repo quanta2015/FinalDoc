@@ -12,6 +12,11 @@ export const API_SYS_XXXXXX = API_SERVER + '/sysXXXXXX'
 export const API_SYS_GET_PROJLIST = API_SERVER + '/getProjectList'
 export const API_SYS_UPLOAD_FILE = API_SERVER + '/upload'
 export const API_SYS_DOWN_FILE = API_SERVER + '/download'
+//查询签名状态
+export const API_SYS_GET_SIGN_STATE = API_SERVER + '/checkSign'
+//上传签名图片
+export const API_SYS_UPLOAD_SIGN = API_SERVER + '/teacher/uploadSign'
+
 
 // 专业负责人接口声明
 export const API_MAN_GET_TEALIST = API_SERVER + '/manage/teacherList'
@@ -35,8 +40,14 @@ export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
 export const API_MAN_POST_OGP_DELETEGROUP = API_SERVER + '/openGp/deleteGroup'
 
+//审核任务书、论文定稿等
+export const API_MAN_POST_RP_TASKLIST = API_SERVER + '/auditMg/taskList'
+
+
 // 查看论文进度
 export const API_MAN_POST_VIEWPROGRESS = API_SERVER + '/auditMg/viewProgress'
+// 查看某位学生上传的文件
+export const API_MAN_POST_VIEWFILES = API_SERVER + '/auditMg/viewFiles'
 
 
 
@@ -46,7 +57,7 @@ export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' //用户
 export const API_STU_UPDATE_TTLLIST = API_SERVER + '/student/addStuTopic'
 export const API_STU_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
 export const API_STU_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
-export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuTopicStateThree' //双选成功的课题信息 
+export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' //双选成功的课题信息 
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
 
 // 获取选择了自己的学生的列表
@@ -77,7 +88,10 @@ export const API_TEACHER_GET_SUGG = API_SERVER +'/teacher/getTidToTsugg'
 export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic'
 //获取学生文件列表
 export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
-
+//解绑学生
+export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
+//获取所有选题类型(get)
+export const API_SYS_GET_ALL_TYPE = API_SERVER + '/teacher/getAllType'
 
 // 任课教师-初期审核
 

@@ -1,4 +1,5 @@
-.check-block{
+[data-component="checkBlock"]{
+  .check-block{
   width: 100%;
   overflow-y: auto;
   font-size: 18px;
@@ -39,6 +40,7 @@
 
 .icons>span{
   cursor: pointer;
+  margin: 0 5px;
 }
 
 .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header, .ant-collapse .ant-collapse-item-disabled > .ant-collapse-header > .arrow{
@@ -48,4 +50,25 @@
 .title>span>button{
   margin: 20px;
   width: 120px;
+}
+
+.check-default-pname{
+  margin-left:10px;cursor:default
+}
+
+.check-pointer-pname{
+margin-left:10px;cursor:pointer
+}
+
+.check-long-pid{
+  display: inline-block;
+  margin-left:40px;
+  width:30px
+}
+
+.check-short-pid{
+  display: inline-block;
+  margin-left:10px;
+  width:30px
+}
 }
