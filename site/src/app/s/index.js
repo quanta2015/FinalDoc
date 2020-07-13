@@ -1,6 +1,6 @@
 import { Component } from 'preact';
-import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
+import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import "./style.css"
 
@@ -13,16 +13,19 @@ export default class Student extends Component {
   }
 
   componentDidMount() {
-    this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
-      .then(r => {
-        if (!this.usr.uid) {
-          route('/');
-        }else if (!r ) { //未双选
-          route('/s_selectTL');
-        } else { //已双选
-          route('/s_topicPG');
-        }
-      })
+    if (!this.usr.uid) {
+      route('/');
+    }
+    // this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
+    //   .then(r => {
+    //     if (!this.usr.uid) {
+    //       route('/');
+    //     }else if (!r ) { //未双选
+    //       route('/s_selectTL');
+    //     } else { //已双选
+    //       route('/s_topicPG');
+    //     }
+    //   })
   }
 
   render() {

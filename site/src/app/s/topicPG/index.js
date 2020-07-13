@@ -133,10 +133,10 @@ export default class TopicPG extends Component {
                         onCancel={this.onClose}
                     />
                     <div className="m-topic-info">
-                        {FILE_UPLOAD_TYPE.map((item) =>
+                        {FILE_UPLOAD_TYPE.map((item, id) =>
                             <div className="m-stage">
-                                <h3 className="u-title">{item.stage}</h3>
-                                <div>
+                                <h3 className="u-title"><span>0{id + 1} / </span>{item.stage}</h3>
+                                <div className="m-filewp">
                                     {item.file.map((item) =>
                                         <div className="m-upload">
                                             <FileUpload
