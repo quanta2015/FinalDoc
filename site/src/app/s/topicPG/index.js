@@ -7,14 +7,14 @@ import { PlusOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
 import { FILE_UPLOAD_TYPE, STU_FU_STATUS } from '../../../constant/data'
 import './index.scss'
-import LogDrawer from '../../../component/LogDrawer';
+import LogRecord from '../../../component/LogRecord';
 
 //传入列表，返回当前所处阶段
 let getStage = (list) => {
-    for(let i = 0;i < list.length;i ++){
+    for (let i = 0; i < list.length; i++) {
         let curr = list[i].status;
         let next = list[i + 1].status;
-        if (( curr !== 0 && next === 0) || (i === list.length - 1 && curr !== 0)) {
+        if ((curr !== 0 && next === 0) || (i === list.length - 1 && curr !== 0)) {
             return i;
         }
     }
@@ -29,7 +29,8 @@ export default class TopicPG extends Component {
         this.state = {
             showModal: false,
             selectItem: null,
-            showDrawer: false,
+            // showDrawer: false,
+            showLog: false,
         }
     }
 
@@ -61,11 +62,11 @@ export default class TopicPG extends Component {
     downloadFile = (item) => {
         let params = { file: item.info, id: this.selectTpInfo.sid, name: item.title };
         this.props.userStore.downloadFile(params)
-        .then(r => {
-            if (!r) {
-                message.error('网络错误');
-            }
-        })
+            .then(r => {
+                if (!r) {
+                    message.error('网络错误');
+                }
+            })
     }
 
     showModal = (item) => {
@@ -81,15 +82,15 @@ export default class TopicPG extends Component {
         })
     }
 
-    showDrawer = () => {
+    showLog = () => {
         this.setState({
-            showDrawer: true,
+            showLog: true,
         })
     }
 
     onClose = () => {
         this.setState({
-            showDrawer: false,
+            showLog: false,
         })
     }
     render() {
@@ -107,21 +108,21 @@ export default class TopicPG extends Component {
                     <div>
                         <ul className="m-time-line">
                             {
-                                this.timeList.map((item, id) => 
-                                    <li className={item.status > 0 ? currStage === id ? "m-time-stamp focus": "m-time-stamp active" : "m-time-stamp"}>
+                                this.timeList.map((item, id) =>
+                                    <li className={item.status > 0 ? currStage === id ? "m-time-stamp focus" : "m-time-stamp active" : "m-time-stamp"}>
                                         <div className="m-status-item">
                                             <h3>{item.time}</h3>
                                             {
                                                 ((item.title === '任务书') || item.title === '成绩审定') ?
-                                                item.status ?
-                                                <p className="download" onClick={() => this.downloadFile(item)}>{item.title}</p>:
-                                                <p>{item.title}</p>:
-                                                <Tag 
-                                                    onClick={() => this.showModal(item)} 
-                                                    color={STU_FU_STATUS[item.status].color}
-                                                >
-                                                    {item.title}
-                                                </Tag>
+                                                    item.status ?
+                                                        <p className="download" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                        <p>{item.title}</p> :
+                                                    <Tag
+                                                        onClick={() => this.showModal(item)}
+                                                        color={STU_FU_STATUS[item.status].color}
+                                                    >
+                                                        {item.title}
+                                                    </Tag>
                                             }
                                         </div>
                                     </li>
@@ -132,11 +133,16 @@ export default class TopicPG extends Component {
                 </div>
                 <div className="interval">
                     <h2 className="m-title bold">材料递交</h2>
-                    <Button className="left-right" type="primary" onClick={this.showDrawer} size="small"><PlusOutlined />指导日志</Button>
-                    <LogDrawer
-                        showDrawer={this.state.showDrawer} 
+                    <Button className="left-right" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
+                    {/* <LogDrawer
+                        showDrawer={this.state.showDrawer}
                         onClose={this.onClose}
+                    /> */}
+                    <LogRecord
+                        showLog={this.state.showLog}
+                        onCancel={this.onClose}
                     />
+
                     <div className="m-topic-info m-line space-bwt">
                         {FILE_UPLOAD_TYPE.map((item) =>
                             <div className="m-stage">
@@ -144,9 +150,9 @@ export default class TopicPG extends Component {
                                 <div>
                                     {item.file.map((item) =>
                                         <div className="m-file right-interval float-left">
-                                            <FileUpload 
-                                                type={item} 
-                                                tpInfo={this.selectTpInfo ? this.selectTpInfo : {}} 
+                                            <FileUpload
+                                                type={item}
+                                                tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
                                             />
                                         </div>
                                     )}
@@ -162,15 +168,15 @@ export default class TopicPG extends Component {
                     footer={[]}
                 >
                     {
-                        selectItem && selectItem.info.map((item)=>
-                        <p>
-                            <span>{item.name}:  </span>
-                            {   item.grade === 0 ?
-                                <Tag>暂未通过</Tag>:
-                                <span>{item.grade}</span>
-                            }
-                        </p>
-                    )}
+                        selectItem && selectItem.info.map((item) =>
+                            <p>
+                                <span>{item.name}:  </span>
+                                {item.grade === 0 ?
+                                    <Tag>暂未通过</Tag> :
+                                    <span>{item.grade}</span>
+                                }
+                            </p>
+                        )}
                 </Modal>
             </div>
         );

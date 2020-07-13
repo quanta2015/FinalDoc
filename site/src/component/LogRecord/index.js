@@ -1,6 +1,6 @@
 import { Component } from 'preact'
 import { inject, observer } from 'mobx-react'
-import { Drawer, Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message } from 'antd'
+import { Drawer, Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message, Modal } from 'antd'
 import moment from 'moment'
 import './index.scss'
 import { computed } from 'mobx'
@@ -9,12 +9,12 @@ const { Title } = Typography;
 
 const data = [
     {
-        content: 'This is content asdasdasdasd asdasdasd ',
+        content: '解接是假人是怎么回事呢？解接相信大家都很熟悉，但是解接是假人是怎么回事呢，下面就让小编带大家一起了解吧。解接是假人，其实就是姐姐是仿生人，大家可能会很惊讶解接怎么会是假人呢？但事实就是这样，小编也感到非常惊讶。这就是关于解接是假人的事情了，大家有什么想法呢，欢迎在评论区告诉小编一起讨论哦！',
         datetime: '2020年07月07日',
         place: '网络'
     },
     {
-        content: 'This is content asdasdasdasd asdadasd ',
+        content: '解接是假人是怎么回事呢？解接相信大家都很熟悉，但是解接是假人是怎么回事呢，下面就让小编带大家一起了解吧。解接是假人，其实就是姐姐是仿生人，大家可能会很惊讶解接怎么会是假人呢？但事实就是这样，小编也感到非常惊讶。这就是关于解接是假人的事情了，大家有什么想法呢，欢迎在评论区告诉小编一起讨论哦！',
         datetime: '2020年07月03日',
         place: '学校'
     },
@@ -58,7 +58,7 @@ const Editor = ({ onChange, onSubmit, submitting, value, defaultValue }) => (
 
 @inject('userStore')
 @observer
-class LogDrawer extends Component {
+class LogRecord extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -200,7 +200,7 @@ class LogDrawer extends Component {
         const { comments, submitting, value } = this.state;
         return (
             <div className="g-stu-log">
-                <Drawer
+                {/* <Drawer
                     className="g-stu-drawer"
                     title={<Title level={4}>指导日志</Title>}
                     width={720}
@@ -266,10 +266,78 @@ class LogDrawer extends Component {
                             />
                         )
                     }
-                </Drawer>
+                </Drawer> */}
+                <Modal
+                    className="g-stu-mdl-dt"
+                    visible={this.props.showLog}
+                    onCancel={this.props.onCancel}
+                    title={<Title level={4}>指导日志</Title>}
+                    width={720}
+                    style={{ top: 0 }}
+                    footer={[]}
+                >
+                    <Space align="baseline">
+                        {/* <h4  >{moment().format('YYYY年MM月DD日')}</h4> */}
+                        <p type="text" className="m-pos">请选择指导地点/指导方式</p>
+                        <Select
+                            className="m-pos"
+                            defaultValue={this.state.sel}
+                            style={{ width: 80 }}
+                            onChange={this.handleSelChange}
+                            onSelect={this.handleSelect}
+                            value={this.state.sel}
+                            bordered={false}
+                            size="small"
+                        >
+                            {
+                                SEL_PLACE.map((elem) => {
+                                    return <Option value={elem.value} key={elem.key}>{elem.value}</Option>
+                                })
+                            }
+                        </Select>
+                    </Space>
+                    <Comment
+                        content={
+                            <Editor
+                                onChange={this.handleChange}
+                                onSubmit={this.handleSubmit}
+                                submitting={submitting}
+                                value={value}
+                                defaultValue={value}
+                            />
+                        }
+                    />
+                    {
+                        comments.length > 0 && (
+                            <List
+                                dataSource={comments}
+                                header={`${comments.length} 条记录`}
+                                itemLayout="horizontal"
+                                pagination={{
+                                    pageSize: 2,
+                                }}
+                                renderItem={(item) => (
+                                    <List.Item
+                                        actions={[<Button type="primary" size="small" onClick={() => this.handleEdit(item)}>编辑</Button>,
+                                        <Popconfirm title="删除此记录？" onConfirm={() => this.handleDelete(item)} okText="确认" cancelText="取消">
+                                            <Button size="small">删除</Button>
+                                        </Popconfirm>
+                                        ]} >
+                                        <List.Item.Meta
+                                            title={<p>{item.datetime} {item.place}</p>}
+                                        // description={<p>{item.content}</p>}
+                                        />
+                                        {item.content}
+                                    </List.Item>
+                                )}
+                            />
+                        )
+                    }
+
+                </Modal>
             </div>
         );
     }
 }
 
-export default LogDrawer;
+export default LogRecord;
