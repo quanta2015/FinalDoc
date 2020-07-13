@@ -39,16 +39,16 @@ router.post('/delStuTopic', async (req, res) => {
         res.status(200).json({ code: 200, data: r, msg: '删除学生课题' })
     });
 });
-router.post('/calStuTopicStateThree', async (req, res) => {
-    let sql = `CALL PROC_CAL_ONE_STU_TOPIC_WITH_STATUS_THREE(?)`;
+router.post('/calStuDoubleSlelctSucc', async (req, res) => {
+    let sql = `CALL PROC_CAL_ONE_STU_DOUBLE_SELECT_SUCC(?)`;
     let params = req.body;
     console.log(params)
     callProc(sql, params, res, (r) => {
         if (r.length != 0) {
-            res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码为3 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 200, data: r, msg: '获取成功 传学生id条件 状态码不为空 不为0 1 2 输出 topic里面的所有字段' })
         }
         else {
-            res.status(200).json({ code: 200, data: null, msg: '数据为空 传学生id条件 状态码为3 输出 topic里面的所有字段' })
+            res.status(200).json({ code: 200, data: null, msg: '数据为空 传学生id条件  状态码不为空 不为0 1 2 输出 topic里面的所有字段' })
         }
 
     });
