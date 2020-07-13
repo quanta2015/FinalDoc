@@ -155,10 +155,11 @@ export default class AnnounceManage extends Component {
         ];
         return(
             <div className="g-ann-list">
+               
+                <div className="m-detail-table">
                 <Button className="m-release-btn" type="primary" icon={<PlusOutlined />} size={'small'}>
                     发布公告
                 </Button>
-                <div className="m-detail-table">
                     <Table dataSource={this.announceManage.announce_list} 
                         columns={columns}
                         pagination={paginationProps}
