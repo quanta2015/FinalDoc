@@ -157,7 +157,7 @@ export default class DivideDetail extends Component {
                 key: 'action',
                 render: (text, record) => (
                     <Space size="middle">
-                        <a onClick={() => this.showModal(record)}>详情</a>
+                        <a onClick={() => this.showModal(record)}>查看</a>
                     </Space>
                 ),
             },
@@ -214,19 +214,20 @@ export default class DivideDetail extends Component {
                     <Table pagination={paginationProps} dataSource={this.openDefenseGroup.group_list} columns={columns} />
                 </div>
 
-                <div className="m-modal">
+                 
                     <Modal
                         title="答辩课题详情"
                         visible={this.state.visible}
                         onCancel={this.handleCancel}
                         footer={false}
                         width={800}
+                        className="m-div-dtl-modal"
                     >
                         <div className="table">
                             <Table pagination={topic_paginationProps} dataSource={this.state.topic_data} columns={topic_columns} size="small" />
                         </div>
                     </Modal>
-                </div>
+                
             </div>
         );
     }

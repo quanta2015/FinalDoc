@@ -41,10 +41,10 @@ export default class Defense extends Component {
 
     }
     addSelectTeacher = async (value) => {
-        console.log(`selected ${value}`);
+        //console.log(`selected ${value}`);
         this.setState({
             select_leader: value
-        }, () => { console.log(this.state.select_leader) })
+        })
         if (value===undefined) {
             this.setState({
                 sug_topic_id: []
@@ -59,7 +59,7 @@ export default class Defense extends Component {
             member_x.push(value.split(" ")[0])
 
             let temp = { "ide": this.usr.uid, "teacher_id": member_x }
-            console.log(temp, "hello")
+            // console.log(temp, "hello")
             await this.props.manageStore.getSugTopicList_ogp(temp);
             this.setState({
                 sug_topic_id: this.openDefenseGroup.sug_topic_id
@@ -83,7 +83,7 @@ export default class Defense extends Component {
         // }
         this.setState({
             select_member: value
-        }, () => { console.log(this.state.select_member) })
+        })
         if (value.length > 3) {
             value.pop()
             message.info("答辩小组组员不能超过三位！")
@@ -95,7 +95,7 @@ export default class Defense extends Component {
         }
         this.setState({
             select_member: value
-        }, () => { console.log(this.state.select_member) })
+        })
         //选中后自动选题
         if (this.state.select_leader!==undefined&&
             value.length >= 2
@@ -106,7 +106,7 @@ export default class Defense extends Component {
             member_x.push(this.state.select_leader.split(" ")[0])
 
             let temp = { "ide": this.usr.uid, "teacher_id": member_x }
-            console.log(temp, "hello")
+            // console.log(temp, "hello")
             await this.props.manageStore.getSugTopicList_ogp(temp);
             this.setState({
                 sug_topic_id: this.openDefenseGroup.sug_topic_id
@@ -210,7 +210,7 @@ export default class Defense extends Component {
         this.state.select_member.map((item) => member_x.push(item.split(" ")[0]))
 
         let temp = { "ide": this.usr.uid, "leader_id": this.state.select_leader.split(" ")[0], "teacher_id": member_x }
-        console.log(temp)
+        // console.log(temp)
         await this.props.manageStore.getSugTopicList_ogp();
     }
 
@@ -275,7 +275,7 @@ export default class Defense extends Component {
                             {/* } */}
                         </div>
                     </div>
-                    <div class="m-select">
+                    <div class="m-select2">
                         <div class="lable">组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;员</div>
                         <div>
                             {/* {(this.openDefenseGroup.sug_topic_id.length > 0) &&
@@ -300,7 +300,7 @@ export default class Defense extends Component {
                                 <Select
                                     mode="multiple"
                                     style={{ width: 530 }}
-                                    placeholder="请选择教师"
+                                    placeholder="请选择2-3位教师"
                                     defaultActiveFirstOption={false}
                                     value={this.state.select_member}
                                     onChange={this.handleChange}
@@ -316,17 +316,20 @@ export default class Defense extends Component {
                             {/* <Button onClick={this.sugSelect}>选题</Button> */}
                         </div>
                     </div>
+                    <div class="info">待分配课题{this.openDefenseGroup.topic_info.length}篇，已选择{this.state.sug_topic_id.length}篇</div>
                     <div class="m-group">
                         {/* <div class="title">请选择参加该组答辩的学生：</div> */}
                         <div class="m-select">
                             <div class="lable">
                             <div >选择课题</div>
-                                <div class="info">已选择{this.state.sug_topic_id.length}篇</div>
+                                
 
                             
                             </div>
+                            
 
                             <div>
+                                 
                                 <Select
                                     mode="multiple"
                                     style={{ width: 530 }}

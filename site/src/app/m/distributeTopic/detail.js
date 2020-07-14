@@ -183,8 +183,8 @@ export default class Detail extends Component {
 					{ text: '未通过', value: 0 },
 					{ text: '通过', value: 1 },
 					{ text: '待审核', value: 2 },
-					{ text: '待学生选题',value: 3 },
-					{ text: '有学生选择',value: 4 },
+					{ text: '待学生选题', value: 3 },
+					{ text: '有学生选择', value: 4 },
 				],
 
 				filterMultiple: false,
@@ -204,13 +204,13 @@ export default class Detail extends Component {
 						tag = "通过";
 						color = "green";
 					}
-					else if(result === 0) {
+					else if (result === 0) {
 						tag = "未通过";
 						color = "red"
-					}else if(result === 3){
+					} else if (result === 3) {
 						tag = "待学生选题";
 						color = "blue"
-					}else if(result === 4){
+					} else if (result === 4) {
 						tag = "有学生选择";
 						color = "green"
 					}
@@ -249,15 +249,15 @@ export default class Detail extends Component {
 			tag = "通过";
 			color = "green";
 		}
-		else if (this.state.own.result === 0){
+		else if (this.state.own.result === 0) {
 			tag = "未通过";
 			color = "red"
 		}
-		else if (this.state.own.result === 3){
+		else if (this.state.own.result === 3) {
 			tag = "待学生选择";
 			color = "blue"
 		}
-		else if (this.state.own.result === 4){
+		else if (this.state.own.result === 4) {
 			tag = "有学生选择";
 			color = "green"
 		}
@@ -288,10 +288,8 @@ export default class Detail extends Component {
 					<Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
 						onRow={(record) => {
 							return {
-								onClick: () => {
-									console.log(record)
+								onClick: () => {		 
 									this.state.own = record
-									console.log(this.state.own)
 								}
 							}
 						}}
@@ -299,7 +297,6 @@ export default class Detail extends Component {
 						pagination={paginationProps}
 					/>
 				</div>
-
 				<Modal
 					title={null}
 					// closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
@@ -307,10 +304,10 @@ export default class Detail extends Component {
 					// }} />}
 					closable={false}
 					visible={this.state.visible}
-					// onCancel={this.handleCancel}
+					onCancel={this.handleCancel}
 					// footer={null}
 					footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
-					width={900}
+					width={800}
 					className="g-mod-close"
 				>
 					<div class="m-dtl-mod">
@@ -320,52 +317,21 @@ export default class Detail extends Component {
 							<div class="u-tea-name">{this.state.own.teaName}</div>
 						</div>
 						<div class="m-cont">
-							<div class="dtl"><span class="expln">课题简介:</span>{this.state.own.content}</div>
-							<div class="dtl"><span class="expln">审核建议:</span>
-								{
-									(this.state.own.sugg === null) && <span>无</span>
-								}
-								{
-									(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>
-								}
-							</div>
 							<div class="dtl"><span class="expln">审核状态:</span>
-								{
-									(this.state.own.result === 1) && <Tag color={"green"} >
-										通过
-									</Tag>
-								}
-								{
-									(this.state.own.result === 0) && <Tag color={"red"} >
-										未通过
-									</Tag>
-								}
-								{
-									(this.state.own.result === 2) && <Tag color={"blue"} >
-										待审核
-									</Tag>
-								}
-								{
-									(this.state.own.result === 3) && <Tag color={"blue"} >
-										待学生选择
-									</Tag>
-								}
-								{
-									(this.state.own.result === 4) && <Tag color={"green"} >
-										有学生选择
-									</Tag>
-								}
+								{(this.state.own.result === 1) && <Tag color={"green"} >通过</Tag>}
+								{(this.state.own.result === 0) && <Tag color={"red"} >未通过</Tag>}
+								{(this.state.own.result === 2) && <Tag color={"blue"} >待审核</Tag>}
+								{(this.state.own.result === 3) && <Tag color={"blue"} >待学生选择</Tag>}
+								{(this.state.own.result === 4) && <Tag color={"green"} >有学生选择</Tag>}
 							</div>
-							 
+							<div class="dtl"><span class="expln">审核建议:</span>
+								{(this.state.own.sugg === null) && <span>无</span>}
+								{(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>}
+							</div>
+							<div class="dtl"><span class="expln">课题简介:</span>{this.state.own.content}</div>
 						</div>
-
 					</div>
-
-
-
 				</Modal>
-
-
 			</div>
 		);
 	}

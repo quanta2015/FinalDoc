@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import './ass.css';
+import './ass.scss';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -229,13 +229,13 @@ export default class Ass extends Component {
              
         ];
         return (
-            <div>
+            <div class="g-ass">
 
-                <div className="ass_top_box">
+                <div className="m-ass_top_box">
 
-                    <div className="ass_noTopicNum">{this.reviewPaper.to_audit_list.length}篇未审核
+                    <div className="m-ass_noTopicNum">{this.reviewPaper.to_audit_list.length}篇未审核
                             已选{selectedRowKeys.length}篇</div>
-                    <div className="ass_head_btn">
+                    <div className="m-ass_head_btn">
                         {
                             (this.reviewPaper.to_audit_list.length===0)&&
                             <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
@@ -256,7 +256,7 @@ export default class Ass extends Component {
                     </div>
                 </div>
 
-                <div className="ass_table">
+                <div className="m-ass_table">
                     <Table
                         onChange={this.handleChange}
                         
