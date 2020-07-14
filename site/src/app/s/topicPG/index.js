@@ -131,6 +131,7 @@ export default class TopicPG extends Component {
                     <LogRecord
                         showLog={this.state.showLog}
                         onCancel={this.onClose}
+                        pid={this.selectTpInfo.id}
                     />
                     <div className="m-topic-info">
                         {FILE_UPLOAD_TYPE.map((item, id) =>
@@ -164,7 +165,6 @@ export default class TopicPG extends Component {
                                 <span className="score">
                                     {item.score}
                                 </span>
-                                <span className="char">&nbsp;分</span>
                             </div>
                         )}
                     </div>
