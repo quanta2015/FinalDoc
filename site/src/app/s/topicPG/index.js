@@ -11,7 +11,7 @@ import LogRecord from '../../../component/LogRecord';
 
 //传入列表，返回当前所处阶段
 let getStage = (status, info) => {
-    let tmp = Math.abs(status) - 4;
+    let tmp = Math.abs(status) - 7;
     if (tmp < 0 && !info) {
         return -1;
     } else if (tmp < 0 && info) {
@@ -90,6 +90,8 @@ export default class TopicPG extends Component {
     }
     render() {
         const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
+        const TASK_FINISH = 6;
+        const GRADE_FINISH = 20;
         return (
             <div className="g-stu-prog">
                 <div className="m-hd">
@@ -107,16 +109,9 @@ export default class TopicPG extends Component {
                                         <div>
                                             <h3>{item.time}</h3>
                                             {
-                                                (item.title === '任务书' || item.title === '成绩审定') && (id <= currStage) ?
-                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                    <div>
-                                                        <p>
-                                                            {item.title}
-                                                            {id === currStage && this.selectTpInfo.status < 0 &&
-                                                                <span className="u-status">未通过</span>
-                                                            }
-                                                        </p>
-                                                    </div>
+                                                ((item.title === '任务书' && id >= TASK_FINISH) || (item.title === '成绩审定' && id >= GRADE_FINISH)) ?
+                                                <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                <p>{item.title}</p>
                                             }
                                         </div>
                                     </li>
