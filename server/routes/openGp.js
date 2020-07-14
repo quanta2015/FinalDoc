@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-02 17:08:24
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-08 01:40:58
+ * @LastEditTime: 2020-07-14 13:43:54
  */ 
 
 
@@ -111,7 +111,7 @@ router.post('/handleGroup', async(req, res) => {
   });
 
 
-  /**
+/**
  * @name: 
  * @test: test font
  * @msg: 开题答辩 手动分组、自动分课题 --权限
@@ -140,6 +140,32 @@ router.post('/randGroup', async(req, res) => {
     });
 });
   
+
+/**
+ * @name: 
+ * @test: test font
+ * @msg: 开题答辩 手动分组、自动分课题 获取十个不是本教师的课题 --权限
+ * @param {teacher_id:[String]} 
+ * @return: 
+ */
+router.post('/tenTopic', async(req, res) => {
+  let teacher_char = "";
+  let teacher_len = 0;
+
+  for(let i of req.body.teacher_id){    //数据格式处理
+    teacher_char += (i+",");
+    teacher_len++;
+  }
+  teacher_char = teacher_char.substring(0, teacher_char.length - 1);
+  
+  let sql = `CALL MG_G_PROC_TEN_TOPIC(?)`;
+  let params = {ide:req.body.ide,
+                teacher_id:teacher_char,
+                teacher_len:teacher_len};
+  callProc(sql, params, res, (r) => {
+    res.status(200).json({code: 200, data:r, msg: '开题答辩自动十个课题'})
+  });
+});
   /**
    * @name: 
    * @test: test font
