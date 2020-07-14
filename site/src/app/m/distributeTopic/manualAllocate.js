@@ -347,13 +347,15 @@ export default class ManualAllocate extends Component {
                 <Modal
                     title="查看详情"
                     title={null}
-                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
-                        fontSize: '28px',
-                    }} />}
+                    // closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+                    //     fontSize: '28px',
+                    // }} />}
                     visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                    footer={null}
+                    closable={false}
+                    // onOk={this.handleOk}
+                    footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
+                    // onCancel={this.handleCancel}
+                    // footer={null}
                     width={900}
                     className="g-mod-close"
                 >

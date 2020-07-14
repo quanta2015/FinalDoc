@@ -3,17 +3,67 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #333;
+  // background: #333;
+  background-color: #fff;
   color: #fff;
   align-items: center;
+  border-right: 1px solid #EFEFEF;
   
+  .g-logo {
+    color: #333;
+    font-size: 17px;
+    padding: 10px 0;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+
   .g-info {
-      margin: 30px 15px;
+      // margin: 30px 15px;
+      width: 100%;
+      padding: 10px 0 10px 15px;
+      background-color: #666666;
+      margin-top: auto;
   }
 
   .g-info>div{
     display: flex;
     align-items: center;
+  }
+
+  .g-status {
+    color: #333;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .g-status-name {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .g-status-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .g-status-item {
+    width: 28px;
+    border: 1px solid #aaa;
+    box-sizing: content-box;
+    padding: 5px;
+    border-radius: 3px;
+  }
+
+  .g-status-active {
+    color: #fff;
+    background: #fe6104;
+    border-color: #fe6104;
+  }
+
+  .g-status-arrow {
+    color:#fe6104;
   }
 
   .g-menu {
@@ -28,10 +78,12 @@
     
     .ant-divider-horizontal.ant-divider-with-text::after {
       border-top: 1px solid #336699;
+      transform: inherit;
     }
 
     .ant-divider-horizontal.ant-divider-with-text::before {
       border-top: 1px solid #336699;
+      transform: inherit;
     }
 
     .m-menu-item {
@@ -43,6 +95,9 @@
       cursor: pointer;
       transition: .3s;
       font-size: 16px;
+      background-color: #666666;
+      margin-bottom: 5px;
+      box-shadow: 0 1px 3px #CECECE;
 
       .m-menu-span{
         width: 96px;

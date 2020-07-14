@@ -302,12 +302,14 @@ export default class Detail extends Component {
 
 				<Modal
 					title={null}
-					closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
-						fontSize: '28px',
-					}} />}
+					// closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+					// 	fontSize: '28px',
+					// }} />}
+					closable={false}
 					visible={this.state.visible}
-					onCancel={this.handleCancel}
-					footer={null}
+					// onCancel={this.handleCancel}
+					// footer={null}
+					footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
 					width={900}
 					className="g-mod-close"
 				>

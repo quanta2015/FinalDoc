@@ -24,13 +24,14 @@ export var MENU_MAIN_M =
 
 export var MENU_MAIN_T =
    [{ title: '毕业设计管理', path: '/t_manage', icon: manage },
-   { title: '系统设置 ', path: '/t_system', icon: home },
+   // { title: '系统设置 ', path: '/t_system', icon: home },
    ]
 
 export var MENU_MAIN_T_AUDIT = [
+   { title: '毕业设计管理', path: '/t_manage', icon: manage },
    { title: '初期命题审核', path: '/t_auditTP', icon: cp },
-   { title: '中期开题审核', path: '/t_auditOP', icon: audit },
-   { title: '终期论文审核', path: '/t_auditFD', icon: audit },
+   // { title: '中期开题审核', path: '/t_auditOP', icon: audit },
+   // { title: '终期论文审核', path: '/t_auditFD', icon: audit },
 
 ]
 

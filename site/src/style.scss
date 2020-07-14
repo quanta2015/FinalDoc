@@ -7,24 +7,33 @@ body {
 	background: #eee !important;
 }
 
-#app {  
-  display: flex;
-  width: 1200px;
-  // height: 100%;
-  min-height: 100%;
-  margin: 0 auto;
-  // background: #fff;
-  background: #333;
-}
+// #app {  
+//   display: flex;
+//   width: 1200px;
+//   // height: 100%;
+//   min-height: 100%;
+//   margin: 0 auto;
+//   background: #fff;
+//   // background: #333;
+// }
 
 #context {
   background: #fff;
   //background: #333;
   width: 950px;
 }
-#app_login{
+
+// #app_login{
+//   display: flex;
+//   width: 1200px;
+//   margin: 0 auto;
+//   background: #333;
+// }
+
+#app {
   display: flex;
   width: 1200px;
+  height: 100%;
   margin: 0 auto;
-  background: #333;
+  background: #fff;
 }
