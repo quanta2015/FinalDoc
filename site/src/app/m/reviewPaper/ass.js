@@ -7,6 +7,8 @@ import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
+ 
+
 const paginationProps = {
     showTotal: ((total) => {
         return `共 ${total} 条`;
@@ -50,7 +52,8 @@ export default class Ass extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTaskList({ "ide": this.usr.uid });
+       await this.props.manageStore.getTaskList({ "ide": this.usr.uid });
+         
     }
 
 
@@ -103,25 +106,7 @@ export default class Ass extends Component {
         });
     };
 
-    // handleReset = clearFilters => {
-    //     clearFilters();
-    //     this.setState({ searchText: '' });
-    // };
-
-    // selectOnlyTea = (value) => {
-    //     let id
-    //     if (value !== "" && value !== undefined) {
-    //         id = value.split(" ")[0];
-    //     } else {
-    //         id = value
-    //         // 清空选择课题列表
-    //         this.setState({
-    //             selectedRowKeys: [],
-                 
-    //         })
-    //     }
-        
-    // }
+    
 
     clear = () => {
         this.setState({
@@ -129,11 +114,7 @@ export default class Ass extends Component {
         })
     }
     
-    // onSelectChange = (selectedRowKeys) => {
-    //     console.log('selectedRowKeys changed: ', selectedRowKeys);
-    //     this.setState({ selectedRowKeys });
-    // };
-
+   
 
     // 提交手动分配
     handDistribute = async () => {
@@ -141,22 +122,21 @@ export default class Ass extends Component {
             message.info("还未选择课题！")
             return;
         }
-        let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }
+        let temp = { "topic_id": this.state.selectedRowKeys }
         console.log(temp)
-        let res = await this.props.manageStore.allocateTopic(temp);
-        if (res && res.code === 200) {
-            message.info("分配成功！")
-            await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-            await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
-            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+        // let res = await this.props.manageStore.allocateTopic(temp);
+        // if (res && res.code === 200) {
+        //     message.info("分配成功！")
+        //     await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
+        //     await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+        //     await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
            
-        } else {
-            message.info("分配失败！请重试")
-        }
+        // } else {
+        //     message.info("分配失败！请重试")
+        // }
         this.setState({
             selectedRowKeys: [],
-            tea_id: "",
-            tea_name: undefined,
+           
         })
     }
 
@@ -175,25 +155,16 @@ export default class Ass extends Component {
 
             },
             getCheckboxProps: record => ({
-                disabled: record.name === '谢琪', // Column configuration not to be checked
-
+                disabled: record.tag ==="通过" || record.tag === "未提交", // Column configuration not to be checked
             }),
             selections: [
-                Table.SELECTION_ALL,
-                Table.SELECTION_INVERT,
+                // Table.SELECTION_ALL,
+                // Table.SELECTION_INVERT,
                 {
                     key: 'odd',
-                    text: 'Select Odd Row',
-                    onSelect: changableRowKeys => {
-                        let newSelectedRowKeys = [];
-                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-                            if (index % 2 !== 0) {
-                                return false;
-                            }
-                            return true;
-                        });
-                        console.log(newSelectedRowKeys,"new")
-                        this.setState({ selectedRowKeys: newSelectedRowKeys });
+                    text: '全选待审核任务书',
+                    onSelect:()=> {
+                        this.setState({ selectedRowKeys: toJS(this.reviewPaper.to_audit_list) });
                     },
                 },
             ],
@@ -223,26 +194,65 @@ export default class Ass extends Component {
                 ),
             },
             {
-                title: '操作',
-                dataIndex: '',
-                key: 'topic',
-                render: (text, record) => (
-                    <Space size="middle">
-                        <a > 下载</a>
-                    </Space>
-                ),
+                title: '状态',
+                dataIndex: 'tag',
+                key: 'tag',
+                filters: [
+                    { text: '待审核', value: '待审核'},
+                    { text: '未提交', value: '未提交' },
+                    { text: '通过', value: '通过' },
+                    
+                ],
+                filterMultiple: false,
+                onFilter: (value, record) => record.tag === value,
+                render: tag => {
+                    // console.log(result);
+                    let color = "";
+                    if (tag === "待审核") {
+                        color = "blue"
+                    }
+                    else if (tag === "未提交") {
+                        color = "red";
+                    }
+                    else if (tag === "通过") {
+                        color = "green"
+                    } 
+                    // console.log(tag);
+                    return (
+                        <Tag color={color} >
+                            {tag}
+                        </Tag>
+                    )
+                }
+                
             },
+             
         ];
         return (
             <div>
 
                 <div className="ass_top_box">
 
-                    <div className="ass_noTopicNum">{this.reviewPaper.task_info.length}篇未审核
+                    <div className="ass_noTopicNum">{this.reviewPaper.to_audit_list.length}篇未审核
                             已选{selectedRowKeys.length}篇</div>
                     <div className="ass_head_btn">
-                        <Button onClick={this.clear} className="ass_clear">重置</Button>
-                        <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                        {
+                            (this.reviewPaper.to_audit_list.length===0)&&
+                            <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length === 0) &&
+                            <Button type="primary" disabled>通过</Button>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length > 0) &&
+                            <Button onClick={this.clear} className="ass_clear">重置</Button>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length > 0) &&
+                            <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                        }
+                        
                     </div>
                 </div>
 
@@ -258,15 +268,15 @@ export default class Ass extends Component {
                         columns={columns}
                         dataSource={this.reviewPaper.task_info}
                         pagination={paginationProps}
-                        // onRow={(record) => {
-                        //     return {
-                        //         onClick: () => {
-                        //             console.log(record)
-                        //             this.state.own = record
-                        //             console.log(this.state.own)
-                        //         }
-                        //     }
-                        // }}
+                        onRow={(record) => {
+                            return {
+                                onClick: () => {
+                                    console.log(record)
+                                    this.state.own = record
+                                    console.log(this.state.own)
+                                }
+                            }
+                        }}
                     />
                 </div>
 

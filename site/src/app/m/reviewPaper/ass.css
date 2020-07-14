@@ -34,21 +34,23 @@ tbody.ant-table-tbody {
     margin-bottom: 20px;
 }
 
+ 
+
 .ass_table .ant-table-cell:nth-last-child(3) {
-    width: 210px;
+    width: 300px;
      
 }
 
  
 
 .ass_table .ant-table-cell:nth-last-child(2) {
-    width:350px;
-    text-align: left;
+    width:250px;
+    
      
 }
 
 .ass_table .ant-table-cell:nth-last-child(1) {
-    width: 200px;
+    width: 250px;
 }
 
 .ass_table .ant-table-placeholder .ant-table-cell{
