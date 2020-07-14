@@ -1,7 +1,8 @@
 import { Component } from 'preact';
 import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
-import { computed, toJS, observable } from 'mobx';
+import { computed, toJS } from 'mobx';
+import { CaretRightOutlined } from '@ant-design/icons';
 import { MENU_MAIN_S } from '../../constant/data';
 import './index.scss'
 
@@ -69,6 +70,19 @@ class NavS extends Component {
         <div className="g-logo">
           <div onClick={this.gohome}>毕业设计命题系统</div>
         </div>
+        <div className="g-status">
+          <div className="m-sta-title">{this.currStage.name}</div>
+          <div className="m-sta-content">
+            {
+              this.currStage.stage.map((item, id) =>
+                <>
+                  <div className={id === this.currStage.index ? "m-sta-item z-active" : "m-sta-item"}>{item}</div>
+                  {id !== this.currStage.stage.length - 1 && <CaretRightOutlined className="m-next" />}
+                </>
+              )
+            }
+          </div>
+        </div>
         <div className="g-menu">
           {!this.selectTpInfo.id ?
             <div className={(cur == 0) ? 'm-menu-item active' : 'm-menu-item'} onClick={this.doMenu.bind(this, MENU_MAIN_S[0].path, 0)}>
@@ -80,27 +94,6 @@ class NavS extends Component {
           }
         </div>
         <div className="g-footer">
-          <div className="m-prog">
-            <div className="m-title">{this.currStage.name}</div>
-            <div className="m-stg-wp">
-              {
-                this.currStage.stage.map((item, id)=>
-                  <div className="m-stage">
-                    <div className={id === this.currStage.index ? "m-name z-active": "m-name"}>{item}</div>
-                    {id !== this.currStage.stage.length - 1 && <div className="m-next"></div>}
-                  </div>
-                )
-              }
-            </div>
-          </div>
-          <div className="m-tmplate">
-            <div className="m-title">模板文件</div>
-            <div className="m-tmp-wp">
-              {this.docTemplate && this.docTemplate.map((item) =>
-                <div className="m-down" onClick={() => this.downloadFile(item)}>{item.title}</div>
-              )}
-            </div>
-          </div>
           <div className="m-setting">
             <span>退出登录</span>
           </div>
