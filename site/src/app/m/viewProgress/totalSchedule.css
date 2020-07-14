@@ -14,7 +14,7 @@ tbody.ant-table-tbody {
 }
 
 .totalSchedule_table .ant-table-cell:nth-last-child(7) {
-    width: 160px;
+    width: 210px;
     text-align: left;
 }
 
@@ -43,7 +43,7 @@ tbody.ant-table-tbody {
 }
 
 .totalSchedule_table .ant-table-placeholder .ant-table-cell{
-    width: 800px;
+    width: 850px;
 }
 
  /* Modal */
