@@ -123,7 +123,7 @@ export var ADMIN_NAV_DATA = [
       { title: "option1", path: "/admin" },
       { title: "option2", path: "/admin" },
     ],
-    path: "/admin_file",
+    path: "/admin",
     icon: "BankOutlined",
   },
   {
@@ -132,7 +132,7 @@ export var ADMIN_NAV_DATA = [
       { title: "option1", path: "/admin" },
       { title: "option2", path: "/admin" },
     ],
-    path: "/admin_ann",
+    path: "/admin",
     icon: "BankOutlined",
   },
   {
@@ -141,7 +141,7 @@ export var ADMIN_NAV_DATA = [
       { title: "option1", path: "/admin" },
       { title: "option2", path: "/admin" },
     ],
-    path: "/admin_file",
+    path: "/admin",
     icon: "BankOutlined",
   },
   {
@@ -150,7 +150,7 @@ export var ADMIN_NAV_DATA = [
       { title: "option1", path: "/admin" },
       { title: "option2", path: "/admin" },
     ],
-    path: "/admin_ann",
+    path: "/admin",
     icon: "BankOutlined",
   },
   {
@@ -159,7 +159,7 @@ export var ADMIN_NAV_DATA = [
       { title: "option1", path: "/admin" },
       { title: "option2", path: "/admin" },
     ],
-    path: "/admin_file",
+    path: "/admin_sys_set",
     icon: "BankOutlined",
   },
 ];

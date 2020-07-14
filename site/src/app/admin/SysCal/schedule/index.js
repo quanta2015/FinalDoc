@@ -5,7 +5,7 @@ import { computed, toJS } from "mobx";
 
 @inject("userStore")
 @observer
-export default class admin extends Component {
+export default class scheduleSet extends Component {
   @computed
   get usr() {
     return toJS(this.props.userStore.usr);
@@ -17,10 +17,11 @@ export default class admin extends Component {
   }
 
   render() {
-    console.log("========管理端页面===========");
+    console.log("========管理端系统设置->时间进度设定 界面页面===========");
     return (
       <div>
-        <div>Admin info</div>
+        <div>管理端系统设置->时间进度设定 界面页面</div>
+        
       </div>
     );
   }
