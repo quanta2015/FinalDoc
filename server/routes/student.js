@@ -108,4 +108,18 @@ router.post('/delFile', async (req, res) => {
     });
 });
 
+/**
+ * @description: 查看教师的指导意见
+ * @param {sid: str} 
+ * @return: 
+ */
+router.post('/getGuidance', async(req, res) => {
+    let sql = `CALL PROC_GET_GUIDANCE(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '查看指导意见成功'});
+    })
+})
+
 module.exports = router
