@@ -24,7 +24,7 @@ export var MENU_MAIN_M =
 
 export var MENU_MAIN_T =
    [{ title: '毕业设计管理', path: '/t_manage', icon: manage },
-   { title: '系统设置 ', path: '/t_system', icon: home },
+      //{ title: '系统设置 ', path: '/t_system', icon: home },
    ]
 
 export var MENU_MAIN_T_AUDIT = [
