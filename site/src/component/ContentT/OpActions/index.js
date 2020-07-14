@@ -2,24 +2,22 @@ import BaseActions from '../../../component/BaseActions';
 
 import { inject, observer } from 'mobx-react';
 import { computed} from 'mobx';
+import { route } from "preact-router";
 import {
     Button,
     Input,
     Modal,
     message,
-	Descriptions,
-	Space,
     Tooltip,
-    InputNumber
 } from 'antd';
 
 import {
-	FileSearchOutlined,
+    FileSearchOutlined,
+    AuditOutlined,
+    CloseCircleTwoTone,
 } from '@ant-design/icons';
 
 const { TextArea } = Input;
-
-import * as urls from '../../../constant/urls';
 
 import style from './index.scss'
 
@@ -50,66 +48,52 @@ class OpActions extends BaseActions {
 		this.setState({
 			visible: true,
 		});
-	};
-
-	handleCancel = () => {
+    };
+    
+    handleContentCancel = () => {
 		this.setState({
 			visible: false,
 		});
 	};
 
-    handleUnchecked = () => {
-
-    }
-
-    handleChecked = () => {
-
-    }
-
-    handleUnsubmitted = () => {
-        message.warn("文献综述还未提交");
+    handleAudit = () => {
+        route("/t_formOP");
     }
 
 	render(){
         const {confirmLoading, visible}=this.state;
         return(
             <div data-component="t-ContentT-OpActions">
+                <Tooltip title="开题审核">
+                    <Button type="link" shape="circle" icon={<AuditOutlined />} onClick={this.handleAudit} />
+                </Tooltip>
+
                 <Tooltip title="详情">
-                    <Button type="link" size="small" shape="circle" icon={<FileSearchOutlined />} onClick={this.showModal.bind(this, this.props.record.id)} />
+                    <Button type="link" shape="circle" icon={<FileSearchOutlined />} onClick={this.showModal.bind(this, this.props.record.id)} />
                 </Tooltip>
 
                 <Modal
                     className="t-ContentT-OpActions-Modal"
-                    title="详细内容"
+                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+                        fontSize: '28px',
+                    }} />}
+                    title={null}
                     visible={visible}
                     confirmLoading={confirmLoading}
-                    onCancel={this.handleCancel}
+                    onCancel={this.handleContentCancel}
+                    footer={null}
                     width={900}
                 >
-                    <Descriptions column={3} bordered>
-                        <Descriptions.Item label="课题名称" span={2}>{this.selectedTopic.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题类型" span={1}>{this.selectedTopic.type}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={3}>{this.selectedTopic.content}</Descriptions.Item>
-                        <Descriptions.Item label="文档审核" span={3}>
-                            <Space size={10}>
-                            <Tooltip className="unchecked" title="未审核">
-                                <Button className="file_btn" type="dashed">开题报告</Button>
-                            </Tooltip> 
-                            <Tooltip className="checked" title="已审核">
-                                <Button className="file_btn" type="dashed">外文翻译</Button>
-                            </Tooltip> 
-                            <Tooltip className="unsubmitted" title="未提交">
-                                <Button className="file_btn" type="dashed" onClick={this.handleUnsubmitted}>文献综述</Button>
-                            </Tooltip>
-                            </Space>
-                        </Descriptions.Item>
-                    </Descriptions>
-
-                    <div className="score_block">
-                        <h4 className="score_title">评分: </h4>
-                        <InputNumber min={0} max={100} defaultValue={0} />
+                    <div>
+                        <div class="m-title">
+							<div class="u-type">{this.selectedTopic.type}</div>
+							<div class="u-topic">{this.selectedTopic.topic}</div>
+							<div class="u-none">{this.selectedTopic.type}</div>
+						</div>
                     </div>
-    
+                    <div class="m-cont">
+                        <div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.selectedTopic.content}</div>
+                    </div>
                 </Modal>
             </div>
         )

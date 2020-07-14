@@ -1,11 +1,24 @@
 [data-component="t-auditOP"]{
-  .m-main-table{
+  overflow: auto;
+  
+  .m-title{
     margin-top: 46px;
+    margin-bottom: 10px;
+    .u-divider{
+      margin-bottom: 5px;
+    }
+    .u-leader-block{
+      margin-bottom: 5px;
+    }
   }
 
   table,tbody.ant-table-body{
     display: flex;
     flex-direction: column;
+  }
+
+  .ant-table-cell{
+    width: 900px;
   }
 
   .ant-table-row,
@@ -17,6 +30,7 @@
   .ant-table-tbody>tr{
     width: 100%;
     text-align: center;
+    line-height: 32px;
   }
 
   .ant-table-thead>tr th:first-child,
