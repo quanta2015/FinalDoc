@@ -2,21 +2,25 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import { Modal } from 'antd';
+import { Modal,Divider } from 'antd';
 import UploadImage from '../ImgUpload'
 import './index.scss'
 // import more from './more.svg'
-import { MENU_MAIN_M, MENU_MAIN_T, MENU_MAIN_T_AUDIT} from '../../constant/data'
+import { MENU_MAIN_M, MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
+import BaseActions from '../BaseActions'
+import * as urls from '../../constant/urls'
+
 
 @inject('manageStore', 'userStore')
 @observer
-class NavM extends Component {
+class NavM extends BaseActions {
   constructor(props) {
     super(props)
 
     this.state = {
       cur: 0,
       visible: false,
+      checkList: [],
     }
   }
 
@@ -24,12 +28,16 @@ class NavM extends Component {
   get usr() {
     return this.props.userStore.usr;
   }
-  
-  componentDidMount() {
-    // if (!this.usr.uid) {
-    //   route('/')
-    // }
-    // route('/m_distributeTopic')
+
+  async componentDidMount() {
+    let list = [];
+    //post请求获取数据，看length是否为0.如果不为0，则显示该tab
+    let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, { "uid": this.usr.uid })
+    if (x.data.length > 0) {
+      list.push(MENU_MAIN_T_AUDIT[0])
+    }
+
+    this.setState({ checkList: list })
   }
 
   doMenu = (path, i) => {
@@ -58,44 +66,40 @@ class NavM extends Component {
           <div>姓名：{this.usr.name}</div>
           <div>工号：{this.usr.uid}</div>
           <div>所在系：{this.usr.maj}</div>
-          {/* <div className="sign" 
-            onClick={this.showModal} >
-              查看电子签名
-          </div> */}
-          {/* <div>所在学院：杭州国际服务工程学院</div> */}
         </div>
         <div className="g-menu">
-          {/* {MENU_MAIN_T.map((item, i) =>
-            <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
-              <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
-            </div>
-          )}
-          <br /> */}
+          <Divider orientation="left">系主任</Divider>
           {MENU_MAIN_M.map((item, i) =>
-            <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
+            <div
+              className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
+              key={i}
+              onClick={this.doMenu.bind(this, item.path, i)}>
               <img src={item.icon} /><span>{item.title}</span>
             </div>
           )}
-          {/* <br />
-          {MENU_MAIN_T_AUDIT.map((item, i) =>
-            <div className={(this.state.cur == i +6 ) ? 'm-menu-item active' : 'm-menu-item'} key={i + 6} onClick={this.doMenu.bind(this, item.path, i + 6)}>
+          <br />
+          <Divider>指导教师</Divider>
+          {MENU_MAIN_T.map((item, i) =>
+            <div
+              className={(this.state.cur == i + 4) ? 'm-menu-item active' : 'm-menu-item'}
+              key={i + 4}
+              onClick={this.doMenu.bind(this, item.path, i + 4)}>
               <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
             </div>
-          )} */}
+          )}
+          <br />
+          {this.state.checkList.map((item, i) =>
+            <div
+              className={(cur == i + 6) ? 'm-menu-item active' : 'm-menu-item'}
+              key={i + 6}
+              onClick={this.doMenu.bind(this, item.path, i + 6)}>
+              <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+            </div>
+          )}
         </div>
-        {/* <Modal
-          title="查看电子签名"
-          visible={this.state.visible}
-          onCancel={this.handleCancel}
-          footer={false}
-        >
-          <div>
-            <UploadImage  />
-          </div>
-        </Modal> */}
 
       </div>
-      
+
     )
   }
 }

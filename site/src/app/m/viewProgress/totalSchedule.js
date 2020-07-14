@@ -141,6 +141,11 @@ export default class TotalSchedule extends Component {
 		console.log(a,b,c)
 	}
 
+	prevFile = (file) => {
+		let param = { file: file };
+		this.props.manageStore.previewFile(param);
+	}
+
 	columns = [
 		{
 			title: '论文课题',
@@ -242,9 +247,12 @@ export default class TotalSchedule extends Component {
 											</Tooltip>
 										}
 										{(this.state.row_file[item.type] !== null) && 
-											<Button icon={<DownloadOutlined />} size="small" onClick={() => this.downloadFile(this.state.row_file[item.type],this.state.row_name,item.name)}>
-												{item.name}
-											</Button>
+											<div>
+												<Button icon={<DownloadOutlined />} size="small" onClick={() => this.downloadFile(this.state.row_file[item.type], this.state.row_name, item.name)}>
+													{item.name}
+												</Button>
+												<span onClick={() => this.prevFile(this.state.row_file[item.type])}>预览</span>
+											</div>
 										}
 									</div>
 								)}
