@@ -9,6 +9,8 @@ import "./autoAllocate.scss"
 export default class AutoAllocate extends Component {
     state = {
         num: 10,
+        sug_topic:[],
+        topic_info:[],
     }
 
     @computed
@@ -21,15 +23,18 @@ export default class AutoAllocate extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
-        await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-        let stu_num = 0;
-        if (this.openDefenseGroup.teacher_info.length !== 0) {
-            stu_num = Math.ceil(this.openDefenseGroup.topic_info.length / parseInt(this.openDefenseGroup.teacher_info.length / 3));
-        }
-        this.setState({
-            num: stu_num,
-        })
+       // await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
+        // await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
+        // let stu_num = 0;
+        // if (this.openDefenseGroup.teacher_info.length !== 0) {
+        //     stu_num = Math.ceil(this.openDefenseGroup.topic_info.length / parseInt(this.openDefenseGroup.teacher_info.length / 3));
+        // }
+        // this.setState({
+        //     num: stu_num,
+        // })
+         
+            //await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+            
     }
 
     // 提交自动分配
@@ -88,10 +93,13 @@ export default class AutoAllocate extends Component {
     }
 
     render() {
+         
+         
+       
         return (
             <div class="g-ogp-al">
                 <div class="m-select-gp">
-                    <div class="choose-num">
+                    {/* <div class="choose-num">
                         还有<span class="stu-num">{this.openDefenseGroup.topic_info.length}</span>位学生未被选择 为该组选择
                         <InputNumber
                             style={{ width: 50 }}
@@ -101,7 +109,9 @@ export default class AutoAllocate extends Component {
                             onChange={this.setNum}
                         />
                     位
-                    </div>
+                    </div> */}
+
+                    
                 </div>
                 <div className="m-btn-gp">
                     <Button onClick={this.clear}>重置</Button>
