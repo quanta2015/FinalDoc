@@ -354,10 +354,10 @@ export default class ManualAllocate extends Component {
                     closable={false}
                     // onOk={this.handleOk}
                     footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
-                    // onCancel={this.handleCancel}
+                    onCancel={this.handleCancel}
                     // footer={null}
-                    width={900}
-                    className="g-mod-close"
+                    width={800}
+                    className="g-mod-ma"
                 >
                     <div class="m-dtl-mod">
                         <div class="m-title">
