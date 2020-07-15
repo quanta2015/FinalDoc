@@ -83,7 +83,7 @@ class NavM extends BaseActions {
                 className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
                 key={i}
                 onClick={this.doMenu.bind(this, item.path, i)}>
-                <img src={item.icon} /><span>{item.title}</span>
+                <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
               </div>
             )}
             <Divider>指导教师</Divider>
