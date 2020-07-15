@@ -30,41 +30,93 @@
     align-items: center;
   }
 
-  .g-status {
-    color: #333;
-    width: 100%;
-    margin-bottom: 20px;
+  // .g-status {
+  //   color: #333;
+  //   width: 100%;
+  //   margin-bottom: 20px;
+  // }
+
+  // .g-status-name {
+  //   color: red;
+  //   font-weight: bold;
+  //   margin-bottom: 10px;
+  // }
+
+  // .g-status-content {
+  //   display: flex;
+  //   justify-content: space-around;
+  //   align-items: center;
+  // }
+
+  // .g-status-item {
+  //   width: 28px;
+  //   border: 1px solid #aaa;
+  //   box-sizing: content-box;
+  //   padding: 5px;
+  //   border-radius: 3px;
+  // }
+
+  // .g-status-active {
+  //   color: #fff;
+  //   background: #fe6104;
+  //   border-color: #fe6104;
+  // }
+
+  // .g-status-arrow {
+  //   color:#fe6104;
+  // }
+
+  .g-st {
+      display: flex;
+      height: 50px;
+      width: 100%;
+      background: #fff;
+      color: #333;
   }
 
-  .g-status-name {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 10px;
+  .m-st {
+      flex: 1;
+      display: flex;
+      padding: 0 12px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      text-align: center;
+      background: #eee;
+      position: relative;
   }
 
-  .g-status-content {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+  .m-st + .m-st {
+      margin-left: 2px;
   }
 
-  .g-status-item {
-    width: 28px;
-    border: 1px solid #aaa;
-    box-sizing: content-box;
-    padding: 5px;
-    border-radius: 3px;
+  .m-st + .m-st:before,
+  .m-st + .m-st:after {
+      content: '';
+      display: block;
+      border: 6px solid transparent;
+      position: absolute;
   }
 
-  .g-status-active {
-    color: #fff;
-    background: #fe6104;
-    border-color: #fe6104;
+  .m-st + .m-st:before {
+      border-left: 6px solid #fff;
+      left: 0;
   }
 
-  .g-status-arrow {
-    color:#fe6104;
+  .m-st + .m-st:after {
+      border-left: 6px solid #eee;
+      left: -2px;
   }
+
+  .m-st.active {
+      background: #ff6600;
+      color: #fff;
+  }
+
+  .m-st.active + .m-st:after  {
+      border-left: 6px solid #ff6600;
+  }
+
 
   .g-menu {
     width: 100%;

@@ -58,20 +58,14 @@ class NavM extends Component {
         <div className="g-logo">
           <div onClick={this.gohome}>毕业设计命题系统</div>
         </div>
-        <div className="g-status">
-          <div className="g-status-name">
-            {this.state.status.title}
-          </div>
-          <div className="g-status-content">
-            {this.state.status.content.map((c, i) => {
-              return (
-                <>
-                  <span className={i == this.state.status.active ? 'g-status-active g-status-item' : 'g-status-item'}>{c}</span>
-                  {i < this.state.status.content.length - 1 && <CaretRightOutlined className="g-status-arrow" />}
-                </>
-              )
-            })}
-          </div>
+        <div className="g-st">
+          {this.state.status.content.map((c, i) => {
+            return (
+              <>
+                <span className={i == this.state.status.active ? 'm-st active' : 'm-st'}>{c}</span>
+              </>
+            )
+          })}
         </div>
         <div className="g-menu">
           {MENU_MAIN_M.map((item, i) =>

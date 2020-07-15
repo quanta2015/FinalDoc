@@ -17,10 +17,16 @@ body {
 //   // background: #333;
 // }
 
+#nav {
+  position: fixed;
+  height: 100%;
+}
+
 #context {
   background: #fff;
   //background: #333;
   width: 950px;
+  margin-left: 250px;
 }
 
 // #app_login{

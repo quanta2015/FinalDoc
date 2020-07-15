@@ -42,10 +42,11 @@ class App extends Component {
     return (
       // <div id={this.handleapp()}>
       <div id="app"> 
-        { (this.usr.role == 0) && <NavT/> }
-        { (this.usr.role == 1) && <NavS /> }
-        { (this.usr.role == 2) && <NavM /> }
-
+        <div id="nav">
+          { (this.usr.role == 0) && <NavT/> }
+          { (this.usr.role == 1) && <NavS /> }
+          { (this.usr.role == 2) && <NavM /> }
+        </div>
         <div id="context">
         <Router onChange={this.handleRoute}>
           {/* 系统模块 */}
