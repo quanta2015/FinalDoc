@@ -148,4 +148,37 @@ router.post('/getStudentNotice', async(req, res) => {
     })
 })
 
+/**
+ * @description: 获取当前所在阶段及截止时间
+ * @param {} 
+ * @return: 
+ */
+router.get('/getCurrentState', async(req, res) => {
+    let sql = `CALL PROC_GET_CURRENT_STATE`;
+    let params = {};
+    callProc(sql, params, res, (r) => {
+        switch (r[0]['state']) {
+            case 1:
+                r[0].title = '任务书';
+                break;
+            case 2:
+                r[0].title = '开题中期';
+                break;
+            case 3:
+                r[0].title = '论文审核';
+                break;
+            case 4:
+                r[0].title = '论文答辩';
+                break;
+            case 5:
+                r[0].title = '成绩审定';
+                break;
+            default:
+                break;
+        }
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取当前阶段与截止时间'});
+    })
+})
+
 module.exports = router
