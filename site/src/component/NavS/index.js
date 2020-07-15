@@ -27,11 +27,6 @@ class NavS extends Component {
   }
 
   @computed
-  get docTemplate() {
-    return this.props.studentStore.docTemplate;
-  }
-
-  @computed
   get currStage() {
     return this.props.studentStore.currStage;
   }
@@ -53,16 +48,6 @@ class NavS extends Component {
     route('/s');
   }
 
-  downloadFile = (item) => {
-    let params = { file: item.link, id: '', name: item.title };
-    this.props.userStore.downloadFile(params)
-      .then(r => {
-        if (!r) {
-          message.error('网络错误');
-        }
-      })
-  }
-
   render() {
     let cur = this.state.cur;
     return (
@@ -70,18 +55,10 @@ class NavS extends Component {
         <div className="g-logo">
           <div onClick={this.gohome}>毕业设计命题系统</div>
         </div>
-        <div className="g-status">
-          <div className="m-sta-title">{this.currStage.name}</div>
-          <div className="m-sta-content">
-            {
-              this.currStage.stage.map((item, id) =>
-                <>
-                  <div className={id === this.currStage.index ? "m-sta-item z-active" : "m-sta-item"}>{item}</div>
-                  {id !== this.currStage.stage.length - 1 && <CaretRightOutlined className="m-next" />}
-                </>
-              )
-            }
-          </div>
+        <div className="g-st">
+          {this.currStage.stage.map((item, id) => 
+            <span className={id === this.currStage.index ? 'm-st active' : 'm-st'}>{item}</span>
+          )}
         </div>
         <div className="g-menu">
           {!this.selectTpInfo.id ?

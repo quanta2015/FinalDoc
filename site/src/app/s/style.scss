@@ -1,0 +1,169 @@
+.g-s {
+    padding: 26px;
+
+    .m-banner {
+        display: flex;
+        position: relative;
+        height: 114px;
+        padding: 20px 25px;
+        background-color: #e9f1f8;
+        border-top: 1px solid #d4d7da;
+        border-left: 1px solid #d4d7da;
+        border-right: 1px solid #d4d7da;
+
+        .u-title {
+            align-self: flex-end;
+            font-size: 24px;
+            font-weight: bold;
+            color: #336699;
+        }
+
+        .m-top-list {
+            position: absolute;
+            right: 25px;
+            width: 60%;
+            list-style: square;
+            align-self: center;
+        }
+
+        .m-top-item {
+            display: flex;
+            cursor: pointer;
+        }
+
+        .u-top-title {
+            display: block;
+            width: 65%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #1d1d1d;
+        }
+
+        .u-top-date {
+            margin-left: 15px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+        }
+    }
+
+    .m-not-wp {
+        border: 1px solid #dddcdc;
+        min-height: 240px;
+        padding: 0 15px;
+
+        .m-not-list {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .m-not-item {
+            display: flex;
+            cursor: pointer;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .u-not-date {
+            margin-right: 15px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            color: #ff6600;
+        }
+
+        .u-not-title {
+            display: block;
+            width: 85%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #1d1d1d;
+        }
+    }
+
+    .m-other {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 26px;
+
+        .u-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #336699;
+        }
+
+        .m-card {
+            width: 435px;
+            min-height: 300px;
+            padding: 10px 15px;
+            border: 1px solid #dddcdc;
+
+            .m-apply {
+                display: flex;
+                align-items: center;
+                padding: 10px 0;
+
+                .m-date {
+                    width: 65px;
+                    margin-right: 15px;
+                }
+
+                .u-ymd {
+                    padding: 5px 0;
+                    text-align: center;
+                    background: #336699;
+                    color: #fff;
+                    font-family: Georgia, "Times New Roman", Times, serif;
+                }
+
+                .u-d {
+                    font-size: 25px;
+                    font-weight: bold;
+                }
+
+                .u-week {
+                    line-height: 25px;
+                    text-align: center;
+                    color: #fff;
+                    background-color: #da7431;                
+                }
+
+                .m-detail p {
+                    margin-bottom: 5px;
+                }
+
+                .u-name {
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #444;
+                }
+            }
+        }
+    }
+
+    .m-tmplate {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+
+        .u-file {
+            width: 50%;
+            padding: 5px 0;
+            cursor: pointer;
+            color: #1d1d1d;
+        }
+    }
+
+    .m-tmp-wp {
+        margin: 10px 0;
+
+        .u-tmp-title {
+            color: #444;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .u-tmp-title span {
+            font-family: Georgia, "Times New Roman", Times, serif;
+        }
+    }
+}
