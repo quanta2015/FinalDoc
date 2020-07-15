@@ -47,8 +47,9 @@
     }
 
     .m-not-wp {
+        position: relative;
         border: 1px solid #dddcdc;
-        min-height: 240px;
+        height: 245px;
         padding: 0 15px;
 
         .m-not-list {
@@ -76,6 +77,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
             color: #1d1d1d;
+        }
+
+        .z-read {
+            color: #999;
+        }
+
+        .m-page {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
         }
     }
 

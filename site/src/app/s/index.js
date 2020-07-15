@@ -1,13 +1,20 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
+import { Pagination } from 'antd';
 import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import "./style.scss"
+
+const pageSize = 5;
 
 @inject('userStore', 'studentStore')
 @observer
 export default class Student extends Component {
   state = {
+    startRow: 0,
+    endRow: pageSize - 1,
+    currentPage: 1,
+    total: 1,
     topNoticeList: [{
       title: '2021届毕业设计（论文）时间安排和具体工作要求aaaa',
       date: '2020-07-14',
@@ -16,19 +23,6 @@ export default class Student extends Component {
         title: '2021届毕业设计（论文）时间安排和具体工作要求',
         date: '2020-07-14',
         id: 2
-    }],
-    noticeList: [{
-      title: '2021届毕业设计（论文）时间安排和具体工作要求',
-      date: '2020-07-14',
-      id: 3
-    }, {
-      title: '2021届毕业设计（论文）时间安排和具体工作要求',
-      date: '2020-07-14',
-      id: 4
-    }, {
-      title: '2021届毕业设计（论文）时间安排和具体工作要求',
-      date: '2020-07-14',
-      id: 5
     }],
     applyList:[{
       name: '开题答辩',
@@ -57,11 +51,32 @@ export default class Student extends Component {
     return this.props.studentStore.docTemplate;
   }
 
+  @computed
+  get noticeList() {
+    return toJS(this.props.studentStore.noticeList);
+  }
+
   componentDidMount() {
     if (!this.usr.uid) {
       route('/');
     }
+    this.props.studentStore.getNoticeList({sid: this.usr.uid})
+    .then(length => {
+      if(length) {
+        this.setState({
+          total: length
+        })
+      }
+    })
   }
+
+  onChange = page => {
+    this.setState({
+      currentPage: page,
+      startRow: (page - 1) * pageSize,
+      endRow: page * pageSize - 1,
+    });
+  };
 
   downloadFile = (item) => {
     let params = { file: item.link, id: '', name: item.title };
@@ -74,7 +89,7 @@ export default class Student extends Component {
   }
 
   render() {
-    const { topNoticeList, noticeList, applyList } = this.state;
+    const { topNoticeList, applyList, currentPage, total, startRow, endRow } = this.state;
     return (
       <div className="g-s">
         <div className="m-notice">
@@ -93,15 +108,20 @@ export default class Student extends Component {
           </div>
           <div className="m-not-wp">
             <ul className="m-not-list">
-              {noticeList.map(item =>
-                <li>
-                  <div className="m-not-item">
-                    <span className="u-not-date">{item.date}</span>
-                    <span className="u-not-title" title={item.title}>{item.title}</span>
-                  </div>
-                </li>
+              { this.noticeList.data.length && this.noticeList.data.map((item, i) =>
+                  <>
+                  {i >= startRow && i <= endRow &&
+                    <li>
+                      <div className="m-not-item">
+                        <span className="u-not-date">{item.time}</span>
+                      <span className={i <= this.noticeList.index ? "u-not-title" : 'u-not-title z-read'} title={item.ann_title}>{item.ann_title}</span>
+                      </div>
+                    </li>
+                  }
+                  </>
               )}
             </ul>
+            <Pagination className="m-page" current={currentPage} onChange={this.onChange} pageSize={pageSize} total={total} />
           </div>
         </div>
         <div className="m-other">
