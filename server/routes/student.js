@@ -109,7 +109,7 @@ router.post('/delFile', async (req, res) => {
 });
 
 /**
- * @description: 查看教师的指导意见
+ * @description: 查看指导意见
  * @param {sid: str} 
  * @return: 
  */
