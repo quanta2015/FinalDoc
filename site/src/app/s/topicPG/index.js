@@ -110,8 +110,8 @@ export default class TopicPG extends Component {
                                             <h3>{item.time}</h3>
                                             {
                                                 ((item.title === '任务书' && id >= TASK_FINISH) || (item.title === '成绩审定' && id >= GRADE_FINISH)) ?
-                                                <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                <p>{item.title}</p>
+                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                    <p>{item.title}</p>
                                             }
                                         </div>
                                     </li>
@@ -126,7 +126,7 @@ export default class TopicPG extends Component {
                     <LogRecord
                         showLog={this.state.showLog}
                         onCancel={this.onClose}
-                        pid={this.selectTpInfo.id}
+                        sid={this.usr.uid}
                     />
                     <div className="m-topic-info">
                         {FILE_UPLOAD_TYPE.map((item, id) =>

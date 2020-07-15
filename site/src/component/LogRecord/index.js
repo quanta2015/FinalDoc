@@ -1,4 +1,4 @@
-import { Component } from 'preact'
+import { h, render, Component, createRef } from 'preact'
 import { inject, observer } from 'mobx-react'
 import { Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message, Modal, Empty } from 'antd'
 import moment from 'moment'
@@ -13,25 +13,6 @@ const SEL_PLACE = [
 ]
 const { TextArea } = Input;
 const { Option } = Select;
-
-const focusInputField = input => {
-    if (input) {
-        setTimeout(() => { input.focus() }, 100);
-    }
-};
-
-const Editor = ({ onChange, onSubmit, submitting, value, defaultValue }) => (
-    <>
-        <Form.Item>
-            <TextArea rows={4} onChange={onChange} defaultValue={defaultValue} value={value} placeholder="请输入今日的指导日志..." ref={focusInputField} />
-        </Form.Item>
-        <Form.Item>
-            <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-                提交
-        </Button>
-        </Form.Item>
-    </>
-);
 
 @inject('userStore', 'studentStore')
 @observer
@@ -53,18 +34,25 @@ class LogRecord extends Component {
     }
 
     componentDidMount = () => {
-        this.setState({
-            comments: this.insLog,
-        }, () => {
-            let { comments } = this.state
-            if (comments[0].time === moment().format('YYYY年MM月DD日'))
-                this.setState({
-                    sel: comments[0].way,
-                    value: comments[0].opinion
-                })
-        })
+        this.props.studentStore.getGuidance({ sid: this.props.sid })
+            .then(r => {
+                if (r && r.length) {
+                    this.setState({
+                        comments: this.insLog,
+                    }, () => {
+                        let { comments } = this.state
+                        // console.log('this is comments', comments)
+                        if (comments[0].time === moment().format('YYYY年MM月DD日'))
+                            this.setState({
+                                sel: comments[0].way,
+                                value: comments[0].opinion
+                            })
+                    })
 
+                }
+            })
     }
+
     handleSubmit = () => {
         let comments = [...this.state.comments]
         const { editedItemIndex, value } = this.state
@@ -180,7 +168,6 @@ class LogRecord extends Component {
 
     render() {
         const { comments, submitting, value } = this.state;
-        console.log('this is pid', this.props.pid);
         return (
             <div className="g-stu-log">
                 <Modal
@@ -193,7 +180,6 @@ class LogRecord extends Component {
                     footer={[]}
                 >
                     <Space align="baseline">
-                        {/* <h4  >{moment().format('YYYY年MM月DD日')}</h4> */}
                         <p type="text" className="m-pos">请选择指导地点/指导方式</p>
                         <Select
                             className="m-pos"
@@ -214,13 +200,30 @@ class LogRecord extends Component {
                     </Space>
                     <Comment
                         content={
-                            <Editor
-                                onChange={this.handleChange}
-                                onSubmit={this.handleSubmit}
-                                submitting={submitting}
-                                value={value}
-                                defaultValue={value}
-                            />
+
+                            <>
+                                <Form.Item>
+                                    <TextArea rows={4} onChange={this.handleChange} defaultValue={value} value={value} placeholder="请输入今日的指导日志..."
+                                        ref={input => {
+                                            if (input) {
+                                                setTimeout(() => {
+                                                    input.focus()
+                                                }, 100);
+                                            }
+                                        }}
+                                        onFocus={function (e) {
+                                            var val = e.target.value;
+                                            e.target.value = '';
+                                            e.target.value = val;
+                                        }}
+                                    />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button htmlType="submit" loading={submitting} onClick={this.handleSubmit} type="primary">
+                                        提交
+        </Button>
+                                </Form.Item>
+                            </>
                         }
                     />
                     {

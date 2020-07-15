@@ -57,29 +57,7 @@ class Student extends BaseActions {
 
     @observable
     //指导日志
-    insLog = [
-        {
-            opinion: '解接是假人是怎么回事呢？解接相信大家都很熟悉，但是解接是假人是怎么回事呢，下面就让小编带大家一起了解吧。解接是假人，其实就是姐姐是仿生人，大家可能会很惊讶解接怎么会是假人呢？但事实就是这样，小编也感到非常惊讶。这就是关于解接是假人的事情了，大家有什么想法呢，欢迎在评论区告诉小编一起讨论哦！',
-            time: '2020年07月07日',
-            way: '网络'
-        },
-        {
-            opinion: '解接是假人是怎么回事呢？解接相信大家都很熟悉，但是解接是假人是怎么回事呢，下面就让小编带大家一起了解吧。解接是假人，其实就是姐姐是仿生人，大家可能会很惊讶解接怎么会是假人呢？但事实就是这样，小编也感到非常惊讶。这就是关于解接是假人的事情了，大家有什么想法呢，欢迎在评论区告诉小编一起讨论哦！',
-            time: '2020年07月03日',
-            way: '学校'
-        },
-        {
-            opinion: 'This is content asdasdasdasd asdasdsd ',
-            time: '2020年07月02日',
-            way: '网络'
-        },
-        {
-            opinion: 'Ant Design Title 4asdasd',
-            time: '2020年07月01日',
-            way: '学校'
-        },
-    ];
-
+    insLog = []
 
     @action
     async getTopInfo(params) {
@@ -230,6 +208,32 @@ class Student extends BaseActions {
     @action
     async deleteFile(params) {
         return await this.post(urls.API_STU_DEL_FILE, params)
+    }
+
+    @action
+    async getGuidance(params) {
+        const r = await this.post(urls.API_STU_GET_GUIDANCE, params)
+        if (r && r.code === 200) {
+            let lst = []
+            if (r.data) {
+                r.data.map((item) => {
+                    let date = item.time.split("-")
+                    let time = date[0] + '年' + date[1] + '月' + date[2] + '日'
+                    lst.push({
+                        time,
+                        way: item.way,
+                        opinion: item.opinion
+                    })
+                })
+            }
+            runInAction(() => {
+                this.insLog = lst
+            })
+            return lst
+        } else {
+            message.error("网络错误")
+        }
+        return r
     }
 }
 
