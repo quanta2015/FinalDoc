@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
 import { route } from 'preact-router';
-import "./style.css"
+import "./style.scss"
 import Ass from "./ass.js"
 import { Tabs } from 'antd';
 const { TabPane } = Tabs;
@@ -23,7 +23,7 @@ export default class Home extends Component {
 
 	render() {
 		return (
-			<div className="rp_main">
+			<div className="g-rp">
 				{/* <Tabs defaultActiveKey="1">
 					<TabPane tab="审核任务书" key="1"> */}
 						<Ass/>
