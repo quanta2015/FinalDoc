@@ -4,21 +4,36 @@ export const DATE_FORMAT = "YYYY/MM/DD";
 export const MONTH_FORMAT = "YYYY/MM";
 
 import home from "../icon/icon_setting.svg";
+import manage from "../icon/icon_manage.svg";
+import audit from "../icon/icon_audit.svg";
+import cp from "../icon/icon_cp.svg";
 
-export var MENU_MAIN_T = [
-  { title: "毕业设计管理", path: "/t_manage", icon: home },
-  { title: "初期命题审核", path: "/t_auditTP", icon: home },
-  { title: "中期开题审核", path: "/t_auditOP", icon: home },
-  { title: "终期论文审核", path: "/t_auditFD", icon: home },
-  { title: "系统设置 ", path: "/t_system", icon: home },
-];
+import group from "../icon/icon_m_group.svg";
+import divide from "../icon/icon_m_divide.svg";
+import article from "../icon/icon_m_article.svg";
+import progress from "../icon/icon_m_progress.svg";
 
 export var MENU_MAIN_M = [
-  { title: "分配审核选题", path: "/m_distributeTopic", icon: home },
-  { title: "组织答辩小组", path: "/m_organizeOpendefence", icon: home },
-  { title: "论文审核工作", path: "/m_reviewPaper", icon: home },
-  { title: "查看论文进度", path: "/m_viewProgress", icon: home },
+  { title: "分配审核选题", path: "/m_distributeTopic", icon: divide },
+  { title: "组织答辩小组", path: "/m_organizeOpendefence", icon: group },
+  { title: "论文审核工作", path: "/m_reviewPaper", icon: progress },
+  { title: "查看论文进度", path: "/m_viewProgress", icon: article },
 ];
+
+export var MENU_MAIN_T = [
+  { title: "毕业设计管理", path: "/t_manage", icon: manage },
+  
+  //{ title: '系统设置 ', path: '/t_system', icon: home },
+  { title: "导航ui展示1", path: "/t_manage", icon: manage },
+  { title: "导航ui展示2", path: "/t_manage", icon: manage },
+];
+
+export var MENU_MAIN_T_AUDIT = [
+  { title: "初期命题审核", path: "/t_auditTP", icon: cp },
+  { title: "中期开题审核", path: "/t_auditOP", icon: audit },
+  { title: "终期论文审核", path: "/t_auditFD", icon: audit },
+];
+
 export var MENU_MAIN_S = [
   { title: "毕业设计管理", path: "/t_manage", icon: home },
 ];
@@ -26,7 +41,7 @@ export var MENU_MAIN_S = [
 //学生选课状态
 export var STU_ST_STATUS = [
   { name: "未通过", color: "red" },
-  { name: "待审核", color: "blue" },
+  { name: "待教师通过", color: "blue" },
 ];
 
 //学生三阶段所需上传文件
@@ -116,6 +131,7 @@ export var ADMIN_NAV_DATA = [
     ],
     path: "/admin_ann",
     icon: "BankOutlined",
+    stateNum:0,
   },
   {
     title: "选题管理",
@@ -125,6 +141,7 @@ export var ADMIN_NAV_DATA = [
     ],
     path: "/admin",
     icon: "BankOutlined",
+    stateNum:1,
   },
   {
     title: "中期检查",
@@ -134,6 +151,7 @@ export var ADMIN_NAV_DATA = [
     ],
     path: "/admin",
     icon: "BankOutlined",
+    stateNum:2,
   },
   {
     title: "评阅答辩",
@@ -143,6 +161,7 @@ export var ADMIN_NAV_DATA = [
     ],
     path: "/admin",
     icon: "BankOutlined",
+    stateNum:3,
   },
   {
     title: "成绩分析",
@@ -152,6 +171,7 @@ export var ADMIN_NAV_DATA = [
     ],
     path: "/admin",
     icon: "BankOutlined",
+    stateNum:4,
   },
   {
     title: "系统设置",
@@ -161,5 +181,6 @@ export var ADMIN_NAV_DATA = [
     ],
     path: "/admin_sys_set",
     icon: "BankOutlined",
+    stateNum:0,
   },
 ];

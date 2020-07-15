@@ -48,6 +48,9 @@ export default class Ann extends Component {
               <TabPane tab="文档管理" key="2">
                 <FileManage />
               </TabPane>
+              <TabPane tab="名单管理" key="3">
+                <FileManage />
+              </TabPane>
             </Tabs>
             {/* <div className="m-m">公告模块</div> */}
           </div>
