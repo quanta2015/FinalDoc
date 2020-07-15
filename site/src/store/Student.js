@@ -28,16 +28,25 @@ class Student extends BaseActions {
 
     @observable
     //模板文件
-    docTemplate = [
-        { title: '开题报告', link: '' },
-        { title: '中期检查表', link: '' },
-        { title: '外文文献翻译', link: '' },
-        { title: '文献综述', link: '' },
-        { title: '论文格式', link: '' },
-        { title: '作品说明书', link: '' },
-        { title: '诚信承诺书', link: '' },
-        { title: '评审答辩成绩表', link: '' },
-        { title: '延缓答辩申请表', link: '' }
+    docTemplate = [{
+        name: '开题中期',
+        file: [
+            { title: '开题报告', link: '' },
+            { title: '外文文献翻译', link: '' },
+            { title: '文献综述', link: '' },
+            { title: '中期检查表', link: '' },
+        ]},{
+        name: '论文定稿',
+        file: [
+            { title: '论文格式', link: '' },
+            { title: '作品说明书', link: '' },
+            { title: '诚信承诺书', link: '' },
+        ]},{
+        name: '论文答辩',
+        file: [
+            { title: '评审答辩成绩表', link: '' },
+            { title: '延缓答辩申请表', link: '' }
+        ]} 
     ]
 
     @observable
