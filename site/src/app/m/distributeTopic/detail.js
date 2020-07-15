@@ -3,6 +3,9 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './detail.scss';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip, Popconfirm } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 import { SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
 
@@ -130,6 +133,24 @@ export default class Detail extends Component {
 		});
 	};
 
+	showConfirm =  () => {
+		confirm({
+			title: <div style={{ fontSize: '20px' }}><br />确认后，不能再次发布！<br /><br /></div>,
+			icon: <ExclamationCircleOutlined style={{ fontSize: '28px', paddingTop: '30px', paddingLeft: '30px' }} />,
+			okText: '确认',
+			cancelText: '取消',
+			width: 500,
+
+			onOk:()=> {
+				console.log('OK');
+				this.release()
+			},
+			onCancel() {
+				console.log('Cancel');
+			},
+		});
+	}
+
 	release = async () => {
 		let res = await this.props.manageStore.getRelease({ "ide": this.usr.uid });
 		if (res && res.code === 200) {
@@ -146,6 +167,7 @@ export default class Detail extends Component {
 		// 	check_visible: false,
 		// });
 	}
+
 
 	render() {
 		let { filteredInfo } = this.state;
@@ -273,9 +295,9 @@ export default class Detail extends Component {
 						</Tooltip>
 					}
 					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag === 0) &&
-						<Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消">
-							<Button type="primary" >发布课题</Button>
-						</Popconfirm>
+						// <Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消">
+						<Button type="primary" onClick={this.showConfirm}>发布课题</Button>
+						// </Popconfirm>
 					}
 					{
 

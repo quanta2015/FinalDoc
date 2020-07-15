@@ -41,7 +41,7 @@ export default class Defense extends Component {
 
     }
     addSelectTeacher = async (value) => {
-        //console.log(`selected ${value}`);
+        console.log(`selected ${value}`);
         this.setState({
             select_leader: value
         })
@@ -229,7 +229,7 @@ export default class Defense extends Component {
                 <div class="m-group">
                     {/* <div class="title">请选择开题答辩小组成员：</div> */}
                     <div class="m-select">
-                        <div class="lable">组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长</div>
+                        <div class="lable-tea">组长</div>
                         <div>
                             {/* {(this.openDefenseGroup.sug_topic_id.length > 0) &&
                                 <Select
@@ -276,7 +276,7 @@ export default class Defense extends Component {
                         </div>
                     </div>
                     <div class="m-select2">
-                        <div class="lable">组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;员</div>
+                        <div class="lable-tea">组员</div>
                         <div>
                             {/* {(this.openDefenseGroup.sug_topic_id.length > 0) &&
                                 <Select
@@ -320,12 +320,12 @@ export default class Defense extends Component {
                     <div class="m-group">
                         {/* <div class="title">请选择参加该组答辩的学生：</div> */}
                         <div class="m-select">
-                            <div class="lable">
-                            <div >选择课题</div>
+                             
+                                <div class="lable">选择课题</div>
                                 
 
                             
-                            </div>
+                            
                             
 
                             <div>
