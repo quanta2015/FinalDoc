@@ -22,43 +22,46 @@ tbody.ant-table-tbody {
     text-align: center;
     margin-top: 10px;
 } */
-
-.ass_head_btn .ass_clear {
+.g-ass{
+.m-ass_head_btn .ass_clear {
     margin-right: 15px;
     
 }
 
-.ass_top_box {
+.m-ass_top_box {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.ass_table .ant-table-cell:nth-last-child(3) {
-    width: 210px;
+ 
+
+.m-ass_table .ant-table-cell:nth-last-child(3) {
+    width: 240px;
      
 }
 
  
 
-.ass_table .ant-table-cell:nth-last-child(2) {
-    width:350px;
-    text-align: left;
+.m-ass_table .ant-table-cell:nth-last-child(2) {
+    width:300px;
+    
      
 }
 
-.ass_table .ant-table-cell:nth-last-child(1) {
-    width: 200px;
+.m-ass_table .ant-table-cell:nth-last-child(1) {
+    width: 250px;
 }
 
-.ass_table .ant-table-placeholder .ant-table-cell{
-    width: 800px;
+.m-ass_table .ant-table-placeholder .ant-table-cell{
+    width: 850px;
 }
 
-.ass_noTopicNum {
+.m-ass_noTopicNum {
     
     
     font-size: 16px;
     font-weight: bold;
    
+}
 }

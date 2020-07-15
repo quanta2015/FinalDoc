@@ -1,5 +1,6 @@
 import BaseActions from '../component/BaseActions'
 import { observable, action, runInAction } from 'mobx'
+import axios from 'axios'
 import * as urls from '../constant/urls'
 
 class manager extends BaseActions {
@@ -24,7 +25,7 @@ class manager extends BaseActions {
     // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
     auditCount: {},
     //查看是否已经发布课题
-    judge_info:[],
+    judge_info: [],
   }
 
 
@@ -34,18 +35,18 @@ class manager extends BaseActions {
   async getTeaList(param) {
     const res = await this.post(urls.API_MAN_GET_TEALIST, param);
     let teaName = [];
-    res.data.map((item) =>{
+    res.data.map((item) => {
       let areas = ""
-      item.area_list.split(",").map((item)=> {
+      item.area_list.split(",").map((item) => {
         areas += item.split("|")[1] + " "
       })
-      teaName.push({ 
-        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, 
+      teaName.push({
+        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
         value: item.maj + "-" + item.Tname + "-" + areas,
         name: item.Tname,
       })
     })
-    
+
     teaName.sort(function (a, b) {
       if (a.value < b.value) {
         return 1;
@@ -66,11 +67,11 @@ class manager extends BaseActions {
   async getTopicList(param) {
     const res = await this.post(urls.API_MAN_GET_TOPICLIST, param);
     let topicList = [];
-    res.data.map((item)=> {
+    res.data.map((item) => {
       let temp = item.area_list.split(",")
       let color = []
       let areas = []
-      temp.map((item)=>{
+      temp.map((item) => {
         item.split("|")
         areas.push(item.split("|")[1])
         color.push(item.split("|")[2])
@@ -148,7 +149,7 @@ class manager extends BaseActions {
 
   @action
   async getRelease(param) {
-    return await this.post(urls.API_MAN_POST_RELEASE, param);  
+    return await this.post(urls.API_MAN_POST_RELEASE, param);
   }
 
   @action
@@ -168,8 +169,26 @@ class manager extends BaseActions {
     teacher_info: [],
     // 未分配课题列表
     topic_info: [],
+    //自动分配十个课题
+    sug_topic_id: [],
     // 开题分组信息
     group_list: [],
+  }
+ // 自动显示十个答辩课题
+ // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
+  @action
+  async getSugTopicList_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param);
+    let group = [];
+    res.data.map((item, i) => {
+      group.push( 
+          item.key,
+       )
+    })
+
+    runInAction(() => {
+      this.openDefenseGroup.sug_topic_id = group;
+    })
   }
 
   @action
@@ -183,7 +202,7 @@ class manager extends BaseActions {
       topic.push({
         key: item.key,
         sName: item.sName,
-        topic: item.topic,
+        topic: item.name+"-"+item.topic,
         content: item.content,
         tName: item.name,
         classname: item.class,
@@ -201,13 +220,13 @@ class manager extends BaseActions {
   async getTeacherList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_TEACHERLIST, param);
     let teacher = []
-    res.data.map((item) =>{
+    res.data.map((item) => {
       let areas = ""
-      item.area_list.split(",").map((item)=> {
+      item.area_list.split(",").map((item) => {
         areas += item.split("|")[1] + " "
       })
-      teacher.push({ 
-        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas, 
+      teacher.push({
+        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
         value: item.maj + "-" + item.Tname + "-" + areas,
         name: item.Tname,
       })
@@ -231,10 +250,10 @@ class manager extends BaseActions {
 
   // 自动分配答辩课题
   // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
-  @action
-  async autoAllocateTopic_ogp(param) {
-    return await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param)
-  }
+  // @action
+  // async autoAllocateTopic_ogp(param) {
+  //   return await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param)
+  // }
 
   // 手动分配答辩课题
   // {"leader_id":"20170056","teacher_id":["20020070","20021092","20020782","20021105"],"topic_id":[3,4,5,6,7]}
@@ -288,67 +307,67 @@ class manager extends BaseActions {
   }
 
   @observable
-  stu_list =[]
+  stu_list = []
 
- 
- 
+
+
 
 
   // 查看该系全体学生的论文进度
   // {"gid":int}
   @action
-  async viewProgress(param){
+  async viewProgress(param) {
     let res = await this.post(urls.API_MAN_POST_VIEWPROGRESS, param)
     let temp = []
-    res.data.map((item,i)=>{
+    res.data.map((item, i) => {
       let status = item.status
       let phase = ""
       let tag = ""
-      if(status>=-1 && status<=3){
+      if (status >= -1 && status <= 3) {
         phase = "选题阶段"
-        if(status===3){
+        if (status === 3) {
           // 学生已选题
           tag = "已选题"
-        }else if(status===0){
+        } else if (status === 0) {
           // 老师出题时选定学生，但该课题未审核
           tag = "待审核"
-        }else{
+        } else {
           // 学生未选题
           tag = "未选题"
         }
-      }else if(status===4 || status===-4){
+      } else if (status === 4 || status === -4) {
         phase = "开题答辩"
-        if(status===4){
+        if (status === 4) {
           // 通过开题答辩
           tag = "已通过"
-        }else if(status===-4){
+        } else if (status === -4) {
           // 未通过开题答辩
           tag = "未通过"
         }
-      }else if(status===-5 || status===5 || status===-6 || status===6){
+      } else if (status === -5 || status === 5 || status === -6 || status === 6) {
         phase = "论文定稿"
-        if(status===5 || status===6){
+        if (status === 5 || status === 6) {
           // 5教师通过,6系主任通过
           tag = "已通过"
-        }else if(status===-5 || status===-6){
+        } else if (status === -5 || status === -6) {
           // 5教师未通过,6系主任未通过
           tag = "未通过"
         }
-      }else if(status===7 || status===-7){
+      } else if (status === 7 || status === -7) {
         phase = "论文答辩"
-        if(status===7){
+        if (status === 7) {
           // 通过论文答辩
           tag = "已通过"
-        }else if(status===-7){
+        } else if (status === -7) {
           // 未通过论文答辩
           tag = "未通过"
         }
-      }else if(status===-8 || status===8 || status===-9 || status===9){
+      } else if (status === -8 || status === 8 || status === -9 || status === 9) {
         phase = "最终审核"
-        if(status===8 || status===9){
+        if (status === 8 || status === 9) {
           // 8教师通过,9系主任通过
           tag = "已通过"
-        }else if(status===-8 || status===-9){
+        } else if (status === -8 || status === -9) {
           // -8教师未通过,-9系主任未通过
           tag = "未通过"
         }
@@ -372,8 +391,13 @@ class manager extends BaseActions {
   @observable
   reviewPaper = {
     // 教师列表
-    task_info: [],
-     
+    task_info2: [],
+    //假数据
+      task_info: [],
+      to_audit_list:[],
+
+
+
   }
 
   @action
@@ -382,27 +406,97 @@ class manager extends BaseActions {
   async getTaskList(param) {
     const res = await this.post(urls.API_MAN_POST_RP_TASKLIST, param);
     let temp = []
+    
+     
+    
     res.data.map((item, i) => {
+      let tag = ""
+      let num=6
+
+      if (status < 4) {
+        tag = "未提交";
+      } else if (status === 4) {
+        tag = "待审核";
+        num=4;
+      } else if (status === 5) {
+        tag = "通过";
+        num=5;
+      }
       temp.push({
         name: item.name,
         topic: item.topic,
         key: item.key,
-
-      
+        status:item.status,
+        tag:tag,
+        num:num
       })
+    })
+    let arr = []
+    temp.map((item, i) => {
+      if (item.status === 4) {
+        arr.push(
+          item.key
+        )
+      }
+    })
+    temp.sort(function (a, b) {
+      if (a.num === b.num) {
+        if (a.name < b.name) {
+          return -1;
+        } else if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }
+      else if (a.num < b.num) {
+        return -1;
+      }
+      else {
+        return 1;
+      }
     })
     runInAction(() => {
       this.reviewPaper.task_info = temp;
+      this.reviewPaper.to_audit_list = arr;
     })
 
   }
 
+ 
+
   // 查看某位学生上传的文件
   // {"topic_id":int}
   @action
-  async viewFiles(param){
+  async viewFiles(param) {
     let res = await this.post(urls.API_MAN_POST_VIEWFILES, param)
     return res.data
+  }
+
+
+  @action
+  //仅支持pdf
+  // {"file": string}
+  async previewFile(param) {
+    return await axios({
+      url: urls.API_SYS_DOWN_FILE,
+      method: 'POST',
+      responseType: 'blob',
+      data: param
+    }).then(r => {
+      let type = r.headers['content-type'];
+      let data = new Blob([r.data], {
+        type: type
+      })
+      let blobUrl = window.URL.createObjectURL(data);
+      let ext = param.file.split('.').slice(-1);
+      let newWindow = window.open();
+      let item = '<iframe width="100%" height="100%" src="' + blobUrl + '" frameborder="0" allowfullscreen></iframe>'
+      newWindow.document.write(item);
+      newWindow.document.title = `预览${param.id}_${param.name}.${ext}`;
+      return true;
+    }).catch(e => {
+      return false;
+    })
   }
 }
 export default new manager()

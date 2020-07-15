@@ -23,7 +23,7 @@ export default class Manage extends Component {
     return (
 
       <div className="g-m">
-        <div className="m-m">Manage info</div>
+        <div className="m-m">公告页</div>
       </div>
     );
   }

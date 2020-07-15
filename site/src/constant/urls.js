@@ -34,7 +34,7 @@ export const API_MAN_POST_JUDGETOPIC = API_SERVER + '/manage/judgeTopic'
 // 组织开题答辩模块
 export const API_MAN_POST_OGP_TOPICLIST = API_SERVER + '/openGp/topicList'
 export const API_MAN_POST_OGP_TEACHERLIST = API_SERVER + '/openGp/teacherList'
-export const API_MAN_POST_OGP_AUTOALLOCATETOPIC = API_SERVER + '/openGp/randGroup'
+export const API_MAN_POST_OGP_AUTOALLOCATETOPIC = API_SERVER + '/openGp/tenTopic'
 export const API_MAN_POST_OGP_MANUALALLOCATETOPIC = API_SERVER + '/openGp/handleGroup'
 export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
