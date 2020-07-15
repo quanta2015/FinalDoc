@@ -1,0 +1,27 @@
+.g-stu-log {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    .ant-spin-nested-loading {
+        width: 100%;
+    }
+    position: fixed;
+}
+
+@media screen and (min-width: 1000px) {
+    .g-stu-mdl-dt {
+        .ant-modal-content {
+            width: 720px;
+            position: absolute;
+            overflow: scroll;
+            height: 100vh;
+        }
+        .ant-btn > span {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            top: -1px;
+        }
+    }
+}

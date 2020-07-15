@@ -14,6 +14,8 @@ import divide from '../icon/icon_m_divide.svg';
 import article from '../icon/icon_m_article.svg';
 import progress from '../icon/icon_m_progress.svg';
 
+import paper from '../icon/icon_s_paper.svg';
+import select from '../icon/icon_s_select.svg';
 
 export var MENU_MAIN_M =
    [{ title: '分配审核选题', path: '/m_distributeTopic', icon: divide },
@@ -34,8 +36,10 @@ export var MENU_MAIN_T_AUDIT = [
 
 ]
 
-export var MENU_MAIN_S =
-   [{ title: '毕业设计管理', path: '/t_manage', icon: home }]
+export var MENU_MAIN_S = [
+   { title: '选择课题', path: '/s_selectTL', icon: select },
+   { title: '课题详情', path: '/s_topicPG', icon: paper },
+]
 
 //学生选课状态
 export var STU_ST_STATUS =
@@ -45,22 +49,21 @@ export var STU_ST_STATUS =
 //学生三阶段所需上传文件
 export var FILE_UPLOAD_TYPE =
    [{
-      stage: '1. 开题中期',
+      stage: '开题中期',
       file: [{ name: '开题报告', type: 'f_open' },
       { name: '外文翻译', type: 'f_tran' },
       { name: '文献综述', type: 'f_docs' },
       { name: '中期检查表', type: 'f_midcheck' }]
    },
    {
-      stage: '2. 论文审核',
+      stage: '论文审核',
       file: [{ name: '论文定稿', type: 'f_paper' },
       { name: '设计作品', type: 'f_design_opus' },
       { name: '作品说明书', type: 'f_manual' },
-      { name: '查重报告', type: 'f_check' },
-      { name: '承诺书', type: 'f_prom' }]
+      { name: '查重报告', type: 'f_check' }]
    },
    {
-      stage: '3. 论文答辩',
+      stage: '论文答辩',
       file: [{ name: '答辩材料', type: 'f_reply_source' },
       { name: '答辩记录', type: 'f_reply_log' },
       { name: '答辩成绩表', type: 'f_reply_score' },
@@ -104,3 +107,8 @@ export var FILE_UPLOAD_FORMAT =
    reply: ['zip', 'ppt', 'pptx'],
    doc: ['doc', 'docx', 'pdf']
 }
+
+export var STU_OP_SCORE = [
+   { name: '指导老师评分', type: 'ins_score' },
+   { name: '开题答辩小组评分', type: 'grp_score' }
+]
