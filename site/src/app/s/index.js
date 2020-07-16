@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Pagination } from 'antd';
+import { Pagination, Modal, Button } from 'antd';
 import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import "./style.scss"
@@ -15,14 +15,16 @@ export default class Student extends Component {
     endRow: pageSize - 1,
     currentPage: 1,
     total: 1,
+    visible: false,
+    selectItem: null,
     topNoticeList: [{
-      title: '2021届毕业设计（论文）时间安排和具体工作要求aaaa',
-      date: '2020-07-14',
-      id: 1
+      ann_title: '2021届毕业设计（论文）时间安排和具体工作要求aaaa',
+      ann_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      time: '2020-07-14'
     }, {
-        title: '2021届毕业设计（论文）时间安排和具体工作要求',
-        date: '2020-07-14',
-        id: 2
+      ann_title: '2021届毕业设计（论文）时间安排和具体工作要求',
+      ann_content: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+      time: '2020-07-15'
     }],
     applyList:[{
       name: '开题答辩',
@@ -41,6 +43,9 @@ export default class Student extends Component {
       }]
   }
 
+  //判断该组件是否已挂载 需要更新 state
+  _isMounted = false;
+
   @computed
   get usr() {
     return toJS(this.props.userStore.usr);
@@ -57,25 +62,64 @@ export default class Student extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if (!this.usr.uid) {
       route('/');
     }
-    this.props.studentStore.getNoticeList({sid: this.usr.uid})
-    .then(length => {
-      if(length) {
-        this.setState({
-          total: length
-        })
-      }
-    })
+    this.getNoticeList();
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  getNoticeList = () => {
+    this.props.studentStore.getNoticeList({ sid: this.usr.uid })
+      .then(length => {
+        if (length && this._isMounted) {
+          this.setState({
+            total: length
+          })
+        }
+      })
+  }
+
+  //分页切换
   onChange = page => {
     this.setState({
       currentPage: page,
       startRow: (page - 1) * pageSize,
       endRow: page * pageSize - 1,
     });
+  };
+
+  viewNotice = item => {
+    this.setState({
+      visible: true,
+      selectItem: item
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+      selectItem: null
+    });
+  };
+
+  handleOk = () => {
+    this.props.studentStore.readNotice({uid: this.usr.uid, ann_id: this.state.selectItem.id})
+    .then(r => {
+      if (r) {
+        this.getNoticeList();
+      }
+      if (this._isMounted) {
+        this.setState({
+          visible: false,
+          selectItem: null
+        });
+      }
+    })
   };
 
   downloadFile = (item) => {
@@ -89,7 +133,7 @@ export default class Student extends Component {
   }
 
   render() {
-    const { topNoticeList, applyList, currentPage, total, startRow, endRow } = this.state;
+    const { topNoticeList, applyList, currentPage, total, startRow, endRow, selectItem, loading } = this.state;
     return (
       <div className="g-s">
         <div className="m-notice">
@@ -99,8 +143,8 @@ export default class Student extends Component {
               {topNoticeList.map(item =>
                 <li>
                   <div className="m-top-item">
-                    <span className="u-top-title" title={item.title}>{item.title}</span>
-                    <span className="u-top-date">{item.date}</span>
+                    <span className="u-top-title" title={item.ann_title} onClick={()=>this.viewNotice(item)}>{item.ann_title}</span>
+                    <span className="u-top-date">{item.time}</span>
                   </div>
                 </li>
               )}
@@ -114,7 +158,13 @@ export default class Student extends Component {
                     <li>
                       <div className="m-not-item">
                         <span className="u-not-date">{item.time}</span>
-                      <span className={i <= this.noticeList.index ? "u-not-title" : 'u-not-title z-read'} title={item.ann_title}>{item.ann_title}</span>
+                        <span 
+                          className={i <= this.noticeList.index ? "u-not-title" : 'u-not-title z-read'} 
+                          title={item.ann_title}
+                          onClick={() => this.viewNotice(item)}
+                        >
+                          {item.ann_title}
+                        </span>
                       </div>
                     </li>
                   }
@@ -161,6 +211,26 @@ export default class Student extends Component {
               )}
           </div>
         </div>
+        {selectItem &&
+          <Modal
+            className="g-dialog"
+            title={null}
+            visible={this.state.visible}
+            closable={false}
+            onCancel={this.handleCancel}
+            width={700}
+            footer={
+              [
+                selectItem.check_flag ?
+                <Button onClick={this.handleCancel}>关闭</Button>:
+                <Button onClick={this.handleOk} type="primary">已读</Button>
+              ]}
+          >
+            <div className="u-title">{selectItem.ann_title}</div>
+            <div className="u-time">{selectItem.time}</div>
+            <p>{selectItem.ann_content}</p>
+          </Modal>
+        }
       </div>
     );
   }
