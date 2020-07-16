@@ -8,6 +8,7 @@ import FileUpload from '../../../component/FileUpload';
 import { FILE_UPLOAD_TYPE, STU_FU_STATUS, STU_OP_SCORE } from '../../../constant/data'
 import './index.scss'
 import LogRecord from '../../../component/LogRecord';
+import moment from 'moment'
 
 //传入列表，返回当前所处阶段
 let getStage = (status, info) => {
@@ -57,6 +58,11 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.opScore);
     }
 
+    @computed
+    get currState() {
+        return toJS(this.props.studentStore.currState);
+    }
+
     componentDidMount() {
         //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
         if (!this.usr.uid) {
@@ -65,6 +71,8 @@ export default class TopicPG extends Component {
         if (!this.selectTpInfo) {
             route('/s_selectTL')
         }
+        this.props.studentStore.getAllStates()
+        this.props.studentStore.getCurrentState()
     }
 
     downloadFile = (item) => {
@@ -92,6 +100,10 @@ export default class TopicPG extends Component {
         const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         const TASK_FINISH = 6;
         const GRADE_FINISH = 20;
+        const currTime = moment().format('YYYY-MM-DD')
+        const status = this.selectTpInfo.status
+        const f_task = this.selectTpInfo.f_task
+        const f_score_check = this.selectTpInfo.f_score_check
         return (
             <div className="g-stu-prog">
                 <div className="m-hd">
@@ -103,13 +115,27 @@ export default class TopicPG extends Component {
                     <h2 className="u-title">论文进度</h2>
                     <div>
                         <ul className="m-time-line">
-                            {
+                            {/* {
                                 this.timeList.map((item, id) =>
                                     <li className={id <= currStage ? currStage === id ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
                                         <div>
                                             <h3>{item.time}</h3>
                                             {
                                                 ((item.title === '任务书' && id >= TASK_FINISH) || (item.title === '成绩审定' && id >= GRADE_FINISH)) ?
+                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                    <p>{item.title}</p>
+                                            }
+                                        </div>
+                                    </li>
+                                )
+                            } */}
+                            {
+                                this.timeList.map((item) =>
+                                    <li className={item.state <= this.currState[0].state ? this.currState[0].state === item.state ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
+                                        <div>
+                                            <h3>{item.time}</h3>
+                                            {
+                                                ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
                                                     <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
                                                     <p>{item.title}</p>
                                             }
@@ -164,7 +190,7 @@ export default class TopicPG extends Component {
                         )}
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

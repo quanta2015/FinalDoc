@@ -1,9 +1,10 @@
-import { h, render, Component, createRef } from 'preact'
+import { Component } from 'preact'
 import { inject, observer } from 'mobx-react'
 import { Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message, Modal, Empty } from 'antd'
 import moment from 'moment'
 import './index.scss'
 import { computed, toJS } from 'mobx'
+import PropTypes from 'prop-types'
 
 const { Title } = Typography;
 
@@ -247,7 +248,7 @@ class LogRecord extends Component {
                                             </Popconfirm>
                                         ]} >
                                         <List.Item.Meta
-                                            title={<p>{item.time} {item.way}</p>}
+                                            title={(<><span className="u-time">{item.time} </span><span>{item.way}</span></>)}
                                         // description={<p>{item.opinion}</p>}
                                         />
                                         {item.opinion}
@@ -261,6 +262,10 @@ class LogRecord extends Component {
             </div>
         );
     }
+}
+
+LogRecord.propTypes = {
+    sid: PropTypes.string
 }
 
 export default LogRecord;
