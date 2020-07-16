@@ -57,7 +57,7 @@ export default class StuMethods extends BaseActions {
 
 
   state = {
-    sid: this.props.sid,
+    pid: -1,
     name: null,
     cls: null,
     areaList: [],
@@ -68,140 +68,136 @@ export default class StuMethods extends BaseActions {
     modal_visiable: false
   }
 
-  async componentDidMount() {
+  getStuInfo = async () => {
+
     //获取学生信息
     let data = await this.post(urls.API_SYS_GET_FUUL_TOPIC_BY_ID, { pid: this.props.pid });
     data = data.data[0];
     this.setState({ topic_data: data })
 
-    this.setState({ sid: this.props.sid }, () => {
-      this.getStuInfo();
-    });
-
-    //获取学生文件列表
-    let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
-    l = (l.data)[0];
-    this.setState({ links: l })
-
-
-  }
-
-  getStuInfo = async () => {
-    let data = await this.post(urls.API_TEACHER_GET_STU_INFO, { sid: this.state.sid })
+    data = await this.post(urls.API_TEACHER_GET_STU_INFO, { sid: this.props.sid })
     data = data.data[0];
     this.setState({
       name: data.name,
       cls: data.maj + data.cls
     })
+
+    //获取学生文件列表
+    let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
+    l = (l.data)[0];
+    this.setState({ links: l })
   }
 
 
 
   render() {
     {
-      if (this.props.sid != this.state.sid) {
-        this.setState({ sid: this.props.sid }, () => {
+      if (this.props.pid != this.state.pid) {
+        this.setState({ pid: this.props.pid }, () => {
           this.getStuInfo();
         });
       }
     }
     return (
       <div data-component="stumethods">
-        <div className="note-block">
-          <span className="note-title"><span className="mr-long"><UserOutlined /></span>学生信息</span>
-          <Card style={{ width: 600 }}>
+        <div className="stumethods">
+          <div className="note-block">
+            <span className="note-title"><span className="mr-long"><UserOutlined /></span>学生信息</span>
+
             <span className="note-info-span">{this.props.sid}</span>
             <span className="note-info-span">{this.state.name}</span>
             <span className="note-info-span">{this.state.cls}</span>
+
+          </div>
+
+          <Card
+            tabList={tabListNoTitle}
+            size="small"
+            bordered={false}
+            onTabChange={(e) => { this.setState({ tab: e }) }}
+          >
+            {this.state.tab == 'publish' &&
+              <header className="stm-header">
+                <div className="note-block">
+                </div>
+                <div className="note-block">
+                  <div className="card-inner">
+                    <div className="file-block">
+                      {
+                        !this.state.links['f_task'] && <Button type="dashed" style={{ height: 100 }} onClick={() => { this.setState({ modal_visiable: true }) }}>发布任务书</Button>
+                      }
+                      {
+                        !!this.state.links['f_task'] && <Button type="dashed" onClick={() => { this.setState({ modal_visiable: true }) }}>重新发布任务书</Button>
+                      }
+                    </div>
+                  </div>
+
+                </div>
+              </header>
+            }
+            {
+              this.state.tab == 'download' &&
+              <header className="stm-header">
+                <div className="note-block">
+                </div>
+                <div className="note-block">
+                  <div className="card-inner">
+                    <div className="one-of-three">
+                      <div className="f-title">
+                        1、开题中期
+                      </div>
+                      <div className="file-block">
+                        {
+                          fileListOne.map((t) => {
+                            let r = this.state.links[t.type];
+                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
+                          })
+                        }
+                      </div>
+                    </div>
+                    <div className="one-of-three">
+                      <div className="f-title">
+                        2、论文审核
+                      </div>
+                      <div className="file-block">
+                        {
+                          fileListTwo.map((t) => {
+                            let r = this.state.links[t.type];
+                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
+                          })
+                        }
+                      </div>
+                    </div>
+                    <div className="one-of-three">
+                      <div className="f-title">
+                        3、论文答辩
+                      </div>
+                      <div className="file-block">
+                        {
+                          fileListThree.map((t) => {
+                            let r = this.state.links[t.type];
+                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
+                          })
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+            }
           </Card>
+          <Modal
+            title="发布任务书"
+            visible={this.state.modal_visiable}
+            width={900}
+            footer={null}
+            onCancel={() => { this.setState({ modal_visiable: false }) }}
+          >
+            <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} />
+          </Modal>
         </div>
 
-        <Card
-          tabList={tabListNoTitle}
-          size="small"
-          bordered={false}
-          onTabChange={(e) => { this.setState({ tab: e }) }}
-        >
-          {this.state.tab == 'publish' &&
-            <header className="stm-header">
-              <div className="note-block">
-              </div>
-              <div className="note-block">
-                <div className="card-inner">
-                  <div className="file-block">
-                    {
-                      !this.state.links['f_task'] && <Button type="dashed" style={{ height: 100 }} onClick={() => { this.setState({ modal_visiable: true }) }}>发布任务书</Button>
-                    }
-                    {
-                      !!this.state.links['f_task'] && <Button type="dashed" onClick={() => { this.setState({ modal_visiable: true }) }}>重新发布任务书</Button>
-                    }
-                  </div>
-                </div>
-
-              </div>
-            </header>
-          }
-          {
-            this.state.tab == 'download' &&
-            <header className="stm-header">
-              <div className="note-block">
-              </div>
-              <div className="note-block">
-                <div className="card-inner">
-                  <div className="one-of-three">
-                    <div className="f-title">
-                      1、开题中期
-                      </div>
-                    <div className="file-block">
-                      {
-                        fileListOne.map((t) => {
-                          let r = this.state.links[t.type];
-                          return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
-                        })
-                      }
-                    </div>
-                  </div>
-                  <div className="one-of-three">
-                    <div className="f-title">
-                      2、论文审核
-                      </div>
-                    <div className="file-block">
-                      {
-                        fileListTwo.map((t) => {
-                          let r = this.state.links[t.type];
-                          return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
-                        })
-                      }
-                    </div>
-                  </div>
-                  <div className="one-of-three">
-                    <div className="f-title">
-                      3、论文答辩
-                      </div>
-                    <div className="file-block">
-                      {
-                        fileListThree.map((t) => {
-                          let r = this.state.links[t.type];
-                          return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
-                        })
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </header>
-
-          }
-        </Card>
-        <Modal
-          title="发布任务书"
-          visible={this.state.modal_visiable}
-          width={900}
-          footer={null}
-          onCancel={() => { this.setState({ modal_visiable: false }) }}
-        >
-          <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} />
-        </Modal>
       </div>
     )
   }
