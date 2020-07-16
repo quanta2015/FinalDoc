@@ -23,45 +23,77 @@ tbody.ant-table-tbody {
     margin-top: 10px;
 } */
 .g-ass{
-.m-ass_head_btn .ass_clear {
-    margin-right: 15px;
+    .m-ass_head_btn .ass_clear {
+        margin-right: 15px;
+        
+    }
+
+    .m-ass_top_box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .m-ass_table .ant-table-cell:nth-last-child(4) {
+        // width: 250px;
+        width: 200px;
+    }
+
+    .m-ass_table .ant-table-cell:nth-last-child(3) {
+        // width: 240px;
+        width: 300px;
+    }
+
     
-}
 
-.m-ass_top_box {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
+    .m-ass_table .ant-table-cell:nth-last-child(2) {
+        // width:300px;
+        width: 150px;
+    }
 
- 
+    .m-ass_table .ant-table-cell:nth-last-child(1) {
+        // width: 250px;
+        width: 150px;
+    }
 
-.m-ass_table .ant-table-cell:nth-last-child(3) {
-    width: 240px;
-     
-}
+    .m-ass_table .ant-table-placeholder .ant-table-cell{
+        width: 850px;
+    }
 
- 
-
-.m-ass_table .ant-table-cell:nth-last-child(2) {
-    width:300px;
+    .m-ass_noTopicNum {
+        
+        
+        font-size: 16px;
+        font-weight: bold;
     
-     
+    }
 }
 
-.m-ass_table .ant-table-cell:nth-last-child(1) {
-    width: 250px;
-}
+.g-mod-task {
+    .m-title{
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px ;
 
-.m-ass_table .ant-table-placeholder .ant-table-cell{
-    width: 850px;
-}
+        .u-type{
+            color:white;
+            font-size: 14px;
+            padding: 2px 6px;
+            background-color: orangered;
+        }
+        .u-topic{
+            font-weight: bolder;
+            font-size: 24px;
+            color:#999;
+        }
+        .u-tea-name{
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
 
-.m-ass_noTopicNum {
-    
-    
-    font-size: 16px;
-    font-weight: bold;
-   
-}
+    .m-cont {
+        padding: 20px;
+    }
 }
