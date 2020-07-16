@@ -412,4 +412,42 @@ router.post('/uploadSign', async(req, res) => {
     })
 })
 
+router.post('/saveTask',async(req,res)=>{
+    let pid = req.body.pid;
+    let data = req.body.data;
+    data.ft[0] = moment(data.ft[0]).format('YY-MM-DD')
+    data.ft[1] = moment(data.ft[1]).format('YY-MM-DD')
+    for (let i in data.schedule ){
+        data.schedule[i].time[0] = moment(data.schedule[i].time[0]).format('YY-MM-DD');
+        data.schedule[i].time[1] = moment(data.schedule[i].time[1]).format('YY-MM-DD');
+    }
+    data = JSON.stringify(data)
+
+    let path = `./upload/task_${pid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.json`
+    console.log(path);
+    fs.writeFile(path,data,err=>{
+        if(err){
+            return;
+        }
+    })
+    let sql = `CALL PROC_UPDATE_F_TASK(?)`;
+    let p = {};
+    p.filePath = path;
+    p.pid = pid;
+    callProc(sql,p,res,()=>{
+        res.status(200).json({code:200,msg:'已成功上传任务书'})
+    })
+    
+})
+
+router.post('/getTask',async(req,res)=>{
+    let data = req.body;
+    let sql = `CALL PROC_SELECT_F_TASK(?)`
+    callProc(sql,data,res,r=>{
+        console.log(r[0].f_task);
+        let s = JSON.parse( fs.readFileSync(r[0].f_task,'utf-8'));
+        res.status(200).json({code:200,data:s,message:'已成功获取任务书'})
+    })
+})
+
 module.exports = router;
