@@ -50,12 +50,13 @@
     }
 
     //发布公告按钮
-    .m-release-btn {
-        margin-bottom:15px;
-        float:right;
-    }
+  
 }
-
+.m-release-btn {
+    margin-bottom:15px;
+    float:right;
+    z-index: 1;
+}
 //}
 .admin-content{
     margin-top: 1vh;
