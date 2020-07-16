@@ -12,8 +12,8 @@ import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 
 import { Tabs } from 'antd';
-import AnnounceManage from './annMg.js'
-import FileManage from '../fileMag'
+import AnnounceManage from './annMag/annMg.js'
+import FileManage from './fileMag'
 
 const { TabPane } = Tabs;
 
@@ -49,7 +49,7 @@ export default class Ann extends Component {
                 <FileManage />
               </TabPane>
               <TabPane tab="名单管理" key="3">
-                <FileManage />
+                <div>名单管理</div>
               </TabPane>
             </Tabs>
             {/* <div className="m-m">公告模块</div> */}
