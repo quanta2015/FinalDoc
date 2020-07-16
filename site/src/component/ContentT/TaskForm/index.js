@@ -1,22 +1,36 @@
-import { Form, Input, Button, Checkbox, DatePicker, Space } from 'antd';
+import { Form, Input, Button, Checkbox, DatePicker, Space, message } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import BaseActions from '../../BaseActions';
+import * as urls from '../../../constant/urls';
 import style from './index.scss'
 
 const { RangePicker } = DatePicker;
 
-
 export default class TaskForm extends BaseActions {
-  onFinish = val => {
-    console.log(val);
+  onFinish = async val => {
+
+    if(!val.schedule){
+      message.error("您未添加进度安排！");
+      return;
+    }
+    let x = await this.post(urls.API_TEACHER_SAVE_TASK,{data:val,pid:this.props.pid})
+    console.log(x);
+    if(x.code==200){
+      message.success('提交成功')
+    }else{
+      message.error('提交错误，请检查网络')
+    }
+    this.props.close();
+
+    
   }
 
-  onFinishFailed = val => {
-    console.log('err');
-    console.log(val);
+  onFinishFailed = async  val => {
+    message.error("请确认信息填写完整！")
+    //let sb = await this.post('http://localhost:8090/teacher/getTask',{pid:817,role:2})
+    // let sb = await this.post(urls.API_TEACHER_GET_TASK,{pid:817})
+    //console.log(sb);
   }
-
-
 
   render = () => {
     return (
@@ -78,7 +92,7 @@ export default class TaskForm extends BaseActions {
 
               <Form.List
 
-                name="times"
+                name="schedule"
               >
                 {(fields, { add, remove }) => {
                   return (
@@ -102,8 +116,8 @@ export default class TaskForm extends BaseActions {
 
                             <Form.Item
                               {...field}
-                              name={[field.name, 'data']}
-                              fieldKey={[field.fieldKey, 'data']}
+                              name={[field.name, 'content']}
+                              fieldKey={[field.fieldKey, 'content']}
                               rules={[{ required: true, message: "请输入内容！", }]}
 
                             >

@@ -7,7 +7,7 @@ import style from './index.scss'
 import BaseActions from '../../BaseActions';
 const { Panel } = Collapse;
 import * as urls from '../../../constant/urls'
-import StuMethods from '../StuMethods2'
+import StuMethods from '../StuMethods'
 import DeleteSpan from '../../../icon/Icons/Delete'
 import ReWrite from '../../../icon/Icons/ReWrite'
 import Watch from '../../../icon/Icons/Watch'
@@ -117,7 +117,6 @@ class Check extends BaseActions {
           (t.status == 100) && <span onClick={() => { this.getSugg(t.id) }}><Watch /></span>
         }
       </div>
-
     </div>
   );
 
