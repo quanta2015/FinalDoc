@@ -325,6 +325,14 @@ class Student extends BaseActions {
             // message.error("网络错误")
         }
     }
+
+    @action 
+    async readNotice(params){
+        const r = await this.post(urls.API_STU_READ_NOTICE, params);
+        if (r && r.code === 200){
+            return true;
+        }
+    }
 }
 
 export default new Student()
