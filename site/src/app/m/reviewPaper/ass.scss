@@ -70,6 +70,8 @@ tbody.ant-table-tbody {
 }
 
 .g-mod-task {
+    white-space: pre-line;
+    margin-top: -80px;
     .m-title{
         display: flex;
         justify-content:space-between;
@@ -94,6 +96,37 @@ tbody.ant-table-tbody {
     }
 
     .m-cont {
-        padding: 20px;
+         
+        margin-right: -23px;
+        
+        padding:20px ;
+        max-height: 450px;
+        overflow:auto;
+    .m-f-title{
+        margin: 20px 0;
+        font-size: 20px;
+        font-weight: bolder;
+    }
+    .m-s-title{
+         margin: 10px 0;
+        text-indent:2em;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .m-cont-item{
+        padding-left: 20px;
+        .u-time{
+            display: flex;
+            flex-direction: row;
+            .u-num{
+                font-size: 17px;
+                 color:orangered;
+                font-family: Georgia;
+            }
+        }
+        .list{
+        padding-bottom: 10px;     
+    }  
+    }
     }
 }

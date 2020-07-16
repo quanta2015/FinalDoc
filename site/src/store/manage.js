@@ -411,12 +411,12 @@ class manager extends BaseActions {
       let tag = ""
       let num = 6
 
-      if (status < 4) {
+      if (item.status <4) {
         tag = "未提交";
-      } else if (status === 4) {
+      } else if (item.status === 4) {
         tag = "待审核";
         num = 4;
-      } else if (status === 5) {
+      } else if (item.status === 5) {
         tag = "通过";
         num = 5;
       }

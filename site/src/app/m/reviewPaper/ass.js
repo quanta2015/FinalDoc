@@ -41,7 +41,9 @@ export default class Ass extends Component {
         topic: "",
         tName: "",
         task: {},
-        list: ["123","ddd","frgr"],
+        list: ["123", "ddd", "frgr"],
+        schedule: [],
+        ft: [],
 
     };
 
@@ -146,16 +148,18 @@ export default class Ass extends Component {
 
     showModal = async (record) => {
         // console.log(toJS(record))
-        let task = await this.props.manageStore.getTaskContent({"pid":record.key})
-        // console.log(task)
+        let task = await this.props.manageStore.getTaskContent({ "pid": record.key })
+        console.log(task)
         this.setState({
             visible: true,
             topic_id: record.key,
             topic: record.topic,
             tName: record.name,
             task: toJS(task),
-        },()=> {
-            console.log(this.state.task)
+            schedule: toJS(task.schedule),
+            ft: toJS(task.ft),
+        }, () => {
+            console.log(this.state.schedule)
         });
     };
 
@@ -335,7 +339,8 @@ export default class Ass extends Component {
                     onCancel={this.handleCancel}
                     // footer={null}
                     footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
-                    width={800}
+                    width={900}
+
                     className="g-mod-task"
                 >
                     <div class="m-dtl-mod">
@@ -345,26 +350,52 @@ export default class Ass extends Component {
                             <div class="u-tea-name">{this.state.tName}</div>
                         </div>
                         <div class="m-cont">
+                            <div class="m-f-title">一、内容和要求</div>
+                            <div class="m-s-title">1．总体目标及性能（参数）要求</div>
                             <div className="m-cont-item">
                                 {this.state.task.target}
                             </div>
+                            <div class="m-s-title">2．研究内容及拟采用的技术路线</div>
+                            <div class="m-s-title">研究内容：</div>
                             <div className="m-cont-item">
                                 {this.state.task.learn_content}
                             </div>
+                            <div class="m-s-title">技术路线：</div>
                             <div className="m-cont-item">
                                 {this.state.task.technical_route}
                             </div>
+                            <div class="m-s-title">3．参考文献</div>
                             <div className="m-cont-item">
-                                {this.state.task.ft}
+                                {this.state.task.reference}
                             </div>
-                            {/* <div className="m-cont-item">
-                                {this.state.task.schedule.map((i,item) => {
-                                    <div>
-                                        <div>{item.time}</div>
-                                        <div>{item.content}</div>
-                                    </div>
+                            <div class="m-f-title">二、起止日期及进度安排</div>
+                            <div class="m-s-title">起止日期：</div>
+                            <div className="m-cont-item">
+                                <div class="u-time">
+                                    <div class="u-num">{this.state.ft[0]}</div>
+                                    <div>至</div>
+                                    <div class="u-num">{this.state.ft[1]}</div>
+                                </div>
+                            </div>
+                            <div class="m-s-title">进度安排：</div>
+                              
+                                {this.state.schedule.map((item) => {
+                                    return (
+                                        <div className="m-cont-item">
+                                            <div className="list">
+                                            <div class="u-time">
+                                                <div class="u-num">{item.time[0]}</div>
+                                                <div>至</div>
+                                                <div class="u-num">{item.time[1]}</div>
+                                            </div>
+                                            <div>{item.content}</div>
+
+                                        </div>
+                                        </div>
+                                    )
                                 })}
-                            </div> */}
+                             
+                             
                         </div>
                     </div>
                 </Modal>
