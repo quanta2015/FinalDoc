@@ -444,9 +444,20 @@ router.post('/getTask',async(req,res)=>{
     let data = req.body;
     let sql = `CALL PROC_SELECT_F_TASK(?)`
     callProc(sql,data,res,r=>{
-        console.log(r[0].f_task);
-        let s = JSON.parse( fs.readFileSync(r[0].f_task,'utf-8'));
-        res.status(200).json({code:200,data:s,message:'已成功获取任务书'})
+        let path = r[0].f_task;
+        console.log(path);
+        if(!path){
+            res.status(200).json({code:200,data:{},message:'该课题没有任务书！'})
+            return;
+        }
+        if(path.endsWith('.pdf')&&data.role!=2){
+            res.download(path);
+            
+        }else{
+            path.replace('.pdf','.json');
+            let s = JSON.parse( fs.readFileSync(path,'utf-8'));
+            res.status(200).json({code:200,data:s,message:'已成功获取任务书'})
+        }
     })
 })
 
