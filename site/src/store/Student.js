@@ -18,13 +18,14 @@ class Student extends BaseActions {
 
     @observable
     //时间轴内容
-    timeList = [
-        { title: '任务书', type: 'f_task', time: '2020-10-08' },
-        { title: '开题中期', time: '2020-12-12' },
-        { title: '论文审核', time: '2020-12-28' },
-        { title: '论文答辩', time: '2021-04-08' },
-        { title: '成绩审定', type: 'f_score_check', time: '2021-05-02' }
-    ]
+    timeList = []
+    // timeList = [
+    //     { title: '任务书', type: 'f_task', time: '2020-10-08' },
+    //     { title: '开题中期', time: '2020-12-12' },
+    //     { title: '论文审核', time: '2020-12-28' },
+    //     { title: '论文答辩', time: '2021-04-08' },
+    //     { title: '成绩审定', type: 'f_score_check', time: '2021-05-02' }
+    // ]
 
     @observable
     //模板文件
@@ -35,18 +36,21 @@ class Student extends BaseActions {
             { title: '外文文献翻译', link: '' },
             { title: '文献综述', link: '' },
             { title: '中期检查表', link: '' },
-        ]},{
+        ]
+    }, {
         name: '论文定稿',
         file: [
             { title: '论文格式', link: '' },
             { title: '作品说明书', link: '' },
             { title: '诚信承诺书', link: '' },
-        ]},{
+        ]
+    }, {
         name: '论文答辩',
         file: [
             { title: '评审答辩成绩表', link: '' },
             { title: '延缓答辩申请表', link: '' }
-        ]} 
+        ]
+    }
     ]
 
     @observable
@@ -65,8 +69,15 @@ class Student extends BaseActions {
     }
 
     @observable
+    currState = {}
+
+    @observable
     //指导日志
     insLog = []
+
+    @observable
+    //通知列表 index 未读通知所处位置
+    noticeList = { index: null, data: [] }
 
     @action
     async getTopInfo(params) {
@@ -243,6 +254,84 @@ class Student extends BaseActions {
             message.error("网络错误")
         }
         return r
+    }
+
+    @action
+    async getAllStates() {
+        const r = await this.post(urls.API_STU_GET_ALLSTATES, null)
+        if (r && r.code === 200) {
+            let lst = []
+            if (r.data) {
+                r.data.map((item) => {
+                    if (item.title === "任务书") {
+                        lst.push({
+                            state: item.state,
+                            title: item.title,
+                            time: item.time,
+                            type: 'f_task'
+                        })
+                    } else if (item.title === "成绩审定") {
+                        lst.push({
+                            state: item.state,
+                            title: item.title,
+                            time: item.time,
+                            type: 'f_score_check'
+                        })
+                    } else {
+                        lst.push({
+                            state: item.state,
+                            title: item.title,
+                            time: item.time,
+                        })
+                    }
+                })
+            }
+            runInAction(() => {
+                this.timeList = lst
+            })
+            return lst
+        } else {
+            message.error('网络错误')
+        }
+        return r
+    }
+
+    @action
+    async getCurrentState() {
+        const r = await this.get(urls.API_STU_GET_CURSTATE)
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.currState = r.data
+            })
+            return r.data
+        } else {
+            message.error('网络错误')
+        }
+        return r
+    }
+
+    @action
+    // r.data: [[{已读公告1},{}...],[{未读公告1},{}...]]
+    async getNoticeList(params) {
+        const r = await this.post(urls.API_STU_GET_NOTICE, params);
+        if (r && r.code === 200 && r.data) {
+            let unreadIndex = r.data[1].length - 1;
+            runInAction(() => {
+                this.noticeList.index = unreadIndex;
+                this.noticeList.data = [...r.data[1], ...r.data[0]];
+            })
+            return (r.data[1].length + r.data[0].length)
+        } else {
+            // message.error("网络错误")
+        }
+    }
+
+    @action 
+    async readNotice(params){
+        const r = await this.post(urls.API_STU_READ_NOTICE, params);
+        if (r && r.code === 200){
+            return true;
+        }
     }
 }
 
