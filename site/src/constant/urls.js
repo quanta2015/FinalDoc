@@ -92,6 +92,11 @@ export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicF
 export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
 //获取所有选题类型(get)
 export const API_SYS_GET_ALL_TYPE = API_SERVER + '/teacher/getAllType'
+//保存任务书
+export const API_TEACHER_SAVE_TASK = API_SERVER+'/teacher/saveTask'
+//获取任务书
+export const API_TEACHER_GET_TASK = API_SERVER + '/teacher/getTask'
+
 
 // 任课教师-初期审核
 

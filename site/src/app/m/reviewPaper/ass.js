@@ -41,7 +41,6 @@ export default class Ass extends Component {
         topic: "",
         tName: "",
         task: {},
-        list: ["123", "ddd", "frgr"],
         schedule: [],
         ft: [],
 
@@ -148,7 +147,7 @@ export default class Ass extends Component {
 
     showModal = async (record) => {
         // console.log(toJS(record))
-        let task = await this.props.manageStore.getTaskContent({ "pid": record.key })
+        let task = await this.props.manageStore.getTaskContent({ "pid": record.key, "role": this.usr.role })
         console.log(task)
         this.setState({
             visible: true,

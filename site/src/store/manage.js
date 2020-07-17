@@ -395,9 +395,6 @@ class manager extends BaseActions {
     //假数据
     task_info: [],
     to_audit_list: [],
-
-
-
   }
 
   @action
@@ -429,17 +426,6 @@ class manager extends BaseActions {
         num: num
       })
     })
-    /* **********假数据 记得删掉************** */ 
-    let data = {
-      key: 1000,
-      name: "假数据",
-      num: 4,
-      status: 4,
-      tag: "待审核",
-      topic: "体检病历数据的智能分析预测平台设计和研究",
-    }
-    temp.push(data)
-    /* **********假数据**************** */ 
     let arr = []
     temp.map((item, i) => {
       if (item.status === 4) {
@@ -485,35 +471,11 @@ class manager extends BaseActions {
   }
   */
   // 查看某课题任务书内容
-  // {"pid":int}
+  // {"pid":int,"role":int}
   @action
-  getTaskContent(param) {
-    let task_content = {
-      "target": "研究Nodejs如何进行数据爬取，掌握SuperAgent的工作模型和多种参数的运行技巧，掌握Cheerio框架的使用方法和工作原理，了解医疗数据的具体类型、分类以及体检数据的特征；理解数据分析中数据预处理的过程以及重要性，掌握使用python处理多种数据问题，比如缺失、标准化、转置等；理解深度学习的基本概念和逻辑过程，掌握使用Keras库对体检数据进行处理分类，实习疾病数据预测的结果。",
-      "learn_content": "1. 学习nodejs框架以及SuperAgent/Cheerio相关技术\n2. 学习爬取后医疗数据的结构和特征，分析如何进行数据转换；\n3. 学习数据预处理逻辑，解决深度学习编程之前的数据标记工作；\n4. 通过Keras编程实习数据分析过程，并且测试结果；",
-      "technical_route": "（1）前期预备：首先通过大量相关技术资料的阅读以及撰写文献综述、外文翻译（必须是和论文相关的外文资料）等方式，了解掌握Nodejs语言，制订具体的工作计划，完成开题报告。\n（2）基础性知识准备： 学习SuperAgent、Cheerio框架模型和编程方法,以及Keras模块的编程方法。\n（3）编程数据爬取以及数据分类转换。\n（4）进行数据预处理以及编写深度学习模型进行数据分析预测。\n（5）修改论文并且准备答辩PPT。",
-      "reference": "[1]	Learning Node.js,Marc Wandschneider,2013,Addison Wesley.\n[2]	深入React技术栈,陈屹,人民邮电出版社,2016.\n[3]	React 进阶之路,徐超,清华大学出版社,2018.\n[4]	React状态管理与同构实战,侯策,颜海镜,电子工业出版,2018.\n[5]	Web development with Express&Node,Ethan Brown,2014,O'Reilly,Mastering Node.js,Sandro Pauali,2013\n[6]	Javascript and Node fundamentals,Azat Mardan,2014.\n[7]	React前端技术与工程实践,李晋华,电子工业出版社,2017.\n[8]	深入理解 React 和 Redux,程墨,机械工业出版社,2017.\n[9]	前端工程化体系设计与实践,周俊鹏,电子工业出版社,2018.\n[10]	Hands on Node.js,Pedro Teixeira,2013-12-28.\n[11]	深入浅出Node.js,田永强,2013-12,人民邮电出版.\n[12]	Node.js Recipes,Cory Gackenheimer,October 2013,Apress\n[13]	NODE.js入门手册,Manuel Kiessling,The Node Beginner Book,2012,Apress\n[14]	Node与Express开发,Ethan Brown,人民邮电出版社,2015.\n[15]	Node for Front-End Developers,Garann Means,February 7, 2012,O'Reilly\n[16]	Building Hypermedia APIs with HTML5 and Node,Mike Amundsen,2011,O'Reilly.\n[17]	Professional Node.js: Building Javascript Based Scalable Software,PEDRO TEIXEIRA,2012.\n[18]	Node.js in Action,Mike Cantelon, TJ Holowaychuk, Manning Publications, 2013.",
-      "ft": ["2020-09-01", "2021-04-30"],
-      "schedule": [
-        {
-          "time": ["2020-09-01", "2020-12-10"],
-          "content": "完成与毕业设计技术相关的中外文献阅读，在此基础上，完成文献综述，外文翻译，写出开题报告。"
-        },
-        {
-          "time": ["2020-09-01", "2020-12-10"],
-          "content": "完成与毕业设计技术相关的中外文献阅读，在此基础上，完成文献综述，外文翻译，写出开题报告。"
-        },
-        {
-          "time": ["2020-09-01", "2020-12-10"],
-          "content": "完成与毕业设计技术相关的中外文献阅读，在此基础上，完成文献综述，外文翻译，写出开题报告。"
-        },
-        {
-          "time": ["2020-09-01", "2020-12-10"],
-          "content": "完成与毕业设计技术相关的中外文献阅读，在此基础上，完成文献综述，外文翻译，写出开题报告。"
-        }
-      ]
-    }
-    return task_content;
+  async getTaskContent(param) {
+    let res = await this.post(urls.API_TEACHER_GET_TASK, param)
+    return res.data;
   }
 
   // 查看某位学生上传的文件
