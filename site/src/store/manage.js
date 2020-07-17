@@ -174,16 +174,16 @@ class manager extends BaseActions {
     // 开题分组信息
     group_list: [],
   }
- // 自动显示十个答辩课题
- // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
+  // 自动显示十个答辩课题
+  // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
   @action
   async getSugTopicList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param);
     let group = [];
     res.data.map((item, i) => {
-      group.push( 
-          item.key,
-       )
+      group.push(
+        item.key,
+      )
     })
 
     runInAction(() => {
@@ -202,7 +202,7 @@ class manager extends BaseActions {
       topic.push({
         key: item.key,
         sName: item.sName,
-        topic: item.name+"-"+item.topic,
+        topic: item.name + "-" + item.topic,
         content: item.content,
         tName: item.name,
         classname: item.class,
@@ -393,11 +393,9 @@ class manager extends BaseActions {
     // 教师列表
     task_info2: [],
     //假数据
-      task_info: [],
-      to_audit_list:[],
-
-
-
+    task_info: [],
+    to_audit_list: [],
+    suc:0,
   }
 
   @action
@@ -406,37 +404,38 @@ class manager extends BaseActions {
   async getTaskList(param) {
     const res = await this.post(urls.API_MAN_POST_RP_TASKLIST, param);
     let temp = []
-    
-     
-    
+
     res.data.map((item, i) => {
       let tag = ""
-      let num=6
+      let num = 6
 
-      if (status < 4) {
+      if (item.status <4) {
         tag = "未提交";
-      } else if (status === 4) {
+      } else if (item.status === 4) {
         tag = "待审核";
-        num=4;
-      } else if (status === 5) {
+        num = 4;
+      } else if (item.status === 5) {
         tag = "通过";
-        num=5;
+        num = 5;
       }
       temp.push({
         name: item.name,
         topic: item.topic,
         key: item.key,
-        status:item.status,
-        tag:tag,
-        num:num
+        status: item.status,
+        tag: tag,
+        num: num
       })
     })
     let arr = []
+    let count=0
     temp.map((item, i) => {
       if (item.status === 4) {
         arr.push(
           item.key
         )
+      }else if(item.status===5){
+         count++;
       }
     })
     temp.sort(function (a, b) {
@@ -455,14 +454,37 @@ class manager extends BaseActions {
         return 1;
       }
     })
+    if(count===temp.length){
+      count=1
+    }
     runInAction(() => {
       this.reviewPaper.task_info = temp;
       this.reviewPaper.to_audit_list = arr;
+      this.reviewPaper.suc = count;
     })
 
   }
 
- 
+  /* 任务书格式
+  {
+    "target":"s", 总体目标及性能（参数）要求
+    "learn_content":"d", 研究内容
+    "technical_route":"f", 技术路线
+    "reference":"f", 参考文献
+    "ft":["2020-07-02","2020-07-23"], 总起止时间
+    "schedule":[ 具体进度安排
+      {"time":["2020-07-01","2020-07-23"], 起止时间
+      "content":"q" 内容}
+    ]
+  }
+  */
+  // 查看某课题任务书内容
+  // {"pid":int,"role":int}
+  @action
+  async getTaskContent(param) {
+    let res = await this.post(urls.API_TEACHER_GET_TASK, param)
+    return res.data;
+  }
 
   // 查看某位学生上传的文件
   // {"topic_id":int}
@@ -471,7 +493,6 @@ class manager extends BaseActions {
     let res = await this.post(urls.API_MAN_POST_VIEWFILES, param)
     return res.data
   }
-
 
   @action
   //仅支持pdf

@@ -134,7 +134,7 @@ export default class Defense extends Component {
     // }
 
     handleChangeTopic = (value) => {
-        //console.log(`selected ${value}`);
+        console.log(`selected ${value}`);
         if (this.state.select_leader === undefined ||
             this.state.select_member.length < 2
         ) {
@@ -161,7 +161,7 @@ export default class Defense extends Component {
             message.info("请选择一位组长和两位组员")
             return;
         }
-        if (this.openDefenseGroup.sug_topic_id.length === 0) {
+        if (this.state.sug_topic_id.length === 0) {
             message.info("请选择课题")
             return;
         }
@@ -231,26 +231,6 @@ export default class Defense extends Component {
                     <div class="m-select">
                         <div class="lable-tea">组长</div>
                         <div>
-                            {/* {(this.openDefenseGroup.sug_topic_id.length > 0) &&
-                                <Select
-                                    value={this.state.select_leader}
-                                    showSearch
-                                    style={{ width: 530 }}
-                                    placeholder="请选择教师"
-                                    optionFilterProp="children"
-                                    defaultActiveFirstOption={false}
-                                    onChange={this.addSelectTeacher}
-                                    allowClear
-                                    optionLabelProp="label"
-                                    disabled
-                                >
-                                    {this.state.new_arr.map((item, i) =>
-                                        <Select.Option
-                                            label={item.name} key={item.tid}>{item.value}</Select.Option>
-                                    )}
-                                </Select>
-                            } */}
-                            {/* {(this.openDefenseGroup.sug_topic_id.length === 0) && */}
                                 <Select
                                     value={this.state.select_leader}
                                     showSearch
@@ -270,33 +250,11 @@ export default class Defense extends Component {
                                             label={item.name} key={item.tid}>{item.value}</Select.Option>
                                     )}
                                 </Select>
-
-
-                            {/* } */}
                         </div>
                     </div>
                     <div class="m-select2">
                         <div class="lable-tea">组员</div>
                         <div>
-                            {/* {(this.openDefenseGroup.sug_topic_id.length > 0) &&
-                                <Select
-                                    mode="multiple"
-                                    style={{ width: 530 }}
-                                    //placeholder="请选择教师"
-                                    // defaultActiveFirstOption={false}
-                                    value={this.state.select_member}
-                                    //onChange={this.handleChange}
-                                    optionLabelProp="label"
-                                    // allowClear
-                                    disabled
-                                >
-                                    {this.openDefenseGroup.teacher_info.map((item, i) =>
-                                        (item.tid !== this.state.select_leader) && <Select.Option label={item.name}
-                                            key={item.tid}>{item.value}</Select.Option>
-                                    )}
-                                </Select>
-                            } */}
-                            {/* {(this.openDefenseGroup.sug_topic_id.length === 0) && */}
                                 <Select
                                     mode="multiple"
                                     style={{ width: 530 }}
@@ -312,8 +270,6 @@ export default class Defense extends Component {
                                             key={item.tid}>{item.value}</Select.Option>
                                     )}
                                 </Select>
-                            {/* } */}
-                            {/* <Button onClick={this.sugSelect}>选题</Button> */}
                         </div>
                     </div>
                     <div class="info">待分配课题{this.openDefenseGroup.topic_info.length}篇，已选择{this.state.sug_topic_id.length}篇</div>
@@ -322,12 +278,6 @@ export default class Defense extends Component {
                         <div class="m-select">
                              
                                 <div class="lable">选择课题</div>
-                                
-
-                            
-                            
-                            
-
                             <div>
                                  
                                 <Select
