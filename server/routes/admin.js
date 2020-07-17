@@ -24,16 +24,16 @@ router.post('/getAllAnnounce', async(req, res) => {
         r.forEach(element => {
             switch (element['target']) {
                 case 0:
-                    element.ann_target = 'all';
+                    element.target = 'all';
                     break;
                 case 1:
-                    element.ann_target = 'stu';
+                    element.target = 'stu';
                     break;
                 case 2:
-                    element.ann_target = 'tea';
+                    element.target = 'tea';
                     break;
                 case 3:
-                    element.ann_target = 'leader';
+                    element.target = 'leader';
                     break;
                 default:
                     break;
