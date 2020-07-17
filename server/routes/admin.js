@@ -38,7 +38,7 @@ router.post('/getAllAnnounce', async(req, res) => {
                 default:
                     break;
             }
-            delete element.target;
+           
         });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取当前所有公告' });
