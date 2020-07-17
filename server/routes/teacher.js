@@ -412,4 +412,63 @@ router.post('/uploadSign', async(req, res) => {
     })
 })
 
+router.post('/saveTask',async(req,res)=>{
+    let pid = req.body.pid;
+    let data = req.body.data;
+    data.ft[0] = moment(data.ft[0]).format('YY-MM-DD')
+    data.ft[1] = moment(data.ft[1]).format('YY-MM-DD')
+    for (let i in data.schedule ){
+        data.schedule[i].time[0] = moment(data.schedule[i].time[0]).format('YY-MM-DD');
+        data.schedule[i].time[1] = moment(data.schedule[i].time[1]).format('YY-MM-DD');
+    }
+    data = JSON.stringify(data)
+
+    let path = `./upload/task_${pid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.json`
+    console.log(path);
+    fs.writeFile(path,data,err=>{
+        if(err){
+            return;
+        }
+    })
+    let sql = `CALL PROC_UPDATE_F_TASK(?)`;
+    let p = {};
+    p.filePath = path;
+    p.pid = pid;
+    callProc(sql,p,res,()=>{
+        res.status(200).json({code:200,msg:'已成功上传任务书'})
+    })
+    
+})
+
+router.post('/getTask',async(req,res)=>{
+    let data = req.body;
+    let sql = `CALL PROC_SELECT_F_TASK(?)`
+    callProc(sql,data,res,r=>{
+        let path = r[0].f_task;
+        console.log(path);
+        if(!path){
+            res.status(200).json({code:200,data:{},message:'该课题没有任务书！'})
+            return;
+        }
+        if(path.endsWith('.pdf')&&data.role!=2){
+            res.download(path);
+            
+        }else{
+            path.replace('.pdf','.json');
+            let s = JSON.parse( fs.readFileSync(path,'utf-8'));
+            res.status(200).json({code:200,data:s,message:'已成功获取任务书'})
+        }
+    })
+})
+
+router.post('/canPublish',async(req,res)=>{
+    let data = req.body
+    console.log(data);
+    let sql = 'CALL PROC_CHECK_CAN_PUBLISH(?)';
+    callProc(sql,data,res,r=>{
+        console.log(r);
+        res.status(200).json({code:200,r,message:'已获取是否能发布新课题'})
+    })
+})
+
 module.exports = router;
