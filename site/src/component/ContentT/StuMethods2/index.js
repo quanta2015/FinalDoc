@@ -87,9 +87,7 @@ export default class StuMethods extends BaseActions {
     l = (l.data)[0];
     this.setState({ links: l })
   }
-
-
-
+  
   render() {
     {
       if (this.props.pid != this.state.pid) {
@@ -127,7 +125,7 @@ export default class StuMethods extends BaseActions {
                         !this.state.links['f_task'] && <Button type="dashed" style={{ height: 100 }} onClick={() => { this.setState({ modal_visiable: true }) }}>发布任务书</Button>
                       }
                       {
-                        !!this.state.links['f_task'] && <Button type="dashed" onClick={() => { this.setState({ modal_visiable: true }) }}>重新发布任务书</Button>
+                        !!this.state.links['f_task'] && <Button type="dashed" style={{ height: 100 }} onClick={() => { this.setState({ modal_visiable: true }) }}>重新发布任务书</Button>
                       }
                     </div>
                   </div>

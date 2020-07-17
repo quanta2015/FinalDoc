@@ -2,6 +2,7 @@ import BaseActions from '../component/BaseActions'
 import { observable, action, runInAction } from 'mobx'
 
 import * as urls from '../constant/urls'
+import token from '../util/token.js'
 import { message } from 'antd'
 
 class Teacher extends BaseActions {
@@ -74,13 +75,13 @@ class Teacher extends BaseActions {
   //选中的待审核命题
   @observable  
   selectedTopic = {}
-  
+
   @action
   async getTopicById(params) {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID, params);
     if (result && result.code === 200) {
       runInAction(() => {
-        this.selectedTopic = result.data[0]
+        this.selectedTopic = result.data[0];
       })
     } else {
       message.error("网络错误")
@@ -88,6 +89,8 @@ class Teacher extends BaseActions {
     return result;
 	}
   
+  //开题
+
   //代审核开题列表
   @observable  
   auditOP_topicList = [
@@ -102,6 +105,75 @@ class Teacher extends BaseActions {
       runInAction(() => {
         this.auditOP_topicList = result.data
       })
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  //审核组信息
+  @observable
+  auditOP_team = {
+    "leader":{
+      "name": "FCC"
+    },
+    "member":[
+      {
+        "name": "ABB"
+      },
+      {
+        "name": "BCC"
+      },
+      {
+        "name": "CDD"
+      }
+    ]
+  }
+
+  @action
+  async AuditOp_getTeam(params) {
+    let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_TEAM, params);
+    if (result && result.code === 200) {
+      runInAction(() => {
+        this.auditOP_topicList = result.data
+      })
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  //判断是否为审核组教师
+  @observable
+  auditOP_isTutor = true
+
+  @action
+  async AuditOp_getAuditPermission(params) {
+    let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_AUDIT_PERMISSION, params);
+    if (result && result.code === 200) {
+      runInAction(() => {
+        this.auditOP_isTutor = result.data
+      })
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  async AuditOp_submitTutorForm(params){
+    let result = await this.post (urls.API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM, params)
+    if (result && result.code === 200) {
+      message.success("表单提交成功")
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  async AuditOp_submitTeamForm(params){
+    let result = await this.post (urls.API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM, params)
+    if (result && result.code === 200) {
+      message.success("表单提交成功")
     } else {
       message.error("网络错误")
     }

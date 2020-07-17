@@ -1,4 +1,5 @@
 import { Component } from 'preact';
+import { route } from 'preact-router';
 import OpActions from '../../../component/ContentT/OpActions';
 
 import { inject, observer } from 'mobx-react';
@@ -45,11 +46,17 @@ export default class Home extends Component {
 		return toJS(this.props.teacherStore.auditOP_topicList);
 	}
 
+	@computed
+	get team() {
+		return toJS(this.props.teacherStore.auditOP_team);
+	}
+
 	componentWillMount() {
 		if (!this.usr.id) {
 			route('/')
 		}
 		this.props.teacherStore.AuditOp_getTopicList( {"uid": this.usr.uid} )
+		// this.props.teacherStore.AuditOp_getTeam( {"uid": this.usr.uid} )
 		this.props.teacherStore.getAllTopic().then(()=>{
 			this.setState({
 				topicTypes:this.props.teacherStore.topicTypes
@@ -153,13 +160,13 @@ export default class Home extends Component {
 						审核组
 					</Divider>
 					<div class="u-leader-block">
-						组长：<Tag color="#2db7f5">FCC</Tag>
+						组长：<Tag color="#2db7f5">{this.team.leader.name}</Tag>
 					</div>
 					<div>
 						组员：
-						<Tag color="#2db7f5">ABB</Tag>
-						<Tag color="#2db7f5">BCC</Tag>
-						<Tag color="#2db7f5">CDD</Tag>
+						{this.team.member.map((item) => 
+							<Tag color="#2db7f5">{item.name}</Tag>
+						)}
 					</div>
 				</div>
 				<div class="m-main">

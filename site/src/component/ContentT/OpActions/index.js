@@ -1,7 +1,7 @@
 import BaseActions from '../../../component/BaseActions';
 
 import { inject, observer } from 'mobx-react';
-import { computed} from 'mobx';
+import { computed, toJS } from 'mobx';
 import { route } from "preact-router";
 import {
     Button,
@@ -44,7 +44,7 @@ class OpActions extends BaseActions {
     }
 
     showModal = (id) => {
-		this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
+        this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
 		this.setState({
 			visible: true,
 		});
@@ -56,8 +56,9 @@ class OpActions extends BaseActions {
 		});
 	};
 
-    handleAudit = () => {
-        route("/t_formOP");
+    handleAudit = (id) => {
+        this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
+        .then(() => {route("/t_formOP")});
     }
 
 	render(){
@@ -65,7 +66,7 @@ class OpActions extends BaseActions {
         return(
             <div data-component="t-ContentT-OpActions">
                 <Tooltip title="开题审核">
-                    <Button type="link" shape="circle" icon={<AuditOutlined />} onClick={this.handleAudit} />
+                    <Button type="link" shape="circle" icon={<AuditOutlined />} onClick={this.handleAudit.bind(this, this.props.record.id)} />
                 </Tooltip>
 
                 <Tooltip title="详情">

@@ -56,7 +56,8 @@ class App extends Component {
             <AsyncRoute path='/t_auditTP' getComponent={() => import('./app/t/auditTP').then(module => module.default)} />
             <AsyncRoute path='/t_auditOP' getComponent={() => import('./app/t/auditOP').then(module => module.default)} />
             <AsyncRoute path='/t_auditFD' getComponent={() => import('./app/t/auditFD').then(module => module.default)} />
-            <AsyncRoute path='/t_system' getComponent={() => import('./app/t/system').then(module => module.default)} />
+            <AsyncRoute path='/t_formOP' getComponent={ () => import('./app/t/formOP').then(module => module.default) }/>
+
 
             {/* 学生模块 */}
             <AsyncRoute path='/s' getComponent={() => import('./app/s').then(module => module.default)} />
