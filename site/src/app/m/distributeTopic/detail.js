@@ -329,13 +329,15 @@ export default class Detail extends Component {
 					onCancel={this.handleCancel}
 					// footer={null}
 					footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
-					width={800}
+					width={900}
 					className="g-mod-close"
 				>
 					<div class="m-dtl-mod">
 						<div class="m-title">
 							<div class="u-type">{this.state.own.type}</div>
+							<Tooltip title={this.state.own.topicTOPIC}>
 							<div class="u-topic">{this.state.own.topicTOPIC}</div>
+							</Tooltip>
 							<div class="u-tea-name">{this.state.own.teaName}</div>
 						</div>
 						<div class="m-cont">

@@ -79,6 +79,10 @@
             background-color: orangered;
         }
         .u-topic{
+             max-width: 600px;
+            white-space:nowrap;
+            overflow:hidden;    
+            text-overflow:ellipsis;
             font-weight: bolder;
             font-size: 24px;
             color:#999;

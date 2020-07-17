@@ -288,11 +288,11 @@ export default class Ass extends Component {
                             已选{selectedRowKeys.length}篇</div>
                     <div className="m-ass_head_btn">
                         {
-                            (this.reviewPaper.to_audit_list.length === 0) &&
+                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc===0) &&
                             <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
                         }
                         {
-                            (this.reviewPaper.to_audit_list.length === 0) &&
+                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc === 0) &&
                             <Button type="primary" disabled>通过</Button>
                         }
                         {
@@ -302,6 +302,10 @@ export default class Ass extends Component {
                         {
                             (this.reviewPaper.to_audit_list.length > 0) &&
                             <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                        }
+                        {
+                            (this.reviewPaper.suc === 1) &&
+                            <Button type="primary" onClick={this.openDefense}>进入开题答辩阶段</Button>
                         }
 
                     </div>
@@ -345,7 +349,9 @@ export default class Ass extends Component {
                     <div class="m-dtl-mod">
                         <div class="m-title">
                             <div class="u-type">{this.state.topic_type}</div>
-                            <div class="u-topic">{this.state.topic}</div>
+                            <Tooltip title={this.state.topic}>
+                                <div class="u-topic">{this.state.topic}</div>
+                            </Tooltip>
                             <div class="u-tea-name">{this.state.tName}</div>
                         </div>
                         <div class="m-cont">

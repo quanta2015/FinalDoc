@@ -395,6 +395,7 @@ class manager extends BaseActions {
     //假数据
     task_info: [],
     to_audit_list: [],
+    suc:0,
   }
 
   @action
@@ -427,11 +428,14 @@ class manager extends BaseActions {
       })
     })
     let arr = []
+    let count=0
     temp.map((item, i) => {
       if (item.status === 4) {
         arr.push(
           item.key
         )
+      }else if(item.status===5){
+         count++;
       }
     })
     temp.sort(function (a, b) {
@@ -450,9 +454,13 @@ class manager extends BaseActions {
         return 1;
       }
     })
+    if(count===arr.length){
+      count=1
+    }
     runInAction(() => {
       this.reviewPaper.task_info = temp;
       this.reviewPaper.to_audit_list = arr;
+      this.reviewPaper.suc = count;
     })
 
   }

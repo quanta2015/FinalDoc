@@ -85,6 +85,10 @@ tbody.ant-table-tbody {
             background-color: orangered;
         }
         .u-topic{
+            max-width: 600px;
+            white-space:nowrap;
+            overflow:hidden;    
+            text-overflow:ellipsis;
             font-weight: bolder;
             font-size: 24px;
             color:#999;
@@ -114,7 +118,7 @@ tbody.ant-table-tbody {
         font-weight: bold;
     }
     .m-cont-item{
-        padding-left: 20px;
+        padding-left: 30px;
         .u-time{
             display: flex;
             flex-direction: row;

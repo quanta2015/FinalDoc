@@ -356,13 +356,15 @@ export default class ManualAllocate extends Component {
                     footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
                     onCancel={this.handleCancel}
                     // footer={null}
-                    width={800}
+                    width={900}
                     className="g-mod-ma"
                 >
                     <div class="m-dtl-mod">
                         <div class="m-title">
                             <div class="u-type">{this.state.own.type}</div>
-                            <div class="u-topic">{this.state.own.topic}</div>
+                            <Tooltip title={this.state.own.topic}>
+                                <div class="u-topic">{this.state.own.topic}</div>
+                            </Tooltip>
                             <div class="u-tea-name">{this.state.own.tName}</div>
                         </div>
                         <div class="m-cont">
