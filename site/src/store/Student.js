@@ -289,7 +289,6 @@ class Student extends BaseActions {
             runInAction(() => {
                 this.timeList = lst
             })
-            console.log('this is all', lst)
             return lst
         } else {
             message.error('网络错误')
@@ -304,7 +303,6 @@ class Student extends BaseActions {
             runInAction(() => {
                 this.currState = r.data
             })
-            console.log('this is cur', r.data)
             return r.data
         } else {
             message.error('网络错误')
