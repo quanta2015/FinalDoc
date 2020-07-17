@@ -454,7 +454,7 @@ class manager extends BaseActions {
         return 1;
       }
     })
-    if(count===arr.length){
+    if(count===temp.length){
       count=1
     }
     runInAction(() => {
