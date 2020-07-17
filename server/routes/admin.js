@@ -24,21 +24,21 @@ router.post('/getAllAnnounce', async(req, res) => {
         r.forEach(element => {
             switch (element['target']) {
                 case 0:
-                    element.ann_target = 'all';
+                    element.target = '全体师生';
                     break;
                 case 1:
-                    element.ann_target = 'stu';
+                    element.target = '全体学生';
                     break;
                 case 2:
-                    element.ann_target = 'tea';
+                    element.target = '全体老师';
                     break;
                 case 3:
-                    element.ann_target = 'leader';
+                    element.target = '各系主任';
                     break;
                 default:
                     break;
             }
-            delete element.target;
+           
         });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取当前所有公告' });
