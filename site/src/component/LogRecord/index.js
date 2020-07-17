@@ -265,6 +265,8 @@ class LogRecord extends Component {
 }
 
 LogRecord.propTypes = {
+    showLog: PropTypes.bool,
+    onCancel: PropTypes.func,
     sid: PropTypes.string
 }
 
