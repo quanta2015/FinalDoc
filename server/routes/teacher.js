@@ -461,4 +461,14 @@ router.post('/getTask',async(req,res)=>{
     })
 })
 
+router.post('/canPublish',async(req,res)=>{
+    let data = req.body
+    console.log(data);
+    let sql = 'CALL PROC_CHECK_CAN_PUBLISH(?)';
+    callProc(sql,data,res,r=>{
+        console.log(r);
+        res.status(200).json({code:200,r,message:'已获取是否能发布新课题'})
+    })
+})
+
 module.exports = router;
