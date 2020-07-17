@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-17 20:14:53
+ * @LastEditTime: 2020-07-17 20:19:13
  */ 
 
 const express = require('express');
@@ -38,6 +38,7 @@ router.post('/getAllAnnounce', async(req, res) => {
                 default:
                     break;
             }
+            delete element.target;
         });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取当前所有公告' });
