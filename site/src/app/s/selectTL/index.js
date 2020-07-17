@@ -1,10 +1,11 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Router, route } from 'preact-router';
-import { Tag, Button, Table, Modal, Descriptions, Tooltip, Input, Space, Spin, ConfigProvider } from 'antd';
+import { route } from 'preact-router';
+import { Tag, Button, Table, Tooltip, Input, Space, Spin, ConfigProvider } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { SmileOutlined } from '@ant-design/icons';
 import { STU_ST_STATUS } from '../../../constant/data';
+import InfoDialog from '../../../component/InfoDialog'
 import 'antd/dist/antd.css';
 import './index.scss'
 import { computed, toJS } from 'mobx';
@@ -18,13 +19,24 @@ const customizeRenderEmpty = () => (
         <p style={{ fontSize: 20 }}>课题尚未发布</p>
     </div>
 );
+
+const formatDetailInfo = (rowDetail) => {
+    let info = rowDetail;
+    info.type = rowDetail.category;
+    info.tag = rowDetail.areas.map((item, id) => ({
+        name: item,
+        color: rowDetail.color[id]
+    }))
+    return info;
+}
+
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicList extends Component {
     state = {
         visible: false,
         topicList: [],
-        rowDetail: [],
+        rowDetail: null,
         isAudi: false,
         searchText: '',
         searchedColumn: '',
@@ -352,31 +364,13 @@ export default class TopicList extends Component {
                         }
                     </ConfigProvider>
                 </Spin>
-                <Modal
-                    className="g-stu-modal"
-                    title="课题详情"
+                <InfoDialog
                     visible={this.state.visible}
-                    onCancel={this.handleOk}
-                    closable={false}
-                    footer={
-                        [
-                            <Button onClick={() => this.handleOk()}>关闭</Button>,
-                            isAudi ? <Button onClick={() => this.handleClick(rowDetail)} danger>取消选定</Button> :
-                                <Button onClick={() => this.handleClick(rowDetail)} type="primary">选定</Button>
-                        ]}
-                    width={900}
-                >
-                    <Descriptions
-                        bordered
-                    >
-                        <Descriptions.Item label="课题名称" span={3}>{rowDetail.topic}</Descriptions.Item>
-                        <Descriptions.Item label="联系方式" span={2}>{rowDetail.phone}</Descriptions.Item>
-                        <Descriptions.Item label="指导教师" >{rowDetail.instructor}</Descriptions.Item>
-                        <Descriptions.Item label="论文类型" span={2}>{rowDetail.category}</Descriptions.Item>
-                        <Descriptions.Item label="研究领域" >{rowDetail.areas && rowDetail.areas.join(',')}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={3}><p style={{ letterSpacing: 1, textIndent: 30 }}>{rowDetail.content}</p></Descriptions.Item>
-                    </Descriptions>
-                </Modal>
+                    topic={rowDetail ? formatDetailInfo(rowDetail) : rowDetail}
+                    isAudi={isAudi}
+                    handleClick={() => this.handleClick(rowDetail)}
+                    afterClose={() => this.setState({ visible: false })}
+                />
             </div>
         )
     }

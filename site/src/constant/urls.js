@@ -59,6 +59,11 @@ export const API_STU_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
 export const API_STU_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
 export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' //双选成功的课题信息 
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
+export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' //所有指导日志
+export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' //所有阶段以及截止时间
+export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' // 返回当前阶段
+export const API_STU_GET_NOTICE = API_SERVER + '/student/getStudentNotice' //通知列表
+export const API_STU_READ_NOTICE = API_SERVER + '/student/UpdateStudentNotice' //已读通知
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';

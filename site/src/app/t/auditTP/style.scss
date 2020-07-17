@@ -1,4 +1,6 @@
 [data-component="t-auditTP"]{
+  overflow: auto;
+
   .m-main-table{
     margin-top: 46px;
   }
@@ -6,6 +8,10 @@
   table,tbody.ant-table-body{
     display: flex;
     flex-direction: column;
+  }
+
+  .ant-table-cell{
+    width: 900px;
   }
 
   .ant-table-row,
@@ -17,6 +23,7 @@
   .ant-table-tbody>tr{
     width: 100%;
     text-align: center;
+    line-height: 32px;
   }
 
   .ant-table-thead>tr th:first-child,

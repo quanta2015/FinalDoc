@@ -1,69 +1,57 @@
 .g-stu-prog {
-    padding: 26px;
+    padding: 16px;
     width: 950px;
 
     .m-hd {
         display: flex;
         justify-content: space-between;
-        
-        &>.u-type {
-            //实底
-            padding: 5px 10px;
-            // background-color: #1890ff;
-            // color: #fff;
+        align-items: center;
 
-            //线形1
-            color: #1890ff;
-            border-left: 3px solid #1890ff;
-
-            //线形2
-            // border: 1px solid #1890ff;
-            // border-radius: 3px;
-
-            // 标签式
-            // position: relative;
-            // height: 30px;
-            // padding: 0 35px 0 20px;
-            // background: #1890ff;
-            // color: #fff;
-            // line-height: 30px;
-            // margin-left: -26px;
-
-            // &:before {
-            //     content: "";
-            //     position: absolute;
-            //     right: 0; 
-            //     bottom: 0;
-            //     border-right: 20px solid white;
-            //     border-top: 15px solid transparent;
-            //     border-bottom: 15px solid transparent;
-            // } 
+        & > .u-type {
+            padding: 2px 10px;
+            background-color: #fe6403;
+            color: #fff;
         }
 
-        &>.u-topic {
+        & > .u-topic {
             margin: 0;
             padding-bottom: 2px;
-            color: #999;
+            color: #8f8f8f;
             font-weight: 550;
         }
 
-        &>.u-name {
+        & > .u-name {
             font-weight: 550;
         }
     }
 
     .m-cont {
-        padding-top: 35px;
+        padding-top: 40px;
         width: 100%;
+        .ant-btn {
+            padding: 0 4px;
+        }
+        .ant-btn > span {
+            height: 24px;
+            position: relative;
+            top: -3px;
+            margin: 2px 0;
+        }
+        .ant-btn > .anticon + span,
+        .ant-btn > span + .anticon {
+            margin-left: 1px;
+        }
     }
 
     .m-time-line {
         display: flex;
         position: relative;
         top: 25px;
+        margin-bottom: 0;
         padding: 0;
-        border-top: 2px solid #D6DCE0;
+        border-top: 2px solid #d6dce0;
         list-style-type: none;
+        color: #444d55;
 
         .u-time-stamp {
             position: relative;
@@ -75,18 +63,19 @@
                 position: absolute;
                 top: -9px;
                 left: 10px;
-                content: '';
+                content: "";
                 width: 15px;
                 height: 15px;
                 background-color: #fff;
                 border-radius: 25px;
-                border: 2px solid #D6DCE0;
+                border: 2px solid #d6dce0;
             }
         }
 
         h3 {
             margin-bottom: 2px;
-            color: #555;
+            color: #333;
+            font-family: Georgia, "Times New Roman", Times, serif;
         }
 
         .u-link-file {
@@ -95,22 +84,22 @@
         }
 
         .z-active:before {
-            border: 2px solid #5ecc62;
+            border: 2px solid #f90006;
         }
 
         .z-focus:before {
             //橙 #FF3300 #FC7F4F #fb8a2e #FF7946
             //绿 #41E8BB #7BC5D0 #1cc7d0 #5ecc62 #2DA754
-            border: 2px solid #5ecc62;
-            background-color: #5ecc62;
+            border: 2px solid #f90006;
+            background-color: #f90006;
         }
 
         .u-status {
             margin-left: 12px;
             padding: 2px;
-            border: 1px solid #FE1B10;
+            border: 1px solid #fe1b10;
             border-radius: 3px;
-            color: #FE1B10;
+            color: #fe1b10;
             font-size: 11px;
         }
     }
@@ -120,20 +109,25 @@
         justify-content: space-between;
         clear: both;
         padding-top: 10px;
-        border-top: 1px solid #eee;
     }
 
     .m-stage {
-        width: 270px;
+        width: 246px;
 
-        &>.u-title {
-            color: #999;
+        & > .u-title {
+            color: #8f8f8f;
+            font-size: 16px;
+        }
+
+        .u-title > span {
+            font-family: Georgia, "Times New Roman", Times, serif;
         }
     }
 
-    .m-upload {
-        float: left;
-        margin-right: 20px;
+    .m-filewp {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     .m-upload:first-child {
@@ -154,6 +148,35 @@
     .u-log {
         float: right;
         margin: 0;
-        margin-top: -30px;
-    }   
+        margin-top: -37px;
+    }
+
+    .m-op-score {
+        width: 270px;
+        position: relative;
+        top: 10px;
+        .m-nm-lst {
+            display: inline-block;
+            // text-align: right;
+            .u-nm-itm {
+                line-height: 38px;
+            }
+        }
+        .m-sc-lst {
+            display: inline-block;
+            position: relative;
+            left: 75px;
+            .u-sc-itm {
+                line-height: 38px;
+                position: relative;
+                left: 32px;
+                .score {
+                    font-family: Georgia, "Times New Roman", Times, serif;
+                    font-weight: bold;
+                    font-size: 20px;
+                    color: #ff653e;
+                }
+            }
+        }
+    }
 }
