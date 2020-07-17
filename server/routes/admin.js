@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-17 20:19:13
+ * @LastEditTime: 2020-07-17 20:30:20
  */ 
 
 const express = require('express');
@@ -85,6 +85,20 @@ router.post('/insertAnnouncement', async(req, res) => {
     callP_N(sql, params, res, (r) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功发布该公告' });
+    })
+})
+
+/**
+ * @description: 获取公告总数
+ * @param {} 
+ * @return: { ann_sum: int }
+ */
+router.post('/getAllAnnouncementsNum', async(req, res) => {
+    let sql = `CALL PROC_GET_ANNOUNCEMENTS_NUM`;
+    let params = {};
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取公告总数' });
     })
 })
 
