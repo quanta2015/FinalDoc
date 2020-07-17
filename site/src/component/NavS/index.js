@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { CaretRightOutlined } from '@ant-design/icons';
 import { MENU_MAIN_S } from '../../constant/data';
+import message from '../../icon/icon_message.svg'
 import './index.scss'
 
 @inject('userStore', 'studentStore')
@@ -48,12 +49,20 @@ class NavS extends Component {
     route('/s');
   }
 
+  goMessage = () => {
+    this.setState({
+      cur: -1
+    });
+    route('/message');
+  }
+
   render() {
     let cur = this.state.cur;
     return (
       <div className="g-stu-nav">
         <div className="g-logo">
-          <div onClick={this.gohome}>毕业设计命题系统</div>
+          <img className="m-msg" src={message} onClick={this.goMessage}/>
+          <div className="u-title" onClick={this.gohome}>毕业设计命题系统</div>
         </div>
         <div className="g-st">
           {this.currStage.stage.map((item, id) => 

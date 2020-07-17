@@ -8,11 +8,19 @@
   align-items: center;
 
   .g-logo {
+    display: flex;
     padding: 10px 0;
     margin-bottom: 5px;
-    color: #333;
-    font-size: 17px;
-    cursor: pointer;
+    
+    .u-title {
+      color: #333;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    .m-msg {
+      width: 27px;
+    }
   }
 
   .g-st {
