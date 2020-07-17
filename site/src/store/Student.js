@@ -289,6 +289,7 @@ class Student extends BaseActions {
             runInAction(() => {
                 this.timeList = lst
             })
+            console.log('this is all', lst)
             return lst
         } else {
             message.error('网络错误')
@@ -303,6 +304,7 @@ class Student extends BaseActions {
             runInAction(() => {
                 this.currState = r.data
             })
+            console.log('this is cur', r.data)
             return r.data
         } else {
             message.error('网络错误')
@@ -326,10 +328,10 @@ class Student extends BaseActions {
         }
     }
 
-    @action 
-    async readNotice(params){
+    @action
+    async readNotice(params) {
         const r = await this.post(urls.API_STU_READ_NOTICE, params);
-        if (r && r.code === 200){
+        if (r && r.code === 200) {
             return true;
         }
     }
