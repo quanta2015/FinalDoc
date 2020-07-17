@@ -326,10 +326,10 @@ class Student extends BaseActions {
         }
     }
 
-    @action 
-    async readNotice(params){
+    @action
+    async readNotice(params) {
         const r = await this.post(urls.API_STU_READ_NOTICE, params);
-        if (r && r.code === 200){
+        if (r && r.code === 200) {
             return true;
         }
     }

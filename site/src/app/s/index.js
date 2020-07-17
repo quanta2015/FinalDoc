@@ -158,6 +158,7 @@ export default class Student extends Component {
                     <li>
                       <div className="m-not-item">
                         <span className="u-not-date">{item.time}</span>
+                      <span className={i <= this.noticeList.index ? "m-status z-unread": "m-status"}>●</span>
                         <span 
                           className={i <= this.noticeList.index ? "u-not-title" : 'u-not-title z-read'} 
                           title={item.ann_title}
