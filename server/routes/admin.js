@@ -4,12 +4,13 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-15 23:03:00
+ * @LastEditTime: 2020-07-17 20:14:53
  */ 
 
 const express = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
+const callP_N = require('../util').callProc_N;
 
 /**
  * @description: 获取当前所有公告，并按时间倒序排列
@@ -20,6 +21,24 @@ router.post('/getAllAnnounce', async(req, res) => {
     let sql = `CALL PROC_GET_ALL_NOTICES`;
     let params = {};
     callProc(sql, params, res, (r) => {
+        r.forEach(element => {
+            switch (element['target']) {
+                case 0:
+                    element.ann_target = 'all';
+                    break;
+                case 1:
+                    element.ann_target = 'stu';
+                    break;
+                case 2:
+                    element.ann_target = 'tea';
+                    break;
+                case 3:
+                    element.ann_target = 'leader';
+                    break;
+                default:
+                    break;
+            }
+        });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取当前所有公告' });
     })
@@ -50,6 +69,21 @@ router.post('/getAllFileAddress', async(req, res) => {
     callProc(sql, params, res, (r) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '获取所有文件内容' })
+    })
+})
+
+/**
+ * @description: 发布公告
+ * @param { ann_title: str, ann_target: str, ann_context: str } 
+ * @return: 
+ */
+router.post('/insertAnnouncement', async(req, res) => {
+    let sql = `CALL PROC_INSERT_ONE_ANNOUNCEMENT(?)`;
+    let params = req.body;
+    console.log(params);
+    callP_N(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功发布该公告' });
     })
 })
 
