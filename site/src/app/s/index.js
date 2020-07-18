@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Pagination, Modal, Button } from 'antd';
+import { Pagination, Modal, Button, message } from 'antd';
 import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import "./style.scss"
