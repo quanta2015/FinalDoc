@@ -237,18 +237,8 @@ router.post('/getStudentMessages', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql,params, res, (r) => {
-        var read = [];
-        var unread = [];
-        r.forEach(element => {
-            if (element['check_flag'] == 1) {
-                read.push(element);
-            } else {
-                unread.push(element);
-            }
-        });
-        var reads = [unread, read];
-        console.log(reads);
-        res.status(200).json({ code: 200, data: reads, msg: '成功获取所有站内信' });
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取所有站内信' });
     })
 })
 
