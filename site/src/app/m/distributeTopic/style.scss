@@ -1,7 +1,4 @@
 .g-dt {
-    padding: 30px 50px;
-    box-sizing: border-box;
-    width: 950px;
 
     .m-choose {
         margin-bottom: 35px;
@@ -9,20 +6,20 @@
     }
     
     // antd table组件
-    table,
-    tbody.ant-table-tbody {
-        display: flex;
-        flex-direction: column;
-    }
+    // table,
+    // tbody.ant-table-tbody {
+    //     display: flex;
+    //     flex-direction: column;
+    // }
 
-    .ant-table-row,
-    .ant-table-thead>tr {
-        display: flex;
-    }
+    // .ant-table-row,
+    // .ant-table-thead>tr {
+    //     display: flex;
+    // }
 
-    .ant-table-cell {
-        text-align: center;
-    }
+    // .ant-table-cell {
+    //     text-align: center;
+    // }
 
 
     // 单选框

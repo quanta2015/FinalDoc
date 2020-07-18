@@ -106,10 +106,18 @@ class NavM extends BaseActions {
           <div className="g-info">
             <div className="m-logout">退出登录</div>
             <div className="m-info">
-              <div>身份：系主任</div>
+              {/* <div>身份：系主任</div>
               <div>姓名：{this.usr.name}</div>
               <div>工号：{this.usr.uid}</div>
-              <div>所在系：{this.usr.maj}</div>
+              <div>所在系：{this.usr.maj}</div> */}
+              <div className="u-role">
+                <div className="role">系主任</div>
+                <div className="maj">{this.usr.maj}</div>
+              </div>
+              <div className="u-id_name">
+                <div>{this.usr.uid}</div>
+                <div>{this.usr.name}</div>
+              </div>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import "./style.css"
+import "./style.scss"
 
 @inject('manageStore','userStore')
 @observer
@@ -21,9 +21,9 @@ export default class Manage extends Component {
 
   render() {
     return (
-
-      <div className="g-m">
-        <div className="m-m">公告页</div>
+      <div>
+        <div className="g-m-title">公告栏</div>
+        <div className="g-m m-m">123</div>
       </div>
     );
   }
