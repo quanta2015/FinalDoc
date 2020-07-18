@@ -20,17 +20,22 @@ import {
   Switch,
   Upload,
   Tooltip,
+  message,
 } from "antd";
 import {
   UploadOutlined,
   DownloadOutlined,
   PlusOutlined,
+  LoadingOutlined,
+  CheckOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import "./index.scss";
 import FileUpload from "../../../../component/FileUpload";
 import { FILE_UPLOAD_FORMAT } from "../../../../constant/data";
-import { API_SYS_UPLOAD_FILE } from "../../../../constant/urls";
-@inject("userStore")
+import { API_ADMIN_UPLOAD_FILE } from "../../../../constant/urls";
+import FormItem from "antd/lib/form/FormItem";
+@inject("userStore","adminStore")
 @observer
 export default class fileManage extends Component {
   state = {
@@ -40,6 +45,8 @@ export default class fileManage extends Component {
     loading: false,
     fileUrl: "",
     showDel: false,
+    fileName:null,
+    fillnameUpdate:false
   };
   @computed
   get usr() {
@@ -63,6 +70,7 @@ export default class fileManage extends Component {
   }
   getonFinish = () => {
     const onFinish = (values) => {
+      values.f_path=this.state.fileUrl
       console.log(values);
     };
     return onFinish;
@@ -76,10 +84,10 @@ export default class fileManage extends Component {
   };
   getlayout = () => {
     const layout = {
-      labelAlign: "left",
+      //  labelAlign: "left",
       hideRequiredMark: true,
-      labelCol: { span: 8 },
-      wrapperCol: { offset: 0, span: 16 },
+      //labelCol: { span: 8 },
+      //wrapperCol: { offset: 0, span: 16 },
     };
     return layout;
   };
@@ -91,13 +99,16 @@ export default class fileManage extends Component {
   };
   handleChange = (info) => {
     if (info.file.status === "uploading") {
-      this.setState({ loading: true });
+      this.setState({ loading: true, fileName:info.file.name,fillnameUpdate:true });
       return;
     }
+    console.log('文件信息',info.file.name)
     if (info.file.status === "done") {
       this.setState({
         loading: false,
         fileUrl: info.file.response.data,
+        fileName:info.file.name,
+        fillnameUpdate:true
       });
       message.success(`成功上传文件《${info.file.name}》`);
     }
@@ -124,12 +135,7 @@ export default class fileManage extends Component {
     // 文件格式约束
     let tag = true;
     let fileFormat = file.name.slice(file.name.indexOf(".") + 1);
-    if (this.props.type.name === "答辩材料") {
-      tag = isValidFormat(FILE_UPLOAD_FORMAT.reply, fileFormat);
-    } else {
-      // todo: 判断是否答辩阶段已结束 结束 清除非pdf文件 上传pdf
-      tag = isValidFormat(FILE_UPLOAD_FORMAT.doc, fileFormat);
-    }
+
     // 文件大小约束
     const isLt10M = file.size / 1024 / 1024 < 10;
     if (!isLt10M) {
@@ -156,25 +162,15 @@ export default class fileManage extends Component {
   };
 
   handleDel = () => {
-    let params = {
-      type: this.props.type.type,
-      tid: this.props.tpInfo.tid,
-      sid: this.props.tpInfo.sid,
-    };
-    this.props.studentStore.deleteFile(params).then((r) => {
-      if (r.code === 200) {
-        this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
-        this.setState({
-          fileUrl: "",
-          showDel: false,
-          loading: false,
-        });
-      } else {
-        message.error("网络错误");
-      }
+    this.setState({
+      fileUrl: "",
+      showDel: false,
+      loading: false,
     });
   };
-
+ filenameOnchange=(e)=>{
+    console.log(e)
+ }
   render() {
     const { modalVisiable } = this.state;
     const { fileUrl, showDel, loading } = this.state;
@@ -185,8 +181,9 @@ export default class fileManage extends Component {
         <div className="ant-upload-text">上传</div>
       </div>
     );
+    console.log(this.state)
     return (
-      <div data-component="gfileMag">
+      <div>
         <div className="g-admin-fileMag">
           <Card
             title="已上传项目"
@@ -252,102 +249,120 @@ export default class fileManage extends Component {
             </Row>
           </Card>
           <Modal
-            className="m-modal"
             visible={modalVisiable}
             footer={null}
             onCancel={this.handleModalCancel}
             title="上传文件"
+            width="900px"
           >
-            <Row gutter={[8, 8]}>
-              <Col span={12}>
-                {" "}
-                <Form
-                  {...this.getlayout()}
-                  name="basic"
-                  initialValues={{ remember: true }}
-                  onFinish={this.getonFinish()}
-                  onFinishFailed={this.getonFinishFailed()}
-                  layout={"vertical"}
-                >
-                  <Form.Item
-                    className="label-text"
-                    label="请输入文件名"
-                    name="f_name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your filename!",
-                      },
-                    ]}
-                  >
-                    <Input className="input_box" />
-                  </Form.Item>
-
-                  <Form.Item
-                    className="label-text"
-                    label="请选择文件类型"
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select your file type!",
-                      },
-                    ]}
-                  >
-                    <Select>
-                      <Select.Option value="all">师生模板文件</Select.Option>
-                      <Select.Option value="stu">学生模板文件</Select.Option>
-                      <Select.Option value="tea">教师模板文件</Select.Option>
-                      <Select.Option value="leader">系主任模板文件</Select.Option>
-                      <Select.Option value="score">评分模板文件</Select.Option>
-                    </Select>
-                  </Form.Item>
-
-                  <Form.Item></Form.Item>
-                </Form>
-              </Col>
-              <Col span={12}>
-                <Card title="请选择文件上传">
-                  <div
-                    className="m-filewp z-submit-wp"
-                    onMouseOver={this.handleHover}
-                    onMouseLeave={this.handleMouseOut}
-                  >
-                    {showDel && !loading && (
-                      <CloseOutlined
-                        className="u-del"
-                        onClick={this.handleDel}
-                      />
-                    )}
-                    <Upload
-                      name="file"
-                      listType="picture-card"
-                      className="avatar-uploader"
-                      showUploadList={false}
-                      action={API_SYS_UPLOAD_FILE}
-                      data={() => {
-                        return {
-                          type: fileType.type,
-                          tid: tpInfo.tid,
-                          sid: tpInfo.sid,
-                        };
-                      }}
-                      beforeUpload={this.beforeUpload}
-                      onChange={this.handleChange}
+            <div className="admin-file-modal">
+    
+              <Form
+                {...this.getlayout()}
+                name="basic"
+                initialValues={{ remember: true }}
+                onFinish={this.getonFinish()}
+                onFinishFailed={this.getonFinishFailed()}
+                // value={{
+                //   f_name:this.state.fileName
+                // }}
+                layout={"vertical"}
+                setFieldsValue
+              >
+                <Row gutter={[8, 8]}>
+                  <Col span={12}>
+                    {" "}
+                    <Form.Item
+                      className="label-text"
+                      label="请输入文件名"
+                      name="f_name"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your filename!",
+              
+                        },
+                        
+                      ]}
+                      initialValue={this.state.fileName}
+                      shouldUpdate={true}
+                      
                     >
-                      {fileUrl && !loading ? (
-                        <CheckOutlined className="z-success" />
-                      ) : (
-                        uploadButton
-                      )}
-                    </Upload>
-                  </div>
-                </Card>
-              </Col>
-              <Button type="primary" htmlType="submit" className="subit_buttom">
-                上传文件
-              </Button>
-            </Row>
+                      <Input className="input_box" values={this.state.fileName} onChange={this.filenameOnchange.bind(this)} />
+                     
+                    </Form.Item>
+                    <Form.Item
+                      className="label-text"
+                      label="请选择文件类型"
+                      name="f_type"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your file type!",
+                        },
+                      ]}
+                    >
+                      <Select className="input_box">
+                        <Select.Option value="all">   师生模板文件    </Select.Option>
+                        <Select.Option value="stu">   学生模板文件    </Select.Option>
+                        <Select.Option value="tea">   教师模板文件    </Select.Option>
+                        <Select.Option value="leader">系主任模板文件
+                        </Select.Option>
+                        <Select.Option value="score">
+                          评分模板文件
+                        </Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item>
+                    <Card title="请选择文件上传">
+                      <div
+                        className="m-filewp z-submit-wp"
+                        onMouseOver={this.handleHover}
+                        onMouseLeave={this.handleMouseOut}
+                      >
+                        {showDel && !loading && (
+                          <CloseOutlined
+                            className="u-del"
+                            onClick={this.handleDel}
+                          />
+                        )}
+                        <Upload
+                          name="file"
+                          listType="picture-card"
+                          className="avatar-uploader"
+                          showUploadList={false}
+                          action={API_ADMIN_UPLOAD_FILE}
+                          data={() => {
+                            return {};
+                          }}
+                          beforeUpload={this.beforeUpload}
+                          onChange={this.handleChange}
+                        >
+                          {fileUrl && !loading ? (
+                            <CheckOutlined className="z-success" />
+                          ) : (
+                            uploadButton
+                          )}
+                        </Upload>
+                      </div>
+                    </Card>
+                    </Form.Item>
+                    
+                  </Col>
+                  <Form.Item className="label-text">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="subit_buttom"
+                    >
+                      上传文件
+                    </Button>
+                  </Form.Item>
+                </Row>
+              </Form>
+            </div>
           </Modal>
           <Divider />
         </div>

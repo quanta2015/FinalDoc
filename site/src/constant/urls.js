@@ -103,3 +103,15 @@ export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES = API_SERVER + '/auditTp/
 export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_NO = API_SERVER + '/auditTp/checkUpdateNo';
 // 查询命题列表
 export const API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID = API_SERVER + '/auditTp/searchTopicById';
+
+
+
+/*教务处管理端接口*/
+//获取当前所有公告，并按时间倒序排列
+export const API_ADMIN_GET_TOTAL_ANN_LIST = API_SERVER + '/admin'+'/getAllAnnounce'
+//删除某个公告
+export const API_ADMIN_DEL_ONE_ANN = API_SERVER + '/admin'+'/delOneAnnounce'
+//获取所有文件
+export const API_ADMIN_GET_ALL_FILE = API_SERVER + '/admin'+'/getAllFileAddress'
+//上传文件
+export const API_ADMIN_UPLOAD_FILE = API_SERVER + '/admin'+'/uploadFile'

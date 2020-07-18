@@ -39,12 +39,8 @@ import {
 } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 
-//分页相关 --待修改
-const paginationProps = {
-  showTotal: (total) => {
-    return `共 ${total} 条`;
-  },
-};
+const { TextArea } = Input;
+
 // function showTotal(total) {
 //     return `共 ${total} 页`;
 // }
@@ -60,6 +56,7 @@ export default class AnnounceManage extends Component {
     loading: false,
     fileUrl: "",
     showDel: false,
+    total: 0,
   };
 
   @computed
@@ -71,19 +68,28 @@ export default class AnnounceManage extends Component {
   get usr() {
     return this.props.userStore.usr;
   }
+
   handleModalCancel = () => {
     this.setState({
       modalVisiable: false,
     });
   };
+
   handleModalShow = () => {
     this.setState({
       modalVisiable: true,
     });
   };
-  // async componentDidMount() {
-  //     await this.props.adminStore
-  // }
+
+  componentDidMount() {
+    this.callAnnData()
+  }
+
+  callAnnData = () => {
+    this.props.adminStore.getAnnData().then((r)=>{
+        console.log(r)
+    });
+  };
 
   //表头筛选
   // handleChange = (filters) => {s
@@ -91,9 +97,11 @@ export default class AnnounceManage extends Component {
   // 		filteredInfo: filters,
   // 	})
   // }
+
   clearFilters = () => {
     this.setState({ filteredInfo: null });
   };
+
   //表头搜索
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -102,11 +110,13 @@ export default class AnnounceManage extends Component {
       searchedColumn: dataIndex,
     });
   };
+
   //表头搜索重置
   handleReset = (clearFilters) => {
     clearFilters();
     this.setState({ searchText: "" });
   };
+
   //表格搜索
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -162,6 +172,7 @@ export default class AnnounceManage extends Component {
     },
     render: (text) => text,
   });
+
   getonFinish = () => {
     const onFinish = (values) => {
       console.log(values);
@@ -175,15 +186,17 @@ export default class AnnounceManage extends Component {
     };
     return onFinishFailed;
   };
+
   getlayout = () => {
     const layout = {
-      labelAlign: "left",
+      //  labelAlign: "left",
       hideRequiredMark: true,
-      labelCol: { span: 8 },
-      wrapperCol: { offset: 0, span: 16 },
+      //  labelCol: { span: 8 },
+      //  wrapperCol: { offset: 0, span: 16 },
     };
     return layout;
   };
+
   gettailLayout = () => {
     const tailLayout = {
       wrapperCol: { offset: 0, span: 16 },
@@ -192,6 +205,11 @@ export default class AnnounceManage extends Component {
   };
 
   render() {
+    const paginationProps = {
+      showTotal: (total) => {
+        return `共 ${total} 条`;
+      },
+    };
     let { filteredInfo } = this.state;
     filteredInfo = filteredInfo || {};
     //表格列
@@ -257,75 +275,87 @@ export default class AnnounceManage extends Component {
             {/* <Pagination total={50} showTotal={showTotal} /> */}
           </div>
           <Modal
-            className="m-modal"
             visible={modalVisiable}
             footer={null}
             onCancel={this.handleModalCancel}
-            title="上传文件"
+            title="发布公告"
+            width="900px"
           >
-            <Row gutter={[8, 8]}>
-              <Col span={12}>
-                {" "}
-                <Form
-                  {...this.getlayout()}
-                  name="basic"
-                  initialValues={{ remember: true }}
-                  onFinish={this.getonFinish()}
-                  onFinishFailed={this.getonFinishFailed()}
-                  layout={"vertical"}
-                >
-                  <Form.Item
-                    className="label-text"
-                    label="请输入文件名"
-                    name="f_name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your filename!",
-                      },
-                    ]}
+            <div className="admin-ann-modal">
+              <Row gutter={[8, 8]}>
+                <Col span={24}>
+                  {" "}
+                  <Form
+                    {...this.getlayout()}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={this.getonFinish()}
+                    onFinishFailed={this.getonFinishFailed()}
+                    layout={"vertical"}
                   >
-                    <Input className="input_box" />
-                  </Form.Item>
+                    <Form.Item
+                      className="label-text"
+                      label="请输入公告标题"
+                      name="ann_title"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your announce title!",
+                        },
+                      ]}
+                    >
+                      <Input className="input_box" />
+                    </Form.Item>
 
-                  <Form.Item
-                    className="label-text"
-                    label="请选择文件类型"
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select your file type!",
-                      },
-                    ]}
-                  >
-                    <Select>
-                      <Select.Option value="all">师生模板文件</Select.Option>
-                      <Select.Option value="stu">学生模板文件</Select.Option>
-                      <Select.Option value="tea">教师模板文件</Select.Option>
-                      <Select.Option value="leader">
-                        系主任模板文件
-                      </Select.Option>
-                      <Select.Option value="score">评分模板文件</Select.Option>
-                    </Select>
-                  </Form.Item>
+                    <Form.Item
+                      className="label-text"
+                      label="请选择公告对象"
+                      name="ann_target"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your announce target!",
+                        },
+                      ]}
+                    >
+                      <Select>
+                        <Select.Option value="all">全体师生</Select.Option>
+                        <Select.Option value="tea">全体教师</Select.Option>
+                        <Select.Option value="stu">全体学生</Select.Option>
+                        <Select.Option value="leader">各系主任</Select.Option>
+                      </Select>
+                    </Form.Item>
 
-                  <Form.Item></Form.Item>
-                </Form>
-              </Col>
-              <Col span={12}>
-                <Card title="请选择文件上传">
-                  <div
-                    className="m-filewp z-submit-wp"
-                    onMouseOver={this.handleHover}
-                    onMouseLeave={this.handleMouseOut}
-                  ></div>
-                </Card>
-              </Col>
-              <Button type="primary" htmlType="submit" className="subit_buttom">
-                上传文件
-              </Button>
-            </Row>
+                    <Form.Item
+                      className="label-text"
+                      label="请输入公告内容"
+                      name="ann_context"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your announce context!",
+                        },
+                      ]}
+                    >
+                      <TextArea
+                        autoSize={{ minRows: 2, maxRows: 6 }}
+                        className="input_box"
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="subit_buttom"
+                        onClick={this.getonFinish}
+                      >
+                        发布公告
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Col>
+              </Row>
+            </div>
           </Modal>
         </div>
       </div>

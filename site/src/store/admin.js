@@ -84,6 +84,25 @@ class admin extends BaseActions {
             },
         ],
     }
+    @action
+    async getAnnData(params) {
+      const r = await this.post(urls.API_ADMIN_GET_TOTAL_ANN_LIST, params)
+      console.log(r)
+      if (r) {
+        runInAction(() => {
+         
+          
+          this.announceManage.announce_list = r.data
+        
+          console.log(this.announceManage)
+        })
+        console.log("获取成功")
+        return r
+      } else {
+        message.error('网络错误', 0.7)
+      }
+  
+    }
 }
 
 export default new admin()
