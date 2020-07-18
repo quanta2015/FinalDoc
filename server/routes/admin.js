@@ -87,7 +87,7 @@ router.post('/insertAnnouncement', async (req, res) => {
     let sql = `CALL PROC_INSERT_ONE_ANNOUNCEMENT(?)`;
     let params = req.body;
     console.log(params);
-    callP_N(sql, params, res, (r) => {
+    callP_N(sql, params, 2,res, (r) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功发布该公告' });
     })
@@ -143,7 +143,7 @@ router.post('/getAllAnnouncementsNum', async (req, res) => {
 
 // 上传模板文件的记录
 // params: { f_name: str, f_type: str, f_path: str }
-router.post('/insertFileTemplate', async(req, res) => {
+router.post('/insertFileTemplate', async (req, res) => {
     let sql = `CALL PROC_INSERT_FILE_TEMPLATE(?)`;
     let params = req.body;
     console.log(params);
