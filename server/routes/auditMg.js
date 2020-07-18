@@ -12,7 +12,7 @@ const router = express.Router();
 const db = require('../util/db');
 const callProc = require('../util').callProc;
 
-/**
+/*
  * @name: 
  * @test: test font
  * @msg: 查看课题进度 --本系
@@ -28,7 +28,7 @@ router.post('/viewProgress', async(req, res) => {
   });
 
   
-/**
+/*
   * @name: 
   * @test: test font
   * @msg: 课题文件相关字段接口
@@ -43,7 +43,7 @@ router.post('/viewProgress', async(req, res) => {
        });
    });
 
-/**
+/*
   * @name: 
   * @test: test font
   * @msg: 课题任务书列表 --本系
@@ -58,7 +58,7 @@ router.post('/viewProgress', async(req, res) => {
       });
   });
 
-  /**
+  /*
   * @name: 
   * @test: test font
   * @msg: 审核任务书
