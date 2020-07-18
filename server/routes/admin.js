@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-17 20:19:13
+ * @LastEditTime: 2020-07-18 17:03:09
  */
 
 
@@ -138,6 +138,17 @@ router.post('/getAllAnnouncementsNum', async (req, res) => {
     callProc(sql, params, res, (r) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取公告总数' });
+    })
+})
+
+// 上传模板文件的记录
+// params: { f_name: str, f_type: str, f_path: str }
+router.post('/insertFileTemplate', async(req, res) => {
+    let sql = `CALL PROC_INSERT_FILE_TEMPLATE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '成功插入模板文件记录' });
     })
 })
 
