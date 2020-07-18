@@ -23,18 +23,11 @@ export default class Home extends Component {
 
 	render() {
 		return (
-			<div className="g-rp">
-				{/* <Tabs defaultActiveKey="1">
-					<TabPane tab="审核任务书" key="1"> */}
-						<Ass/>
-    				{/* </TabPane>
-					<TabPane tab="审核论文定稿" key="2">
-						Content of Tab Pane 2
-    				</TabPane>
-					<TabPane tab="签署最终意见" key="3">
-						Content of Tab Pane 3
-    				</TabPane>
-				</Tabs> */}
+			<div>
+				<div className="g-m-title">审核任务书</div>
+				<div className="g-m g-rp">
+					<Ass />
+				</div>
 			</div>
 		);
 	}

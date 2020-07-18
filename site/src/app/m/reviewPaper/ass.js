@@ -37,7 +37,7 @@ export default class Ass extends Component {
         // 点击“详情”,查看该课题任务书内容
         visible: false,
         topic_id: 0,
-        topic_type: "目前没传",
+        topic_type: "",
         topic: "",
         tName: "",
         task: {},
@@ -151,6 +151,7 @@ export default class Ass extends Component {
         console.log(task)
         this.setState({
             visible: true,
+            topic_type: record.type,
             topic_id: record.key,
             topic: record.topic,
             tName: record.name,

@@ -18,11 +18,14 @@ export default class Home extends Component {
 			route('/')
 		}
 	}
-	
+
 	render() {
 		return (
-			<div className="g-vp">
-				<TotalSchedule />
+			<div>
+				<div className="g-m-title">查看论文进度</div>
+				<div className="g-m g-vp">
+					<TotalSchedule />
+				</div>
 			</div>
 		);
 	}

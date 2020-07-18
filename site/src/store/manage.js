@@ -423,6 +423,7 @@ class manager extends BaseActions {
         topic: item.topic,
         key: item.key,
         status: item.status,
+        type: item.type,
         tag: tag,
         num: num
       })
