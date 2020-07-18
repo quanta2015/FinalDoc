@@ -28,16 +28,16 @@ class Check extends BaseActions {
 
   state = {
     cur: 0,
-    more: false,
-    nowTopic: {}
+    more: true,
+    nowTopic: this.props.toplist[0]
   }
 
 
   topHead = (top) => (
     <div className='tophead'>
-      <span> </span>
+      {/* <Button type="dashed" size="large" onClick={this.closeStuBlock}>返回</Button> */}
       <div className="tophead-name">{top}</div>
-      <Button type="dashed" size="large" onClick={this.closeStuBlock}>返回</Button>
+      {/* <span> </span> */}
     </div>
   )
 
@@ -130,7 +130,7 @@ class Check extends BaseActions {
   render() {
     return (
       <div className="m-check-block-two" data-component="checkBlockTwo">
-        <h1 className='check-title'>毕业设计管理</h1>
+        <div className='check-title'>毕业设计管理</div>
         <div className="check-list">
           <nav className="left">
             {

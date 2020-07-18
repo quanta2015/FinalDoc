@@ -70,7 +70,7 @@ class NavT extends BaseActions {
               <div className={(cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
                 <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
               </div>
-            )}<br />
+            )}
             {this.state.checkList.map((item, i) =>
               <div
                 // 这个+1是为了和最上面的毕业设计管理错开，各端需根据自己情况调整
@@ -82,10 +82,11 @@ class NavT extends BaseActions {
             )}
           </div>
           <div className="g-info">
-            <div><span>身份：</span>教师</div>
-            <div><span>姓名：</span>{this.usr.name}</div>
-            <div><span>工号：</span>{this.usr.uid}</div>
-            <div><span>所在系：</span>{this.usr.maj}</div>
+            <div className="g-info-typeline">
+              <div className="g-info-type">教师</div>
+              <div className="g-info-maj">{this.usr.maj}</div>
+            </div>
+            <div>{this.usr.uid}&nbsp;&nbsp;&nbsp;{this.usr.name}</div>
           </div>
 
         </div>

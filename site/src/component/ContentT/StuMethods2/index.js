@@ -97,9 +97,8 @@ export default class StuMethods extends BaseActions {
       }
     }
     return (
-      <div data-component="stumethods">
-        <div className="stumethods">
-          <div className="note-block">
+        <div className="stumethods" data-component="stumethods">
+          <div className="stu-info">
             <span className="note-title"><span className="mr-long"><UserOutlined /></span>学生信息</span>
 
             <span className="note-info-span">{this.props.sid}</span>
@@ -107,7 +106,7 @@ export default class StuMethods extends BaseActions {
             <span className="note-info-span">{this.state.cls}</span>
 
           </div>
-
+          <div className="stumethods-pd">
           <Card
             tabList={tabListNoTitle}
             size="small"
@@ -185,6 +184,8 @@ export default class StuMethods extends BaseActions {
 
             }
           </Card>
+          </div>
+        
           <Modal
             title="发布任务书"
             visible={this.state.modal_visiable}
@@ -195,8 +196,6 @@ export default class StuMethods extends BaseActions {
             <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} />
           </Modal>
         </div>
-
-      </div>
     )
   }
 

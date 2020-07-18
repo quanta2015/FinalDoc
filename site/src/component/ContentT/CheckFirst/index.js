@@ -54,10 +54,12 @@ class Check extends BaseActions {
   }
 
   async componentDidMount() {
-    let x = await this.post(urls.API_TEACHER_CAN_PUBLISH, { tid: this.usr.uid })
-    if (x.r[0].flag > 1) {
+    let x = await this.post(urls.API_MAN_POST_JUDGETOPIC, { ide: this.usr.uid })
+    if (x.data[0].flag == 1) {
       this.setState({ judgeTopic: false })
     }
+
+
   }
 
   /**
@@ -120,9 +122,9 @@ class Check extends BaseActions {
 
   render() {
     return (
-      <div className="check-block" data-component="checkBlock">
+      <div className="check-block-first" data-component="checkBlock">
         <div className="title">
-          <h1>毕业设计管理</h1>
+          <span>我的课题</span>
           <span>
             {
               this.props.pbChanged &&
