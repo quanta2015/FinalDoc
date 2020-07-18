@@ -111,6 +111,7 @@ class NavM extends BaseActions {
               <div>工号：{this.usr.uid}</div>
               <div>所在系：{this.usr.maj}</div> */}
               <div className="u-role">
+                <div className="none">{this.usr.maj}</div>
                 <div className="role">系主任</div>
                 <div className="maj">{this.usr.maj}</div>
               </div>

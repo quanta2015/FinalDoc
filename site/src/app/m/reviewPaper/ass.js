@@ -155,7 +155,7 @@ export default class Ass extends Component {
     showModal = async (record) => {
         // console.log(toJS(record))
         let task = await this.props.manageStore.getTaskContent({ "pid": record.key, "role": this.usr.role })
-        console.log(task)
+        //console.log(task)
         this.setState({
             visible: true,
             topic_type: record.type,
@@ -165,8 +165,6 @@ export default class Ass extends Component {
             task: toJS(task),
             schedule: toJS(task.schedule),
             ft: toJS(task.ft),
-        }, () => {
-            console.log(this.state.schedule)
         });
     };
 
@@ -184,7 +182,7 @@ export default class Ass extends Component {
             selectedRowKeys,
             // onChange: this.onSelectChange,
             onChange: (selectedRowKeys) => {
-                console.log(`selectedRowKeyshhh: ${selectedRowKeys}`);
+                console.log(`selectedRowKeys: ${selectedRowKeys}`);
                 this.setState({ selectedRowKeys });
 
             },
