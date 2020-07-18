@@ -5,20 +5,23 @@ import { route } from "preact-router";
 import { Modal } from "antd";
 import UploadImage from "../ImgUpload";
 import { BankOutlined, CaretRightOutlined } from "@ant-design/icons";
+import BaseActions from "../BaseActions";
+import { Divider } from "antd";
 
 import "./index.scss";
 // import more from './more.svg'
 import { ADMIN_NAV_DATA } from "../../constant/data";
 
-@inject("manageStore", "userStore")
+@inject("adminStore", "userStore")
 @observer
-class NavAdmin extends Component {
+class NavAdmin extends BaseActions {
   constructor(props) {
     super(props);
 
     this.state = {
       cur: 0,
-      visible: false,
+      checkList: [],
+      //状态信息
       status: {
         title: "1、选题阶段",
         content: ["指定命题", "分配命题", "审核命题", "双选命题"],
@@ -32,11 +35,21 @@ class NavAdmin extends Component {
     return this.props.userStore.usr;
   }
 
-  componentDidMount() {
-    // if (!this.usr.uid) {
-    //   route('/')
+  async componentDidMount() {
+    // let list = [];
+    // //post请求获取数据，看length是否为0.如果不为0，则显示该tab
+    // // let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, {
+    // //   uid: this.usr.uid,
+    // // });
+    // console.log(x);
+    // if (x.data.length > 0) {
+    //   list.push(MENU_MAIN_T_AUDIT[0]);
     // }
-    // route('/m_distributeTopic')
+    // this.setState({ checkList: list });
+    //获取当前系统状态信息，并且更新state
+    //当前为写死的
+    //目前的想法是把所有状态宏定义在存储里
+    //ajax获取状态码
   }
 
   doMenu = (path, i) => {
@@ -45,16 +58,8 @@ class NavAdmin extends Component {
     });
   };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-    });
+  gohome = () => {
+    route("/m");
   };
 
   render() {
@@ -63,58 +68,63 @@ class NavAdmin extends Component {
     return (
       <div data-component="navAdmin">
         <div className="g-admin-nav">
-          <div
-            className="g-home-title"
-            onClick={() => {
-              route("/t");
-            }}
-          >
-            毕业论文管理系统
+          <div className="g-logo">
+            <div onClick={this.gohome}>毕业设计命题系统</div>
           </div>
-          <div className="g-status">
-            <div className="g-status-name">{status.title}</div>
-            <div className="g-status-content">
-              {status.content.map((c, i) => {
-                return (
-                  <>
-                    <span
-                      className={
-                        i == status.active
-                          ? "g-status-active g-status-item"
-                          : "g-status-item"
-                      }
-                    >
-                      {c}
-                    </span>
-                    {i < status.content.length - 1 && (
-                      <CaretRightOutlined className="g-status-arrow" />
-                    )}
-                  </>
-                );
-              })}
-            </div>
-          </div>
-          <div className="g-menu">
-            {ADMIN_NAV_DATA.map((item, i) => {
+          <div className="g-st">
+            {this.state.status.content.map((c, i) => {
               return (
-                <div
-                  className={
-                    this.state.cur == i ? "m-menu-item active" : "m-menu-item"
-                  }
-                  key={i}
-                  onClick={this.doMenu.bind(this, item.path, i)}
-                >
-                  <BankOutlined className="iconStyle" />
-                  <span>{item.title}</span>
-                </div>
+                <>
+                  <span
+                    className={
+                      i == this.state.status.active ? "m-st active" : "m-st"
+                    }
+                  >
+                    {c}
+                  </span>
+                </>
               );
             })}
           </div>
+          <div className="g-menu">
+            {/* 系主任功能 */}
 
+            {ADMIN_NAV_DATA.map((item, i) => (
+              <div
+                className={
+                  this.state.cur == i + 4 ? "m-menu-item active" : "m-menu-item"
+                }
+                key={i + 4}
+                onClick={this.doMenu.bind(this, item.path, i + 4)}
+              >
+                <BankOutlined />
+                <span className="m-menu-span">{item.title}</span>
+              </div>
+            ))}
+            <br />
+            {this.state.checkList.map((item, i) => (
+              <div
+                // 这个+1是为了和最上面的毕业设计管理错开，各端需根据自己情况调整
+                className={
+                  this.state.cur == i + 4 + 1
+                    ? "m-menu-item active"
+                    : "m-menu-item"
+                }
+                key={i + 4 + 1}
+                onClick={this.doMenu.bind(this, item.path, i + 4 + 1)}
+              >
+                <BankOutlined className="z-icon" />
+                <span className="m-menu-span">{item.title}</span>
+              </div>
+            ))}
+          </div>
           <div className="g-info">
-            <div>身份：教务处</div>
-            <div>姓名：{this.usr.name}</div>
-            <div>工号：{this.usr.uid}</div>
+            <div className="m-logout">退出登录</div>
+            <div className="m-info">
+              <div>身份：教务处</div>
+              <div>姓名：{this.usr.name}</div>
+              <div>工号：{this.usr.uid}</div>
+            </div>
           </div>
         </div>
       </div>

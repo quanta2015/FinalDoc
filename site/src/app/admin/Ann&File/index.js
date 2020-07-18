@@ -10,7 +10,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-
+import './annMag/annMg.scss'
 import { Tabs } from 'antd';
 import AnnounceManage from './annMag/annMg.js'
 import FileManage from './fileMag'
