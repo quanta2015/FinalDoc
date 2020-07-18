@@ -230,4 +230,37 @@ router.post('/getAllStates', async(req, res) => {
     })
 })
 
+// 获取所有站内信，未读 + 已读
+// params: { uid: str }
+router.post('/getStudentMessages', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_MESSAGES(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql,params, res, (r) => {
+        var read = [];
+        var unread = [];
+        r.forEach(element => {
+            if (element['check_flag'] == 1) {
+                read.push(element);
+            } else {
+                unread.push(element);
+            }
+        });
+        var reads = [unread, read];
+        console.log(reads);
+        res.status(200).json({ code: 200, data: reads, msg: '成功获取所有站内信' });
+    })
+})
+
+// 将未读的站内信置为已读
+// params: { uid: str }
+router.post('/updateStudentMessageRead', async(req, res) => {
+    let sql = `CALL PROC_UPDATE_STUDENT_MESSAGE_READ(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '成功获取将未读站内信置为已读' });
+    })
+})
+
 module.exports = router;
