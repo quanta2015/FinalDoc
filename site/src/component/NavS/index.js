@@ -31,8 +31,22 @@ class NavS extends Component {
     return this.props.studentStore.currStage;
   }
 
+  @computed
+  get hasUnread() {
+    return this.props.studentStore.hasUnread
+  }
+
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
+    this.props.studentStore.getAllMessages({ uid: this.usr.uid }).then(res => {
+      if (res.length) {
+        res.map(item => {
+          if (item.check_flag === 0) {
+            this.props.studentStore.setReadStatus(true)
+          }
+        })
+      }
+    })
   }
 
   doMenu = (path, i) => {
@@ -61,13 +75,13 @@ class NavS extends Component {
       <div className="g-stu-nav">
         <div className="g-logo">
           <div className="m-msg">
-            <img src={message} onClick={this.goMessage}/>
-            <div className="u-status">●</div>
+            <img src={message} onClick={this.goMessage} />
+            {this.hasUnread && <div className="u-status">●</div>}
           </div>
           <div className="u-title" onClick={this.gohome}>毕业设计命题系统</div>
         </div>
         <div className="g-st">
-          {this.currStage.stage.map((item, id) => 
+          {this.currStage.stage.map((item, id) =>
             <span className={id === this.currStage.index ? 'm-st active' : 'm-st'}>{item}</span>
           )}
         </div>
@@ -75,7 +89,7 @@ class NavS extends Component {
           {!this.selectTpInfo.id ?
             <div className={(cur == 0) ? 'm-menu-item active' : 'm-menu-item'} onClick={this.doMenu.bind(this, MENU_MAIN_S[0].path, 0)}>
               <img src={MENU_MAIN_S[0].icon} /><span className="m-menu-span">{MENU_MAIN_S[0].title}</span>
-            </div>:
+            </div> :
             <div className={(cur == 1) ? 'm-menu-item active' : 'm-menu-item'} onClick={this.doMenu.bind(this, MENU_MAIN_S[1].path, 1)}>
               <img src={MENU_MAIN_S[1].icon} /><span className="m-menu-span">{MENU_MAIN_S[1].title}</span>
             </div>
