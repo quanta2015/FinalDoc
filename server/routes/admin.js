@@ -4,13 +4,9 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
-<<<<<<< HEAD
  * @LastEditTime: 2020-07-17 20:19:13
  */
-=======
- * @LastEditTime: 2020-07-17 20:30:20
- */ 
->>>>>>> 2ac5acd423efe9b22e43003dea51062ddfa902ac
+
 
 const express = require('express');
 const router = express.Router();
@@ -21,7 +17,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const moment = require('moment');
 
-/**
+/*
  * @description: 获取当前所有公告，并按时间倒序排列
  * @param {} 
  * @return: { id: int, ann_title: str, ann_content: str, ann_time: datetime, ann_target: int }
@@ -54,7 +50,7 @@ router.post('/getAllAnnounce', async (req, res) => {
     })
 })
 
-/**
+/*
  * @description: 删除某个公告
  * @param { ann_id: int } 
  * @return: 
@@ -68,7 +64,7 @@ router.post('/delOneAnnounce', async (req, res) => {
     })
 })
 
-/**
+/*
  * @description: 获取所有文件地址
  * @param {} 
  * @return: 
@@ -82,7 +78,7 @@ router.post('/getAllFileAddress', async (req, res) => {
     })
 })
 
-/**
+/*
  * @description: 发布公告
  * @param { ann_title: str, ann_target: str, ann_context: str } 
  * @return: 
@@ -126,15 +122,17 @@ router.post('/uploadFile', async function (req, res) {
             code: 200,
             msg: `上传admin文件成功`,
             data: newpath,
-            
+
         })
     });
-/**
+})
+
+/*
  * @description: 获取公告总数
  * @param {} 
  * @return: { ann_sum: int }
  */
-router.post('/getAllAnnouncementsNum', async(req, res) => {
+router.post('/getAllAnnouncementsNum', async (req, res) => {
     let sql = `CALL PROC_GET_ANNOUNCEMENTS_NUM`;
     let params = {};
     callProc(sql, params, res, (r) => {
@@ -143,4 +141,4 @@ router.post('/getAllAnnouncementsNum', async(req, res) => {
     })
 })
 
-module.exports = router;
+module.exports = router
