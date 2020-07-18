@@ -35,6 +35,7 @@ import FileUpload from "../../../../component/FileUpload";
 import { FILE_UPLOAD_FORMAT } from "../../../../constant/data";
 import { API_ADMIN_UPLOAD_FILE } from "../../../../constant/urls";
 import FormItem from "antd/lib/form/FormItem";
+import Item from "antd/lib/list/Item";
 @inject("userStore","adminStore")
 @observer
 export default class fileManage extends Component {
@@ -52,6 +53,11 @@ export default class fileManage extends Component {
   get usr() {
     return this.props.userStore.usr;
   }
+  @computed
+  get adminFileManage() {
+    return this.props.adminStore.adminFileManage;
+  }
+
   handleModalCancel = () => {
     this.setState({
       modalVisiable: false,
@@ -160,6 +166,11 @@ export default class fileManage extends Component {
       });
     }
   };
+  callFilelist = () => {
+    this.props.adminStore.getFileList().then((r) => {
+      console.log(r)
+    });
+  };
 
   handleDel = () => {
     this.setState({
@@ -194,6 +205,23 @@ export default class fileManage extends Component {
             }
           >
             <Row gutter={[0, 0]}>
+            {this.adminFileManage.file_list.map((item,index)=>{
+              return(
+                <Col span={6} key={Item.key}>
+                <Card
+                  type="inner"
+                  title={item.f_name}
+                  extra={
+                    <a href="#">
+                      <DownloadOutlined />
+                    </a>
+                  }
+                >
+                  上传时间 {item.f_time}
+                </Card>
+              </Col>
+              )
+            })}
               <Col span={6}>
                 <Card
                   type="inner"
@@ -246,6 +274,7 @@ export default class fileManage extends Component {
                   上传时间
                 </Card>
               </Col>
+              
             </Row>
           </Card>
           <Modal

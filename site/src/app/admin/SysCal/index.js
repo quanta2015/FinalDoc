@@ -34,10 +34,12 @@ export default class Ann extends Component {
         <div className="admin-content">
           <div className="g-ann">
             <Tabs defaultActiveKey="1">
-              <TabPane tab="时间进度设定" key="1">
+              <TabPane tab="学生端进度设置" key="1">
                 <Schedule />
               </TabPane>
-             
+              <TabPane tab="教师端进度设置" key="2">
+                <Schedule />
+              </TabPane>
             </Tabs>
             {/* <div className="m-m">公告模块</div> */}
           </div>

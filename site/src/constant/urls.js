@@ -115,3 +115,7 @@ export const API_ADMIN_DEL_ONE_ANN = API_SERVER + '/admin'+'/delOneAnnounce'
 export const API_ADMIN_GET_ALL_FILE = API_SERVER + '/admin'+'/getAllFileAddress'
 //上传文件
 export const API_ADMIN_UPLOAD_FILE = API_SERVER + '/admin'+'/uploadFile'
+//发布公告
+export const API_ADMIN_UPLOAD_ANN = API_SERVER + '/admin'+'/insertAnnouncement'
+//上传模板文件的记录
+export const API_ADMIN_INSERT_FILE_RECORD = API_SERVER + '/admin'+'/insertFileTemplate'

@@ -87,8 +87,7 @@ class NavAdmin extends BaseActions {
             })}
           </div>
           <div className="g-menu">
-            {/* 系主任功能 */}
-
+         
             {ADMIN_NAV_DATA.map((item, i) => (
               <div
                 className={
@@ -119,11 +118,13 @@ class NavAdmin extends BaseActions {
             ))}
           </div>
           <div className="g-info">
-            <div className="m-logout">退出登录</div>
             <div className="m-info">
-              <div>身份：教务处</div>
-              <div>姓名：{this.usr.name}</div>
-              <div>工号：{this.usr.uid}</div>
+              <div className="m-logout">退出登录</div>
+              <div className="z-info">
+                <div>身份：教务处</div>
+                <div>姓名：{this.usr.name}</div>
+                <div>工号：{this.usr.uid}</div>
+              </div>
             </div>
           </div>
         </div>

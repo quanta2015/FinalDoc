@@ -36,6 +36,7 @@ import {
   TreeSelect,
   Switch,
   Upload,
+  Result
 } from "antd";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -57,6 +58,7 @@ export default class AnnounceManage extends Component {
     fileUrl: "",
     showDel: false,
     total: 0,
+    launchSucc:false,
   };
 
   @computed
@@ -68,10 +70,19 @@ export default class AnnounceManage extends Component {
   get usr() {
     return this.props.userStore.usr;
   }
-
+  doReturn = () => {
+    
+    this.setState({
+      launchSucc: false,
+      modalVisiable:false
+    });
+    
+  }
   handleModalCancel = () => {
+  
     this.setState({
       modalVisiable: false,
+      launchSucc: false,
     });
   };
 
@@ -86,8 +97,8 @@ export default class AnnounceManage extends Component {
   }
 
   callAnnData = () => {
-    this.props.adminStore.getAnnData().then((r)=>{
-        console.log(r)
+    this.props.adminStore.getAnnData().then((r) => {
+      console.log(r)
     });
   };
 
@@ -125,41 +136,41 @@ export default class AnnounceManage extends Component {
       confirm,
       clearFilters,
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`输入标题...`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            重置
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={(node) => {
+              this.searchInput = node;
+            }}
+            placeholder={`输入标题...`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, confirm, dataIndex)
+            }
+            style={{ width: 188, marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              onClick={() => this.handleReset(clearFilters)}
+              size="small"
+              style={{ width: 90 }}
+            >
+              重置
           </Button>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            搜索
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              搜索
           </Button>
-        </Space>
-      </div>
-    ),
+          </Space>
+        </div>
+      ),
     filterIcon: (filtered) => (
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
@@ -176,6 +187,16 @@ export default class AnnounceManage extends Component {
   getonFinish = () => {
     const onFinish = (values) => {
       console.log(values);
+      this.props.adminStore.launchAnn(values).then((r) => {
+        // console.log('=========188==================',r)
+        if(r.code===200)
+        {
+          this.callAnnData();
+          this.setState({
+            launchSucc:true
+          })
+        }
+      });
     };
     return onFinish;
   };
@@ -203,6 +224,9 @@ export default class AnnounceManage extends Component {
     };
     return tailLayout;
   };
+  showDetail=(key)=>{
+    console.log("表格的id",key)
+  }
 
   render() {
     const paginationProps = {
@@ -245,12 +269,12 @@ export default class AnnounceManage extends Component {
         key: "action",
         render: (text, record) => (
           <Space size="middle">
-            <a>详情</a>
+            <a onClick={()=>this.showDetail(record.key)} >详情</a>
           </Space>
         ),
       },
     ];
-    const { modalVisiable } = this.state;
+    const { modalVisiable,launchSucc } = this.state;
     const { fileUrl, showDel, loading } = this.state;
 
     return (
@@ -270,7 +294,7 @@ export default class AnnounceManage extends Component {
               dataSource={this.announceManage.announce_list}
               columns={columns}
               pagination={paginationProps}
-              //onChange={this.handleChange}
+            //onChange={this.handleChange}
             />
             {/* <Pagination total={50} showTotal={showTotal} /> */}
           </div>
@@ -280,82 +304,94 @@ export default class AnnounceManage extends Component {
             onCancel={this.handleModalCancel}
             title="发布公告"
             width="900px"
+            destroyOnClose={true}
           >
-            <div className="admin-ann-modal">
-              <Row gutter={[8, 8]}>
-                <Col span={24}>
-                  {" "}
-                  <Form
-                    {...this.getlayout()}
-                    name="basic"
-                    initialValues={{ remember: true }}
-                    onFinish={this.getonFinish()}
-                    onFinishFailed={this.getonFinishFailed()}
-                    layout={"vertical"}
-                  >
-                    <Form.Item
-                      className="label-text"
-                      label="请输入公告标题"
-                      name="ann_title"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your announce title!",
-                        },
-                      ]}
+            {(!launchSucc) &&
+              <div className="admin-ann-modal">
+                <Row gutter={[8, 8]}>
+                  <Col span={24}>
+                    {" "}
+                    <Form
+                      {...this.getlayout()}
+                      name="basic"
+                      initialValues={{ remember: true }}
+                      onFinish={this.getonFinish()}
+                      onFinishFailed={this.getonFinishFailed()}
+                      layout={"vertical"}
                     >
-                      <Input className="input_box" />
-                    </Form.Item>
-
-                    <Form.Item
-                      className="label-text"
-                      label="请选择公告对象"
-                      name="ann_target"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select your announce target!",
-                        },
-                      ]}
-                    >
-                      <Select>
-                        <Select.Option value="all">全体师生</Select.Option>
-                        <Select.Option value="tea">全体教师</Select.Option>
-                        <Select.Option value="stu">全体学生</Select.Option>
-                        <Select.Option value="leader">各系主任</Select.Option>
-                      </Select>
-                    </Form.Item>
-
-                    <Form.Item
-                      className="label-text"
-                      label="请输入公告内容"
-                      name="ann_context"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your announce context!",
-                        },
-                      ]}
-                    >
-                      <TextArea
-                        autoSize={{ minRows: 2, maxRows: 6 }}
-                        className="input_box"
-                      />
-                    </Form.Item>
-                    <Form.Item>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="subit_buttom"
-                        onClick={this.getonFinish}
+                      <Form.Item
+                        className="label-text"
+                        label="请输入公告标题"
+                        name="ann_title"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your announce title!",
+                          },
+                        ]}
                       >
-                        发布公告
+                        <Input className="input_box" />
+                      </Form.Item>
+
+                      <Form.Item
+                        className="label-text"
+                        label="请选择公告对象"
+                        name="ann_target"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select your announce target!",
+                          },
+                        ]}
+                      >
+                        <Select>
+                          <Select.Option value="all">全体师生</Select.Option>
+                          <Select.Option value="tea">全体教师</Select.Option>
+                          <Select.Option value="stu">全体学生</Select.Option>
+                          <Select.Option value="leader">各系主任</Select.Option>
+                        </Select>
+                      </Form.Item>
+
+                      <Form.Item
+                        className="label-text"
+                        label="请输入公告内容"
+                        name="ann_context"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your announce context!",
+                          },
+                        ]}
+                      >
+                        <TextArea
+                          autoSize={{ minRows: 2, maxRows: 6 }}
+                          className="input_box"
+                        />
+                      </Form.Item>
+                      <Form.Item>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          className="subit_buttom"
+                          onClick={this.getonFinish}
+                        >
+                          发布公告
                       </Button>
-                    </Form.Item>
-                  </Form>
-                </Col>
-              </Row>
-            </div>
+                      </Form.Item>
+                    </Form>
+                  </Col>
+                </Row>
+              </div>
+            }
+            {(launchSucc) &&
+              <div className="m-ret">
+                <Result
+                  status="success"
+                  title="您的公告发布成功！"
+                  //subTitle=""
+                  extra={<Button type="primary" className="input-btn" onClick={this.doReturn} block>返 回</Button>}
+                />
+              </div>}
           </Modal>
         </div>
       </div>

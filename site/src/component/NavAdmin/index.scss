@@ -1,6 +1,10 @@
 [data-component="navAdmin"] {
   .u-block {
     width: 250px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .g-admin-nav {
    
@@ -21,27 +25,34 @@
       margin-bottom: 5px;
       cursor: pointer;
     }
-  
-    .g-info {
+  .g-info{
+   
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .m-info {
       width: 100%;
-      margin-top: auto;
-  
+      align-self: flex-end;
+      
       .m-logout {
         color: #666;
         text-align: center;
         line-height: 32px;
+        
       }
   
-      .m-info {
+      .z-info {
         padding: 10px 0 10px 15px;
         background-color: #666666;
       }
     
-      .m-info>div{
-        display: flex;
+      .z-info>div{
+       
         align-items: center;
       }
     }
+  }
+    
   
     // .g-status {
     //   color: #333;
