@@ -39,9 +39,11 @@ export const API_MAN_POST_OGP_MANUALALLOCATETOPIC = API_SERVER + '/openGp/handle
 export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
 export const API_MAN_POST_OGP_DELETEGROUP = API_SERVER + '/openGp/deleteGroup'
+export const API_MAN_POST_OPEND_DEFENSE = API_SERVER + ''
 
 //审核任务书、论文定稿等
 export const API_MAN_POST_RP_TASKLIST = API_SERVER + '/auditMg/taskList'
+export const API_MAN_POST_RP_REVIEWTASK = API_SERVER + '/auditMg/reviewTask'
 
 
 // 查看论文进度

@@ -122,27 +122,34 @@ export default class Ass extends Component {
 
 
     // 提交手动分配
-    handDistribute = async () => {
+    reviewTask = async () => {
         if (this.state.selectedRowKeys.length === 0) {
-            message.info("还未选择课题！")
+            message.info("还未选择待审核任务书！")
             return;
         }
         let temp = { "topic_id": this.state.selectedRowKeys }
         console.log(temp)
-        // let res = await this.props.manageStore.allocateTopic(temp);
-        // if (res && res.code === 200) {
-        //     message.info("分配成功！")
-        //     await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-        //     await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
-        //     await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
-
-        // } else {
-        //     message.info("分配失败！请重试")
-        // }
+        let res = await this.props.manageStore.reviewTask(temp);
+        if (res && res.code === 200) {
+            message.success("审核成功！")
+            await this.props.manageStore.getTaskList({ "ide": this.usr.uid })
+            
+        } else {
+            message.error("审核失败！请重试")
+        }
         this.setState({
             selectedRowKeys: [],
 
         })
+    }
+    openDefense =async()=>{
+         // let res = await this.props.manageStore.openDefense(temp);
+        // if (res && res.code === 200) {
+        //     message.success("已进入开题答辩阶段，请分配答辩小组！")
+        // } else {
+        //     message.error("未进入开题答辩阶段！请重试")
+        // }
+
     }
 
     showModal = async (record) => {
@@ -301,7 +308,7 @@ export default class Ass extends Component {
                         }
                         {
                             (this.reviewPaper.to_audit_list.length > 0) &&
-                            <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                            <Button type="primary" onClick={this.reviewTask}>通过</Button>
                         }
                         {
                             (this.reviewPaper.suc === 1) &&
