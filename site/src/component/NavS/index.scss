@@ -4,14 +4,14 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border-right: 1px solid #EFEFEF;
+  border-right: 1px solid #efefef;
   align-items: center;
 
   .g-logo {
     display: flex;
     padding: 10px 0;
     margin-bottom: 5px;
-    
+
     .u-title {
       color: #333;
       font-size: 17px;
@@ -20,58 +20,59 @@
 
     .m-msg {
       width: 27px;
+      cursor: pointer;
     }
   }
 
   .g-st {
-      display: flex;
-      height: 50px;
-      width: 100%;
-      background: #fff;
-      color: #333;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    background: #fff;
+    color: #333;
   }
 
   .m-st {
-      flex: 1;
-      display: flex;
-      padding: 0 12px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      text-align: center;
-      background: #eee;
-      position: relative;
+    flex: 1;
+    display: flex;
+    padding: 0 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    background: #eee;
+    position: relative;
   }
 
   .m-st + .m-st {
-      margin-left: 2px;
+    margin-left: 2px;
   }
 
   .m-st + .m-st:before,
   .m-st + .m-st:after {
-      content: '';
-      display: block;
-      border: 6px solid transparent;
-      position: absolute;
+    content: "";
+    display: block;
+    border: 6px solid transparent;
+    position: absolute;
   }
 
   .m-st + .m-st:before {
-      border-left: 6px solid #fff;
-      left: 0;
+    border-left: 6px solid #fff;
+    left: 0;
   }
 
   .m-st + .m-st:after {
-      border-left: 6px solid #eee;
-      left: -2px;
+    border-left: 6px solid #eee;
+    left: -2px;
   }
 
   .m-st.active {
-      background: #ff6600;
-      color: #fff;
+    background: #ff6600;
+    color: #fff;
   }
 
-  .m-st.active + .m-st:after  {
-      border-left: 6px solid #ff6600;
+  .m-st.active + .m-st:after {
+    border-left: 6px solid #ff6600;
   }
 
   .g-menu {
@@ -79,7 +80,7 @@
     display: flex;
     flex-direction: column;
     color: #fff;
-    
+
     .m-menu-item {
       width: 100%;
       padding: 5px 10px;
@@ -87,21 +88,21 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      transition: .3s;
+      transition: 0.3s;
       font-size: 16px;
       background-color: #666666;
       margin-bottom: 5px;
-      box-shadow: 0 1px 3px #CECECE;
+      box-shadow: 0 1px 3px #cecece;
 
       &.active {
-        background: #336699!important;
+        background: #336699 !important;
       }
 
       &:hover {
-        background:#cc3300;
+        background: #cc3300;
       }
 
-      &>img {
+      & > img {
         width: 28px;
         margin-right: 6px;
       }
@@ -133,15 +134,13 @@
       margin-bottom: 20px;
     }
 
-    &>p {
+    & > p {
       margin-bottom: 10px;
     }
-  } 
+  }
 
   .m-setting {
     padding: 10px 15px;
     text-align: center;
   }
 }
-
-

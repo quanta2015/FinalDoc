@@ -43,7 +43,7 @@ class LogRecord extends Component {
                     }, () => {
                         let { comments } = this.state
                         // console.log('this is comments', comments)
-                        if (comments[0].time === moment().format('YYYY年MM月DD日'))
+                        if (comments[0].time === moment().format('YYYY-MM-DD'))
                             this.setState({
                                 sel: comments[0].way,
                                 value: comments[0].opinion
@@ -65,7 +65,7 @@ class LogRecord extends Component {
             submitting: true,
         });
         if (!this.state.isInEdit) { // 若不在编辑状态中 提交后输入框内显示的内容为本日日志内容（方便编辑）
-            if (comments[0] && comments[0].time === moment().format('YYYY年MM月DD日')) { // 如果当前日期与最近一条日志日期相等，则更新最近一条
+            if (comments[0] && comments[0].time === moment().format('YYYY-MM-DD')) { // 如果当前日期与最近一条日志日期相等，则更新最近一条
                 let time = comments[0].time
                 let way = this.state.sel
                 comments[0] = { opinion: value, time, way }
@@ -85,7 +85,7 @@ class LogRecord extends Component {
                         comments: [
                             {
                                 opinion: this.state.value,
-                                time: moment().format('YYYY年MM月DD日'),
+                                time: moment().format('YYYY-MM-DD'),
                                 way: this.state.sel,
                             },
                             ...this.state.comments,
@@ -96,7 +96,7 @@ class LogRecord extends Component {
             }
 
         } else { // 若在编辑状态中
-            if (editedItemIndex === 0 && comments[editedItemIndex].time === moment().format('YYYY年MM月DD日')) { // 编辑最新的指导日志
+            if (editedItemIndex === 0 && comments[editedItemIndex].time === moment().format('YYYY-MM-DD')) { // 编辑最新的指导日志
                 setTimeout(() => {
                     let time = comments[editedItemIndex].time
                     let way = this.state.sel

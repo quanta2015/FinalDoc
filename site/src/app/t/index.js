@@ -12,7 +12,7 @@ export default class Teacher extends Component {
   }
 
   componentDidMount() {
-    if (!this.usr.id) {
+    if (!this.usr.uid) {
       route('/')
     }
   }

@@ -233,23 +233,23 @@ class Student extends BaseActions {
     @action
     async getGuidance(params) {
         const r = await this.post(urls.API_STU_GET_GUIDANCE, params)
-        if (r && r.code === 200) {
-            let lst = []
-            if (r.data) {
-                r.data.map((item) => {
-                    let date = item.time.split("-")
-                    let time = date[0] + '年' + date[1] + '月' + date[2] + '日'
-                    lst.push({
-                        time,
-                        way: item.way,
-                        opinion: item.opinion
-                    })
-                })
-            }
+        if (r && r.code === 200 && r.data) {
+            // let lst = []
+            // if (r.data) {
+            //     r.data.map((item) => {
+            //         let date = item.time.split("-")
+            //         let time = date[0] + '年' + date[1] + '月' + date[2] + '日'
+            //         lst.push({
+            //             time,
+            //             way: item.way,
+            //             opinion: item.opinion
+            //         })
+            //     })
+            // }
             runInAction(() => {
-                this.insLog = lst
+                this.insLog = r.data
             })
-            return lst
+            return r.data
         } else {
             message.error("网络错误")
         }
