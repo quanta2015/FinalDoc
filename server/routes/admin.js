@@ -5,19 +5,23 @@
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
  * @LastEditTime: 2020-07-17 20:19:13
- */ 
+ */
 
 const express = require('express');
 const router = express.Router();
 const callProc = require('../util').callProc;
 const callP_N = require('../util').callProc_N;
+const formidable = require('formidable');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const moment = require('moment');
 
 /**
  * @description: 获取当前所有公告，并按时间倒序排列
  * @param {} 
  * @return: { id: int, ann_title: str, ann_content: str, ann_time: datetime, ann_target: int }
  */
-router.post('/getAllAnnounce', async(req, res) => {
+router.post('/getAllAnnounce', async (req, res) => {
     let sql = `CALL PROC_GET_ALL_NOTICES`;
     let params = {};
     callProc(sql, params, res, (r) => {
@@ -38,7 +42,7 @@ router.post('/getAllAnnounce', async(req, res) => {
                 default:
                     break;
             }
-           
+
         });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取当前所有公告' });
@@ -50,7 +54,7 @@ router.post('/getAllAnnounce', async(req, res) => {
  * @param { ann_id: int } 
  * @return: 
  */
-router.post('/delOneAnnounce', async(req, res) => {
+router.post('/delOneAnnounce', async (req, res) => {
     let sql = `CALL PROC_DEL_ONE_ANNOUNCE(?)`;
     let params = req.body;
     console.log(params);
@@ -64,7 +68,7 @@ router.post('/delOneAnnounce', async(req, res) => {
  * @param {} 
  * @return: 
  */
-router.post('/getAllFileAddress', async(req, res) => {
+router.post('/getAllFileAddress', async (req, res) => {
     let sql = `CALL PROC_GET_ALL_FILE_INFO`;
     let params = {};
     callProc(sql, params, res, (r) => {
@@ -78,7 +82,7 @@ router.post('/getAllFileAddress', async(req, res) => {
  * @param { ann_title: str, ann_target: str, ann_context: str } 
  * @return: 
  */
-router.post('/insertAnnouncement', async(req, res) => {
+router.post('/insertAnnouncement', async (req, res) => {
     let sql = `CALL PROC_INSERT_ONE_ANNOUNCEMENT(?)`;
     let params = req.body;
     console.log(params);
@@ -86,6 +90,40 @@ router.post('/insertAnnouncement', async(req, res) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功发布该公告' });
     })
+})
+
+router.post('/uploadFile', async function (req, res) {
+    const form = new formidable.IncomingForm()
+    form.uploadDir = "./upload/";
+
+    let get_data, newpath;
+    form.parse(req, (err, fields, files) => {
+        if (err || !files.file) {
+            res.status(500);
+        }
+        get_data = fields;
+        let ext = files.file.name.split('.').slice(-1)
+        let ttt = `admin_${moment(new Date()).format('YYYYMMDDhhmmss')}.${ext}`;
+
+        let oldpath = files.file.path
+        console.log("===============旧地址====================", oldpath)
+        newpath = "./upload/" + ttt;
+        console.log("===============新地址====================", newpath)
+        // console.log(oldpath, newpath)
+        fs.rename(oldpath, newpath, function (err) {
+            if (err) {
+                console.log(err);
+                throw Error("改名失败");
+            }
+        });
+
+        res.status(200).json({
+            code: 200,
+            msg: `上传admin文件成功`,
+            data: newpath,
+            
+        })
+    });
 })
 
 module.exports = router;
