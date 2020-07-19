@@ -23,6 +23,7 @@ const teacher = require('./routes/teacher');
 const visualize = require('./routes/visualize');
 const user = require('./routes/user');
 const admin = require('./routes/admin');
+const router = require('./routes/student');
 
 
 app.use(compression())
@@ -228,6 +229,18 @@ app.post('/checkSign', async function (req, res) {
             msg: '签名状态已返回'
         });
     })
+})
+
+// 各端共用接口：获取通知
+// params: { uid: str, role: int }
+app.post('/getPersonalAnnouncement', async(req, res) => {
+    let sql = `CALL PROC_GET_PERSONAL_ANNOUNCEMENT(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取所有通知' });
+    })
 })
 
 
