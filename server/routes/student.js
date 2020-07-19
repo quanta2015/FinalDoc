@@ -183,19 +183,21 @@ router.get('/getCurrentState', async(req, res) => {
     })
 })
 
-/**
- * @description: 标记公告为已读
- * @param { uid: str, ann_id: str } 
- * @return: 
- */
-router.post('/UpdateStudentNotice', async(req, res) => {
-    let sql = `CALL PROC_UPDATE_STUDENT_NOTICE(?)`;
-    let params = req.body;
-    console.log(params);
-    callProc(sql, params, res, (r) => {
-        res.status(200).json({ code: 200, data: r, msg: '成功将公告标记为已读' });
-    })
-})
+// 接口改为公用，移至app.js下updateAnnouncementRead
+// 存储过程已删除
+// /**
+//  * @description: 标记公告为已读
+//  * @param { uid: str, ann_id: str } 
+//  * @return: 
+//  */
+// router.post('/UpdateStudentNotice', async(req, res) => {
+//     let sql = `CALL PROC_UPDATE_STUDENT_NOTICE(?)`;
+//     let params = req.body;
+//     console.log(params);
+//     callProc(sql, params, res, (r) => {
+//         res.status(200).json({ code: 200, data: r, msg: '成功将公告标记为已读' });
+//     })
+// })
 
 /**
  * @description: 所有阶段及其截止时间
