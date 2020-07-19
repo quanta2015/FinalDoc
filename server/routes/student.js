@@ -123,6 +123,8 @@ router.post('/getGuidance', async(req, res) => {
     })
 })
 
+// 接口改为公用，移至app.js下getPersonalAnnouncement
+// 存储过程已删除
 // /**
 //  * @description: 获取学生允许查看的公告
 //  * @param { sid: str } 
