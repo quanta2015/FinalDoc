@@ -75,6 +75,9 @@ router.post('/getAllFileAddress', async (req, res) => {
     callProc(sql, params, res, (r) => {
         r.forEach(element => {
             switch (element['f_type']) {
+                case 1:
+                    element.f_type = '公告文件';
+                    break;
                 case 21:
                     element.f_type = '师生模板';
                     break;
