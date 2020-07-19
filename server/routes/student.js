@@ -123,30 +123,30 @@ router.post('/getGuidance', async(req, res) => {
     })
 })
 
-/**
- * @description: 获取学生允许查看的公告
- * @param { sid: str } 
- * @return: 
- */
-router.post('/getStudentNotice', async(req, res) => {
-    let sql = `CALL PROC_GET_STUDENT_NOTICE(?)`;
-    let params = req.body;
-    console.log(params);
-    callProc(sql, params, res, (r) => {
-        console.log(r);
-        var read = [];
-        var unread = [];
-        r.forEach(element => {
-            if (element['check_flag'] == 1) {
-                read.push(element);
-            } else {
-                unread.push(element);
-            }
-        });
-        var reads = [read, unread];
-        res.status(200).json({ code: 200, data: reads, msg: '成功获取已读与未读公告' });
-    })
-})
+// /**
+//  * @description: 获取学生允许查看的公告
+//  * @param { sid: str } 
+//  * @return: 
+//  */
+// router.post('/getStudentNotice', async(req, res) => {
+//     let sql = `CALL PROC_GET_STUDENT_NOTICE(?)`;
+//     let params = req.body;
+//     console.log(params);
+//     callProc(sql, params, res, (r) => {
+//         console.log(r);
+//         var read = [];
+//         var unread = [];
+//         r.forEach(element => {
+//             if (element['check_flag'] == 1) {
+//                 read.push(element);
+//             } else {
+//                 unread.push(element);
+//             }
+//         });
+//         var reads = [read, unread];
+//         res.status(200).json({ code: 200, data: reads, msg: '成功获取已读与未读公告' });
+//     })
+// })
 
 /**
  * @description: 获取当前所在阶段及截止时间
