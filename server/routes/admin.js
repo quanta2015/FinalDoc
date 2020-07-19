@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-18 17:03:09
+ * @LastEditTime: 2020-07-19 13:41:22
  */
 
 
@@ -149,6 +149,36 @@ router.post('/insertFileTemplate', async (req, res) => {
     console.log(params);
     callProc(sql, params, res, (r) => {
         res.status(200).json({ code: 200, data: r, msg: '成功插入模板文件记录' });
+    })
+})
+
+// 根据通知id获取通知具体内容
+// params: { ann_id: str }
+router.post('/getAnnouncementDetails', async(req, res) => {
+    let sql = `CALL PROC_GET_ANNOUNCEMENT_DETAILS(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        r.forEach(element => {
+            switch (element['target']) {
+                case 0:
+                    element.target = '全体师生';
+                    break;
+                case 1:
+                    element.target = '全体学生';
+                    break;
+                case 2:
+                    element.target = '全体老师';
+                    break;
+                case 3:
+                    element.target = '各系主任';
+                    break;
+                default:
+                    break;
+            }
+        });
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取该通知具体内容' });
     })
 })
 
