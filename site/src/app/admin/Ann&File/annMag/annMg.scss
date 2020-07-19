@@ -10,7 +10,7 @@
 .g-ann {
   position: fixed;
   top: 0px;
-  
+
   bottom: 0;
   padding: 15px 75px;
   width: 950px;
@@ -71,6 +71,36 @@
 
 .admin-ann-modal {
   height: 550px;
+  .m-ann-modal-detail {
+    height: 550px;
+    overflow-y: scroll;
+    width: 100%;
+    .z-ann-content {
+      margin: 10px;
+    }
+    .z-ann-title {
+      width: 100%;
+      text-align: center;
+      line-height: 36px;
+      padding: 7px 0;
+      font-size: 26px;
+      color: #0585d0;
+      font-family: "微软雅黑", "宋体", "黑体", Arial;
+     
+      font-weight: bold;
+
+      margin-bottom: 18px !important;
+      padding: 8px 0 5px 5px;
+    }
+    .m-ann-foot {
+      margin-top: 30px;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+      text-align: right;
+    }
+    
+  }
   .label-text {
     font-size: 16px;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -80,6 +110,19 @@
   }
   .subit_buttom {
     margin: 2vh auto;
+    width: 358px !important ;
+    height: 4.3vh !important ;
+    border-radius: 8px;
+    background-color: #0585d0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ann_delet_buttom {
+    margin-top: 4vh;
+    margin-right: auto;
+    margin-bottom: 2vh;
+    margin-left: auto;
     width: 358px !important ;
     height: 4.3vh !important ;
     border-radius: 8px;
@@ -144,4 +187,8 @@
   .ant-form-item-label > label {
     font-size: 16px;
   }
+}
+.m-popconfirm{
+  height: 109px!important;
+  width: 500px;
 }

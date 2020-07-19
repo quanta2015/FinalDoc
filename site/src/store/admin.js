@@ -94,6 +94,32 @@ class admin extends BaseActions {
     }
     return r;
   }
+  @action
+  async getAnnDetail(params) {
+    const r = await this.post(urls.API_ADMIN_CALL_ANN_DETAIL, params);
+    if (r && r.code === 200) {
+      runInAction(() => {
+        message.success("获取公告详情成功");
+      });
+      return r.data[0];
+    } else {
+      message.error("网络错误");
+    }
+    return r;
+  }
+  @action
+  async deletOneAnn(params) {
+    const r = await this.post(urls.API_ADMIN_DEL_ONE_ANN, params);
+    if (r && r.code === 200) {
+      runInAction(() => {
+        message.success("删除公告成功");
+      });
+      return r.data;
+    } else {
+      message.error("网络错误");
+    }
+    return r;
+  }
 }
 
 export default new admin();
