@@ -24,6 +24,7 @@ const visualize = require('./routes/visualize');
 const user = require('./routes/user');
 const admin = require('./routes/admin');
 const router = require('./routes/student');
+const callProc_N = require('./util').callProc_N;
 
 
 app.use(compression())
@@ -238,7 +239,7 @@ app.post('/getPersonalAnnouncement', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql, params, res, (r) => {
-        if (params['role'] == '2') {
+        if (params['role'] == 2) {
             var results = [];
             var manager = [];
             var teacher = [];
@@ -258,6 +259,17 @@ app.post('/getPersonalAnnouncement', async(req, res) => {
             console.log(r);
             res.status(200).json({ code: 200, data: r, msg: '成功获取所有通知' });
         }
+    })
+})
+
+// 各端共用接口：标记公告为已读
+// params: { uid: str, ann_id: str }
+app.post('/updateAnnouncementRead', async(req, res) => {
+    let sql = `CALL PROC_UPDATE_ANNOUNCEMENT_READ(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '成功将公告标记为已读' });
     })
 })
 
