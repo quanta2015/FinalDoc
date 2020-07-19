@@ -19,6 +19,13 @@ class User extends BaseActions {
   //   role:2,    // 0: teacher 1:student 2: manage
   // }
 
+  @observable
+  //站内信
+  msgList = []
+
+  @observable
+  hasUnread = false
+
   @action
   getUser() {
     return this.usr
@@ -70,6 +77,35 @@ class User extends BaseActions {
     }).catch(e => {
       return false;
     })
+  }
+
+  @action
+  async getAllMessages(params) {
+    const r = await this.post(urls.API_SYS_GET_MESSAGES, params)
+    if (r && r.code === 200) {
+      if (r.data) {
+        runInAction(() => {
+          this.msgList = r.data
+        })
+        return r.data
+      }
+    } else {
+      message.error("网络错误")
+    }
+    return r
+  }
+
+  @action
+  async readMessages(params) {
+    const r = await this.post(urls.API_SYS_READ_MESSAGES, params)
+    if (r && r.code === 200) {
+      return true;
+    }
+  }
+
+  @action
+  setReadStatus(hasUnread) {
+    this.hasUnread = hasUnread
   }
 }
 

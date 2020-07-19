@@ -33,17 +33,20 @@ class NavS extends Component {
 
   @computed
   get hasUnread() {
-    return this.props.studentStore.hasUnread
+    return this.props.userStore.hasUnread
   }
 
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
-    this.props.studentStore.getAllMessages({ uid: this.usr.uid }).then(res => {
+    this.props.userStore.getAllMessages({ uid: this.usr.uid }).then(res => {
       if (res.length) {
         res.map(item => {
-          if (item.check_flag === 0) {
-            this.props.studentStore.setReadStatus(true)
-          }
+          item.map(elem => {
+            if (elem.check_flag === 0) {
+              this.props.userStore.setReadStatus(true)
+            }
+          })
+
         })
       }
     })

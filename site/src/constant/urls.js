@@ -14,6 +14,8 @@ export const API_SYS_UPLOAD_FILE = API_SERVER + '/upload'
 export const API_SYS_DOWN_FILE = API_SERVER + '/download'
 //查询签名状态
 export const API_SYS_GET_SIGN_STATE = API_SERVER + '/checkSign'
+export const API_SYS_GET_MESSAGES = API_SERVER + '/getPersonalMessages' //得到所有站内信
+export const API_SYS_READ_MESSAGES = API_SERVER + '/updateMessagesRead' //一键已读
 //上传签名图片
 export const API_SYS_UPLOAD_SIGN = API_SERVER + '/teacher/uploadSign'
 
@@ -64,8 +66,7 @@ export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' //所�
 export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' // 返回当前阶段
 export const API_STU_GET_NOTICE = API_SERVER + '/student/getStudentNotice' //通知列表
 export const API_STU_READ_NOTICE = API_SERVER + '/student/UpdateStudentNotice' //已读通知
-export const API_STU_GET_MESSAGES = API_SERVER + '/student/getStudentMessages' //得到所有站内信
-export const API_STU_READ_MESSAGES = API_SERVER + '/student/updateStudentMessageRead' //一键已读
+
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';

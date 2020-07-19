@@ -80,12 +80,7 @@ class Student extends BaseActions {
     //通知列表 index 未读通知所处位置
     noticeList = { index: null, data: [] }
 
-    @observable
-    //站内信
-    msgList = []
-
-    @observable
-    hasUnread = false
+    
 
     @action
     async getTopInfo(params) {
@@ -340,50 +335,7 @@ class Student extends BaseActions {
         }
     }
 
-    @action
-    async getAllMessages(params) {
-        const r = await this.post(urls.API_STU_GET_MESSAGES, params)
-        if (r && r.code === 200) {
-            if (r.data) {
-                let lst = []
-                r.data.map((item) => {
-                    item.map((e) => {
-                        lst.push({
-                            time: e.time,
-                            context: e.msg_context,
-                            check_flag: e.check_flag
-                        })
-                    })
-                })
-                runInAction(() => {
-                    this.msgList = lst
-                })
-                return lst
-
-                runInAction(() => {
-                    this.msgList = r.data
-                })
-                return r.data
-            }
-
-        } else {
-            message.error("网络错误")
-        }
-        return r
-    }
-
-    @action
-    async readMessages(params) {
-        const r = await this.post(urls.API_STU_READ_MESSAGES, params)
-        if (r && r.code === 200) {
-            return true;
-        }
-    }
-
-    @action
-    setReadStatus(hasUnread) {
-        this.hasUnread = hasUnread
-    }
+    
 }
 
 export default new Student()
