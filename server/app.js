@@ -238,8 +238,26 @@ app.post('/getPersonalAnnouncement', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql, params, res, (r) => {
-        console.log(r);
-        res.status(200).json({ code: 200, data: r, msg: '成功获取所有通知' });
+        if (params['role'] == '2') {
+            var results = [];
+            var manager = [];
+            var teacher = [];
+            r.forEach(element => {
+                if (element['target'] == '3') {
+                    manager.push(element);
+                } else {
+                    teacher.push(element);
+                }
+                delete element.target;
+            });
+            results.push(manager);
+            results.push(teacher);
+            console.log(results);
+            res.status(200).json({ code: 200, data: results, msg: '成功获取所有通知' });
+        } else {
+            console.log(r);
+            res.status(200).json({ code: 200, data: r, msg: '成功获取所有通知' });
+        }
     })
 })
 
