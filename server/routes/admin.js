@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-19 13:41:22
+ * @LastEditTime: 2020-07-19 23:18:43
  */
 
 
@@ -73,6 +73,24 @@ router.post('/getAllFileAddress', async (req, res) => {
     let sql = `CALL PROC_GET_ALL_FILE_INFO`;
     let params = {};
     callProc(sql, params, res, (r) => {
+        r.forEach(element => {
+            switch (element['f_type']) {
+                case 21:
+                    element.f_type = '师生模板';
+                    break;
+                case 22:
+                    element.f_type = '学生模板';
+                    break;
+                case 23:
+                    element.f_type = '教师模板';
+                    break;
+                case 24:
+                    element.f_type = '系主任模板';
+                    break;
+                default:
+                    break;
+            }
+        });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '获取所有文件内容' })
     })
