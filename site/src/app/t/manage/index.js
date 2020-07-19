@@ -124,7 +124,7 @@ export default class Home extends BaseActions {
   render() {
     const { placement, visible, tid } = this.state;
     return (
-      <div className="g-content manage-home" data-component="t-manage-home">
+      <div className="manage-home" data-component="t-manage-home">
 
         {
           this.state.checkBlockState == 1 &&

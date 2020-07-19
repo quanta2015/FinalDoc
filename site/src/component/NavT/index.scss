@@ -24,13 +24,33 @@
   
     .g-info{
       width: 100%;
-      padding: 30px 15px;
       background-color: #666;
       align-content: flex-end;
-  
+
+      .g-info-typeline{
+        background-color: #4caf50de;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        position: relative;
+      }
+
+      .g-info-maj{
+        background-color: red;
+        padding: 2px;
+        font-size: 12px;
+        line-height: 15px;
+        height: 15px;
+        position: absolute;
+        right: 5px;
+      }
+
       div{
+        height: 40px;
         display: flex;
         align-items: center;
+        justify-content: center;
       }
     }
   
