@@ -1,4 +1,5 @@
 import { Component } from 'preact';
+import { route } from 'preact-router';
 import OpActions from '../../../component/ContentT/OpActions';
 
 import { inject, observer } from 'mobx-react';
@@ -11,6 +12,8 @@ import {
 	Space,
 	Button,
 	Table,
+	Divider,
+	Tag,
 } from 'antd';
 
 import {
@@ -25,6 +28,8 @@ export default class Home extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+
+			topicTypes: null,
 			//选题查询变量
 			searchText: '',
 			searchedColumn: '',
@@ -38,11 +43,25 @@ export default class Home extends Component {
 
 	@computed
 	get topicList() {
-		return toJS(this.props.teacherStore.auditTP_topicList);
+		return toJS(this.props.teacherStore.auditOP_topicList);
+	}
+
+	@computed
+	get team() {
+		return toJS(this.props.teacherStore.auditOP_team);
 	}
 
 	componentWillMount() {
-		this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
+		if (!this.usr.id) {
+			route('/')
+		}
+		this.props.teacherStore.AuditOp_getTopicList( {"uid": this.usr.uid} )
+		// this.props.teacherStore.AuditOp_getTeam( {"uid": this.usr.uid} )
+		this.props.teacherStore.getAllTopic().then(()=>{
+			this.setState({
+				topicTypes:this.props.teacherStore.topicTypes
+			})
+		});
 	}
 
 	//选题名称查询
@@ -117,8 +136,8 @@ export default class Home extends Component {
 				title: '选题类型',
 				dataIndex: 'type',
 				key: 'type',
-				filters: this.props.teacherStore.auditTP_topicTypes,
-				onFilter: this.props.teacherStore.AuditTP_topicFilter,
+				filters: this.state.topicTypes,
+				onFilter: this.props.teacherStore.topicFilter,
 			},
 			{
 				title: '课题题目',
@@ -136,6 +155,20 @@ export default class Home extends Component {
 
 		return (
 			<div className="g-content" data-component="t-auditOP">
+				<div class="m-title">
+					<Divider className="u-divider" orientation="left" plain>
+						审核组
+					</Divider>
+					<div class="u-leader-block">
+						组长：<Tag color="#2db7f5">{this.team.leader.name}</Tag>
+					</div>
+					<div>
+						组员：
+						{this.team.member.map((item) => 
+							<Tag color="#2db7f5">{item.name}</Tag>
+						)}
+					</div>
+				</div>
 				<div class="m-main">
 					<Table class="m-main-table" columns={columns} dataSource={this.topicList} />
 				</div>

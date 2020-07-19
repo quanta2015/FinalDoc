@@ -1,9 +1,5 @@
 [data-component="checkBlock"]{
-  .check-block{
-  width: 100%;
-  overflow-y: auto;
-  font-size: 18px;
-}
+
 
 .title{
   padding: 15px 0;
@@ -41,6 +37,7 @@
   transition: all 0.3s;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .stu-body{
@@ -79,7 +76,7 @@
 }
 
 .check-default-pname{
-  margin-left:10px;cursor:default
+  margin-left:20px;cursor:default
 }
 
 .check-pointer-pname{
@@ -95,6 +92,26 @@ margin-left:10px;cursor:pointer
 .check-short-pid{
   display: inline-block;
   margin-left:10px;
-  width:30px
+  width:30px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bolder;
+  color: #336699;
+  position: relative;
+  font-size: 18px;
 }
+
+.float-icon{
+  position: absolute;
+    left: 32px;
+    bottom: 20px;
+    font-size: 14px;
+}
+
+}
+
+.check-block-first{
+  width: 100%;
+  overflow-y: auto;
+  font-size: 18px;
+  padding: 30px 60px;
 }

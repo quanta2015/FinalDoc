@@ -1,0 +1,65 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    text-align: center;
+}
+
+ 
+.g-tol-tbl .ant-table-cell:nth-last-child(7) {
+    width: 210px;
+    text-align: left;
+}
+
+.g-tol-tbl .ant-table-cell:nth-last-child(6) {
+    width: 100px;
+}
+
+.g-tol-tbl .ant-table-cell:nth-last-child(5) {
+    width: 100px;
+}
+
+.g-tol-tbl .ant-table-cell:nth-last-child(4) {
+    width: 120px;
+}
+
+.g-tol-tbl .ant-table-cell:nth-last-child(3) {
+    width: 120px;
+}
+
+.g-tol-tbl .ant-table-cell:nth-last-child(2) {
+    width: 100px;
+}
+
+.g-tol-tbl .ant-table-cell:nth-last-child(1) {
+    width: 100px;
+}
+
+.g-tol-tbl .ant-table-placeholder .ant-table-cell{
+    width: 850px;
+}
+
+ /* Modal */
+ .m-file-mod{
+.filemodal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fm-item {
+    /* width: 284px; */
+    box-sizing: border-box;
+}
+
+.file-btn {
+    margin-bottom: 10px;
+}
+ }

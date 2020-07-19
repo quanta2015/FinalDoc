@@ -1,11 +1,14 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import './ass.css';
+import './ass.scss';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import Item from 'antd/lib/list/Item';
 
 const { Option } = Select;
+
+
 
 const paginationProps = {
     showTotal: ((total) => {
@@ -22,13 +25,7 @@ const paginationProps = {
 export default class Ass extends Component {
     state = {
         selectedRowKeys: [],// Check here to configure the default column
-        // tid,value
-        teacher_info: [],
-        topic_info: [],
-        tea_id: "",
-        tea_name: undefined,
-        visible: false,
-        own: [],
+
         searchText: '',
         searchedColumn: '',
 
@@ -36,6 +33,16 @@ export default class Ass extends Component {
         checklist_info: [],
         // 已分配情况数量,unAudit未分配,unPassed未通过,Passed已通过
         auditCount: {},
+
+        // 点击“详情”,查看该课题任务书内容
+        visible: false,
+        topic_id: 0,
+        topic_type: "目前没传",
+        topic: "",
+        tName: "",
+        task: {},
+        schedule: [],
+        ft: [],
 
     };
 
@@ -51,6 +58,7 @@ export default class Ass extends Component {
 
     async componentDidMount() {
         await this.props.manageStore.getTaskList({ "ide": this.usr.uid });
+
     }
 
 
@@ -103,36 +111,14 @@ export default class Ass extends Component {
         });
     };
 
-    // handleReset = clearFilters => {
-    //     clearFilters();
-    //     this.setState({ searchText: '' });
-    // };
 
-    // selectOnlyTea = (value) => {
-    //     let id
-    //     if (value !== "" && value !== undefined) {
-    //         id = value.split(" ")[0];
-    //     } else {
-    //         id = value
-    //         // 清空选择课题列表
-    //         this.setState({
-    //             selectedRowKeys: [],
-                 
-    //         })
-    //     }
-        
-    // }
 
     clear = () => {
         this.setState({
             selectedRowKeys: [],
         })
     }
-    
-    // onSelectChange = (selectedRowKeys) => {
-    //     console.log('selectedRowKeys changed: ', selectedRowKeys);
-    //     this.setState({ selectedRowKeys });
-    // };
+
 
 
     // 提交手动分配
@@ -141,32 +127,52 @@ export default class Ass extends Component {
             message.info("还未选择课题！")
             return;
         }
-        let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }
+        let temp = { "topic_id": this.state.selectedRowKeys }
         console.log(temp)
-        let res = await this.props.manageStore.allocateTopic(temp);
-        if (res && res.code === 200) {
-            message.info("分配成功！")
-            await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-            await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
-            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
-           
-        } else {
-            message.info("分配失败！请重试")
-        }
+        // let res = await this.props.manageStore.allocateTopic(temp);
+        // if (res && res.code === 200) {
+        //     message.info("分配成功！")
+        //     await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
+        //     await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+        //     await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+
+        // } else {
+        //     message.info("分配失败！请重试")
+        // }
         this.setState({
             selectedRowKeys: [],
-            tea_id: "",
-            tea_name: undefined,
+
         })
     }
 
-    
+    showModal = async (record) => {
+        // console.log(toJS(record))
+        let task = await this.props.manageStore.getTaskContent({ "pid": record.key, "role": this.usr.role })
+        console.log(task)
+        this.setState({
+            visible: true,
+            topic_id: record.key,
+            topic: record.topic,
+            tName: record.name,
+            task: toJS(task),
+            schedule: toJS(task.schedule),
+            ft: toJS(task.ft),
+        }, () => {
+            console.log(this.state.schedule)
+        });
+    };
+
+    handleCancel = e => {
+        this.setState({
+            visible: false,
+        });
+    };
 
     render() {
         const { selectedRowKeys } = this.state;
 
         const rowSelection = {
-             
+
             selectedRowKeys,
             // onChange: this.onSelectChange,
             onChange: (selectedRowKeys) => {
@@ -175,29 +181,20 @@ export default class Ass extends Component {
 
             },
             getCheckboxProps: record => ({
-                disabled: record.name === '谢琪', // Column configuration not to be checked
-
+                disabled: record.tag === "通过" || record.tag === "未提交", // Column configuration not to be checked
             }),
             selections: [
-                Table.SELECTION_ALL,
-                Table.SELECTION_INVERT,
+                // Table.SELECTION_ALL,
+                // Table.SELECTION_INVERT,
                 {
                     key: 'odd',
-                    text: 'Select Odd Row',
-                    onSelect: changableRowKeys => {
-                        let newSelectedRowKeys = [];
-                        newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-                            if (index % 2 !== 0) {
-                                return false;
-                            }
-                            return true;
-                        });
-                        console.log(newSelectedRowKeys,"new")
-                        this.setState({ selectedRowKeys: newSelectedRowKeys });
+                    text: '全选待审核任务书',
+                    onSelect: () => {
+                        this.setState({ selectedRowKeys: toJS(this.reviewPaper.to_audit_list) });
                     },
                 },
             ],
-            
+
         };
 
 
@@ -223,33 +220,101 @@ export default class Ass extends Component {
                 ),
             },
             {
-                title: '操作',
-                dataIndex: '',
-                key: 'topic',
-                render: (text, record) => (
-                    <Space size="middle">
-                        <a > 下载</a>
-                    </Space>
-                ),
+                title: '状态',
+                dataIndex: 'tag',
+                key: 'tag',
+                filters: [
+                    { text: '待审核', value: '待审核' },
+                    { text: '未提交', value: '未提交' },
+                    { text: '通过', value: '通过' },
+
+                ],
+                filterMultiple: false,
+                onFilter: (value, record) => record.tag === value,
+                render: tag => {
+                    // console.log(result);
+                    let color = "";
+                    if (tag === "待审核") {
+                        color = "blue"
+                    }
+                    else if (tag === "未提交") {
+                        color = "red";
+                    }
+                    else if (tag === "通过") {
+                        color = "green"
+                    }
+                    // console.log(tag);
+                    return (
+                        <Tag color={color} >
+                            {tag}
+                        </Tag>
+                    )
+                }
+
             },
+            {
+                title: '任务书详情',
+                key: 'action',
+                render: (text, record) => {
+                    if (record.tag !== "未提交") {
+                        return (
+                            <Space size="middle">
+                                <a onClick={() => this.showModal(record)}>查看</a>
+                            </Space>
+                        )
+                    } else {
+                        return (
+                            <Space size="middle">
+                                暂无
+                            </Space>
+                        )
+                    }
+                }
+                // render: (text, record) => (
+
+                //     <Space size="middle">
+                //         <a onClick={() => this.showModal(record)}>查看</a>
+                //     </Space>
+                // ),
+            },
+
         ];
         return (
-            <div>
+            <div class="g-ass">
 
-                <div className="ass_top_box">
+                <div className="m-ass_top_box">
 
-                    <div className="ass_noTopicNum">{this.reviewPaper.task_info.length}篇未审核
+                    <div className="m-ass_noTopicNum">{this.reviewPaper.to_audit_list.length}篇未审核
                             已选{selectedRowKeys.length}篇</div>
-                    <div className="ass_head_btn">
-                        <Button onClick={this.clear} className="ass_clear">重置</Button>
-                        <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                    <div className="m-ass_head_btn">
+                        {
+                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc===0) &&
+                            <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc === 0) &&
+                            <Button type="primary" disabled>通过</Button>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length > 0) &&
+                            <Button onClick={this.clear} className="ass_clear">重置</Button>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length > 0) &&
+                            <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                        }
+                        {
+                            (this.reviewPaper.suc === 1) &&
+                            <Button type="primary" onClick={this.openDefense}>进入开题答辩阶段</Button>
+                        }
+
                     </div>
                 </div>
 
-                <div className="ass_table">
+                <div className="m-ass_table">
                     <Table
                         onChange={this.handleChange}
-                        
+
                         // rowSelection={rowSelection}
                         rowSelection={{
                             // type: selectionType,
@@ -258,33 +323,86 @@ export default class Ass extends Component {
                         columns={columns}
                         dataSource={this.reviewPaper.task_info}
                         pagination={paginationProps}
-                        // onRow={(record) => {
-                        //     return {
-                        //         onClick: () => {
-                        //             console.log(record)
-                        //             this.state.own = record
-                        //             console.log(this.state.own)
-                        //         }
-                        //     }
-                        // }}
+                    // onRow={(record) => {
+                    //     return {
+                    //         onClick: () => {
+                    //             console.log(record)
+                    //             this.state.own = record
+                    //             console.log(this.state.own)
+                    //         }
+                    //     }
+                    // }}
                     />
                 </div>
 
                 <Modal
-                    title="查看详情"
+                    title={null}
+                    closable={false}
                     visible={this.state.visible}
-                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
-                    footer={null}
+                    // footer={null}
+                    footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
                     width={900}
+
+                    className="g-mod-task"
                 >
-                    <Descriptions
-                        title=""
-                        bordered
-                    >
-                        <Descriptions.Item label="课题名称" span={3}>{this.state.own.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={3}>{this.state.own.content}</Descriptions.Item>
-                    </Descriptions>
+                    <div class="m-dtl-mod">
+                        <div class="m-title">
+                            <div class="u-type">{this.state.topic_type}</div>
+                            <Tooltip title={this.state.topic}>
+                                <div class="u-topic">{this.state.topic}</div>
+                            </Tooltip>
+                            <div class="u-tea-name">{this.state.tName}</div>
+                        </div>
+                        <div class="m-cont">
+                            <div class="m-f-title">一、内容和要求</div>
+                            <div class="m-s-title">1．总体目标及性能（参数）要求</div>
+                            <div className="m-cont-item">
+                                {this.state.task.target}
+                            </div>
+                            <div class="m-s-title">2．研究内容及拟采用的技术路线</div>
+                            <div class="m-s-title">研究内容：</div>
+                            <div className="m-cont-item">
+                                {this.state.task.learn_content}
+                            </div>
+                            <div class="m-s-title">技术路线：</div>
+                            <div className="m-cont-item">
+                                {this.state.task.technical_route}
+                            </div>
+                            <div class="m-s-title">3．参考文献</div>
+                            <div className="m-cont-item">
+                                {this.state.task.reference}
+                            </div>
+                            <div class="m-f-title">二、起止日期及进度安排</div>
+                            <div class="m-s-title">起止日期：</div>
+                            <div className="m-cont-item">
+                                <div class="u-time">
+                                    <div class="u-num">{this.state.ft[0]}</div>
+                                    <div>至</div>
+                                    <div class="u-num">{this.state.ft[1]}</div>
+                                </div>
+                            </div>
+                            <div class="m-s-title">进度安排：</div>
+                              
+                                {this.state.schedule.map((item) => {
+                                    return (
+                                        <div className="m-cont-item">
+                                            <div className="list">
+                                            <div class="u-time">
+                                                <div class="u-num">{item.time[0]}</div>
+                                                <div>至</div>
+                                                <div class="u-num">{item.time[1]}</div>
+                                            </div>
+                                            <div>{item.content}</div>
+
+                                        </div>
+                                        </div>
+                                    )
+                                })}
+                             
+                             
+                        </div>
+                    </div>
                 </Modal>
 
             </div>

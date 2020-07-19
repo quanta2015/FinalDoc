@@ -4,7 +4,7 @@ import { computed, toJS } from 'mobx';
 import { Table, Space, Popconfirm, Modal, Button, Tooltip, Input, message, Tag } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { FILE_DOWNLOAD_TYPE } from '../../../constant/data'
-import "./totalSchedule.css"
+import "./totalSchedule.scss"
 
 const paginationProps = {
 	showTotal: ((total) => {
@@ -125,20 +125,25 @@ export default class TotalSchedule extends Component {
 		});
 	};
 
-	downloadFile = (fileurl,sname,tname) => {
+	downloadFile = (fileurl, sname, tname) => {
 		let params = { file: fileurl, id: sname, name: tname };
 		console.log(params)
-        this.props.userStore.downloadFile(params)
-        .then(r=>{
-			message.success('下载成功！');
-            if(!r){
-                message.error('网络错误');
-            }
-        }) 
+		this.props.userStore.downloadFile(params)
+			.then(r => {
+				message.success('下载成功！');
+				if (!r) {
+					message.error('网络错误');
+				}
+			})
 	}
-	
-	test = (a,b,c) => {
-		console.log(a,b,c)
+
+	test = (a, b, c) => {
+		console.log(a, b, c)
+	}
+
+	prevFile = (file) => {
+		let param = { file: file };
+		this.props.manageStore.previewFile(param);
 	}
 
 	columns = [
@@ -218,7 +223,7 @@ export default class TotalSchedule extends Component {
 	render() {
 		return (
 			<div>
-				<div class="totalSchedule_table">
+				<div class="g-tol-tbl">
 					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.stu_list)} />
 				</div>
 				<Modal
@@ -227,24 +232,28 @@ export default class TotalSchedule extends Component {
 					onCancel={this.handleCancel}
 					footer={null}
 					width={600}
+					className="m-file-mod"
 				>
-					<div className="filemodal">
+					<div className="m-filemodal">
 						{FILE_DOWNLOAD_TYPE.map((item) =>
-							<div className="fm_item">
+							<div className="fm-item">
 								<h3 className="">{item.stage}</h3>
 								{item.file.map((item) =>
-									<div className="file_btn">
-										{(this.state.row_file[item.type] === null) && 
+									<div className="file-btn">
+										{(this.state.row_file[item.type] === null) &&
 											<Tooltip placement="top" title="未上传该文件">
 												<Button icon={<DownloadOutlined />} size="small" disabled>
 													{item.name}
 												</Button>
 											</Tooltip>
 										}
-										{(this.state.row_file[item.type] !== null) && 
-											<Button icon={<DownloadOutlined />} size="small" onClick={() => this.downloadFile(this.state.row_file[item.type],this.state.row_name,item.name)}>
-												{item.name}
-											</Button>
+										{(this.state.row_file[item.type] !== null) &&
+											<div>
+												<Button icon={<DownloadOutlined />} size="small" onClick={() => this.downloadFile(this.state.row_file[item.type], this.state.row_name, item.name)}>
+													{item.name}
+												</Button>
+												<span onClick={() => this.prevFile(this.state.row_file[item.type])}>预览</span>
+											</div>
 										}
 									</div>
 								)}

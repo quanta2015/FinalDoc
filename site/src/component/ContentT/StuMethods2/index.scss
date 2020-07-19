@@ -1,0 +1,101 @@
+[data-component="stumethods"]{
+
+
+  .stu-info{
+    position: absolute;
+    bottom: 1px;
+    height: 40px;
+    margin: 0;
+    width: 100%;
+    background-color: #666;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+  }
+
+  .stumethods{
+    position: relative;
+    height: 100%;
+  }
+
+
+  .stumethods-pd{
+    padding: 30px;
+  }
+
+  .ant-tabs-large > .ant-tabs-nav .ant-tabs-tab{
+    padding: 10px 0;
+    font-size: 14px;
+  }
+  
+  .note-block{
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  .note-block>.ant-card>.ant-card-body{
+    padding: 5px 10px;
+    word-wrap: break-word;
+  }
+
+  .one-of-three{
+    width: 33%;
+  }
+
+  .f-title{
+    padding: 5px 10px;
+  }
+  
+  .file-block{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 10px;
+    padding: 3px;
+  }
+  
+  .card-inner{
+    display: flex;
+  }
+  
+  .file-block-row{
+    display: flex;
+    width: 250px;
+    flex-wrap: wrap;
+  }
+  
+  .file-block-row>.g-file{
+    margin: 0 5px;
+  }
+  
+  .ant-card-small > .ant-card-head{
+    padding: 0;
+  }
+  
+  .ant-card-body{
+    padding: 10px 0;
+  }
+
+  .tab-title{
+    margin-left:9px
+  }
+
+  .note-title{
+    width: 110px;
+  }
+
+  .note-info-span{
+    margin: 10px;
+  }
+
+  .ml-long{
+    margin-left: 20px;
+  }
+
+  .mr-long{
+    margin-right: 20px;
+  }
+}
+

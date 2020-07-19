@@ -1,0 +1,136 @@
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    /* width: 200px; */
+    text-align: center;
+}
+
+.ant-table-selection-column {
+    width: 60px;
+}
+
+/* .head_btn {
+    text-align: center;
+    margin-top: 10px;
+} */
+.g-ass{
+    .m-ass_head_btn .ass_clear {
+        margin-right: 15px;
+        
+    }
+
+    .m-ass_top_box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .m-ass_table .ant-table-cell:nth-last-child(4) {
+        // width: 250px;
+        width: 200px;
+    }
+
+    .m-ass_table .ant-table-cell:nth-last-child(3) {
+        // width: 240px;
+        width: 300px;
+    }
+
+    
+
+    .m-ass_table .ant-table-cell:nth-last-child(2) {
+        // width:300px;
+        width: 150px;
+    }
+
+    .m-ass_table .ant-table-cell:nth-last-child(1) {
+        // width: 250px;
+        width: 150px;
+    }
+
+    .m-ass_table .ant-table-placeholder .ant-table-cell{
+        width: 850px;
+    }
+
+    .m-ass_noTopicNum {
+        
+        
+        font-size: 16px;
+        font-weight: bold;
+    
+    }
+}
+
+.g-mod-task {
+    white-space: pre-line;
+    margin-top: -80px;
+    .m-title{
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px ;
+
+        .u-type{
+            color:white;
+            font-size: 14px;
+            padding: 2px 6px;
+            background-color: orangered;
+        }
+        .u-topic{
+            max-width: 600px;
+            white-space:nowrap;
+            overflow:hidden;    
+            text-overflow:ellipsis;
+            font-weight: bolder;
+            font-size: 24px;
+            color:#999;
+        }
+        .u-tea-name{
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+
+    .m-cont {
+         
+        margin-right: -23px;
+        
+        padding:20px ;
+        max-height: 450px;
+        overflow:auto;
+    .m-f-title{
+        margin: 20px 0;
+        font-size: 20px;
+        font-weight: bolder;
+    }
+    .m-s-title{
+         margin: 10px 0;
+        text-indent:2em;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .m-cont-item{
+        padding-left: 30px;
+        .u-time{
+            display: flex;
+            flex-direction: row;
+            .u-num{
+                font-size: 17px;
+                 color:orangered;
+                font-family: Georgia;
+            }
+        }
+        .list{
+        padding-bottom: 10px;     
+    }  
+    }
+    }
+}

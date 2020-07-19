@@ -347,20 +347,24 @@ export default class ManualAllocate extends Component {
                 <Modal
                     title="查看详情"
                     title={null}
-                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
-                        fontSize: '28px',
-                    }} />}
+                    // closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+                    //     fontSize: '28px',
+                    // }} />}
                     visible={this.state.visible}
-                    onOk={this.handleOk}
+                    closable={false}
+                    // onOk={this.handleOk}
+                    footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
                     onCancel={this.handleCancel}
-                    footer={null}
+                    // footer={null}
                     width={900}
-                    className="g-mod-close"
+                    className="g-mod-ma"
                 >
                     <div class="m-dtl-mod">
                         <div class="m-title">
                             <div class="u-type">{this.state.own.type}</div>
-                            <div class="u-topic">{this.state.own.topic}</div>
+                            <Tooltip title={this.state.own.topic}>
+                                <div class="u-topic">{this.state.own.topic}</div>
+                            </Tooltip>
                             <div class="u-tea-name">{this.state.own.tName}</div>
                         </div>
                         <div class="m-cont">

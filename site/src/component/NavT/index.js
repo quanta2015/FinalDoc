@@ -1,76 +1,95 @@
 import { Component } from 'preact';
 import { route } from 'preact-router';
 import './index.scss'
+
+import { CaretRightOutlined } from '@ant-design/icons';
 import more from './more.svg'
-import { MENU_MAIN_T,MENU_MAIN_T_AUDIT } from '../../constant/data'
+import { MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import BaseActions from '../BaseActions'
 import * as urls from '../../constant/urls'
 
 
-@inject('userStore')
+@inject('userStore','teacherStore')
 @observer
 class NavT extends BaseActions {
-	constructor(props) {
-		super(props)
+  constructor(props) {
+    super(props)
     this.state = {
       cur: 0,
-      checkList:[]
+      checkList: [],
     }
-	}
+  }
 
-  doMenu = (path,i)=>{
-    this.setState({cur:i},()=>{ 
+  doMenu = (path, i) => {
+    this.setState({ cur: i }, () => {
       route(path)
     })
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     let list = [];
     //post请求获取数据，看length是否为0.如果不为0，则显示该tab
-    let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST,{"uid": this.usr.uid})
-    if(x.data.length>0){
+    let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, { "uid": this.usr.uid })
+    if (x.data.length > 0) {
       list.push(MENU_MAIN_T_AUDIT[0])
     }
-
-    this.setState({checkList:list})
+    
+    list.push(MENU_MAIN_T_AUDIT[1])
+    this.setState({ checkList: list })
   }
 
   @computed
   get usr() {
-      return this.props.userStore.usr;
+    return this.props.userStore.usr;
   }
 
-	render() {
-    let cur = this.state.cur
+  currStage = {
+    name: '选题阶段',
+    index: 1,
+    stage: ['发布课题', '选择课题','审核命题', '双选成功']
+}
+
+  render() {
+    let cur = this.state.cur;
+    let status = this.state.status;
     return (
       <div data-component="navt">
-      <div className="g-nav" >
-        <div class="g-info">
-          <div><span>身份：</span>教师</div>
-          <div><span>姓名：</span>{this.usr.name}</div>
-          <div><span>工号：</span>{this.usr.uid}</div>
-          <div><span>所在系：</span>{this.usr.maj}</div>
-          
-        </div>
-        <div className="g-menu">
-          {MENU_MAIN_T.map((item,i)=>
-            <div className={(cur==i)?'m-menu-item active':'m-menu-item'} key={i} onClick={this.doMenu.bind(this,item.path,i)}>
-              <img src={item.icon} /><span className="m-menu-span">{item.title}</span> 
+        <div className="g-nav" >
+          <div className="g-menu">
+            <div className="g-home-title" onClick={() => { route('/t') }}>
+              毕业设计命题系统
             </div>
-          )}<br/>
-          {this.state.checkList.map((item,i)=>
-            <div 
-            className={(cur==i+2)?'m-menu-item active':'m-menu-item'} 
-            key={i+2} 
-            onClick={this.doMenu.bind(this,item.path,i+2)}>
-              <img src={item.icon} /><span className="m-menu-span">{item.title}</span> 
+            <div className="g-st">
+              {this.currStage.stage.map((item, id) => 
+                <span className={id === this.currStage.index ? 'm-st active' : 'm-st'}>{item}</span>
+              )}
             </div>
-          )}
+            {MENU_MAIN_T.map((item, i) =>
+              <div className={(cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
+                <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+              </div>
+            )}
+            {this.state.checkList.map((item, i) =>
+              <div
+                // 这个+1是为了和最上面的毕业设计管理错开，各端需根据自己情况调整
+                className={(cur == i + 1) ? 'm-menu-item active' : 'm-menu-item'}
+                key={i + 1}
+                onClick={this.doMenu.bind(this, item.path, i + 1)}>
+                <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+              </div>
+            )}
+          </div>
+          <div className="g-info">
+            <div className="g-info-typeline">
+              <div className="g-info-type">教师</div>
+              <div className="g-info-maj">{this.usr.maj}</div>
+            </div>
+            <div>{this.usr.uid}&nbsp;&nbsp;&nbsp;{this.usr.name}</div>
+          </div>
+
         </div>
-        
-      </div>
       </div>
     )
   }

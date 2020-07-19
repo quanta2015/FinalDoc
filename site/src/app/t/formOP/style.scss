@@ -1,0 +1,23 @@
+[data-component="t-formOP"]{
+    overflow: auto;
+
+    .m-footer{
+        margin-top: 16px;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    .u-item-describe{
+        width: 670px;
+    }
+
+    .u-intro h3{
+        font-weight: bold;
+    }
+
+    .u-reply-score{
+        margin-top: 5px;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+}

@@ -2,6 +2,7 @@ import { Component } from 'preact';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import Announcement from '../../component/Announcement';
+import { route } from 'preact-router';
 import "./style.scss"
 
 @inject('userStore')

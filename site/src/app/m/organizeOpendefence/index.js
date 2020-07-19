@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable, toJS } from 'mobx'
 import Defense from './defense.js'
 import DivideDetail from './dividedetail.js'
-import "./style.css";
+import "./style.scss";
 
 const { TabPane } = Tabs;
 
@@ -36,7 +36,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="main">
+      <div className="g-ogp">
         <Tabs defaultActiveKey="1" >
           <TabPane tab="添加答辩小组" key="1">
             <Defense />

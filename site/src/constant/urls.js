@@ -42,7 +42,7 @@ export const API_MAN_POST_JUDGETOPIC = API_SERVER + '/manage/judgeTopic'
 // 组织开题答辩模块
 export const API_MAN_POST_OGP_TOPICLIST = API_SERVER + '/openGp/topicList'
 export const API_MAN_POST_OGP_TEACHERLIST = API_SERVER + '/openGp/teacherList'
-export const API_MAN_POST_OGP_AUTOALLOCATETOPIC = API_SERVER + '/openGp/randGroup'
+export const API_MAN_POST_OGP_AUTOALLOCATETOPIC = API_SERVER + '/openGp/tenTopic'
 export const API_MAN_POST_OGP_MANUALALLOCATETOPIC = API_SERVER + '/openGp/handleGroup'
 export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
@@ -104,14 +104,24 @@ export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicF
 export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
 //获取所有选题类型(get)
 export const API_SYS_GET_ALL_TYPE = API_SERVER + '/teacher/getAllType'
+//保存任务书
+export const API_TEACHER_SAVE_TASK = API_SERVER+'/teacher/saveTask'
+//获取任务书
+export const API_TEACHER_GET_TASK = API_SERVER + '/teacher/getTask'
+//是否可以发布课题
+export const API_TEACHER_CAN_PUBLISH = API_SERVER + '/teacher/canPublish'
+
 
 // 任课教师-初期审核
+export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';// 获取审核命题列表
+export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES = API_SERVER + '/auditTp/checkUpdateYes';// 提交通过命题审核
+export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_NO = API_SERVER + '/auditTp/checkUpdateNo';// 提交未通过命题审核
+export const API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID = API_SERVER + '/auditTp/searchTopicById';// 查询命题列表
 
-// 获取审核命题列表
-export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';
-// 提交通过命题审核
-export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_YES = API_SERVER + '/auditTp/checkUpdateYes';
-// 提交未通过命题审核
-export const API_SYS_TEACHER_AUDIT_TP_CHECK_UPDATE_NO = API_SERVER + '/auditTp/checkUpdateNo';
-// 查询命题列表
-export const API_SYS_TEACHER_AUDIT_TP_SEARCH_TOPIC_BY_ID = API_SERVER + '/auditTp/searchTopicById';
+// 任课教师-开题审核
+export const API_SYS_TEACHER_AUDIT_OP_GET_TOPIC_LIST = API_SERVER + '/auditOp/getTopicList';// 获取开题审核选题列表
+export const API_SYS_TEACHER_AUDIT_OP_GET_TEAM = API_SERVER + '/auditOp/getTeam';// 获取当前教师的审核小组
+export const API_SYS_TEACHER_AUDIT_OP_GET_AUDIT_PERMISSION = API_SERVER + '/auditOp/getAuditPermission';// 判断是否为审核组教师
+export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM = API_SERVER + '/auditOp/submitTutorForm';// 提交指导教师审核表单
+export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM = API_SERVER + '/auditOp/submitTeamForm';// 提交审核组审核表单
+
