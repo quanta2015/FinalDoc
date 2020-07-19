@@ -273,6 +273,44 @@ app.post('/updateAnnouncementRead', async(req, res) => {
     })
 })
 
+// 各端共用接口：获取所有站内信（未读 + 已读）
+// params: { uid: str }
+app.post('/getPersonalMessages', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_MESSAGES(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql,params, res, (r) => {
+        var all = [];
+        var time = [];
+        r.forEach(element => {
+            if (time.indexOf(element['time']) == -1) {
+                var day = [];
+                time.push(element['time']);
+                day.push(element);
+                all.push(day);
+            } else {
+                all.forEach(ele => {
+                    if (ele[0]['time'] == element['time']) {
+                        ele.push(element);
+                    }
+                });
+            }
+        });
+        console.log(all);
+        res.status(200).json({ code: 200, data: all, msg: '成功获取所有站内信' });
+    })
+})
+
+// 各端共用接口：将未读的站内信置为已读
+// params: { uid: str }
+app.post('/updateMessagesRead', async(req, res) => {
+    let sql = `CALL PROC_UPDATE_MESSAGES_READ(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '成功获取将未读站内信置为已读' });
+    })
+})
 
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
