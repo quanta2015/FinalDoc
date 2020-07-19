@@ -239,26 +239,34 @@ app.post('/getPersonalAnnouncement', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql, params, res, (r) => {
-        if (params['role'] == 2) {
-            var results = [];
-            var manager = [];
-            var teacher = [];
-            r.forEach(element => {
-                if (element['target'] == '3') {
-                    manager.push(element);
-                } else {
-                    teacher.push(element);
-                }
-                delete element.target;
-            });
-            results.push(manager);
-            results.push(teacher);
-            console.log(results);
-            res.status(200).json({ code: 200, data: results, msg: '成功获取所有通知' });
-        } else {
-            console.log(r);
-            res.status(200).json({ code: 200, data: r, msg: '成功获取所有通知' });
-        }
+        // if (params['role'] == '2') {
+        //     var results = [];
+        //     var manager = [];
+        //     var teacher = [];
+        //     r.forEach(element => {
+        //         if (element['target'] == '3') {
+        //             manager.push(element);
+        //         } else {
+        //             teacher.push(element);
+        //         }
+        //         delete element.target;
+        //     });
+        //     results.push(manager);
+        //     results.push(teacher);
+        //     console.log(results);
+        //     r = results;
+        // }
+        var read = [];
+        var unread = [];
+        r.forEach(element => {
+            if (element['check_flag'] == 1) {
+                read.push(element);
+            } else {
+                unread.push(element);
+            }
+        });
+        var reads = [read, unread];
+        res.status(200).json({ code: 200, data: reads, msg: '成功获取已读与未读公告' });
     })
 })
 
