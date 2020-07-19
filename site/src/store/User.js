@@ -26,6 +26,10 @@ class User extends BaseActions {
   @observable
   hasUnread = false
 
+  @observable
+  //通知列表 index 未读通知所处位置
+  noticeList = { index: null, data: [] }
+
   @action
   getUser() {
     return this.usr
@@ -106,6 +110,32 @@ class User extends BaseActions {
   @action
   setReadStatus(hasUnread) {
     this.hasUnread = hasUnread
+  }
+
+  @action
+  // r.data: [[{已读公告1},{}...],[{未读公告1},{}...]]
+  async getNoticeList() {
+    let params = { uid: this.usr.uid, role: this.usr.role };
+    const r = await this.post(urls.API_SYS_GET_NOTICE, params);
+    if (r && r.code === 200 && r.data) {
+      let unreadIndex = r.data[1].length - 1;
+      runInAction(() => {
+        this.noticeList.index = unreadIndex;
+        this.noticeList.data = [...r.data[1], ...r.data[0]];
+      })
+      return (r.data[1].length + r.data[0].length)
+    } else {
+      // message.error("网络错误")
+    }
+  }
+
+  @action
+  async readNotice(aid) {
+    let params = { uid: this.usr.uid, ann_id: aid }
+    const r = await this.post(urls.API_SYS_READ_NOTICE, params);
+    if (r && r.code === 200) {
+      return true;
+    }
   }
 }
 

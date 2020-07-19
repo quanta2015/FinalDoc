@@ -74,13 +74,7 @@ class Student extends BaseActions {
 
     @observable
     //指导日志
-    insLog = []
-
-    @observable
-    //通知列表 index 未读通知所处位置
-    noticeList = { index: null, data: [] }
-
-    
+    insLog = [] 
 
     @action
     async getTopInfo(params) {
@@ -310,32 +304,6 @@ class Student extends BaseActions {
         }
         return r
     }
-
-    @action
-    // r.data: [[{已读公告1},{}...],[{未读公告1},{}...]]
-    async getNoticeList(params) {
-        const r = await this.post(urls.API_STU_GET_NOTICE, params);
-        if (r && r.code === 200 && r.data) {
-            let unreadIndex = r.data[1].length - 1;
-            runInAction(() => {
-                this.noticeList.index = unreadIndex;
-                this.noticeList.data = [...r.data[1], ...r.data[0]];
-            })
-            return (r.data[1].length + r.data[0].length)
-        } else {
-            // message.error("网络错误")
-        }
-    }
-
-    @action
-    async readNotice(params) {
-        const r = await this.post(urls.API_STU_READ_NOTICE, params);
-        if (r && r.code === 200) {
-            return true;
-        }
-    }
-
-    
 }
 
 export default new Student()

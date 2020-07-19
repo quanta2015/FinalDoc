@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import Announcement from '../../component/Announcement';
 import "./style.scss"
 
 @inject('userStore')
@@ -20,7 +21,9 @@ export default class Teacher extends Component {
 		return (
 
       <div className="g-t">
-        <div className="m-t">teacher info</div>
+        <div className="m-t">
+          <Announcement pageSize={12} height={550} />
+        </div>
       </div>
     );
 	}
