@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-20 23:07:43
+ * @LastEditTime: 2020-07-20 23:14:34
  */
 
 
@@ -65,7 +65,7 @@ router.post('/delOneAnnounce', async (req, res) => {
 })
 
 /*
- * @description: 获取所有文件地址
+ * @description: 获取所有模板文件
  * @param {} 
  * @return: 
  */
@@ -77,9 +77,11 @@ router.post('/getAllFileAddress', async (req, res) => {
             switch (element['f_type']) {
                 case 1:
                     element.f_type = '公告文件';
+                    element.f_sub_type = 'null';
                     break;
                 case 21:
                     element.f_type = '师生模板';
+                    element.f_sub_type = 'null';
                     break;
                 case 221:
                     element.f_type = '学生模板';
@@ -95,12 +97,15 @@ router.post('/getAllFileAddress', async (req, res) => {
                     break;
                 case 23:
                     element.f_type = '教师模板';
+                    element.f_sub_type = 'null';
                     break;
                 case 24:
                     element.f_type = '系主任模板';
+                    element.f_sub_type = 'null';
                     break;
                 case 3:
                     element.f_type = '评分模板文件';
+                    element.f_sub_type = 'null';
                     break;
                 default:
                     break;
