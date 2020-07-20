@@ -320,6 +320,29 @@ app.post('/updateMessagesRead', async(req, res) => {
     })
 })
 
+// 各端共用接口：站内信发布（一对一）
+// params: { from: str, to: str, context: str }
+app.post('/insertMessageToOne', async(req, res) => {
+    let sql = `CALL PROC_INSERT_MESSAGE_TO_ONE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '成功发布一对一站内信' });
+    })
+})
+
+// 各端共用端口：站内信发布（一对多）
+// params: { from: str, to: str, context: str}
+// to: admin 管理员; allTea 全体教师; audTea 本系审核教师; topTea 本系课题对应教师; allStu 全体学生; topStu 本系学生
+app.post('/insertMessageToMany', async(req, res) => {
+    let sql = `CALL PROC_INSERT_MESSAGE_TO_MANY(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '成功发布一对多站内信' });
+    })
+})
+
 app.listen(port, () => console.log(`> Running on localhost:${port}`))
 
 module.exports = app;
