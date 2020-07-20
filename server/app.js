@@ -310,7 +310,7 @@ app.post('/getPersonalMessages', async(req, res) => {
 })
 
 // 各端共用接口：将未读的站内信置为已读
-// params: { uid: str }
+// params: { id: str }
 app.post('/updateMessagesRead', async(req, res) => {
     let sql = `CALL PROC_UPDATE_MESSAGES_READ(?)`;
     let params = req.body;
