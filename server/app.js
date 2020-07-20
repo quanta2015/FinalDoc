@@ -338,7 +338,7 @@ app.post('/insertMessageToMany', async(req, res) => {
     let sql = `CALL PROC_INSERT_MESSAGE_TO_MANY(?)`;
     let params = req.body;
     console.log(params);
-    callProc(sql, params, res, (r) => {
+    callProc_N(sql, params, 1, res, (r) => {
         res.status(200).json({ code: 200, data: r, msg: '成功发布一对多站内信' });
     })
 })
