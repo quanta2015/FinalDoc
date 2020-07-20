@@ -121,3 +121,5 @@ export const API_ADMIN_UPLOAD_ANN = API_SERVER + '/admin'+'/insertAnnouncement'
 export const API_ADMIN_INSERT_FILE_RECORD = API_SERVER + '/admin'+'/insertFileTemplate'
 //根据通知id获取通知具体内容
 export const API_ADMIN_CALL_ANN_DETAIL = API_SERVER + '/admin'+'/getAnnouncementDetails'
+//管理端文件下载
+export const API_ADMIN_DOWNLOAD_FILE = API_SERVER + '/admin'+'/admindownload'

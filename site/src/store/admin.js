@@ -11,7 +11,7 @@ import BaseActions from "../component/BaseActions";
 import { observable, action, runInAction } from "mobx";
 import * as urls from "../constant/urls";
 import { message } from "antd";
-
+import axios from 'axios'
 class admin extends BaseActions {
   @observable
   announceManage = {
@@ -119,6 +119,31 @@ class admin extends BaseActions {
       message.error("网络错误");
     }
     return r;
+  }
+  @action
+  //example: {file: './upload/aaa.doc', id: '1234', name: '开题报告'}
+  //action: 下载aaa.doc文件，重命名为 1234_开题报告.doc
+  async adminDownload(params) {
+    return await axios({
+      url: urls.API_ADMIN_DOWNLOAD_FILE,
+      method: 'POST',
+      responseType: 'blob',
+      data: params
+    }).then(r => {
+      let type = r.headers['content-type'];
+      let data = new Blob([r.data], {
+        type: type
+      })
+      let ext = params.file.split('.').slice(-1);
+      let blobUrl = window.URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.download = `${params.name}.${ext}`;
+      a.href = blobUrl;
+      a.click();
+      return true;
+    }).catch(e => {
+      return false;
+    })
   }
   
 }

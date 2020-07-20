@@ -21,7 +21,8 @@ import {
   Upload,
   Tooltip,
   message,
-  Result
+  Result,
+  Popover,
 } from "antd";
 import {
   UploadOutlined,
@@ -30,6 +31,7 @@ import {
   LoadingOutlined,
   CheckOutlined,
   CloseOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import "./index.scss";
 import FileUpload from "../../../../component/FileUpload";
@@ -50,6 +52,7 @@ export default class fileManage extends Component {
     fileName: null,
     fillnameUpdate: false,
     fileLaunchSucc: false,
+    stu_selected: false,
   };
   @computed
   get usr() {
@@ -63,7 +66,6 @@ export default class fileManage extends Component {
     this.setState({
       fileLaunchSucc: false,
       modalVisiable: false,
-      
     });
   };
   handleModalCancel = () => {
@@ -142,13 +144,8 @@ export default class fileManage extends Component {
     }
   };
 
-  downloadFile = () => {
-    let params = {
-      file: this.state.fileUrl,
-      id: this.props.tpInfo.sid,
-      name: this.props.type.name,
-    };
-    this.props.userStore.downloadFile(params).then((r) => {
+  downloadFile = (params) => {
+    this.props.adminStore.adminDownload(params).then((r) => {
       if (!r) {
         message.error("网络错误");
       }
@@ -193,7 +190,14 @@ export default class fileManage extends Component {
       console.log(r);
     });
   };
-
+  fileonSelect = (e) => {
+    console.log(e);
+    if (e === "22") {
+      this.setState({
+        stu_selected: true,
+      });
+    }
+  };
   handleDel = () => {
     this.setState({
       fileUrl: "",
@@ -233,11 +237,48 @@ export default class fileManage extends Component {
                     <Card
                       type="inner"
                       title={item.f_name}
+                      headStyle={{ padding: "12px 12px 12px 12px" }}
                       bodyStyle={{ padding: "12px 0px 12px 12px" }}
                       extra={
-                        <a href="#">
-                          <DownloadOutlined />
-                        </a>
+                        <Popover
+                          placement="rightTop"
+                          title={'操作'}
+                          trigger="click"
+                          content={
+                            <div className="m-admin-file-card-extra">
+                              <div className="n-admin-file-card-extra">
+                                {" "}
+                                <a
+                                  href="#"
+                                  onClick={() =>
+                                    this.downloadFile({
+                                      file: item.f_path,
+                                      name: item.f_name,
+                                    })
+                                  }
+                                >
+                                  <DownloadOutlined />下载文件
+                                </a>
+                              </div>
+                              <br></br>
+                              <div className="u-del">
+                                <a
+                                  href="#"
+                                  onClick={() =>
+                                    this.deletUploadedFile({
+                                      id: item.id,
+                                    })
+                                  }
+                                >
+                                  <CloseOutlined />删除文件
+                                </a>
+                              </div>
+                            </div>
+                          }
+                          
+                        >
+                          <a><MenuOutlined /></a>
+                        </Popover>
                       }
                     >
                       <Row gutter={[0, 0]}>
@@ -318,28 +359,59 @@ export default class fileManage extends Component {
                           },
                         ]}
                       >
-                        <Select className="input_box">
-                          <Select.Option value="all">
+                        <Select
+                          className="input_box"
+                          onSelect={this.fileonSelect}
+                        >
+                          <Select.Option value="21">
                             {" "}
                             师生模板文件{" "}
                           </Select.Option>
-                          <Select.Option value="stu">
+                          <Select.Option value="22">
                             {" "}
                             学生模板文件{" "}
                           </Select.Option>
-                          <Select.Option value="tea">
+                          <Select.Option value="23">
                             {" "}
                             教师模板文件{" "}
                           </Select.Option>
-                          <Select.Option value="leader">
+                          <Select.Option value="24">
                             系主任模板文件{" "}
                           </Select.Option>
-                          <Select.Option value="score">
+                          <Select.Option value="3">
                             {" "}
                             评分模板文件{" "}
                           </Select.Option>
                         </Select>
                       </Form.Item>
+                      {this.state.stu_selected && (
+                        <Form.Item
+                          className="label-text"
+                          label="请选择学生文件模板类型"
+                          name="f_sub_type"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select your file type!",
+                            },
+                          ]}
+                        >
+                          <Select className="input_box">
+                            <Select.Option value="221">
+                              {" "}
+                              开题中期{" "}
+                            </Select.Option>
+                            <Select.Option value="222">
+                              {" "}
+                              论文定稿{" "}
+                            </Select.Option>
+                            <Select.Option value="223">
+                              {" "}
+                              论文答辩{" "}
+                            </Select.Option>
+                          </Select>
+                        </Form.Item>
+                      )}
                     </Col>
                     <Col span={12}>
                       <Form.Item>
