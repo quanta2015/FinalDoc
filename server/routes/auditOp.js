@@ -65,4 +65,44 @@ router.post('/submitTeamForm',async (req,res)=>{
   })
 })
 
+/**
+ * @param {topicId:string}
+ * @returns {flag:boolean}
+ */
+router.post("/canSubmitTutorForm",async(req,res)=>{
+  let sql = "call PROC_OP_CAN_SUBMIT(?)";
+  let data = req.body;
+  data.role = 0;
+  callProc(sql,data,res,r=>{
+    res.status(200).json({code:200,flag:r[0].flag==1,message:"已获取教师是否已经提交了审核"})
+  })
+})
+
+/**
+ * @param {topicId:string}
+ * @returns {flag:boolean}
+ */
+router.post("/canSubmitTeamForm",async(req,res)=>{
+  let sql = "call PROC_OP_CAN_SUBMIT(?)";
+  let data = req.body;
+  data.role = 1;
+  callProc(sql,data,res,r=>{
+    res.status(200).json({code:200,flag:r[0].flag==1,message:"已获取小组是否已经提交了审核"})
+  })
+})
+
+router.post("/isTeamLeader",async (req,res)=>{
+  let sql = `call PROC_IS_TEAM_LEADER(?)`;
+  callProc(sql,req.body,res,r=>{
+    res.status(200).json({code:200,flag:r.length>0,message:"已获取是否为组长"})
+  })
+})
+
+router.post("/isTeamMember",async (req,res)=>{
+  let sql = `call PROC_IS_TEAM_MEMBER(?)`;
+  callProc(sql,req.body,res,r=>{
+    res.status(200).json({code:200,flag:r.length>0,message:"已获取是否是组员"})
+  })
+})
+
 module.exports = router
