@@ -35,8 +35,15 @@ class NavT extends BaseActions {
     if (x.data.length > 0) {
       list.push(MENU_MAIN_T_AUDIT[0])
     }
+
+    x = await this.post(urls.API_TEACHER_AUDIT_OP_IS_MEMBER,{uid:this.usr.uid});
+    // x = await this.post("http://localhost:8090/auditOp/isTeamMember",{uid:this.usr.uid});
+
+    if(x.flag){
+      list.push(MENU_MAIN_T_AUDIT[1])
+    }
     
-    list.push(MENU_MAIN_T_AUDIT[1])
+    
     this.setState({ checkList: list })
   }
 
@@ -86,7 +93,7 @@ class NavT extends BaseActions {
               <div className="g-info-type">教师</div>
               <div className="g-info-maj">{this.usr.maj}</div>
             </div>
-            <div>{this.usr.uid}&nbsp;&nbsp;&nbsp;{this.usr.name}</div>
+            <div className="g-info-name"><span className="g-info-name-id">{this.usr.uid}</span><span>{this.usr.name}</span></div>
           </div>
 
         </div>

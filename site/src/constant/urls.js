@@ -112,6 +112,8 @@ export const API_TEACHER_SAVE_TASK = API_SERVER+'/teacher/saveTask'
 export const API_TEACHER_GET_TASK = API_SERVER + '/teacher/getTask'
 //是否可以发布课题
 export const API_TEACHER_CAN_PUBLISH = API_SERVER + '/teacher/canPublish'
+//是否是审核组员
+export const API_TEACHER_AUDIT_OP_IS_MEMBER = API_SERVER + `/auditOp/isTeamMember`
 
 
 // 任课教师-初期审核
