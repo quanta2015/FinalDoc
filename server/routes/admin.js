@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-19 23:18:43
+ * @LastEditTime: 2020-07-20 09:02:39
  */
 
 
@@ -89,6 +89,9 @@ router.post('/getAllFileAddress', async (req, res) => {
                     break;
                 case 24:
                     element.f_type = '系主任模板';
+                    break;
+                case 3:
+                    element.f_type = '评分模板文件';
                     break;
                 default:
                     break;
