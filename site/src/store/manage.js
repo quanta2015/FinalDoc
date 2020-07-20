@@ -306,6 +306,12 @@ class manager extends BaseActions {
     return await this.post(urls.API_MAN_POST_OGP_DELETEGROUP, param)
   }
 
+  //进入开题答辩阶段
+  @action
+  async openDefense(param) {
+    return await this.post(urls.API_MAN_POST_OPEND_DEFENSE, param);
+  }
+
   @observable
   stu_list = []
 
@@ -394,7 +400,10 @@ class manager extends BaseActions {
     task_info2: [],
     //假数据
     task_info: [],
+    // 通过的任务书
     to_audit_list: [],
+    // 未提交的任务书
+    uncommit_list: [],
     suc:0,
   }
 
@@ -407,7 +416,7 @@ class manager extends BaseActions {
 
     res.data.map((item, i) => {
       let tag = ""
-      let num = 6
+      let num = 5
 
       if (item.status <4) {
         tag = "未提交";
@@ -416,19 +425,26 @@ class manager extends BaseActions {
         num = 4;
       } else if (item.status === 5) {
         tag = "通过";
-        num = 5;
+        num = 6;
       }
+
       temp.push({
         name: item.name,
         topic: item.topic,
         key: item.key,
         status: item.status,
+        type: item.type,
         tag: tag,
         num: num
       })
     })
+
+    // 通过
     let arr = []
+    // 未提交
+    let arr1 = []
     let count=0
+    let suc=0
     temp.map((item, i) => {
       if (item.status === 4) {
         arr.push(
@@ -436,6 +452,10 @@ class manager extends BaseActions {
         )
       }else if(item.status===5){
          count++;
+      }else if(item.status < 4){
+        arr1.push(
+          item.key
+        )
       }
     })
     temp.sort(function (a, b) {
@@ -454,13 +474,14 @@ class manager extends BaseActions {
         return 1;
       }
     })
-    if(count===temp.length){
-      count=1
+    if (count === res.data.length){
+      suc=1
     }
     runInAction(() => {
       this.reviewPaper.task_info = temp;
       this.reviewPaper.to_audit_list = arr;
-      this.reviewPaper.suc = count;
+      this.reviewPaper.uncommit_list = arr1;
+      this.reviewPaper.suc = suc;
     })
 
   }
@@ -484,6 +505,13 @@ class manager extends BaseActions {
   async getTaskContent(param) {
     let res = await this.post(urls.API_TEACHER_GET_TASK, param)
     return res.data;
+  }
+
+  //审核任务书
+  @action
+  async reviewTask(param) {
+    return await this.post(urls.API_MAN_POST_RP_REVIEWTASK, param)
+     
   }
 
   // 查看某位学生上传的文件

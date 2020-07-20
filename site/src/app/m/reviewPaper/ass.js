@@ -37,7 +37,7 @@ export default class Ass extends Component {
         // 点击“详情”,查看该课题任务书内容
         visible: false,
         topic_id: 0,
-        topic_type: "目前没传",
+        topic_type: "",
         topic: "",
         tName: "",
         task: {},
@@ -122,43 +122,49 @@ export default class Ass extends Component {
 
 
     // 提交手动分配
-    handDistribute = async () => {
+    reviewTask = async () => {
         if (this.state.selectedRowKeys.length === 0) {
-            message.info("还未选择课题！")
+            message.info("还未选择待审核任务书！")
             return;
         }
         let temp = { "topic_id": this.state.selectedRowKeys }
         console.log(temp)
-        // let res = await this.props.manageStore.allocateTopic(temp);
-        // if (res && res.code === 200) {
-        //     message.info("分配成功！")
-        //     await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-        //     await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
-        //     await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+        let res = await this.props.manageStore.reviewTask(temp);
+        if (res && res.code === 200) {
+            message.success("审核成功！")
+            await this.props.manageStore.getTaskList({ "ide": this.usr.uid })
 
-        // } else {
-        //     message.info("分配失败！请重试")
-        // }
+        } else {
+            message.error("审核失败！请重试")
+        }
         this.setState({
             selectedRowKeys: [],
 
         })
     }
+    openDefense = async () => {
+        // let res = await this.props.manageStore.openDefense(temp);
+        // if (res && res.code === 200) {
+        //     message.success("已进入开题答辩阶段，请分配答辩小组！")
+        // } else {
+        //     message.error("未进入开题答辩阶段！请重试")
+        // }
+
+    }
 
     showModal = async (record) => {
         // console.log(toJS(record))
         let task = await this.props.manageStore.getTaskContent({ "pid": record.key, "role": this.usr.role })
-        console.log(task)
+        //console.log(task)
         this.setState({
             visible: true,
+            topic_type: record.type,
             topic_id: record.key,
             topic: record.topic,
             tName: record.name,
             task: toJS(task),
             schedule: toJS(task.schedule),
             ft: toJS(task.ft),
-        }, () => {
-            console.log(this.state.schedule)
         });
     };
 
@@ -176,7 +182,7 @@ export default class Ass extends Component {
             selectedRowKeys,
             // onChange: this.onSelectChange,
             onChange: (selectedRowKeys) => {
-                console.log(`selectedRowKeyshhh: ${selectedRowKeys}`);
+                console.log(`selectedRowKeys: ${selectedRowKeys}`);
                 this.setState({ selectedRowKeys });
 
             },
@@ -285,10 +291,18 @@ export default class Ass extends Component {
                 <div className="m-ass_top_box">
 
                     <div className="m-ass_noTopicNum">{this.reviewPaper.to_audit_list.length}篇未审核
-                            已选{selectedRowKeys.length}篇</div>
+                            已选{selectedRowKeys.length}篇
+                    </div>
                     <div className="m-ass_head_btn">
+                        {/* 未提交的任务书 */}
                         {
-                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc===0) &&
+                            (this.reviewPaper.uncommit_list.length > 0) &&
+                            <Tooltip placement="left" title={this.reviewPaper.uncommit_list.length+"篇未提交，一键提醒所有未提交任务书的指导教师"}>
+                                <Button>提醒</Button>
+                            </Tooltip>
+                        }
+                        {
+                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc === 0) &&
                             <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
                         }
                         {
@@ -301,7 +315,7 @@ export default class Ass extends Component {
                         }
                         {
                             (this.reviewPaper.to_audit_list.length > 0) &&
-                            <Button type="primary" onClick={this.handDistribute}>通过</Button>
+                            <Button type="primary" onClick={this.reviewTask}>通过</Button>
                         }
                         {
                             (this.reviewPaper.suc === 1) &&
@@ -383,11 +397,11 @@ export default class Ass extends Component {
                                 </div>
                             </div>
                             <div class="m-s-title">进度安排：</div>
-                              
-                                {this.state.schedule.map((item) => {
-                                    return (
-                                        <div className="m-cont-item">
-                                            <div className="list">
+
+                            {this.state.schedule.map((item) => {
+                                return (
+                                    <div className="m-cont-item">
+                                        <div className="list">
                                             <div class="u-time">
                                                 <div class="u-num">{item.time[0]}</div>
                                                 <div>至</div>
@@ -396,11 +410,11 @@ export default class Ass extends Component {
                                             <div>{item.content}</div>
 
                                         </div>
-                                        </div>
-                                    )
-                                })}
-                             
-                             
+                                    </div>
+                                )
+                            })}
+
+
                         </div>
                     </div>
                 </Modal>

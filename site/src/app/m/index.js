@@ -3,15 +3,15 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 import Announcement from '../../component/Announcement';
-import "./style.css"
+import "./style.scss"
 
-@inject('manageStore','userStore')
+@inject('manageStore', 'userStore')
 @observer
 export default class Manage extends Component {
 
   @computed
   get usr() {
-      return this.props.userStore.usr;
+    return this.props.userStore.usr;
   }
 
   componentDidMount() {
@@ -22,9 +22,9 @@ export default class Manage extends Component {
 
   render() {
     return (
-
-      <div className="g-m">
-        <div className="m-m">
+      <div>
+        <div className="g-m-title">公告栏</div>
+        <div className="g-m m-m">
           <Announcement pageSize={12} height={550} />
         </div>
       </div>

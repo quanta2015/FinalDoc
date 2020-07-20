@@ -1,19 +1,3 @@
-table,
-tbody.ant-table-tbody {
-    display: flex;
-    flex-direction: column;
-}
-
-.ant-table-row,
-.ant-table-thead>tr {
-    display: flex;
-}
-
-.ant-table-cell {
-    text-align: center;
-}
-
- 
 .g-tol-tbl .ant-table-cell:nth-last-child(7) {
     width: 210px;
     text-align: left;
