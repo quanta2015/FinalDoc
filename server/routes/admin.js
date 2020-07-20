@@ -206,4 +206,11 @@ router.post('/getAnnouncementDetails', async(req, res) => {
     })
 })
 
+router.post('/admindownload', function (req, res, next) {
+
+	let filename = req.body.file
+	console.log(res);
+	res.download('./' + filename)
+
+})
 module.exports = router
