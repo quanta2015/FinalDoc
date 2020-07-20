@@ -73,7 +73,6 @@ router.post('/postTopicInfo', async(req, res) => {
         res.status(200).json({code: 200, data: r, msg: '课题发布成功'});
     })
 })
-
 /**
  * @name: getTidgetTopic
  * @test: test font
@@ -85,76 +84,32 @@ router.post('/getTidgetTopic', async(req, res) => {
     let sql = `CALL PROC_GET_TOPIC_STATUS(?)`;
     let params = req.body;
     callProc(sql, params, res, (r) => {
-        // var pass0 = 0;
-        // var pass1 = 1;
-        // var pass2 = 2;
-        // var pass3 = 3;
-        // for (let index = 0; index < r.length; index++) {
-        //     if (r[index].status != 3) {
-        //         r[index].sid = null;
-        //     }
-        //     if (r[index].sel == 0) {
-        //         r[index].pass = pass0;
-        //     } else if(r[index].result == 0) {
-        //         if (r[index].sugg == null) {
-        //             r[index].pass = pass1;
-        //         } else {
-        //             r[index].pass = pass2;
-        //         }
-        //     } else {
-        //         r[index].pass = pass3;
-        //     }
-        // }
-
         // 课题状态
         for (let index = 0; index < r.length; index++) {
             switch (r[index].status) {
-                case -9:// 最终论文审核 系主任未通过
-                    r[index].pass = -11;
-                    break;
                 case 9:// 最终论文审核 系主任通过
-                    r[index].pass = 11;
-                    break;
-                case -8:// 最终论文审核 教师未通过
-                    r[index].pass = -10;
+                    r[index].pass = 4;
                     break;
                 case 8:// 最终论文审核 教师通过
-                    r[index].pass = 10;
-                    break;
-                case -7:// 论文答辩 未通过
-                    r[index].pass = -9;
+                    r[index].pass =4;
                     break;
                 case 7:// 论文答辩 通过
-                    r[index].pass = 9;
-                    break;
-                case -6:// 论文定稿 系主任未通过
-                    r[index].pass = -8;
+                    r[index].pass = 4;
                     break;
                 case 6:// 论文定稿 系主任通过
-                    r[index].pass = 8;
-                    break;
-                case -5:// 论文定稿 教师未通过
-                    r[index].pass = -7;
+                    r[index].pass = 4;
                     break;
                 case 5:// 论文定稿 教师通过
-                    r[index].pass = 7;
-                    break;
-                case -4:// 开题答辩 未通过
-                    r[index].pass = -6;
+                    r[index].pass = 4;
                     break;
                 case 4:// 开题答辩 通过
-                    r[index].pass = 6;
+                    r[index].pass = 4;
                     break;
-                // case -1:// 学生被拒绝
-                //     r[index].pass = -5;
-                //     r[index].sid = null;
-                //     break;
                 case 3:// 学生通过课题
                     r[index].pass = 4;
                     break;
                 case 2:// 学生选择课题
                     r[index].pass = 5;
-                    r[index].sid = null;
                     break;
                 case 1:// 教师课题 通过
                     if (r[index].sid == null) {
