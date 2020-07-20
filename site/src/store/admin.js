@@ -73,11 +73,11 @@ class admin extends BaseActions {
       runInAction(() => {
         message.success("发布文件成功");
       });
-      return r.data;
+      return r;
     } else {
       message.error("网络错误");
     }
-    return r;
+    return 301;
   }
   @action
   async getFileList(params) {
@@ -120,6 +120,7 @@ class admin extends BaseActions {
     }
     return r;
   }
+  
 }
 
 export default new admin();
