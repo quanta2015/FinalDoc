@@ -400,7 +400,10 @@ class manager extends BaseActions {
     task_info2: [],
     //假数据
     task_info: [],
+    // 通过的任务书
     to_audit_list: [],
+    // 未提交的任务书
+    uncommit_list: [],
     suc:0,
   }
 
@@ -424,6 +427,7 @@ class manager extends BaseActions {
         tag = "通过";
         num = 6;
       }
+
       temp.push({
         name: item.name,
         topic: item.topic,
@@ -434,7 +438,11 @@ class manager extends BaseActions {
         num: num
       })
     })
+
+    // 通过
     let arr = []
+    // 未提交
+    let arr1 = []
     let count=0
     let suc=0
     temp.map((item, i) => {
@@ -444,6 +452,10 @@ class manager extends BaseActions {
         )
       }else if(item.status===5){
          count++;
+      }else if(item.status < 4){
+        arr1.push(
+          item.key
+        )
       }
     })
     temp.sort(function (a, b) {
@@ -468,6 +480,7 @@ class manager extends BaseActions {
     runInAction(() => {
       this.reviewPaper.task_info = temp;
       this.reviewPaper.to_audit_list = arr;
+      this.reviewPaper.uncommit_list = arr1;
       this.reviewPaper.suc = suc;
     })
 

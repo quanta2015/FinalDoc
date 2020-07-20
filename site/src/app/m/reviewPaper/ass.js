@@ -271,11 +271,7 @@ export default class Ass extends Component {
                     } else {
                         return (
                             <Space size="middle">
-                                <Tooltip title="该课题未提交任务书，点击提醒">
-                                    <Button size="small">
-                                        提醒
-                                    </Button>
-                                </Tooltip>
+                                暂无
                             </Space>
                         )
                     }
@@ -295,8 +291,16 @@ export default class Ass extends Component {
                 <div className="m-ass_top_box">
 
                     <div className="m-ass_noTopicNum">{this.reviewPaper.to_audit_list.length}篇未审核
-                            已选{selectedRowKeys.length}篇</div>
+                            已选{selectedRowKeys.length}篇
+                    </div>
                     <div className="m-ass_head_btn">
+                        {/* 未提交的任务书 */}
+                        {
+                            (this.reviewPaper.uncommit_list.length > 0) &&
+                            <Tooltip placement="left" title={this.reviewPaper.uncommit_list.length+"篇未提交，一键提醒所有未提交任务书的指导教师"}>
+                                <Button>提醒</Button>
+                            </Tooltip>
+                        }
                         {
                             (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc === 0) &&
                             <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
