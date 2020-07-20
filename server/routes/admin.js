@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-20 20:54:12
+ * @LastEditTime: 2020-07-20 23:07:43
  */
 
 
@@ -81,8 +81,17 @@ router.post('/getAllFileAddress', async (req, res) => {
                 case 21:
                     element.f_type = '师生模板';
                     break;
-                case 22:
+                case 221:
                     element.f_type = '学生模板';
+                    element.f_sub_type = '开题中期';
+                    break;
+                case 222:
+                    element.f_type = '学生模板';
+                    element.f_sub_type = '论文定稿';
+                    break;
+                case 223:
+                    element.f_type = '学生模板';
+                    element.f_sub_type = '论文答辩';
                     break;
                 case 23:
                     element.f_type = '教师模板';
