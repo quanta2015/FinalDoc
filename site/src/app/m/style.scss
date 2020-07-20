@@ -5,7 +5,7 @@
 
 /* 系主任端全局样式 */
 .g-m {
-    padding: 20px 50px;
+    padding: 30px 50px;
     box-sizing: border-box;
     width: 950px;
 }
@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: row-reverse;
     padding-right: 10px;
+    display: none;
 }
 
 // antd table组件
