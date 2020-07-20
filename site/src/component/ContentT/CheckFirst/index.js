@@ -124,7 +124,7 @@ class Check extends BaseActions {
     return (
       <div className="check-block-first" data-component="checkBlock">
         <div className="title">
-          <span>我的课题</span>
+          <span>毕业设计管理</span>
           <span>
             {
               this.props.pbChanged &&

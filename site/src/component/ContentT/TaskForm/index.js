@@ -21,6 +21,7 @@ export default class TaskForm extends BaseActions {
       message.error('提交错误，请检查网络')
     }
     this.props.close();
+    this.props.freshList();
 
     
   }

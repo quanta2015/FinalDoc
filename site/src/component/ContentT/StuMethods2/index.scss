@@ -1,5 +1,8 @@
 [data-component="stumethods"]{
 
+  .ant-card-head .ant-tabs{
+    padding-left: 320px;
+  }
 
   .stu-info{
     position: absolute;
@@ -77,6 +80,10 @@
   .ant-card-body{
     padding: 10px 0;
   }
+
+  .ant-modal{
+        top: 50px;
+    }
 
   .tab-title{
     margin-left:9px

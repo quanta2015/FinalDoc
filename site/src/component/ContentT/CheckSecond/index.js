@@ -128,6 +128,9 @@ class Check extends BaseActions {
 
 
   render() {
+    console.log(this.state.nowTopic);
+    console.log(this.props.checkList);
+    console.log(this.props.checkList.map((x) => x.id).indexOf(this.state.nowTopic.id));
     return (
       <div className="m-check-block-two" data-component="checkBlockTwo">
         <div className='check-title'>毕业设计管理</div>
@@ -176,6 +179,7 @@ class Check extends BaseActions {
                 this.state.nowTopic.status == 5 &&
                 <div className="state-extra">
                   <ReviewLine
+                    size={3}
                     list={this.props.checkList[this.props.checkList.map((x) => x.id).indexOf(this.state.nowTopic.id)]}
                     freshList={this.props.freshList} />
                 </div>

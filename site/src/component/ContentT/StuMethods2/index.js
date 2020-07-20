@@ -193,7 +193,7 @@ export default class StuMethods extends BaseActions {
             footer={null}
             onCancel={() => { this.setState({ modal_visiable: false }) }}
           >
-            <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} />
+            <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} freshList = {this.props.freshList}/>
           </Modal>
         </div>
     )

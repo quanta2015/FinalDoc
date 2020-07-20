@@ -55,8 +55,12 @@ export default class Home extends Component {
 		if (!this.usr.id) {
 			route('/')
 		}
-		this.props.teacherStore.AuditOp_getTopicList( {"uid": this.usr.uid} )
-		// this.props.teacherStore.AuditOp_getTeam( {"uid": this.usr.uid} )
+
+		//获取审核列表
+		this.props.teacherStore.AuditOp_getTopicList( {"userId": this.usr.uid} )
+
+		//获取审核组
+		this.props.teacherStore.AuditOp_getTeam( {"userId": this.usr.uid} )
 		this.props.teacherStore.getAllTopic().then(()=>{
 			this.setState({
 				topicTypes:this.props.teacherStore.topicTypes

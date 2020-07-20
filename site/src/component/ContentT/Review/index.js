@@ -81,9 +81,10 @@ export default class Review extends BaseActions {
 
 
   render() {
+    console.log(this.props);
     return (
       <div data-component="review">
-        <div className="review-line">
+        <div className={!this.props.size?'review-line':"review-block"}>
           <span>
             <span className="mr-long"><UserOutlined /></span>
             <span className="m-short">申请学生：</span>

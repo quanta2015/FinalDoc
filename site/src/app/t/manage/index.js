@@ -17,7 +17,6 @@ import style from './style.scss';
 //将收到的topic数据映射为可以展示的列表
 const filter = (t) => {
   t = { id: t.id, name: t.topic, status: (t.pass == 2 ? 100 : t.pass), sid: t.sid }
-  if (t.status == 6) t.status = 4;
   return t;
 }
 //按照通过状态排序topic列表
@@ -67,8 +66,11 @@ export default class Home extends BaseActions {
    * 获取自己的课题列表
    */
   getTopicList = async () => {
+    
+
+    await this.setState({checkBlockState: 0});
     let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    // let data = await this.post("http://localhost:8090/teacher/getTidgetTopic",{tea_id:this.usr.uid})
+    //let data = await this.post("http://localhost:8090/teacher/getTidgetTopic",{tea_id:this.usr.uid})
     data = data.data.map(filter);
     data.sort(sorter);
     let flag=true;
@@ -77,18 +79,20 @@ export default class Home extends BaseActions {
         flag = false;
       }
     }
+    
+    this.setState({ toplist: data });
+    //获取申请列表
+    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
+    data = data.data;
+    await this.setState({
+      checkList: data
+    });
     if(flag){
       this.setState({ checkBlockState: 1 })
     }else{
       this.setState({ checkBlockState: 2 })
     }
-    this.setState({ toplist: data });
-    //获取申请列表
-    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
-    data = data.data;
-    this.setState({
-      checkList: data
-    })
+    
   }
 
   /**

@@ -1,4 +1,5 @@
 import { Component } from 'preact';
+import { route } from 'preact-router';
 
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
@@ -50,8 +51,7 @@ export default class Home extends Component {
     }
 
     componentWillMount(){
-        // this.props.teacherStore.AuditOp_getAuditPermission();
-        console.log(this.isTutor)
+        this.props.teacherStore.AuditOp_getAuditPermission();
     }
 
     //提交表单
@@ -91,10 +91,21 @@ export default class Home extends Component {
         if(flag)
             message.error("表单未完善");
         else{
-            // if(this.isTutor)
-            //     this.props.teacherStore.AuditOp_submitTutorForm(...)
-            // else
-            //     this.props.teacherStore.AuditOp_submitTeamForm(...)
+            if(this.isTutor)
+                this.props.teacherStore.AuditOp_submitTutorForm({"topicId":this.selectedTopic.id,
+                                                                "translation":translation,
+                                                                "summary":summary,
+                                                                "report":report,
+                                                                "reply":reply,
+                                                                "replyScore":replyScore,
+                                                                "score":score})
+                .then(()=>{route("/t_auditOP")});
+            else
+                this.props.teacherStore.AuditOp_submitTeamForm({"topicId":this.selectedTopic.id,
+                                                                "reply":reply,
+                                                                "replyScore":replyScore,
+                                                                "score":score})
+                .then(()=>{route("/t_auditOP")});
         }
     }
 
