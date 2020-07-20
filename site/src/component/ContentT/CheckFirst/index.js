@@ -122,7 +122,7 @@ class Check extends BaseActions {
 
   render() {
     return (
-      <div className="check-block" data-component="checkBlock">
+      <div className="check-block-first" data-component="checkBlock">
         <div className="title">
           <span>我的课题</span>
           <span>

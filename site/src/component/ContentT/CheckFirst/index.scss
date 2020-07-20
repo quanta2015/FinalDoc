@@ -1,9 +1,5 @@
 [data-component="checkBlock"]{
-  .check-block{
-  width: 100%;
-  overflow-y: auto;
-  font-size: 18px;
-}
+
 
 .title{
   padding: 15px 0;
@@ -111,4 +107,11 @@ margin-left:10px;cursor:pointer
     font-size: 14px;
 }
 
+}
+
+.check-block-first{
+  width: 100%;
+  overflow-y: auto;
+  font-size: 18px;
+  padding: 30px 60px;
 }

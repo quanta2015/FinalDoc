@@ -10,7 +10,7 @@ import StuMethods from '../StuMethods2'
 import DeleteSpan from '../../../icon/Icons/Delete'
 import ReWrite from '../../../icon/Icons/ReWrite'
 import Watch from '../../../icon/Icons/Watch'
-
+import ReviewLine from '../Review';
 
 
 @inject('userStore')
@@ -28,19 +28,16 @@ class Check extends BaseActions {
 
   state = {
     cur: 0,
-    more: false,
-    nowTopic: {}
+    more: true,
+    nowTopic: this.props.toplist[0]
   }
 
-  async componentDidMount() {
-    console.log(this.props.toplist);
-  }
 
-  topHead = (top)=>(
+  topHead = (top) => (
     <div className='tophead'>
-      <span> </span>
+      {/* <Button type="dashed" size="large" onClick={this.closeStuBlock}>返回</Button> */}
       <div className="tophead-name">{top}</div>
-      <Button type="dashed" size="large" onClick={this.closeStuBlock}>返回</Button>
+      {/* <span> </span> */}
     </div>
   )
 
@@ -82,35 +79,50 @@ class Check extends BaseActions {
 
   StateExtra = (t) => (
     <div className="state-extra">
-      {t.status == 3 && <Tag color="blue">审核已通过</Tag>}
-      {t.status == 1 && <Tag color="orange">待审核</Tag>}
-      {t.status == 100 && <Tag color="red">审核未通过</Tag>}
-      {t.status == 0 && <Tag color="orange">待分配</Tag>}
-      {t.status == 4 && <Tag color="green">双选成功</Tag>}
-      {t.status == 5 && <Tag color="orange">学生已选定</Tag>}
-      <div className="icons">
-        {
-          (t.status == 0 || t.status == 1 || t.status == 100) && <span onClick={() => { this.deleteTopic(t.id, t.name) }}><DeleteSpan /></span>
-        }
-        {
-          (t.status == 0 || t.status == 1 || t.status == 100) && <span onClick={() => { this.props.change(t.id) }}><ReWrite /></span>
-        }
-        {
-          (t.status == 100) && <span onClick={() => { this.getSugg(t.id) }}><Watch /></span>
-        }
-      </div>
+      <span className="state-line">
+        <span className="state-left">课题状态：</span>
+        <span state-right>{t.status == 3 && <Tag color="blue">审核已通过</Tag>}
+          {t.status == 1 && <Tag color="orange">待审核</Tag>}
+          {t.status == 100 && <Tag color="red">审核未通过</Tag>}
+          {t.status == 5 && <Tag color="orange">学生已选定</Tag>}
+        </span>
+      </span>
+
+      {
+        t.status != 3 &&
+        <span className="state-line">
+          <span className="state-left">
+            课题操作：
+        </span>
+          <span className="state-right">
+            <div className="icons">
+              {
+                (t.status == 0 || t.status == 1 || t.status == 100) && <span onClick={() => { this.deleteTopic(t.id, t.name) }}><DeleteSpan /></span>
+              }
+              {
+                (t.status == 0 || t.status == 1 || t.status == 100) && <span onClick={() => { this.props.change(t.id) }}><ReWrite /></span>
+              }
+              {
+                (t.status == 100) && <span onClick={() => { this.getSugg(t.id) }}><Watch /></span>
+              }
+            </div>
+          </span>
+        </span>
+      }
+
+
     </div>
   );
 
   switchTo = i => {
     this.setState({ cur: i })
     this.setState({ nowTopic: this.props.toplist[i] }, () => {
-      this.setState({more:true})
+      this.setState({ more: true })
     })
   }
 
-  closeStuBlock = ()=>{
-    this.setState({more:false})
+  closeStuBlock = () => {
+    this.setState({ more: false })
   }
 
 
@@ -118,7 +130,7 @@ class Check extends BaseActions {
   render() {
     return (
       <div className="m-check-block-two" data-component="checkBlockTwo">
-        <h1 className='check-title'>毕业设计管理</h1>
+        <div className='check-title'>毕业设计管理</div>
         <div className="check-list">
           <nav className="left">
             {
@@ -151,25 +163,28 @@ class Check extends BaseActions {
             this.state.more &&
             <div className='right'>
               {this.topHead(this.state.nowTopic.name)}
-              {this.state.nowTopic.status==4&&
+              {this.state.nowTopic.status == 4 &&
                 <StuMethods
-                sid={this.state.nowTopic.sid}
-                tid={this.usr.uid}
-                pid={this.state.nowTopic.id}
-                freshList={this.props.freshList}
-                close={this.close}
-              />
+                  sid={this.state.nowTopic.sid}
+                  tid={this.usr.uid}
+                  pid={this.state.nowTopic.id}
+                  freshList={this.props.freshList}
+                  close={this.close}
+                />
               }
               {
-                this.state.nowTopic.status==5&&
-                <ReviewLine 
-                list={this.props.checkList[this.props.checkList.map((x) => x.id).indexOf(t.id)]} 
-                freshList={this.props.freshList} />
+                this.state.nowTopic.status == 5 &&
+                <div className="state-extra">
+                  <ReviewLine
+                    list={this.props.checkList[this.props.checkList.map((x) => x.id).indexOf(this.state.nowTopic.id)]}
+                    freshList={this.props.freshList} />
+                </div>
+
               }
               {
-                this.state.nowTopic.status<4&&
+                this.state.nowTopic.status < 4 &&
                 <>
-                {this.StateExtra(this.state.nowTopic)}
+                  {this.StateExtra(this.state.nowTopic)}
                 </>
               }
             </div>

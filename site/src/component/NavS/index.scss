@@ -4,66 +4,89 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  border-right: 1px solid #EFEFEF;
+  border-right: 1px solid #efefef;
   align-items: center;
 
   .g-logo {
+    display: flex;
+    width: 100%;
     padding: 10px 0;
     margin-bottom: 5px;
-    color: #333;
-    font-size: 17px;
-    cursor: pointer;
+
+    .u-title {
+      color: #333;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    
+    .m-msg {
+      display: flex;
+      padding: 0 5px;
+      width: 25%;
+    }
+
+    .m-msg > img {
+      width: 27px;
+      cursor: pointer;
+    }
+
+    .m-msg > .u-status {
+      color: red;
+      font-size: 14px;
+      line-height: 10px;
+      margin-left: -8px;
+    }
   }
 
   .g-st {
-      display: flex;
-      height: 50px;
-      width: 100%;
-      background: #fff;
-      color: #333;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    background: #fff;
+    color: #333;
   }
 
   .m-st {
-      flex: 1;
-      display: flex;
-      padding: 0 12px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      text-align: center;
-      background: #eee;
-      position: relative;
+    flex: 1;
+    display: flex;
+    padding: 0 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    background: #eee;
+    position: relative;
   }
 
   .m-st + .m-st {
-      margin-left: 2px;
+    margin-left: 2px;
   }
 
   .m-st + .m-st:before,
   .m-st + .m-st:after {
-      content: '';
-      display: block;
-      border: 6px solid transparent;
-      position: absolute;
+    content: "";
+    display: block;
+    border: 6px solid transparent;
+    position: absolute;
   }
 
   .m-st + .m-st:before {
-      border-left: 6px solid #fff;
-      left: 0;
+    border-left: 6px solid #fff;
+    left: 0;
   }
 
   .m-st + .m-st:after {
-      border-left: 6px solid #eee;
-      left: -2px;
+    border-left: 6px solid #eee;
+    left: -2px;
   }
 
   .m-st.active {
-      background: #ff6600;
-      color: #fff;
+    background: #ff6600;
+    color: #fff;
   }
 
-  .m-st.active + .m-st:after  {
-      border-left: 6px solid #ff6600;
+  .m-st.active + .m-st:after {
+    border-left: 6px solid #ff6600;
   }
 
   .g-menu {
@@ -71,7 +94,7 @@
     display: flex;
     flex-direction: column;
     color: #fff;
-    
+
     .m-menu-item {
       width: 100%;
       padding: 5px 10px;
@@ -79,21 +102,21 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      transition: .3s;
+      transition: 0.3s;
       font-size: 16px;
       background-color: #666666;
       margin-bottom: 5px;
-      box-shadow: 0 1px 3px #CECECE;
+      box-shadow: 0 1px 3px #cecece;
 
       &.active {
-        background: #336699!important;
+        background: #336699 !important;
       }
 
       &:hover {
-        background:#cc3300;
+        background: #cc3300;
       }
 
-      &>img {
+      & > img {
         width: 28px;
         margin-right: 6px;
       }
@@ -111,29 +134,43 @@
   .g-footer {
     margin-top: auto;
     width: 100%;
-  }
 
-  .m-info {
-    width: 100%;
-    padding: 10px 0 10px 15px;
-    background-color: #666666;
-    color: #fff;
-
-    .m-title {
-      font-size: 18px;
+    .m-info {
+      width: 100%;
+      padding: 10px 0 10px 15px;
+      background-color: #666666;
+      color: #fff;
       text-align: center;
-      margin-bottom: 20px;
+
+      &>span {
+        padding: 0 5px;
+      }
+    } 
+
+    .m-setting {
+      padding: 10px 15px;
+      text-align: center;
     }
 
-    &>p {
-      margin-bottom: 10px;
+    .m-tag {
+      position: relative;
+      background-color: #439855;
+      color: #fff;
+      text-align: center;
     }
-  } 
 
-  .m-setting {
-    padding: 10px 15px;
-    text-align: center;
+    .m-tag > span {
+      height: 42px;
+      line-height: 42px;
+    }
+
+    .u-cls {
+      position: absolute;
+      top: 9px;
+      right: 5px;
+      font-size: 12px;
+      background-color: #D70C18;
+      padding: 3px 6px;
+    }
   }
 }
-
-

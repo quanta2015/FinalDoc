@@ -1,8 +1,26 @@
 [data-component="stumethods"]{
 
 
+  .stu-info{
+    position: absolute;
+    bottom: 1px;
+    height: 40px;
+    margin: 0;
+    width: 100%;
+    background-color: #666;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 50px;
+  }
 
   .stumethods{
+    position: relative;
+    height: 100%;
+  }
+
+
+  .stumethods-pd{
     padding: 30px;
   }
 

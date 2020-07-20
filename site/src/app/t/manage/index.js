@@ -53,7 +53,7 @@ export default class Home extends BaseActions {
     pbChanged: false,
     judgeTopic: true,
     //默认是checkblock1，如果有双选成功的则变成2
-    checkBlockState: 1
+    checkBlockState: 0
   }
 
   async componentDidMount() {
@@ -71,10 +71,16 @@ export default class Home extends BaseActions {
     // let data = await this.post("http://localhost:8090/teacher/getTidgetTopic",{tea_id:this.usr.uid})
     data = data.data.map(filter);
     data.sort(sorter);
+    let flag=true;
     for (let i in data) {
       if (data[i].status == 4) {
-        this.setState({ checkBlockState: 2 })
+        flag = false;
       }
+    }
+    if(flag){
+      this.setState({ checkBlockState: 1 })
+    }else{
+      this.setState({ checkBlockState: 2 })
     }
     this.setState({ toplist: data });
     //获取申请列表
@@ -118,7 +124,7 @@ export default class Home extends BaseActions {
   render() {
     const { placement, visible, tid } = this.state;
     return (
-      <div className="g-content manage-home" data-component="t-manage-home">
+      <div className="manage-home" data-component="t-manage-home">
 
         {
           this.state.checkBlockState == 1 &&

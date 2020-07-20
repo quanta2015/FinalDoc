@@ -65,23 +65,34 @@
         }
 
         .u-not-date {
-            margin-right: 15px;
             font-family: Georgia, "Times New Roman", Times, serif;
             color: #ff6600;
+            width: 80px;
         }
 
         .u-not-title {
             display: block;
-            width: 85%;
+            max-width: 85%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: #1d1d1d;
+            color: #000;
             cursor: pointer;
         }
 
         .z-read {
             color: #999;
+        }
+
+        .m-status {
+            color: #fff;
+            padding: 0 10px 0 5px;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        .z-unread {
+            color: #428bca;
         }
 
         .m-page {
@@ -177,24 +188,5 @@
         .u-tmp-title span {
             font-family: Georgia, "Times New Roman", Times, serif;
         }
-    }
-}
-
-.g-dialog {
-    // .ant-modal-body {
-    //     min-height: 550px;
-    // }
-
-    .u-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
-        text-align: center;
-    }
-
-    .u-time {
-        margin-bottom: 16px;
-        text-align: center;
-        font-family: Georgia, "Times New Roman", Times, serif;
     }
 }
