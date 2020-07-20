@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-20 09:02:39
+ * @LastEditTime: 2020-07-20 20:54:12
  */
 
 
@@ -213,4 +213,17 @@ router.post('/admindownload', function (req, res, next) {
 	res.download('./' + filename)
 
 })
+
+// 删除文件
+// params: { id: str }
+router.post('/delFile', async(req, res) => {
+    let sql = `CALL PROC_DEL_FILE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功删除该文件' });
+    })
+})
+
 module.exports = router
