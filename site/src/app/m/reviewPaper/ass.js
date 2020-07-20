@@ -133,7 +133,7 @@ export default class Ass extends Component {
         if (res && res.code === 200) {
             message.success("审核成功！")
             await this.props.manageStore.getTaskList({ "ide": this.usr.uid })
-            
+
         } else {
             message.error("审核失败！请重试")
         }
@@ -142,8 +142,8 @@ export default class Ass extends Component {
 
         })
     }
-    openDefense =async()=>{
-         // let res = await this.props.manageStore.openDefense(temp);
+    openDefense = async () => {
+        // let res = await this.props.manageStore.openDefense(temp);
         // if (res && res.code === 200) {
         //     message.success("已进入开题答辩阶段，请分配答辩小组！")
         // } else {
@@ -271,7 +271,11 @@ export default class Ass extends Component {
                     } else {
                         return (
                             <Space size="middle">
-                                暂无
+                                <Tooltip title="该课题未提交任务书，点击提醒">
+                                    <Button size="small">
+                                        提醒
+                                    </Button>
+                                </Tooltip>
                             </Space>
                         )
                     }
@@ -294,7 +298,7 @@ export default class Ass extends Component {
                             已选{selectedRowKeys.length}篇</div>
                     <div className="m-ass_head_btn">
                         {
-                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc===0) &&
+                            (this.reviewPaper.to_audit_list.length === 0 && this.reviewPaper.suc === 0) &&
                             <Button onClick={this.clear} className="ass_clear" disabled>重置</Button>
                         }
                         {
@@ -389,11 +393,11 @@ export default class Ass extends Component {
                                 </div>
                             </div>
                             <div class="m-s-title">进度安排：</div>
-                              
-                                {this.state.schedule.map((item) => {
-                                    return (
-                                        <div className="m-cont-item">
-                                            <div className="list">
+
+                            {this.state.schedule.map((item) => {
+                                return (
+                                    <div className="m-cont-item">
+                                        <div className="list">
                                             <div class="u-time">
                                                 <div class="u-num">{item.time[0]}</div>
                                                 <div>至</div>
@@ -402,11 +406,11 @@ export default class Ass extends Component {
                                             <div>{item.content}</div>
 
                                         </div>
-                                        </div>
-                                    )
-                                })}
-                             
-                             
+                                    </div>
+                                )
+                            })}
+
+
                         </div>
                     </div>
                 </Modal>
