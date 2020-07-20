@@ -1,7 +1,7 @@
 [data-component="stumethods"]{
 
   .ant-card-head .ant-tabs{
-    padding-left: 320px;
+    padding-left: 300px;
   }
 
   .stu-info{
@@ -81,9 +81,6 @@
     padding: 10px 0;
   }
 
-  .ant-modal{
-        top: 50px;
-    }
 
   .tab-title{
     margin-left:9px
@@ -104,5 +101,40 @@
   .mr-long{
     margin-right: 20px;
   }
+
+  .m-fdl-spaceline{
+    width: 80%;
+    height: 1px;
+    margin: 20px;
+    box-sizing: border-box;
+    border-style: dashed;
+    border-bottom: 1px dashed #666;
+  }
+
+  .m-file-down-load{
+    margin: 0 0 0 13px;
+    width: 120px;
+    cursor: pointer;
+  }
+
+
+  .m-f-down-inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .m-f-down-pic{
+    width: 66px;
+    height: 66px;
+    padding: 8px;
+    font-size: 30px;
+    border: 1px dashed #666;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 }
 

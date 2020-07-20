@@ -1,14 +1,15 @@
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
-import { Card, Input, Tag, Button, Modal } from 'antd';
+import { Card, Input, Tag, Button, Modal,Tooltip } from 'antd';
 import style from './index.scss';
 import FileUpload from '../../FileUpload'
 import FileDownLoad from '../../FileDownLoad'
 
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { UserOutlined, BookOutlined, DownloadOutlined, TagsOutlined } from '@ant-design/icons';
+import { UserOutlined, BookOutlined, DownloadOutlined, CloseCircleOutlined ,CheckCircleOutlined} from '@ant-design/icons';
 import TaskForm from '../TaskForm';
+import { route } from 'preact-router';
 
 const tabListNoTitle = [
   {
@@ -17,7 +18,7 @@ const tabListNoTitle = [
   },
   {
     key: 'download',
-    tab: <span><DownloadOutlined /><span className="tab-title">学生文件下载</span></span>
+    tab: <span><DownloadOutlined /><span className="tab-title">学生文件管理</span></span>
   }
 ];
 
@@ -65,7 +66,8 @@ export default class StuMethods extends BaseActions {
     topic_area: [],
     tab: 'publish',
     links: [],
-    modal_visiable: false
+    modal_visiable: false,
+    auditOp: false
   }
 
   getStuInfo = async () => {
@@ -85,9 +87,14 @@ export default class StuMethods extends BaseActions {
     //获取学生文件列表
     let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
     l = (l.data)[0];
+    let flag = l.f_open && l.f_docs && l.tran;
+    if (flag) {
+      this.setState({ auditOp: true })
+    }
+    console.log(l);
     this.setState({ links: l })
   }
-  
+
   render() {
     {
       if (this.props.pid != this.state.pid) {
@@ -97,16 +104,16 @@ export default class StuMethods extends BaseActions {
       }
     }
     return (
-        <div className="stumethods" data-component="stumethods">
-          <div className="stu-info">
-            <span className="note-title"><span className="mr-long"><UserOutlined /></span>学生信息</span>
+      <div className="stumethods" data-component="stumethods">
+        <div className="stu-info">
+          <span className="note-title"><span className="mr-long"><UserOutlined /></span>学生信息</span>
 
-            <span className="note-info-span">{this.props.sid}</span>
-            <span className="note-info-span">{this.state.name}</span>
-            <span className="note-info-span">{this.state.cls}</span>
+          <span className="note-info-span">{this.props.sid}</span>
+          <span className="note-info-span">{this.state.name}</span>
+          <span className="note-info-span">{this.state.cls}</span>
 
-          </div>
-          <div className="stumethods-pd">
+        </div>
+        <div className="stumethods-pd">
           <Card
             tabList={tabListNoTitle}
             size="small"
@@ -121,10 +128,35 @@ export default class StuMethods extends BaseActions {
                   <div className="card-inner">
                     <div className="file-block">
                       {
-                        !this.state.links['f_task'] && <Button type="dashed" style={{ height: 100 }} onClick={() => { this.setState({ modal_visiable: true }) }}>发布任务书</Button>
+                        !this.state.links['f_task'] && 
+                        
+                        <>
+                          <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
+                              <div className="m-f-down-inner">
+                                <div className="m-f-down-pic">
+                                  <CloseCircleOutlined />
+                                </div>
+                                <p>
+                                  填写任务书
+                                </p>
+                              </div>
+                          </div>
+                          </>
                       }
                       {
-                        !!this.state.links['f_task'] && <Button type="dashed" style={{ height: 100 }} onClick={() => { this.setState({ modal_visiable: true }) }}>重新发布任务书</Button>
+                        !!this.state.links['f_task'] && 
+                        <>
+                          <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
+                              <div className="m-f-down-inner">
+                                <div className="m-f-down-pic">
+                                  <CheckCircleOutlined />
+                                </div>
+                                <p>
+                                  重新填写任务书
+                                </p>
+                              </div>
+                          </div>
+                          </>
                       }
                     </div>
                   </div>
@@ -150,7 +182,27 @@ export default class StuMethods extends BaseActions {
                             return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
                           })
                         }
+                        
                       </div>
+                      {
+                        //这个地方应该是没有感叹号的。。方便你测试
+                          !this.state.auditOp &&
+                          <>
+                          <div className="m-fdl-spaceline"></div>
+                          <div className="m-file-down-load" onClick={()=>{route('/t_formOP')}}>
+                            <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
+                              <div className="m-f-down-inner">
+                                <div className="m-f-down-pic">
+                                  <CheckCircleOutlined />
+                                </div>
+                                <p>
+                                  填写审核
+                                </p>
+                              </div>
+                            </Tooltip>
+                          </div>
+                          </>
+                        }
                     </div>
                     <div className="one-of-three">
                       <div className="f-title">
@@ -184,18 +236,18 @@ export default class StuMethods extends BaseActions {
 
             }
           </Card>
-          </div>
-        
-          <Modal
-            title="发布任务书"
-            visible={this.state.modal_visiable}
-            width={900}
-            footer={null}
-            onCancel={() => { this.setState({ modal_visiable: false }) }}
-          >
-            <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} freshList = {this.props.freshList}/>
-          </Modal>
         </div>
+
+        <Modal
+          title="发布任务书"
+          visible={this.state.modal_visiable}
+          width={900}
+          footer={null}
+          onCancel={() => { this.setState({ modal_visiable: false }) }}
+        >
+          <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} freshList={this.props.freshList} />
+        </Modal>
+      </div>
     )
   }
 
