@@ -137,6 +137,20 @@ class User extends BaseActions {
       return true;
     }
   }
+
+  //状态通知 一对多
+  //params: { from: str, to: str, context: str }
+  //from:id
+  // to:admin 管理员; allTea 全体教师; audTea 本系审核教师; topTea 本系课题对应教师; allStu 全体学生; topStu 本系学生
+  @action
+  async insertMessageToMany(param) {
+    return await this.post(urls.API_SYS_POST_MESSAGETOMANY, param)
+  }
+  //状态通知 一对一
+  @action
+  async insertMessageToOne(param) {
+    return await this.post(urls.API_SYS_POST_MESSAGETOONE, param) 
+  }
 }
 
 export default new User()
