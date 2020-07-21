@@ -95,7 +95,8 @@ class NavAdmin extends BaseActions {
                 key={i + 4}
                 onClick={this.doMenu.bind(this, item.path, i + 4)}
               >
-                <BankOutlined />
+                <div className='z-icon '>  <BankOutlined /></div>
+
                 <span className="m-menu-span">{item.title}</span>
               </div>
             ))}
@@ -120,11 +121,11 @@ class NavAdmin extends BaseActions {
               <div className="g-info-typeline">
                 <div className="g-info-type">教务处</div>
               </div>
-            
-            <div className="g-info-name">
-              <span className="z-info-id">{this.usr.uid}</span>
-              <span className="z-info-name">{this.usr.name}</span>
-            </div>
+
+              <div className="g-info-name">
+                <span className="z-info-id">{this.usr.uid}</span>
+                <span className="z-info-name">{this.usr.name}</span>
+              </div>
             </div>
           </div>
         </div>
