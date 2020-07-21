@@ -426,4 +426,20 @@ router.post('/canPublish',async(req,res)=>{
     })
 })
 
+router.get('/getTimeLine',async (req,res)=>{
+    let sql = "CALL PROC_GET_TIME_LINE";
+    callProc(sql,{},res,r=>{
+        let data = [];
+        for(let i in r){
+            data.push([])
+            let t = r[i].t_start;
+            data[i].push([t.getFullYear(),t.getMonth(),t.getDate()]);
+            t = r[i].t_end;
+            data[i].push([t.getFullYear(),t.getMonth(),t.getDate()]);
+        }
+        console.log(data);
+        res.status(200).json({code:200,data,message:"已获取时间线"})
+    })
+})
+
 module.exports = router;
