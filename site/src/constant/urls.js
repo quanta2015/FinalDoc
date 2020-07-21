@@ -24,6 +24,10 @@ export const API_SYS_READ_MESSAGES = API_SERVER + '/updateMessagesRead'
 export const API_SYS_GET_NOTICE = API_SERVER + '/getPersonalAnnouncement'
 //已读通知
 export const API_SYS_READ_NOTICE = API_SERVER + '/updateAnnouncementRead' 
+//站内信一对一
+export const API_SYS_POST_MESSAGETOONE = API_SERVER + '/insertMessageToOne' 
+//站内信一对多
+export const API_SYS_POST_MESSAGETOMANY = API_SERVER + '/insertMessageToMany' 
 
 
 // 专业负责人接口声明

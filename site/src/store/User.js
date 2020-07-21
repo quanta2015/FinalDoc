@@ -137,6 +137,14 @@ class User extends BaseActions {
       return true;
     }
   }
+
+  
+  //开题答辩分组完成站内信
+  @action
+  async insertMessageToMany(param) {
+    return await this.post(urls.API_SYS_POST_MESSAGETOMANY, param);
+  }
+  
 }
 
 export default new User()
