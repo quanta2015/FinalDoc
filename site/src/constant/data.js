@@ -9,6 +9,8 @@ import manage from '../icon/icon_manage.svg';
 import audit from '../icon/icon_audit.svg';
 import cp from '../icon/icon_cp.svg';
 
+import notice from '../icon/icon_notice.svg';
+
 import group from '../icon/icon_m_group.svg';
 import divide from '../icon/icon_m_divide.svg';
 import article from '../icon/icon_m_article.svg';
@@ -36,8 +38,9 @@ export var MENU_MAIN_T_AUDIT = [
 ]
 
 export var MENU_MAIN_S = [
+   { title: '通知公告', path: '/s',          icon: notice },
    { title: '选择课题', path: '/s_selectTL', icon: select },
-   { title: '课题详情', path: '/s_topicPG', icon: paper },
+   { title: '课题详情', path: '/s_topicPG',  icon: paper  },
 ]
 
 //学生选课状态

@@ -19,15 +19,6 @@ export default class Announcement extends Component {
             visible: false,
             selectItem: null,
             pageSize: PAGE_SIZE,
-            topNoticeList: [{
-                ann_title: '2021届毕业设计（论文）时间安排和具体工作要求aaaa',
-                ann_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                time: '2020-07-14'
-            }, {
-                ann_title: '2021届毕业设计（论文）时间安排和具体工作要求',
-                ann_content: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-                time: '2020-07-15'
-            }]
         }
     }
 
@@ -42,7 +33,9 @@ export default class Announcement extends Component {
     componentDidMount() {
         this._isMounted = true;
         let noticeWrapper = document.getElementsByClassName("m-not-wp")[0];
-        noticeWrapper.style.height = `${this.props.height ? this.props.height: 245}px`;
+        if (noticeWrapper) {
+            noticeWrapper.style.height = `${this.props.height ? this.props.height : 345}px`;
+        }
         if (this.props.pageSize) {
             this.setState({ 
                 pageSize: this.props.pageSize,
@@ -110,22 +103,9 @@ export default class Announcement extends Component {
     };
 
     render() {
-        const { topNoticeList, currentPage, total, startRow, endRow, selectItem, pageSize } = this.state;
+        const { currentPage, total, startRow, endRow, selectItem, pageSize } = this.state;
         return (
             <div className="g-notice">
-                <div className="m-banner">
-                    <span className="u-title">通知公告</span>
-                    <ul className="m-top-list">
-                        {topNoticeList.map(item =>
-                            <li>
-                                <div className="m-top-item">
-                                    <span className="u-top-title" title={item.ann_title} onClick={() => this.viewNotice(item)}>{item.ann_title}</span>
-                                    <span className="u-top-date">{item.time}</span>
-                                </div>
-                            </li>
-                        )}
-                    </ul>
-                </div>
                 <div className="m-not-wp">
                     {
                         this.noticeList.data.length ?

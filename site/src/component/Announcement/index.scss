@@ -1,49 +1,4 @@
 .g-notice {
-    .m-banner {
-        display: flex;
-        position: relative;
-        height: 94px;
-        padding: 5px 15px;
-        background-color: #e9f1f8;
-        border-top: 1px solid #d4d7da;
-        border-left: 1px solid #d4d7da;
-        border-right: 1px solid #d4d7da;
-
-        .u-title {
-            align-self: flex-end;
-            font-size: 24px;
-            font-weight: bold;
-            color: #336699;
-        }
-
-        .m-top-list {
-            position: absolute;
-            right: 25px;
-            width: 500px;
-            list-style: square;
-            align-self: center;
-        }
-
-        .m-top-item {
-            display: flex;
-        }
-
-        .u-top-title {
-            display: block;
-            width: 65%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #1d1d1d;
-            cursor: pointer;
-        }
-
-        .u-top-date {
-            margin-left: 15px;
-            font-family: Georgia, "Times New Roman", Times, serif;
-        }
-    }
-
     .m-not-wp {
         position: relative;
         border: 1px solid #dddcdc;

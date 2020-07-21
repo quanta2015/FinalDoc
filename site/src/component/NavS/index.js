@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { MENU_MAIN_S } from '../../constant/data';
-import message from '../../icon/icon_message.svg'
+import logo from '../../static/public/scl_logo.png';
 import './index.scss'
 
 @inject('userStore', 'studentStore')
@@ -12,7 +12,7 @@ class NavS extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cur: -1,
+      cur: 0,
     }
   }
 
@@ -58,30 +58,14 @@ class NavS extends Component {
     })
   }
 
-  gohome = () => {
-    this.setState({
-      cur: -1
-    });
-    route('/s');
-  }
-
-  goMessage = () => {
-    this.setState({
-      cur: -1
-    });
-    route('/message');
-  }
-
   render() {
-    let cur = this.state.cur;
     return (
       <div className="g-stu-nav">
         <div className="g-logo">
-          <div className="m-msg">
-            <img src={message} onClick={this.goMessage} />
-            {this.hasUnread && <div className="u-status">●</div>}
+          <div>
+            <img className="u-logo" src={logo} />
           </div>
-          <div className="u-title" onClick={this.gohome}>毕业设计命题系统</div>
+          <div className="u-title">毕业设计管理系统</div>
         </div>
         <div className="g-st">
           {this.currStage.stage.map((item, id) =>
@@ -89,14 +73,15 @@ class NavS extends Component {
           )}
         </div>
         <div className="g-menu">
-          {!this.selectTpInfo.id ?
-            <div className={(cur == 0) ? 'm-menu-item active' : 'm-menu-item'} onClick={this.doMenu.bind(this, MENU_MAIN_S[0].path, 0)}>
-              <img src={MENU_MAIN_S[0].icon} /><span className="m-menu-span">{MENU_MAIN_S[0].title}</span>
-            </div> :
-            <div className={(cur == 1) ? 'm-menu-item active' : 'm-menu-item'} onClick={this.doMenu.bind(this, MENU_MAIN_S[1].path, 1)}>
-              <img src={MENU_MAIN_S[1].icon} /><span className="m-menu-span">{MENU_MAIN_S[1].title}</span>
-            </div>
-          }
+          {MENU_MAIN_S.map((item, i) => 
+            <>
+              {((i === 0) || (!this.selectTpInfo.id && i === 1) || (this.selectTpInfo.id && i === 2)) &&
+                <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
+                  <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+                </div>
+              }
+            </>
+          )}
         </div>
         <div className="g-footer">
           <div className="m-setting">
