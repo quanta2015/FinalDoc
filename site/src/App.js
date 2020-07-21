@@ -71,6 +71,7 @@ class App extends Component {
             <AsyncRoute path='/m_organizeOpendefence' getComponent={() => import('./app/m/organizeOpendefence').then(module => module.default)} />
             <AsyncRoute path='/m_reviewPaper' getComponent={() => import('./app/m/reviewPaper').then(module => module.default)} />
             <AsyncRoute path='/m_viewProgress' getComponent={() => import('./app/m/viewProgress').then(module => module.default)} />
+            <AsyncRoute path='/m_organizeFinaldefence' getComponent={() => import('./app/m/organizeFinaldefence').then(module => module.default)} />
           </Router>
         </div>
       </div>
