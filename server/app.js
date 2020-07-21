@@ -333,7 +333,7 @@ app.post('/insertMessageToOne', async(req, res) => {
 
 // 各端共用端口：站内信发布（一对多）
 // params: { from: str, to: str, context: str}
-// to: admin 管理员; allTea 全体教师; audTea 本系审核教师; topTea 本系课题对应教师; allStu 全体学生; topStu 本系未选课题学生; okStu 本系已双选成功学生（发布课题时）
+// to: admin 管理员; allTea 全体教师; audTea 本系审核教师; topTea 本系课题对应教师; allStu 全体学生; topStu 本系未选课题学生; okStu 本系已双选成功学生（发布课题时); taskTea 未提交任务书的教师
 app.post('/insertMessageToMany', async(req, res) => {
     let sql = `CALL PROC_INSERT_MESSAGE_TO_MANY(?)`;
     let params = req.body;
