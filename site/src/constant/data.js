@@ -111,3 +111,69 @@ export var STU_OP_SCORE = [
    { name: '指导老师评分', type: 'ins_score' },
    { name: '开题答辩小组评分', type: 'grp_score' }
 ]
+
+//管理端
+//管理端nav
+export var ADMIN_NAV_DATA = [
+   {
+     title: "公告文档",
+     childData: [
+       { title: "公告管理", path: "/admin_ann" },
+       { title: "文档管理", path: "/admin_file" },
+     ],
+     path: "/admin_ann",
+     icon: "BankOutlined",
+     stateNum:0,
+   },
+   {
+     title: "选题管理",
+     childData: [
+       { title: "option1", path: "/admin" },
+       { title: "option2", path: "/admin" },
+     ],
+     path: "/admin",
+     icon: "BankOutlined",
+     stateNum:1,
+   },
+   {
+     title: "中期检查",
+     childData: [
+       { title: "option1", path: "/admin" },
+       { title: "option2", path: "/admin" },
+     ],
+     path: "/admin",
+     icon: "BankOutlined",
+     stateNum:2,
+   },
+   {
+     title: "评阅答辩",
+     childData: [
+       { title: "option1", path: "/admin" },
+       { title: "option2", path: "/admin" },
+     ],
+     path: "/admin",
+     icon: "BankOutlined",
+     stateNum:3,
+   },
+   {
+     title: "成绩分析",
+     childData: [
+       { title: "option1", path: "/admin" },
+       { title: "option2", path: "/admin" },
+     ],
+     path: "/admin",
+     icon: "BankOutlined",
+     stateNum:4,
+   },
+   {
+     title: "系统设置",
+     childData: [
+       { title: "option1", path: "/admin" },
+       { title: "option2", path: "/admin" },
+     ],
+     path: "/admin_sys_set",
+     icon: "BankOutlined",
+     stateNum:0,
+   },
+ ];
+ 
