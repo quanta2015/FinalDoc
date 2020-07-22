@@ -1,4 +1,4 @@
-import { Component } from "preact";
+import { Component,createRef } from "preact";
 import { inject, observer } from "mobx-react";
 import { computed, toJS } from "mobx";
 import { route } from "preact-router";
@@ -23,6 +23,7 @@ import {
   message,
   Result,
   Popover,
+  Popconfirm,
 } from "antd";
 import {
   UploadOutlined,
@@ -39,6 +40,8 @@ import { FILE_UPLOAD_FORMAT } from "../../../../constant/data";
 import { API_ADMIN_UPLOAD_FILE } from "../../../../constant/urls";
 import FormItem from "antd/lib/form/FormItem";
 import Item from "antd/lib/list/Item";
+
+
 @inject("userStore", "adminStore")
 @observer
 export default class fileManage extends Component {
@@ -53,6 +56,7 @@ export default class fileManage extends Component {
     fillnameUpdate: false,
     fileLaunchSucc: false,
     stu_selected: false,
+    popovervisiable: false,
   };
   @computed
   get usr() {
@@ -62,6 +66,8 @@ export default class fileManage extends Component {
   get adminFileManage() {
     return this.props.adminStore.adminFileManage;
   }
+
+  formRef = createRef();
   doReturn = () => {
     this.setState({
       fileLaunchSucc: false,
@@ -71,7 +77,17 @@ export default class fileManage extends Component {
   handleModalCancel = () => {
     this.setState({
       modalVisiable: false,
+      uploaded: false,
+      uploading: false,
+      loading: false,
+      fileUrl: "",
+      showDel: false,
+      fileName: null,
+      fillnameUpdate: false,
       fileLaunchSucc: false,
+      stu_selected: false,
+      popovervisiable: false,
+      
     });
   };
   handleModalShow = () => {
@@ -79,7 +95,12 @@ export default class fileManage extends Component {
       modalVisiable: true,
     });
   };
-
+  deletCancel = () => {
+    message.error("取消删除");
+    this.setState({
+      popovervisiable: false,
+    });
+  };
   componentDidMount() {
     if (!this.usr.uid) {
       route("/");
@@ -101,7 +122,16 @@ export default class fileManage extends Component {
     };
     return onFinish;
   };
-
+  deletUploadedFile = (e) => {
+    console.log("删除文件序号为", e);
+    this.props.adminStore.delUploadedFile(e).then((r) => {
+      console.log(r);
+      this.callFilelist();
+    });
+    this.setState({
+      popovervisiable: false,
+    });
+  };
   getonFinishFailed = () => {
     const onFinishFailed = (errorInfo) => {
       //  console.log("Failed:", errorInfo);
@@ -130,6 +160,7 @@ export default class fileManage extends Component {
         fileName: info.file.name,
         fillnameUpdate: true,
       });
+
       return;
     }
     console.log("文件信息", info.file.name);
@@ -142,12 +173,23 @@ export default class fileManage extends Component {
       });
       message.success(`成功上传文件《${info.file.name}》`);
     }
+    this.formRef.current.setFieldsValue({
+      f_name:this.state.fileName,
+    })
+    // this.props.form.setFieldsValue({
+    //   f_name: this.state.fileName,
+    // });
   };
-
+  fileChange=(e)=>{
+    console.log(e)
+  }
   downloadFile = (params) => {
     this.props.adminStore.adminDownload(params).then((r) => {
       if (!r) {
         message.error("网络错误");
+        this.setState({
+          popovervisiable: false,
+        });
       }
     });
   };
@@ -196,6 +238,10 @@ export default class fileManage extends Component {
       this.setState({
         stu_selected: true,
       });
+    } else {
+      this.setState({
+        stu_selected: false,
+      });
     }
   };
   handleDel = () => {
@@ -203,13 +249,17 @@ export default class fileManage extends Component {
       fileUrl: "",
       showDel: false,
       loading: false,
+      fileName:"",
     });
   };
   filenameOnchange = (e) => {
     console.log(e);
   };
+  handleVisibleChange = (popovervisiable) => {
+    this.setState({ popovervisiable });
+  };
   render() {
-    const { modalVisiable, fileLaunchSucc } = this.state;
+    const { modalVisiable, fileLaunchSucc, popovervisiable } = this.state;
     const { fileUrl, showDel, loading } = this.state;
 
     const uploadButton = (
@@ -242,8 +292,10 @@ export default class fileManage extends Component {
                       extra={
                         <Popover
                           placement="rightTop"
-                          title={'操作'}
+                          title={"操作"}
                           trigger="click"
+                          visible={popovervisiable}
+                          onVisibleChange={this.handleVisibleChange}
                           content={
                             <div className="m-admin-file-card-extra">
                               <div className="n-admin-file-card-extra">
@@ -257,27 +309,36 @@ export default class fileManage extends Component {
                                     })
                                   }
                                 >
-                                  <DownloadOutlined />下载文件
+                                  <DownloadOutlined />
+                                  下载文件
                                 </a>
                               </div>
                               <br></br>
                               <div className="u-del">
-                                <a
-                                  href="#"
-                                  onClick={() =>
+                                <Popconfirm
+                                  overlayClassName="m-popconfirm"
+                                  title="确定删除此文件？"
+                                  onConfirm={() =>
                                     this.deletUploadedFile({
                                       id: item.id,
                                     })
                                   }
+                                  onCancel={this.deletCancel}
+                                  okText="Yes"
+                                  cancelText="No"
                                 >
-                                  <CloseOutlined />删除文件
-                                </a>
+                                  <a href="#">
+                                    <CloseOutlined />
+                                    删除文件
+                                  </a>
+                                </Popconfirm>
                               </div>
                             </div>
                           }
-                          
                         >
-                          <a><MenuOutlined /></a>
+                          <a>
+                            <MenuOutlined />
+                          </a>
                         </Popover>
                       }
                     >
@@ -311,6 +372,7 @@ export default class fileManage extends Component {
             onCancel={this.handleModalCancel}
             title="上传文件"
             width="900px"
+            destroyOnClose={true}
           >
             {!fileLaunchSucc && (
               <div className="admin-file-modal">
@@ -320,6 +382,7 @@ export default class fileManage extends Component {
                   initialValues={{ remember: true }}
                   onFinish={this.getonFinish()}
                   onFinishFailed={this.getonFinishFailed()}
+                  ref={this.formRef}
                   // value={{
                   //   f_name:this.state.fileName
                   // }}
@@ -339,13 +402,13 @@ export default class fileManage extends Component {
                             message: "Please input your filename!",
                           },
                         ]}
-                        initialValue={this.state.fileName}
+                       
                         shouldUpdate={true}
                       >
                         <Input
                           className="input_box"
                           values={this.state.fileName}
-                          onChange={this.filenameOnchange.bind(this)}
+                          
                         />
                       </Form.Item>
                       <Form.Item
@@ -414,7 +477,7 @@ export default class fileManage extends Component {
                       )}
                     </Col>
                     <Col span={12}>
-                      <Form.Item>
+                      <Form.Item onChange={this.fileChange}>
                         <Card title="请选择文件上传">
                           <div
                             className="m-filewp z-submit-wp"

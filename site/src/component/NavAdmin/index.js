@@ -87,7 +87,6 @@ class NavAdmin extends BaseActions {
             })}
           </div>
           <div className="g-menu">
-         
             {ADMIN_NAV_DATA.map((item, i) => (
               <div
                 className={
@@ -96,14 +95,14 @@ class NavAdmin extends BaseActions {
                 key={i + 4}
                 onClick={this.doMenu.bind(this, item.path, i + 4)}
               >
-                <BankOutlined />
+                <div className='z-icon '>  <BankOutlined /></div>
+              
                 <span className="m-menu-span">{item.title}</span>
               </div>
             ))}
             <br />
             {this.state.checkList.map((item, i) => (
               <div
-                // 这个+1是为了和最上面的毕业设计管理错开，各端需根据自己情况调整
                 className={
                   this.state.cur == i + 4 + 1
                     ? "m-menu-item active"
@@ -119,12 +118,14 @@ class NavAdmin extends BaseActions {
           </div>
           <div className="g-info">
             <div className="m-info">
-              <div className="m-logout">退出登录</div>
-              <div className="z-info">
-                <div>身份：教务处</div>
-                <div>姓名：{this.usr.name}</div>
-                <div>工号：{this.usr.uid}</div>
+              <div className="g-info-typeline">
+                <div className="g-info-type">教务处</div>
               </div>
+            
+            <div className="g-info-name">
+              <span className="z-info-id">{this.usr.uid}</span>
+              <span className="z-info-name">{this.usr.name}</span>
+            </div>
             </div>
           </div>
         </div>

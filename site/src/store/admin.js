@@ -145,6 +145,19 @@ class admin extends BaseActions {
       return false;
     })
   }
+  @action
+  async delUploadedFile(params) {
+    const r = await this.post(urls.API_ADMIN_DELETE_UPLOAD_FILE, params);
+    if (r && r.code === 200) {
+      runInAction(() => {
+        message.success("删除该文件成功");
+      });
+      return r.data;
+    } else {
+      message.error("网络错误");
+    }
+    return r;
+  }
   
 }
 

@@ -123,3 +123,5 @@ export const API_ADMIN_INSERT_FILE_RECORD = API_SERVER + '/admin'+'/insertFileTe
 export const API_ADMIN_CALL_ANN_DETAIL = API_SERVER + '/admin'+'/getAnnouncementDetails'
 //管理端文件下载
 export const API_ADMIN_DOWNLOAD_FILE = API_SERVER + '/admin'+'/admindownload'
+//删除文件
+export const API_ADMIN_DELETE_UPLOAD_FILE = API_SERVER + '/admin'+'/delFile'

@@ -65,7 +65,7 @@ export default class AnnounceManage extends Component {
     curCont: "",
     curTarget: "",
     curTime: "",
-    curAnnid:0,
+    curAnnid: 0,
   };
 
   @computed
@@ -81,7 +81,7 @@ export default class AnnounceManage extends Component {
     this.setState({
       launchSucc: false,
       modalVisiable: false,
-      annDeletSucc:false,
+      annDeletSucc: false,
       annDetailVisiable: false,
     });
   };
@@ -123,25 +123,22 @@ export default class AnnounceManage extends Component {
       console.log(r);
     });
   };
-  deletCancel=()=>{
-    
-    message.error('取消删除');
+  deletCancel = () => {
+    message.error("取消删除");
+  };
 
-  }
-
-
-  deletConfirm=(e)=> {
+  deletConfirm = (e) => {
     console.log(e);
-    message.success('确认删除');
-    let params = {ann_id:this.state.curAnnid}
+    message.success("确认删除");
+    let params = { ann_id: this.state.curAnnid };
     this.props.adminStore.deletOneAnn(params).then((r) => {
       console.log(r);
       this.callAnnData();
       this.setState({
-        annDeletSucc:true,
-      })
+        annDeletSucc: true,
+      });
     });
-  }
+  };
   //表头筛选
   // handleChange = (filters) => {s
   // 	this.setState({
@@ -227,6 +224,11 @@ export default class AnnounceManage extends Component {
   getonFinish = () => {
     const onFinish = (values) => {
       console.log(values);
+      let temp = values.ann_context
+        .replace(/<(.+?)>/gi, " &lt;$1&gt; ")
+        .replace(/ /gi, " &nbsp; ")
+        .replace(/\n/gi, " <br/> ");
+      values.ann_context = temp;
       this.props.adminStore.launchAnn(values).then((r) => {
         // console.log('=========188==================',r)
         if (r.code === 200) {
@@ -274,7 +276,7 @@ export default class AnnounceManage extends Component {
         curTitle: r.title,
         curTarget: r.target,
         curTime: r.date,
-        curAnnid:key
+        curAnnid: key,
       });
     });
 
@@ -482,7 +484,7 @@ export default class AnnounceManage extends Component {
 
                   <br></br>
                   <div className="z-ann-content">
-                    <span>{curCont} </span>
+                    <div dangerouslySetInnerHTML={{ __html: curCont }} />
                   </div>
 
                   <div className="m-ann-foot">
@@ -494,7 +496,7 @@ export default class AnnounceManage extends Component {
 
                   <div>
                     <Popconfirm
-                    overlayClassName="m-popconfirm"
+                      overlayClassName="m-popconfirm"
                       title="确定删除此公告？"
                       onConfirm={this.deletConfirm}
                       onCancel={this.deletCancel}
@@ -505,7 +507,6 @@ export default class AnnounceManage extends Component {
                         type="primary"
                         htmlType="submit"
                         className="ann_delet_buttom"
-                        
                       >
                         删除该公告
                       </Button>
