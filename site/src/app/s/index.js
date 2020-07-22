@@ -4,6 +4,7 @@ import { Pagination, Modal, Button, message } from 'antd';
 import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import Announcement from '../../component/Announcement';
+import Message from '../../component/Message'
 import "./style.scss"
 
 const pageSize = 5;
@@ -74,6 +75,9 @@ export default class Student extends Component {
     const { applyList, selectItem } = this.state;
     return (
       <div className="g-s">
+        <div className="m-message">
+          <Message />
+        </div>
         <div className="m-notice">
           <Announcement />
         </div>

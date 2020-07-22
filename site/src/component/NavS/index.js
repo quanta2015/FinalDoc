@@ -31,25 +31,9 @@ class NavS extends Component {
     return this.props.studentStore.currStage;
   }
 
-  @computed
-  get hasUnread() {
-    return this.props.userStore.hasUnread
-  }
 
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
-    this.props.userStore.getAllMessages({ uid: this.usr.uid }).then(res => {
-      if (res.length) {
-        res.map(item => {
-          item.map(elem => {
-            if (elem.check_flag === 0) {
-              this.props.userStore.setReadStatus(true)
-            }
-          })
-
-        })
-      }
-    })
   }
 
   doMenu = (path, i) => {
