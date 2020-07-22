@@ -62,17 +62,23 @@ export const API_MAN_POST_VIEWFILES = API_SERVER + '/auditMg/viewFiles'
 
 
 // 学生接口声明
-export const API_STU_GET_TOPINFO = API_SERVER + '/student/getStuInfo' //用户选择过的所有课题记录
-export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' //用户可选的课题列表
+//用户选择过的所有课题记录
+export const API_STU_GET_TOPINFO = API_SERVER + '/student/getStuInfo' 
+//用户可选的课题列表
+export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' 
 export const API_STU_UPDATE_TTLLIST = API_SERVER + '/student/addStuTopic'
 export const API_STU_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
 export const API_STU_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
-export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' //双选成功的课题信息 
+//双选成功的课题信息 
+export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' 
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
-export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' //所有指导日志
-export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' //所有阶段以及截止时间
-export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' // 返回当前阶段
-
+//所有指导日志
+export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' 
+//所有阶段以及截止时间
+export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' 
+// 返回当前阶段
+export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' 
+export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplate'
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';

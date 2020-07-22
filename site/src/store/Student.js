@@ -19,39 +19,10 @@ class Student extends BaseActions {
     @observable
     //时间轴内容
     timeList = []
-    // timeList = [
-    //     { title: '任务书', type: 'f_task', time: '2020-10-08' },
-    //     { title: '开题中期', time: '2020-12-12' },
-    //     { title: '论文审核', time: '2020-12-28' },
-    //     { title: '论文答辩', time: '2021-04-08' },
-    //     { title: '成绩审定', type: 'f_score_check', time: '2021-05-02' }
-    // ]
 
     @observable
     //模板文件
-    docTemplate = [{
-        name: '开题中期',
-        file: [
-            { title: '开题报告', link: '' },
-            { title: '外文文献翻译', link: '' },
-            { title: '文献综述', link: '' },
-            { title: '中期检查表', link: '' },
-        ]
-    }, {
-        name: '论文定稿',
-        file: [
-            { title: '论文格式', link: '' },
-            { title: '作品说明书', link: '' },
-            { title: '诚信承诺书', link: '' },
-        ]
-    }, {
-        name: '论文答辩',
-        file: [
-            { title: '评审答辩成绩表', link: '' },
-            { title: '延缓答辩申请表', link: '' }
-        ]
-    }
-    ]
+    docTemplate = []
 
     @observable
     //开题答辩成绩
@@ -303,6 +274,18 @@ class Student extends BaseActions {
             message.error('网络错误')
         }
         return r
+    }
+
+    @action
+    async getTempFileList() {
+        const r = await this.post(urls.API_STU_GET_TEMP_FILE, null);
+        if (r && r.code === 200) {
+            runInAction(()=> {
+                this.docTemplate = r.data;
+            })
+        } else {
+            message.error('网络错误')
+        }
     }
 }
 

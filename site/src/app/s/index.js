@@ -58,10 +58,11 @@ export default class Student extends Component {
     if (!this.usr.uid) {
       route('/');
     }
+    this.props.studentStore.getTempFileList();
   }
 
   downloadFile = (item) => {
-    let params = { file: item.link, id: '', name: item.title };
+    let params = { file: item.f_path, id: '毕业设计', name: item.f_name };
     this.props.userStore.downloadFile(params)
       .then(r => {
         if (!r) {
@@ -72,6 +73,7 @@ export default class Student extends Component {
 
   render() {
     const { applyList, selectItem } = this.state;
+    const FILE_STAGE = ['开题中期', '论文定稿', '论文答辩'];
     return (
       <div className="g-s">
         <div className="m-notice">
@@ -102,12 +104,12 @@ export default class Student extends Component {
           </div>
           <div className="m-card">
             <span className="u-title">模板文件</span>
-            {this.docTemplate.map((item, i) =>
+            {this.docTemplate.length && this.docTemplate.map((item, i) =>
               <div className="m-tmp-wp">
-                <div className="u-tmp-title"><span>0{i + 1}</span> / {item.name}</div>
+                <div className="u-tmp-title"><span>0{i + 1}</span> / {FILE_STAGE[i]}</div>
                 <div className="m-tmplate">
-                  {item.file && item.file.map(item =>
-                    <span className="u-file" onClick={() => this.downloadFile(item)}>{item.title}</span>
+                  {item.map(file =>
+                    <span className="u-file" onClick={() => this.downloadFile(file)}>{file.f_name}</span>
                   )}
                 </div>
               </div>
