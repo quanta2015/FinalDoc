@@ -4,7 +4,7 @@ import { Pagination, Modal, Button, message, Empty } from 'antd';
 import { computed, toJS } from 'mobx';
 import "./index.scss"
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 7
 
 @inject('userStore')
 @observer
@@ -34,7 +34,7 @@ export default class Announcement extends Component {
         this._isMounted = true;
         let noticeWrapper = document.getElementsByClassName("m-not-wp")[0];
         if (noticeWrapper) {
-            noticeWrapper.style.height = `${this.props.height ? this.props.height : 345}px`;
+            noticeWrapper.style.height = `${this.props.height ? this.props.height : 340}px`;
         }
         if (this.props.pageSize) {
             this.setState({ 
@@ -141,11 +141,11 @@ export default class Announcement extends Component {
                 {selectItem &&
                     <Modal
                         className="g-dialog"
-                        title={null}
+                        title={'公告详情'}
                         visible={this.state.visible}
                         closable={false}
                         onCancel={this.handleCancel}
-                        width={700}
+                        width={900}
                         footer={
                             [
                                 selectItem.check_flag ?
@@ -153,9 +153,14 @@ export default class Announcement extends Component {
                                     <Button onClick={this.handleOk} type="primary">已读</Button>
                             ]}
                     >
-                    <div className="u-title">{selectItem.ann_title}</div>
-                        <div className="u-time">{selectItem.time}</div>
-                        <p>{selectItem.ann_content}</p>
+                        <div className="m-det-wp">
+                            <div className="u-title">{selectItem.ann_title}</div>
+                            <div dangerouslySetInnerHTML={{ __html: selectItem.ann_content }} />
+                            <div className="m-det-foot">
+                                <p>教务处</p>
+                                <p>{selectItem.time}</p>
+                            </div>
+                        </div>
                     </Modal>
                 }
             </div>
