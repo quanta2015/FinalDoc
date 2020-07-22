@@ -1,7 +1,8 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
+import { computed } from 'mobx';
 import { route } from 'preact-router';
+import Message from '../../component/Message'
 import Announcement from '../../component/Announcement';
 import "./style.scss"
 
@@ -25,6 +26,7 @@ export default class Manage extends Component {
       <div>
         <div className="g-m-title">公告栏</div>
         <div className="g-m m-m">
+          <Message />
           <Announcement pageSize={12} height={550} />
         </div>
       </div>

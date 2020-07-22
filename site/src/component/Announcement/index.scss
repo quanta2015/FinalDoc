@@ -1,49 +1,4 @@
 .g-notice {
-    .m-banner {
-        display: flex;
-        position: relative;
-        height: 94px;
-        padding: 5px 15px;
-        background-color: #e9f1f8;
-        border-top: 1px solid #d4d7da;
-        border-left: 1px solid #d4d7da;
-        border-right: 1px solid #d4d7da;
-
-        .u-title {
-            align-self: flex-end;
-            font-size: 24px;
-            font-weight: bold;
-            color: #336699;
-        }
-
-        .m-top-list {
-            position: absolute;
-            right: 25px;
-            width: 500px;
-            list-style: square;
-            align-self: center;
-        }
-
-        .m-top-item {
-            display: flex;
-        }
-
-        .u-top-title {
-            display: block;
-            width: 65%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #1d1d1d;
-            cursor: pointer;
-        }
-
-        .u-top-date {
-            margin-left: 15px;
-            font-family: Georgia, "Times New Roman", Times, serif;
-        }
-    }
-
     .m-not-wp {
         position: relative;
         border: 1px solid #dddcdc;
@@ -58,7 +13,7 @@
         .m-not-item {
             display: flex;
             padding: 10px 0;
-            border-top: 1px solid #eee;
+            // border-top: 1px solid #eee;
         }
 
         .u-not-date {
@@ -111,16 +66,40 @@
     //     min-height: 550px;
     // }
 
+    .m-det-wp {
+        height: 395px;
+        overflow-y: scroll;
+        width: 100%;
+    }
+
     .u-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
+        width: 100%;
         text-align: center;
+        line-height: 36px;
+        padding: 7px 0;
+        font-size: 26px;
+        color: #0585d0;
+        font-family: "微软雅黑", "宋体", "黑体", Arial;
+        font-weight: bold;
+        margin-bottom: 18px !important;
+        padding: 8px 0 5px 5px;
     }
 
     .u-time {
         margin-bottom: 16px;
         text-align: center;
         font-family: Georgia, "Times New Roman", Times, serif;
+    }
+
+    .m-det-foot {
+        margin-top: 30px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        text-align: right;
+
+        &>p {
+            margin-bottom: 0;
+        }
     }
 }

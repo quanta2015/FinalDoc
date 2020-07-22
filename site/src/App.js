@@ -54,7 +54,6 @@ class App extends Component {
           <Router onChange={this.handleRoute}>
             {/* 系统模块 */}
             <AsyncRoute exact path='/'  getComponent={ () => import('./app/login').then(module => module.default) } />
-            <AsyncRoute exact path='/message' getComponent={() => import('./app/message').then(module => module.default)} />
 
             {/* 教师模块 */}
             <AsyncRoute path='/t' getComponent={() => import('./app/t').then(module => module.default)} />
