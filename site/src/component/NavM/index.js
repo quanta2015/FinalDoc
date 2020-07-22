@@ -61,6 +61,7 @@ class NavM extends BaseActions {
   }
 
   render() {
+    const len = MENU_MAIN_M.length
     return (
       <div>
         <div className="g-mg-nav">
@@ -88,7 +89,7 @@ class NavM extends BaseActions {
             )}
             <Divider>指导教师</Divider>
             {MENU_MAIN_T.map((item, i) =>
-              <div className={(this.state.cur == i + 4) ? 'm-menu-item active' : 'm-menu-item'} key={i + 4} onClick={this.doMenu.bind(this, item.path, i + 4)}>
+              <div className={(this.state.cur == i + len) ? 'm-menu-item active' : 'm-menu-item'} key={i + len} onClick={this.doMenu.bind(this, item.path, i + len)}>
                 <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
               </div>
             )}
@@ -96,9 +97,9 @@ class NavM extends BaseActions {
             {this.state.checkList.map((item, i) =>
               <div
                 // 这个+1是为了和最上面的毕业设计管理错开，各端需根据自己情况调整
-                className={(this.state.cur == i + 4 + 1) ? 'm-menu-item active' : 'm-menu-item'}
-                key={i + 4 + 1}
-                onClick={this.doMenu.bind(this, item.path, i + 4 + 1)}>
+                className={(this.state.cur == i + len + 1) ? 'm-menu-item active' : 'm-menu-item'}
+                key={i + len + 1}
+                onClick={this.doMenu.bind(this, item.path, i + len + 1)}>
                 <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
               </div>
             )}
