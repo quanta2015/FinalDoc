@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import Message from '../../component/Message'
 import Announcement from '../../component/Announcement';
 import { route } from 'preact-router';
 import "./style.scss"
@@ -23,6 +24,7 @@ export default class Teacher extends Component {
 
       <div className="g-t">
         <div className="m-t">
+          <Message />
           <Announcement pageSize={12} height={550} />
         </div>
       </div>

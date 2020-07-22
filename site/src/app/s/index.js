@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Pagination, Modal, Button, message } from 'antd';
+import { Modal, Button, message } from 'antd';
 import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import Announcement from '../../component/Announcement';
@@ -77,12 +77,8 @@ export default class Student extends Component {
     const FILE_STAGE = ['开题中期', '论文定稿', '论文答辩'];
     return (
       <div className="g-s">
-        <div className="m-message">
-          <Message />
-        </div>
-        <div className="m-notice">
-          <Announcement />
-        </div>
+        <Message />
+        <Announcement />
         <div className="m-other">
           <div className="m-card">
             <span className="u-title">答辩信息</span>
