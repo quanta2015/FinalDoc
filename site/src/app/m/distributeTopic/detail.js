@@ -179,6 +179,7 @@ export default class Detail extends Component {
 			await this.props.userStore.insertMessageToMany({"from":this.usr.uid,"to":"topTea","context":"课题已发布"})
 			await this.props.userStore.insertMessageToMany({"from":this.usr.uid,"to":"topStu","context":"课题已发布"})
 			await this.props.userStore.insertMessageToMany({"from":this.usr.uid,"to":"admin","context":this.usr.maj+"已发布课题"})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "okStu", "context":"双选成功" })
 			
 		} else {
 			message.info("发布失败！请重试")

@@ -119,6 +119,16 @@ export default class Ass extends Component {
         })
     }
 
+    warning = async()=>{
+        let res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "taskTea", "context": "请您尽快提交任务书！" })
+        if (res && res.code === 200) {
+            message.success("提醒成功！")
+        } else {
+            message.error("提醒失败！请重试")
+        }
+
+    }
+
 
 
     // 提交手动分配
@@ -296,9 +306,9 @@ export default class Ass extends Component {
                     <div className="m-ass_head_btn">
                         {/* 未提交的任务书 */}
                         {
-                            (this.reviewPaper.uncommit_list.length > 0) &&
+                            (this.reviewPaper.uncommit_list.length > 0 && this.reviewPaper.suc === 0) &&
                             <Tooltip placement="left" title={this.reviewPaper.uncommit_list.length+"篇未提交，一键提醒所有未提交任务书的指导教师"}>
-                                <Button>提醒</Button>
+                                <Button onClick={this.warning}>提醒</Button>
                             </Tooltip>
                         }
                         {
