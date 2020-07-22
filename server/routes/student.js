@@ -275,4 +275,35 @@ router.post('/getAllStates', async(req, res) => {
 //     })
 // })
 
+// 获取学生模板文件
+// params: {}
+router.post('/getAllStudentTemplate', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_FILE_INFO`;
+    let params = {};
+    callProc(sql, params, res, (r) => {
+        var template = [];
+        var midOpening = [];
+        var finalPaper = [];
+        var thesisDefense = [];
+        r.forEach(element => {
+            switch (element['f_type']) {
+                case 221:
+                    midOpening.push(element);
+                    break;
+                case 222:
+                    finalPaper.push(element);
+                    break;
+                case 223:
+                    thesisDefense.push(element);
+                    break;
+                default:
+                    break;
+            }
+        });
+        template.push(midOpening, finalPaper, thesisDefense);
+        console.log(template);
+        res.status(200).json({ code: 200, data: template, msg: '成功获取学生模板文件' });
+    })
+})
+
 module.exports = router;
