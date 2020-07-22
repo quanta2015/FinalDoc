@@ -288,24 +288,8 @@ app.post('/getPersonalMessages', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql,params, res, (r) => {
-        var all = [];
-        var time = [];
-        r.forEach(element => {
-            if (time.indexOf(element['time']) == -1) {
-                var day = [];
-                time.push(element['time']);
-                day.push(element);
-                all.push(day);
-            } else {
-                all.forEach(ele => {
-                    if (ele[0]['time'] == element['time']) {
-                        ele.push(element);
-                    }
-                });
-            }
-        });
-        console.log(all);
-        res.status(200).json({ code: 200, data: all, msg: '成功获取所有站内信' });
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取所有站内信' });
     })
 })
 
