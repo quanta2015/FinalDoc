@@ -1,0 +1,104 @@
+.g-admin-fileMag {
+  .m-file-cardbox{
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
+
+
+
+.admin-file-modal {
+  height: 550px;
+  .label-text {
+    width: 80%;
+    font-size: 16px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 2vh auto 5vh auto;
+    .input_box{
+        margin-top: 1vh;
+    }
+    
+  }
+  .subit_buttom {
+    margin: 6vh auto;
+    width: 358px !important ;
+    height: 4.3vh !important ;
+    border-radius: 8px;
+    background-color: #0585d0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .m-filewp {
+    box-sizing: border-box;
+    width: 345px;
+    height: 214px;
+    border: 1px dashed #d9d9d9;
+    margin: 2vh auto;
+    &:hover {
+      border: 1px dashed #1891ff;
+    }
+  }
+  
+  .z-submit-wp {
+    border: 1px solid #d9d9d9;
+  
+    &:hover {
+      border: 1px solid #1891ff;
+    }
+  }
+  
+  .z-submit-p {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .u-del {
+    display:flex;
+    position: absolute;
+    right: 40px;
+    color: #999;
+    background-color: #fafafa;
+  }
+  
+  .z-success {
+    font-size: 24px;
+    color: #1891ff;
+  }
+  
+  .avatar-uploader > .ant-upload {
+    width: 343px;
+    height: 212px;
+  }
+  
+  .ant-upload.ant-upload-select-picture-card {
+    margin: 0;
+    border: none;
+  }
+  
+  .ant-upload-text {
+    color: #9e9e9e;
+  }
+  .ant-form-item-label {
+    margin-bottom: 1vh !important;
+  }
+  .ant-form-item-label > label {
+    font-size: 16px;
+  }
+  .m-admin-file-card-extra{
+    display: block;
+    width: 80px;
+    
+  }
+  .n-admin-file-card-extra{
+    margin: 20px!important;
+    
+  }
+  .m-popconfirm{
+    height: 109px!important;
+    width: 500px;
+  }
+  
+}
