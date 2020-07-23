@@ -1,11 +1,3 @@
-/*
- * @Descripttion: admin store
- * @version:
- * @Author: wyx
- * @Date: 2020-07-09 19:06:02
- * @LastEditors: wyx
- * @LastEditTime: 2020-07-09 20:33:32
- */
 
 import BaseActions from "../component/BaseActions";
 import { observable, action, runInAction } from "mobx";
@@ -25,9 +17,10 @@ class admin extends BaseActions {
       },
     ],
   };
+
   @observable
   adminFileManage = {
-    //公告列表
+    //文件列表
     file_list: [
       {
         id: "0",
@@ -35,6 +28,13 @@ class admin extends BaseActions {
         f_time: "2020-07-08",
       },
     ],
+  };
+
+  @observable
+  nameListManage = {
+    //名单管理
+    tea_list:[],
+    stu_list:[],
   };
 
   @action
@@ -158,7 +158,50 @@ class admin extends BaseActions {
     }
     return r;
   }
+
+  /**
+   * @description: 获取全部学生名单
+   * @param {null} 
+   * @return: 
+   */
+  @action
+  async getAllStuList() {
+    const res = await this.post(urls.API_ADMIN_GET_ALL_STU_LIST, null);
+    if (res && res.code === 200) {
+      runInAction(() => {
+        this.nameListManage.stu_list = res.data;
+      });
+    } else {
+      message.error("网络错误");
+    }
+  }
+
+    /**
+   * @description: 获取全部教师名单
+   * @param {null} 
+   * @return: 
+   */
+  @action
+  async getAllTeaList() {
+    const res = await this.post(urls.API_ADMIN_GET_ALL_TEA_LIST, null);
+    if (res && res.code === 200) {
+      runInAction(() => {
+        this.nameListManage.tea_list = res.data;
+      });
+    } else {
+      message.error("网络错误");
+    }
+  }
   
+  /**
+   * @description: 修改某条信息
+   * @param {key: String, name: String, job_title: String, maj: String, cls: String, tel:String}
+   * @return: 
+   */
+  @action
+  async editInfo(params) {
+    return await this.post(urls.API_ADMIN_EDIT_ONE_INFO,params);
+  }
 }
 
 export default new admin();

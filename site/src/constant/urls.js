@@ -125,3 +125,9 @@ export const API_ADMIN_CALL_ANN_DETAIL = API_SERVER + '/admin'+'/getAnnouncement
 export const API_ADMIN_DOWNLOAD_FILE = API_SERVER + '/admin'+'/admindownload'
 //删除文件
 export const API_ADMIN_DELETE_UPLOAD_FILE = API_SERVER + '/admin'+'/delFile'
+//获取全部学生名单
+export const API_ADMIN_GET_ALL_STU_LIST = API_SERVER + '/admin'+'/getAllStu'
+//获取全部教师名单
+export const API_ADMIN_GET_ALL_TEA_LIST = API_SERVER + '/admin'+'/getAllTea'
+//修改名单某条信息
+export const API_ADMIN_EDIT_ONE_INFO = API_SERVER + '/admin'+'/editInfo'
