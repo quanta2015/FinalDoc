@@ -171,7 +171,7 @@ export default class Defense extends Component {
         this.clear()
         if (this.openDefenseGroup.topic_info.length===0)
         {
-            let temp = { "from": this.usr.uid,"to":"admin",context:this.usr.maj+"已完成开题答辩分组"}
+            let temp = { "from": this.usr.uid, "to": "admin", context: this.usr.maj + "已完成开题答辩分组", "type": 0}
             let res=await this.props.userStore.insertMessageToMany(temp);
             
         }

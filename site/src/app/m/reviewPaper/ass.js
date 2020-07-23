@@ -120,7 +120,7 @@ export default class Ass extends Component {
     }
 
     warning = async()=>{
-        let res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "taskTea", "context": "请您尽快提交任务书！" })
+        let res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "taskTea", "context": "请您尽快提交任务书！" ,"type":0})
         if (res && res.code === 200) {
             message.success("提醒成功！")
         } else {

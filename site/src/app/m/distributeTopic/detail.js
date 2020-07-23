@@ -176,10 +176,10 @@ export default class Detail extends Component {
 				终：学生B
 				内容：课题《A》双选成功  => 双选成功
 			*/
-			await this.props.userStore.insertMessageToMany({"from":this.usr.uid,"to":"topTea","context":"课题已发布"})
-			await this.props.userStore.insertMessageToMany({"from":this.usr.uid,"to":"topStu","context":"课题已发布"})
-			await this.props.userStore.insertMessageToMany({"from":this.usr.uid,"to":"admin","context":this.usr.maj+"已发布课题"})
-			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "okStu", "context":"双选成功" })
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "topTea", "context": "课题已发布", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "topStu", "context": "课题已发布", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "admin", "context": this.usr.maj + "已发布课题", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "okStu", "context": "双选成功", "type": 1})
 			
 		} else {
 			message.info("发布失败！请重试")

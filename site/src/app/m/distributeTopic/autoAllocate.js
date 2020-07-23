@@ -103,7 +103,7 @@ export default class AutoAllocate extends Component {
             */
            // 如果未审核课题数量为0，说明已将课题全部分配，审核课题老师已确定
            if(this.distributeTopic.topic_info.length === 0){
-                const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配" })
+               const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0})
                 if(res.code === 200){
                     console.log("站内信发送成功")
                 }else{
