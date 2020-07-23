@@ -2,13 +2,13 @@ import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 import { Card, Input, Tag, Button, Modal,Tooltip } from 'antd';
 import style from './index.scss';
-import FileUpload from '../../FileUpload'
+import TaskForm from '../TaskFormSecond';
 import FileDownLoad from '../../FileDownLoad'
 
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { UserOutlined, BookOutlined, DownloadOutlined, CloseCircleOutlined ,CheckCircleOutlined} from '@ant-design/icons';
-import TaskForm from '../TaskForm';
+
 import { route } from 'preact-router';
 
 const tabListNoTitle = [
@@ -91,7 +91,6 @@ export default class StuMethods extends BaseActions {
     if (flag) {
       this.setState({ auditOp: true })
     }
-    console.log(l);
     this.setState({ links: l })
   }
 
@@ -242,6 +241,7 @@ export default class StuMethods extends BaseActions {
           title="发布任务书"
           visible={this.state.modal_visiable}
           width={900}
+          className="task-form-modal"
           footer={null}
           onCancel={() => { this.setState({ modal_visiable: false }) }}
         >
