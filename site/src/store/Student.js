@@ -83,7 +83,7 @@ class Student extends BaseActions {
                     })
 
                     list.push({
-                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                        key: item.key, id: item.id, tid: item.tid, instructor: item.instructor, topic: item.topic, content: item.content,
                         phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
                         areas: areas,
                         color: color
