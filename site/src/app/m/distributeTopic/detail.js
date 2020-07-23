@@ -38,7 +38,6 @@ export default class Detail extends Component {
 		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
 		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
 		await this.props.manageStore.getJudge({ "ide": this.usr.uid });
-
 	}
 
 	handleChange = (filters) => {//筛选

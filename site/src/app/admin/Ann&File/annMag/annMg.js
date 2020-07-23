@@ -1,12 +1,3 @@
-/*
- * @Descripttion: 管理员-公告文档-公告模块 preac
- * @version:
- * @Author: wyx
- * @Date: 2020-07-09 14:01:54
- * @LastEditors: wyx
- * @LastEditTime: 2020-07-09 20:32:46
- */
-
 import { Component } from "preact";
 import { inject, observer } from "mobx-react";
 import { computed, toJS } from "mobx";
@@ -41,10 +32,6 @@ import {
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
-
-// function showTotal(total) {
-//     return `共 ${total} 页`;
-// }
 
 @inject("adminStore", "userStore")
 @observer
@@ -305,9 +292,10 @@ export default class AnnounceManage extends Component {
         dataIndex: "target",
         key: "target",
         filters: [
-          { text: "教师", value: "教师" },
-          { text: "学生", value: "学生" },
-          { text: "全体", value: "全体" },
+          { text: "教师", value: "全体教师" },
+          { text: "学生", value: "全体学生" },
+          { text: "全体师生", value: "全体师生" },
+          { text: "系主任", value: "各系主任" },
         ],
 
         filterMultiple: false,
