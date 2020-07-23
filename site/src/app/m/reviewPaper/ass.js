@@ -137,7 +137,7 @@ export default class Ass extends Component {
             message.info("还未选择待审核任务书！")
             return;
         }
-        let temp = { "topic_id": this.state.selectedRowKeys }
+        let temp = { "topic_id": this.state.selectedRowKeys, "ide": this.usr.uid }
         console.log(temp)
         let res = await this.props.manageStore.reviewTask(temp);
         if (res && res.code === 200) {
