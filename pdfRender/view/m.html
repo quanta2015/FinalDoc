@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="jquery.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="head-pic">
+    <img src="title.jpg" alt="">
+  </div>
+  <div class="g-title" id="a">本科生毕业设计（论文）任务书</div>
+
+  <div class="jie">
+    （<span class="jie-underline kaiti"> 2021 </span>届）
+  </div>
+
+  <div class="topic-name">
+    <div class="topic-name-header">
+      论文题目
+    </div>
+    <!--id="topic-name-2"-->
+    <div class="topic-name-content kaiti" id="topic-name-1">
+    </div>
+  </div>
+  <!--姓名：stu-name
+      ID：stu-id
+      专业：stu-maj
+      班级：stu-clz
+      指导教师：tea-name
+      职称：tea-job
+  -->
+  <div class="stu-info">
+    <div class="stu-info-line">
+      <div class="stu-info-left">
+        <div class="stu-info-des-l">学生姓名</div>
+        <div class="stu-info-content-l kaiti" id="stu-name"></div>
+      </div>
+      <div class="stu-info-right">
+        <div class="stu-info-des-r">学&nbsp;号</div>
+        <div class="stu-info-content-r kaiti" id="stu-id"></div>
+      </div>
+    </div>
+    <div class="stu-info-line">
+      <div class="stu-info-left">
+        <div class="stu-info-des-l">专&nbsp;&nbsp;&nbsp;&nbsp;业</div>
+        <div class="stu-info-content-l kaiti" id="stu-maj"></div>
+      </div>
+      <div class="stu-info-right">
+        <div class="stu-info-des-r">班&nbsp;级</div>
+        <div class="stu-info-content-r kaiti" id="stu-clz"></div>
+      </div>
+    </div>
+    <div class="stu-info-line">
+      <div class="stu-info-left">
+        <div class="stu-info-des-l">指导教师</div>
+        <div class="stu-info-content-l kaiti" id="tea-name"></div>
+      </div>
+      <div class="stu-info-right">
+        <div class="stu-info-des-r">职&nbsp;称</div>
+        <div class="stu-info-content-r kaiti" id="tea-job"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot kaiti">
+    杭州国际服务工程学院教学部
+  </div>
+  <div class="nextPage"></div>
+  <div class="pageHead"></div>
+
+  <div class="title-2">
+    杭州国际服务工程学院本科生毕业设计（论文）任务书
+  </div>
+  
+  <div class="subtitle">
+    一、论文题目
+  </div>
+  <!--id="topic-name-2" maxlength:29-->
+  <div id="topic-name-2">
+  </div>
+  
+  <div class="subtitle">
+    二、内容和要求
+  </div>
+  <div class="trititle">
+    1．总体目标及性能（参数）要求
+  </div>
+  <!--id="target" 换行+空格-->
+  <div class="text-content" id="target">
+
+  </div>
+
+  <div class="trititle">
+    2．研究内容及拟采用的技术路线
+  </div>
+  <div class="four-t">
+    研究内容：
+  </div>
+  <!--id="learn-content" 换行+空格-->
+  <div class="text-content" id="learn-content">
+
+  </div>
+
+  <div class="four-t">
+    技术路线：
+  </div>
+  <!--id="technical_route" 换行+空格-->
+  <div class="text-content" id="technical_route">
+
+  </div>
+
+  <div class="trititle">
+    3．参考文献（15篇以上，其中英文至少2篇）
+  </div>
+  <!--id="reference" 换行+空格-->
+  <div class="text-content" id="reference">
+
+  </div>
+  <div class="nextPage"></div>
+  <div class="pageHead"></div>
+
+  <div class="subtitle" style="margin-top: 0;">
+    三、起止日期及进度安排（包括论文各阶段的内容和时间安排的要求）
+  </div>
+
+  <div class="ft">
+    起止时间：
+    <span id="from">
+    </span>
+    至
+    <span id="to">
+    </span>
+  </div>
+  <div class="table">
+    <div class="table-title">
+      <strong>进度安排：</strong>
+    </div>
+    <div class="table-content" id="schedule">
+      <div class="table-row">
+        <div class="table-c-1">序号</div>
+        <div class="table-c-2">时间</div>
+        <div class="table-c-3">内容</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sign">
+    <div id="sign-date1">
+      <span class="udl">2019</span>年
+      <span class="udl">9</span>月
+      <span class="udl">1</span>日
+    </div>
+    <div class="sign-name" id="sign-name1">
+    </div>
+    指导老师（签名）
+  </div>
+
+  <div class="subtitle">
+    四、系主任审查意见：
+  </div>
+  <div class="sign">
+    <div id="sign-date2">
+      <span class="udl">2019</span>年
+      <span class="udl">9</span>月
+      <span class="udl">1</span>日
+    </div>
+    <div class="sign-name" id="sign-name2">
+    </div>
+    系主任（签名）
+  </div>
+
+  
+
+</body>
+<script>
+  const SPACE = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
+  const N = `<br/>`
+  let data;
+  $.get('/getStat',res=>{
+    data = res.data;
+
+    let topic_name = []; 
+    let len = data.p_name.length;
+    for(let i = 0;i<len;i+=25){
+      topic_name.push(data.p_name.substr(0,25))
+      data.p_name = data.p_name.substring(25)
+    }
+    for(let i = 0; i< topic_name.length;i++){
+      $("#topic-name-2").append(
+        `
+        <div class="sub-t-line">${topic_name[i]}</div>
+        `
+      )
+      $("#topic-name-1").append(
+        `
+        <div class="topic-name-line">${topic_name[i]}</div>
+        `
+      )
+    }
+    $("#stu-id").html(data.s_id);
+    $("#stu-maj").html(data.s_maj);
+    $("#stu-name").html(data.s_name);
+    $("#stu-clz").html(data.s_clz);
+    $("#tea-name").html(data.t_name);
+    $("#tea-job").html(data.t_job);
+    
+
+    data.task = JSON.parse(data.task)
+
+    let ft = data.task.ft;
+    ft[0] = ft[0].split("-").map((x)=>parseInt(x))
+    ft[0][0]*=100;
+    ft[1] = ft[1].split("-").map((x)=>parseInt(x))
+    ft[1][0]*=100;
+
+    $("#from").html(
+      `
+      <span class="udl">${ft[0][0]}</span>年
+      <span class="udl">${ft[0][1]}</span>月
+      <span class="udl">${ft[0][2]}</span>日
+      `
+    )
+    $("#to").html(
+      `
+      <span class="udl">${ft[1][0]}</span>年
+      <span class="udl">${ft[1][1]}</span>月
+      <span class="udl">${ft[1][2]}</span>日
+      `
+    )
+
+    let learn_content = data.task.learn_content;
+
+    learn_content = SPACE+ learn_content.replace(/\n/g,N+SPACE);
+    $("#learn-content").html(learn_content)
+
+    let technical_route = data.task.technical_route;
+    technical_route = SPACE + technical_route.replace(/\n/g,N+SPACE);
+    $("#technical_route").html(technical_route)
+
+    let target = data.task.target;
+    target = SPACE + target.replace(/\n/g,N+SPACE);
+    $("#target").html(target)
+
+    let reference = data.task.reference;
+    reference = SPACE + reference.replace(/\n/g,N+SPACE);
+    $("#reference").html(reference)
+
+    let schedule = data.task.schedule;
+    let table = $("#schedule")
+    schedule.forEach((x,i) => {
+      let time = x.time.map(x=>x.replace(/-/g,".")).join(" ~ ")
+      let str = 
+      `
+      <div class="table-row">
+        <div class="table-c-1">${i+1}</div>
+        <div class="table-c-2">${time}</div>
+        <div class="table-c-3">${x.content}</div>
+      </div>
+      `
+      table.append(str)
+    });
+
+    $("#sign-name1").html(
+      `<img src="signs/${data.t_id}.jpg">`
+    )
+
+    $("#sign-name2").html(
+      `<img src="signs/${data.checker_id}.jpg">`
+    )
+
+    let now = new Date();
+
+    $("#sign-date1").html(
+      `
+      <span class="udl">${now.getFullYear()}</span>年
+      <span class="udl">${now.getMonth()+1}</span>月
+      <span class="udl">${now.getDate()}</span>日
+      `
+    )
+
+    $("#sign-date2").html(
+      `
+      <span class="udl">${now.getFullYear()}</span>年
+      <span class="udl">${now.getMonth()+1}</span>月
+      <span class="udl">${now.getDate()}</span>日
+      `
+    )
+
+    console.log(data);
+
+
+  })
+</script>
+</html>
