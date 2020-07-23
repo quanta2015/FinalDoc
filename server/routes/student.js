@@ -1,9 +1,9 @@
 
 
 const express = require('express');
-const { callProc_N } = require('../util');
 const router = express.Router();
-const callProc = require('../util').callProc
+const callProc = require('../util').callProc;
+const callProc_N = require('../util').callProc_N;
 
 router.post('/getTopicList', async (req, res) => {
     let sql = `CALL PROC_CAL_GET_STU_SELECT_TOPIC(?)`;
@@ -355,8 +355,7 @@ router.post("/getStudentTopicStatus", async(req, res) => {
                 break;
         }
         console.log(results);
-        r.push(results);
-        console.log(r);
+        console.log(typeof(results));
         res.status(200).json({ code: 200, data: results, msg: '成功获取阶段状态' });
     })
 })
