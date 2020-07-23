@@ -3,7 +3,7 @@
     overflow: hidden;
     white-space: nowrap;
     // text-overflow: ellipsis;
-    margin-bottom: 15px;
+    // margin-bottom: 15px;
     .ant-alert {
         width: max-content;
         display: inline-flex;
@@ -33,4 +33,8 @@
         weight: 500;
         family: Georgia, "Times New Roman", Times, serif;
     }
+}
+
+.z-notempty{
+    margin-bottom: 15px;
 }
