@@ -314,7 +314,8 @@ router.post("/getStudentTopicStatus", async(req, res) => {
     let params = req.body;
     callProc_N(sql, params, 2, res, (r) => {
         console.log(r);
-        var results = [];
+        var result = []
+        var results = {};
         var status = r[0][0]['status'];
         switch (status) {
             case 0:
@@ -354,9 +355,8 @@ router.post("/getStudentTopicStatus", async(req, res) => {
             default:
                 break;
         }
-        console.log(results);
-        console.log(typeof(results));
-        res.status(200).json({ code: 200, data: results, msg: '成功获取阶段状态' });
+        result.push(results)
+        res.status(200).json({ code: 200, data: result, msg: '成功获取阶段状态' });
     })
 })
 
