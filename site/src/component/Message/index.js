@@ -1,7 +1,8 @@
 import { Component } from 'preact';
-import { computed } from 'mobx';
+import { computed, toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { Button, Empty, Alert } from 'antd'
+import { MSG_TYPE } from '../../constant/data'
 import './index.scss'
 
 const data = [
@@ -17,7 +18,7 @@ const data = [
     },
     {
         message: '双选已解绑',
-        type: 'warning',
+        type: 'error',
         check_flag: 0
     },
     {
@@ -63,43 +64,56 @@ export default class Message extends Component {
     get usr() {
         return this.props.userStore.usr;
     }
+    @computed
+    get msgList() {
+        return toJS(this.props.userStore.msgList);
+    }
 
     componentDidMount() {
-        this.setState({
-            msg: data
-        }, () => {
-            var parent = document.querySelector('.g-msg');
-            var children = parent.children;
-            var tmpWidth = 0;
-            var index = 0;
-            var parentWidth = parent.offsetWidth;
-            for (let i = 0; i < children.length; i++) {
-                if (tmpWidth < parentWidth && tmpWidth + children[i].offsetWidth + 26 > parentWidth) {
-                    index = i;
-                }
-                tmpWidth += children[i].offsetWidth + 26;
-            }
-            if (index !== 0) {
-                for (let i = index; i < children.length; i++) {
-                    children[i].style.display = 'none';
-                }
-            }
-
-            this.setState(
-                {
-                    totalWidth: tmpWidth
-                },
-                () => {
-                    const { totalWidth } = this.state;
-                    if (totalWidth >= parentWidth) {
-                        setTimeout(() => {
-                            parent.classList.add('has-overflow');
-                        }, 200)
-
+        this.props.userStore.getAllMessages({ uid: this.usr.uid }).then(r => {
+            if (r && r.length) {
+                this.setState({
+                    msg: this.msgList
+                }, () => {
+                    var parent = document.querySelector('.g-msg');
+                    var children = parent.children;
+                    var tmpWidth = 0;
+                    var index = 0;
+                    var parentWidth = parent.offsetWidth;
+                    if (children.length !== 0) {
+                        parent.classList.add('z-notempty');
                     }
-                }
-            );
+
+                    for (let i = 0; i < children.length; i++) {
+                        if (tmpWidth < parentWidth && tmpWidth + children[i].offsetWidth + 26 > parentWidth) {
+                            index = i;
+                        }
+                        tmpWidth += children[i].offsetWidth + 26;
+                    }
+                    if (index !== 0) {
+                        for (let i = index; i < children.length; i++) {
+                            children[i].style.display = 'none';
+                        }
+                    }
+
+                    this.setState(
+                        {
+                            totalWidth: tmpWidth
+                        },
+                        () => {
+                            const { totalWidth } = this.state;
+                            if (totalWidth >= parentWidth) {
+                                setTimeout(() => {
+                                    parent.classList.add('has-overflow');
+                                }, 200)
+
+                            }
+                        }
+                    );
+                })
+            }
         })
+
     }
 
     componentWillUnmount = () => {
@@ -113,6 +127,7 @@ export default class Message extends Component {
         if (msg.indexOf(id) >= 0) {
             msg.splice(msg.indexOf(item), 1)
         }
+        this.props.userStore.readMessages({ id: item.id + '' }) //已读后删除
         this.setState({
             msg: msg
         }, () => {
@@ -120,7 +135,6 @@ export default class Message extends Component {
             var children = parent.children;
             var index = 0;
             var tmpWidth = 0;
-            var showWidth = 0;
             var parentWidth = parent.offsetWidth;
 
             for (let i = 0; i < children.length; i++) {
@@ -139,7 +153,6 @@ export default class Message extends Component {
                     index = i;
                 }
                 tmpWidth += wid + 26;
-                showWidth += children[i].offsetWidth + 26
             }
             // 若一行可显示，则所有可显示
             if (index === 0) index = children.length;
@@ -158,7 +171,7 @@ export default class Message extends Component {
                         parent.classList.remove('has-overflow');
                     }
                     if (children.length === 0) {
-                        parent.style.display = 'contents'
+                        parent.classList.remove('z-notempty')
                     }
                 }
             );
@@ -173,8 +186,8 @@ export default class Message extends Component {
                     <Alert
                         key={index}
                         afterClose={() => this.handleClose(item, index)}
-                        message={' ' + item.message + ' '}
-                        type={item.type}
+                        message={' ' + item.msg_context + ' '}
+                        type={MSG_TYPE[item.type]}
                         closable
                         showIcon
                     />

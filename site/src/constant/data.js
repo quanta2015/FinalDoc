@@ -28,7 +28,7 @@ export var MENU_MAIN_M =
 
 export var MENU_MAIN_T =
    [{ title: '毕业设计管理', path: '/t_manage', icon: manage },
-   // { title: '系统设置 ', path: '/t_system', icon: home },
+      // { title: '系统设置 ', path: '/t_system', icon: home },
    ]
 
 export var MENU_MAIN_T_AUDIT = [
@@ -38,9 +38,9 @@ export var MENU_MAIN_T_AUDIT = [
 ]
 
 export var MENU_MAIN_S = [
-   { title: '通知公告', path: '/s',          icon: notice },
+   { title: '通知公告', path: '/s', icon: notice },
    { title: '选择课题', path: '/s_selectTL', icon: select },
-   { title: '课题详情', path: '/s_topicPG',  icon: paper  },
+   { title: '课题详情', path: '/s_topicPG', icon: paper },
 ]
 
 //学生选课状态
@@ -113,4 +113,8 @@ export var FILE_UPLOAD_FORMAT =
 export var STU_OP_SCORE = [
    { name: '指导老师评分', type: 'ins_score' },
    { name: '开题答辩小组评分', type: 'grp_score' }
+]
+
+export var MSG_TYPE = [
+   "info", "success", "warning", "error"
 ]
