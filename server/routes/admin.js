@@ -3,8 +3,8 @@
  * @version: 1.0
  * @Author: 
  * @Date: 2020-07-09 10:14:36
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-20 23:14:34
+ * @LastEditors: wyx
+ * @LastEditTime: 2020-07-23 16:32:09
  */
 
 
@@ -237,6 +237,40 @@ router.post('/delFile', async(req, res) => {
     callProc(sql, params, res, (r) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功删除该文件' });
+    })
+})
+
+/**
+ * @description: 获取全部学生名单
+ * @param {} 
+ */
+router.post('/getAllStu', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_STU_NAMELIST()`;
+    callProc(sql, {}, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '获取全部学生名单' });
+    })
+})
+
+/**
+ * @description: 获取全部教师名单
+ * @param {} 
+ */
+router.post('/getAllTea', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_TEA_NAMELIST()`;
+    callProc(sql, {}, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '获取全部教师名单' });
+    })
+})
+
+/**
+ * @description: 修改名单某条信息
+ * @param {key: String, name: String, job_title: String, maj: String, cls: String} 
+ */
+router.post('/editInfo', async(req, res) => {
+    let params = req.body;
+    let sql = `CALL PROC_EDIT_ONE_INFO(?)`;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '修改名单信息成功！' });
     })
 })
 
