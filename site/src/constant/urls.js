@@ -24,6 +24,10 @@ export const API_SYS_READ_MESSAGES = API_SERVER + '/updateMessagesRead'
 export const API_SYS_GET_NOTICE = API_SERVER + '/getPersonalAnnouncement'
 //已读通知
 export const API_SYS_READ_NOTICE = API_SERVER + '/updateAnnouncementRead' 
+//状态通知 一对多
+export const API_SYS_POST_MESSAGETOMANY = API_SERVER + '/insertMessageToMany'
+//状态通知 一对一
+export const API_SYS_POST_MESSAGETOONE = API_SERVER + '/insertMessageToOne'
 
 
 // 专业负责人接口声明
@@ -62,17 +66,23 @@ export const API_MAN_POST_VIEWFILES = API_SERVER + '/auditMg/viewFiles'
 
 
 // 学生接口声明
-export const API_STU_GET_TOPINFO = API_SERVER + '/student/getStuInfo' //用户选择过的所有课题记录
-export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' //用户可选的课题列表
+//用户选择过的所有课题记录
+export const API_STU_GET_TOPINFO = API_SERVER + '/student/getStuInfo' 
+//用户可选的课题列表
+export const API_STU_GET_TTLLIST = API_SERVER + '/student/getTopicList' 
 export const API_STU_UPDATE_TTLLIST = API_SERVER + '/student/addStuTopic'
 export const API_STU_DELETE_TTLLIST = API_SERVER + '/student/delStuTopic'
 export const API_STU_FIND_ISDURAUDIT = API_SERVER + '/student/calStuTopicStateTwo'
-export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' //双选成功的课题信息 
+//双选成功的课题信息 
+export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc' 
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
-export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' //所有指导日志
-export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' //所有阶段以及截止时间
-export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' // 返回当前阶段
-
+//所有指导日志
+export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' 
+//所有阶段以及截止时间
+export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' 
+// 返回当前阶段
+export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' 
+export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplate'
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';
@@ -114,7 +124,8 @@ export const API_TEACHER_GET_TASK = API_SERVER + '/teacher/getTask'
 export const API_TEACHER_CAN_PUBLISH = API_SERVER + '/teacher/canPublish'
 //是否是审核组员
 export const API_TEACHER_AUDIT_OP_IS_MEMBER = API_SERVER + `/auditOp/isTeamMember`
-
+//获取起止时间
+export const API_TEACHER_GET_TIME_LINE = API_SERVER + '/teacher/getTimeLine'
 
 // 任课教师-初期审核
 export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';// 获取审核命题列表
@@ -130,3 +141,25 @@ export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM = API_SERVER + '/auditOp
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM = API_SERVER + '/auditOp/submitTeamForm';// 提交审核组审核表单
 export const API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER = API_SERVER + '/auditOp/isTeamLeader';// 判断是否为审核组组长
 
+
+
+
+/*教务处管理端接口*/
+//获取当前所有公告，并按时间倒序排列
+export const API_ADMIN_GET_TOTAL_ANN_LIST = API_SERVER + '/admin'+'/getAllAnnounce'
+//删除某个公告
+export const API_ADMIN_DEL_ONE_ANN = API_SERVER + '/admin'+'/delOneAnnounce'
+//获取所有文件
+export const API_ADMIN_GET_ALL_FILE = API_SERVER + '/admin'+'/getAllFileAddress'
+//上传文件
+export const API_ADMIN_UPLOAD_FILE = API_SERVER + '/admin'+'/uploadFile'
+//发布公告
+export const API_ADMIN_UPLOAD_ANN = API_SERVER + '/admin'+'/insertAnnouncement'
+//上传模板文件的记录
+export const API_ADMIN_INSERT_FILE_RECORD = API_SERVER + '/admin'+'/insertFileTemplate'
+//根据通知id获取通知具体内容
+export const API_ADMIN_CALL_ANN_DETAIL = API_SERVER + '/admin'+'/getAnnouncementDetails'
+//管理端文件下载
+export const API_ADMIN_DOWNLOAD_FILE = API_SERVER + '/admin'+'/admindownload'
+//删除文件
+export const API_ADMIN_DELETE_UPLOAD_FILE = API_SERVER + '/admin'+'/delFile'
