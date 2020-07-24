@@ -27,9 +27,9 @@ let server = app.listen(9999,()=>{
   let sql = "call PROC_RENDER_PDF()";
   callProc(sql,null,null,async r=>{
     //本地测试使用
-    // for (let i = 0; i < r.length; i++) {
-    //   r[i].file = r[i].file.replace("./","C:/Users/Administrator/Desktop/短学期项目/");
-    // }
+    for (let i = 0; i < r.length; i++) {
+      r[i].file = r[i].file.replace("./","C:/Users/Administrator/Desktop/短学期项目/");
+    }
     data = r;
     await rendPDF();
     process.exit();
