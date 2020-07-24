@@ -371,12 +371,53 @@ router.post("/getStudentTopicStatus", async(req, res) => {
     })
 })
 
-// 获取答辩信息
+// 获取开题答辩信息
 // params: { uid: str }
-// router.post()
+router.post('/getOpenQuestionInfo', async(req, res) => {
+    let sql =  `CALL PROC_GET_OPEN_QUESTION_INFO(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        switch (r[0]['week']) {
+            case '0':
+                r[0].week = '星期天';
+                break;
+            case '1':
+                r[0].week = '星期一';
+                break;
+            case '2':
+                r[0].week = '星期二';
+                break;
+            case '3':
+                r[0].week = '星期三';
+                break;
+            case '4':
+                r[0].week = '星期四';
+                break;
+            case '5':
+                r[0].week = '星期五';
+                break;
+            case '6':
+                r[0].week = '星期六';
+                break;
+            default:
+                break;
+        }
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取开题答辩信息' });
+    })
+})
 
 // 第一阶段成绩显示
 // params: { uid: str }
-// router.post('')
+router.post('/getOpenScore', async(req, res) => {
+    let sql = `CALL PROC_GET_OPEN_SCORE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取开题答辩成绩' });
+    })
+})
 
 module.exports = router;
