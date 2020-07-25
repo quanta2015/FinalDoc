@@ -1,12 +1,20 @@
 import { Component } from 'preact';
+import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { PushpinOutlined } from '@ant-design/icons';
+import { MENU_MAIN_S } from '../../constant/data';
+import logo from '../../static/public/scl_logo.png';
 import './index.scss'
 
 @inject('userStore', 'studentStore')
 @observer
 class NavS extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      cur: 0,
+    }
+  }
 
   @computed
   get selectTpInfo() {
@@ -19,43 +27,58 @@ class NavS extends Component {
   }
 
   @computed
-  get docTemplate() {
-    return this.props.studentStore.docTemplate;
+  get currStage() {
+    return this.props.studentStore.currStage;
   }
 
+
   componentDidMount() {
-    // this.props.studentStore.getSelectTopic({ uid: this.usr.uid })
-    // .then(r => {
-    //   if (!r) { //未双选
-    //     route('/s_selectTL');
-    //   } else { //已双选
-    //     route('/s_topicPG');
-    //   }
-    // })
+    this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
+  }
+
+  doMenu = (path, i) => {
+    this.setState({ cur: i }, () => {
+      route(path)
+    })
   }
 
   render() {
     return (
       <div className="g-stu-nav">
-        <div className="g-menu">
-          <div className="m-info">
-            <h2 className="m-title bold">基本信息</h2>
-            {this.usr.name && <p>姓名：{this.usr.name}</p>}
-            {this.usr.uid && <p>学号：{this.usr.uid}</p>}
-            {this.usr.cls && <p>班级：{this.usr.cls}</p>}
+        <div className="g-logo">
+          <div>
+            <img className="u-logo" src={logo} />
           </div>
-          {!this.selectTpInfo.topic ?
-            <div className='m-menu-item active'>
-              <PushpinOutlined />
-              <span>选择课题</span>
-            </div>:
-            <div className="m-info divider">
-              <h2 className="m-title bold">文件模板</h2>
-              {this.docTemplate && this.docTemplate.map((item) => 
-                <p><a href={item.link} download>{item.title}</a></p>
-              )}
-            </div>
-          }
+          <div className="u-title">毕业设计管理系统</div>
+        </div>
+        <div className="g-st">
+          {this.currStage.stage.map((item, id) =>
+            <span className={id === this.currStage.index ? 'm-st active' : 'm-st'}>{item}</span>
+          )}
+        </div>
+        <div className="g-menu">
+          {MENU_MAIN_S.map((item, i) => 
+            <>
+              {((i === 0) || (!this.selectTpInfo.id && i === 1) || (this.selectTpInfo.id && i === 2)) &&
+                <div className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'} key={i} onClick={this.doMenu.bind(this, item.path, i)}>
+                  <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+                </div>
+              }
+            </>
+          )}
+        </div>
+        <div className="g-footer">
+          <div className="m-setting">
+            <span>退出登录</span>
+          </div>
+          <div className="m-tag">
+            <span>学生</span>
+            {this.usr.cls && <div className="u-cls">{this.usr.cls}</div>}
+          </div>
+          <div className="m-info">
+            {this.usr.uid && <span className="u-id">{this.usr.uid}</span>}
+            {this.usr.name && <span>{this.usr.name}</span>}
+          </div>
         </div>
       </div>
     )

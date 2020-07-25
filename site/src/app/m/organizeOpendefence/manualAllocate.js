@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
+import { computed, toJS, action } from 'mobx';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag, Popconfirm } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import "./manualAllocate.css"
@@ -15,7 +15,7 @@ const paginationProps = {
     // position: ['topRight', 'bottomRight']
 }
 
-@inject('manageStore','userStore')
+@inject('manageStore', 'userStore')
 @observer
 export default class ManualAllocate extends Component {
     state = {
@@ -26,6 +26,21 @@ export default class ManualAllocate extends Component {
         own: [],
         searchText: '',
         searchedColumn: '',
+        select_topic: {},
+        select_topic2: {
+            key: '11',
+            sName: '杨薪宏',
+            topic: '课题题目课题题目11',
+            content: '课题简介课题简介',
+            tName: '谢琪',
+            classname: '计算机181',
+
+        },
+        sug_topic: [],
+        sug_topic_key: [],
+        topic_info: [],
+        new_topic_info: [],
+        add_topic: undefined
     };
 
     @computed
@@ -35,11 +50,16 @@ export default class ManualAllocate extends Component {
 
     @computed
     get usr() {
-      return this.props.userStore.usr;
+        return this.props.userStore.usr;
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+        //await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+        this.setState({
+            sug_topic: toJS(this.openDefenseGroup.sug_topic),
+
+            topic_info: toJS(this.openDefenseGroup.topic_info)
+        })
     }
 
     onSelectChange = (selectedRowKeys) => {
@@ -126,15 +146,15 @@ export default class ManualAllocate extends Component {
         console.log(temp)
         let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
         if (res && res.code === 200) {
-            if(res.data[0].err === 0){
+            if (res.data[0].err === 0) {
                 message.success("成功添加答辩小组！")
-            }else {
+            } else {
                 message.error("添加答辩小组失败！请重试")
             }
-            
-            await this.props.manageStore.getTopicList_ogp({"ide":this.usr.uid});
+
+            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
             await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getGroupList_ogp({"ide": this.usr.uid });
+            await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
         } else {
             message.error("添加答辩小组失败！请重试")
         }
@@ -146,7 +166,57 @@ export default class ManualAllocate extends Component {
             selectedRowKeys: [],
         })
     }
+    selectTopic = (value, object) => {
+        console.log(object, "option")
+        this.setState({
+            add_topic: value
+        });
+        this.state.select_topic.key = object.key;
+        this.state.select_topic.classname = object.classname;
+        this.state.select_topic.tName = object.tName;
+        this.state.select_topic.sName = object.sName;
+        this.state.select_topic.content = object.content;
+        this.state.select_topic.topic = object.topic;
+        console.log(this.state.select_topic)
+    }
+    addTopic = () => {
+        this.state.sug_topic.push(this.state.select_topic)
+        this.state.sug_topic_key.push(this.state.select_topic.key)
+        this.openDefenseGroup.sug_topic = this.state.sug_topic
+        this.setState({
+            add_topic: undefined,
+            select_topic: {}
+        })
+    }
+    handleDelete = (value) => {
+        let arr = []
+        this.state.sug_topic.map((item, i) => {
+            if (item.key !== value) {
+                arr.push(item)
+            }
+        })
+        this.setState({
+            sug_topic: arr
+        })
+        this.openDefenseGroup.sug_topic = arr
+    };
     render() {
+        
+        let list = toJS(this.openDefenseGroup.sug_topic)
+        this.state.sug_topic_key = []
+        for (let i of list) {
+            this.state.sug_topic_key.push(i.key)
+        }
+
+        this.state.new_topic_info = [];
+        for (let i of toJS(this.openDefenseGroup.topic_info)) {
+            if (this.state.sug_topic_key.indexOf(i.key) == -1) {
+                this.state.new_topic_info.push(i);
+            }
+        }
+
+       
+
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -204,6 +274,9 @@ export default class ManualAllocate extends Component {
                 render: (text, record) => (
                     <Space size="middle">
                         <a onClick={() => this.showModal(record)}>  详情</a>
+                        <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
+                            <a>Delete</a>
+                        </Popconfirm>
                     </Space>
                 ),
             },
@@ -211,34 +284,60 @@ export default class ManualAllocate extends Component {
         return (
             <div>
                 <div class="manu-table">
-
-                <div class="head_info">
-                    <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配 已选{selectedRowKeys.length}篇</div>
-                    <div class="manu-btn">
-                        <Button className="reset"
-                         onClick={this.clear}>重置</Button>
-                        <Button type="primary" onClick={this.manualDistribute}>
-                            提交
+                    <div>
+                        <Select
+                            value={this.state.add_topic}
+                            showSearch
+                            style={{ width: 500 }}
+                            placeholder="请选择课题"
+                            optionFilterProp="children"
+                            defaultActiveFirstOption={false}
+                            onChange={this.selectTopic}
+                            allowClear
+                            // filterOption={(input, option) =>
+                            //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            // }
+                            optionLabelProp="label"
+                        >
+                            {console.log(this.state.new_topic_info, "new"),
+                                this.state.new_topic_info.map((item, i) =>
+                                    <Select.Option
+                                        key={item.key} value={item.topic} topic={item.topic} content={item.content} sName={item.sName} tName={item.tName} classname={item.classname}>{item.topic}</Select.Option>
+                                )}
+                        </Select>
+                        <Button type="primary" onClick={this.addTopic}>
+                            添加
                         </Button>
                     </div>
-                </div>                
-                
-                <div className="ogp_headAllocate_table">
-                    <Table
-                        onChange={this.handleChange}
-                        rowSelection={rowSelection}
-                        columns={columns}
-                        dataSource={this.openDefenseGroup.topic_info}
-                        pagination={paginationProps}
-                        onRow={(record) => {
-                            return {
-                                onClick: () => {
-                                    console.log(record)
-                                    this.state.own = record
-                                    console.log(this.state.own)
+
+                    <div class="head_info">
+                        <div className="noTopicNums">{this.openDefenseGroup.topic_info.length}篇未分配 已选{selectedRowKeys.length}篇</div>
+                        <div class="manu-btn">
+                            <Button className="reset"
+                                onClick={this.clear}>重置</Button>
+                            <Button type="primary" onClick={this.manualDistribute}>
+                                提交
+                        </Button>
+                        </div>
+                    </div>
+
+                    <div className="ogp_headAllocate_table">
+                        <Table
+                            onChange={this.handleChange}
+                            rowSelection={rowSelection}
+                            columns={columns}
+                            dataSource={this.openDefenseGroup.sug_topic}
+                            pagination={paginationProps}
+                            onRow={(record) => {
+                                return {
+                                    onClick: () => {
+                                        // console.log(record)
+                                        this.state.own = record
+                                        // console.log(this.state.own)
+                                    }
                                 }
-                            }}
-                        }
+                            }
+                            }
                         />
                     </div>
                 </div>

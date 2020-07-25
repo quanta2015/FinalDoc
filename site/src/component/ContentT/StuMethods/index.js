@@ -120,7 +120,7 @@ export default class StuMethods extends BaseActions {
           <Button onClick={this.onTied} className="ml-long">解绑</Button>
         </div>
 
-        <Card
+        {/* <Card
           tabList={tabListNoTitle}
           size="small"
           bordered={false}
@@ -131,13 +131,10 @@ export default class StuMethods extends BaseActions {
               <div className="note-block">
               </div>
               <div className="note-block">
-                <Card style={{ width: 810 }}>
                   <div className="card-inner">
                     <div className="file-block">
-                      <FileUpload type={{ name: '任务书', type: 'f_task'}} tpInfo={{ tid: this.props.tid, sid: this.props.sid ,f_task:this.state.links['f_task']}} />
+                      <FileUpload freshOuter={this.props.freshList} type={{ name: '任务书', type: 'f_task'}} tpInfo={{ tid: this.props.tid, sid: this.props.sid ,f_task:this.state.links['f_task']}} />
                     </div>
-                  </div>
-                </Card>
               </div>
             </header>
           }
@@ -147,7 +144,6 @@ export default class StuMethods extends BaseActions {
               <div className="note-block">
               </div>
               <div className="note-block">
-                <Card style={{ width: 810 }}>
                   <div className="card-inner">
                     <div className="one-of-three">
                       <div className="f-title">
@@ -189,12 +185,11 @@ export default class StuMethods extends BaseActions {
                       </div>
                     </div>
                   </div>
-                </Card>
               </div>
             </header>
 
           }
-        </Card>
+        </Card> */}
       </div>
     )
   }

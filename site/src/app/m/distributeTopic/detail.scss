@@ -6,22 +6,84 @@
     
     .detail_table {
         .ant-table-cell:nth-last-child(4) {
-            width: 170px;
+            width: 180px;
         }
         .ant-table-cell:nth-last-child(3) {
-            width: 340px;
+            width: 360px;
             text-align: left;
         }
         .ant-table-cell:nth-last-child(2) {
-            width: 170px;
+            width: 180px;
         }
         .ant-table-cell:nth-last-child(1) {
-            width: 120px;
+            width: 130px;
         }
         // 表格中无数据时的默认样式
         .ant-table-placeholder .ant-table-cell{
-            width: 800px;
+            width: 850px;
         }
     }
 
 }
+
+.g-mod-close  .m-dtl-mod{
+    height: 400px;
+
+
+.m-title{
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px ;
+        .u-type{
+            color:white;
+            font-size: 14px;
+            padding: 2px 6px;
+            
+            background-color: orangered;
+        }
+        .u-topic{
+             max-width: 600px;
+            white-space:nowrap;
+            overflow:hidden;    
+            text-overflow:ellipsis;
+            font-weight: bolder;
+            font-size: 24px;
+            color:#999;
+        }
+        .u-tea-name{
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+  
+    .m-cont{
+        padding: 20px;
+        .dtl{
+            font-size: 16px;
+            margin-top:20px ;
+        }
+        .expln{
+        font-weight: bold;
+        margin-right: 10px;
+
+    }
+
+    }
+      .m-mod-icon{
+        font-size: 24px;
+        color: gray;
+    }
+    
+
+     
+}
+
+.g-mod-close .ant-modal-close{
+     
+        position: absolute;
+        top: -24px;
+        right: -30px;       
+    }  
+
+

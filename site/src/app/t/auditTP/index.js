@@ -51,7 +51,7 @@ export default class Home extends Component {
 		this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )
 		this.props.teacherStore.getAllTopic().then(()=>{
 			this.setState({
-				topicTypes:this.props.teacherStore.auditTP_topicTypes
+				topicTypes:this.props.teacherStore.topicTypes
 			})
 		});
 		
@@ -130,7 +130,7 @@ export default class Home extends Component {
 				dataIndex: 'type',
 				key: 'type',
 				filters: this.state.topicTypes,
-				onFilter: this.props.teacherStore.AuditTP_topicFilter,
+				onFilter: this.props.teacherStore.topicFilter,
 			},
 			{
 				title: '课题题目',

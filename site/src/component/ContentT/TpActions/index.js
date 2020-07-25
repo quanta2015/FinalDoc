@@ -7,14 +7,15 @@ import {
     Input,
     Modal,
     message,
-	Descriptions,
+    Switch, 
 	Tooltip
 } from 'antd';
 
 import {
 	CheckOutlined,
 	CloseOutlined,
-	FileSearchOutlined,
+    FileSearchOutlined,
+    CloseCircleTwoTone,
 } from '@ant-design/icons';
 
 const { TextArea } = Input;
@@ -31,6 +32,7 @@ class TpActions extends Component {
 
             adviceModalVisible: false,
             contentModalVisible: false,
+            contentTextAreaVisible: false,
             confirmLoading: false,
             ModalText: "您将反对此命题，请在这里提出您的相关建议：",
             advice: "",
@@ -55,6 +57,7 @@ class TpActions extends Component {
     //提出建议
     showAdviceModal = () => {
 		this.setState({
+            ModalText: "您将反对此命题，请在这里提出您的相关建议：",
             advice: "",
 			adviceModalVisible: true,
 		});
@@ -77,7 +80,7 @@ class TpActions extends Component {
 
 		setTimeout(() => {
 			this.setState({
-				adviceModalVisible: false,
+                adviceModalVisible: false,
 				confirmLoading: false,
 			});
 		}, 500);
@@ -89,9 +92,12 @@ class TpActions extends Component {
 		})
 	}
 
+    //详情处理
     showContentModal = (id) => {
         this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
 		this.setState({
+            ModalText: "您将反对此命题，请在这里提出您的相关建议：",
+            advice: "",
 			contentModalVisible: true,
 		});
 	};
@@ -102,21 +108,57 @@ class TpActions extends Component {
 		});
 	};
 
+    switchContentAdvise = (checked) => {
+        if(checked === false){
+            this.setState({
+                contentTextAreaVisible: true
+            })
+        }else{
+            this.setState({
+                contentTextAreaVisible: false
+            })
+        }
+            
+    }
+
+    handleContentSubmit = (flag, id, advice) => {
+        if(!flag === true)
+        {
+            this.props.teacherStore.AuditTp_passTopic( {"id": id} )
+            .then(() => {this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )})
+            .then(() => {
+                this.setState({
+                    contentModalVisible: false,
+                });
+            })
+        }
+        else
+        {
+            this.props.teacherStore.AuditTp_opposeTopic({ "id": id, "content": advice})
+            .then( () => {this.props.teacherStore.AuditTp_getTopicList( {"uid": this.usr.uid} )})
+            .then(() => {
+                this.setState({
+                    contentModalVisible: false,
+                });
+            })
+        }
+    }
+
 	render(){
 
-        const {ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible} = this.state;
+        const {ModalText, adviceModalVisible, advice, confirmLoading, contentModalVisible, contentTextAreaVisible} = this.state;
         return(
             <div>
                 <Tooltip placement="top" title="通过">
-                    <Button type="link" size="small" shape="circle" icon={<CheckOutlined />} onClick={this.handleBtnPass.bind(this, this.props.record.id)} />
+                    <Button type="link" shape="circle" icon={<CheckOutlined />} onClick={this.handleBtnPass.bind(this, this.props.record.id)} />
                 </Tooltip>
 
                 <Tooltip placement="top" title="提出建议">
-                    <Button type="link" size="small" shape="circle" icon={<CloseOutlined />} onClick={this.showAdviceModal} />
+                    <Button type="link" shape="circle" icon={<CloseOutlined />} onClick={this.showAdviceModal} />
                 </Tooltip>
 
                 <Tooltip title="详情">
-                    <Button type="link" size="small" shape="circle" icon={<FileSearchOutlined />} onClick={this.showContentModal.bind(this, this.props.record.id)} />
+                    <Button type="link" shape="circle" icon={<FileSearchOutlined />} onClick={this.showContentModal.bind(this, this.props.record.id)} />
                 </Tooltip>
 
                 <Modal
@@ -127,23 +169,40 @@ class TpActions extends Component {
                     onCancel={this.handleAdviceCancel}
                 >
                     <p>{ModalText}</p>
-                    <TextArea value={advice} onChange={this.adviceChange}></TextArea>
+                    <TextArea value={advice} onChange={this.adviceChange} rows={3}></TextArea>
                 </Modal>
 
                 <Modal
                     className="t-ContentT-TpActions-Modal"
-                    title="详细内容"
+                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+                        fontSize: '28px',
+                    }} />}
+                    title={null}
                     visible={contentModalVisible}
                     confirmLoading={confirmLoading}
                     onCancel={this.handleContentCancel}
                     footer={null}
                     width={900}
                 >
-                    <Descriptions column={2} bordered>
-                        <Descriptions.Item label="课题名称">{this.selectedTopic.topic}</Descriptions.Item>
-                        <Descriptions.Item label="课题类型" span={1}>{this.selectedTopic.type}</Descriptions.Item>
-                        <Descriptions.Item label="课题简介" span={2}>{this.selectedTopic.content}</Descriptions.Item>
-                    </Descriptions>
+                    <div>
+                        <div class="m-title">
+							<div class="u-type">{this.selectedTopic.type}</div>
+							<div class="u-topic">{this.selectedTopic.topic}</div>
+							<div class="u-none">{this.selectedTopic.type}</div>
+						</div>
+                    </div>
+                    <div class="m-cont">
+                        <div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.selectedTopic.content}</div>
+                        <Switch className="u-switch" checkedChildren="通过选题" unCheckedChildren="提出建议" defaultChecked onChange={this.switchContentAdvise}/>
+                        <div>
+                            { contentTextAreaVisible && <TextArea className="u-textarea" rows={3} value={advice} onChange={this.adviceChange} placeholder={ModalText}></TextArea>}
+                        </div>
+                    </div>
+                    <div class="m-footer">
+                        <Button type="primary" shape="round" onClick={this.handleContentSubmit.bind(this, contentTextAreaVisible, this.props.record.id, advice)}>
+                            提交
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         )

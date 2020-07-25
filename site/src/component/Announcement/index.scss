@@ -1,0 +1,105 @@
+.g-notice {
+    .m-not-wp {
+        position: relative;
+        border: 1px solid #dddcdc;
+        box-sizing: border-box;
+        padding: 0 15px 25px 15px;
+
+        .m-not-list {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .m-not-item {
+            display: flex;
+            padding: 10px 0;
+            // border-top: 1px solid #eee;
+        }
+
+        .u-not-date {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            color: #ff6600;
+            width: 80px;
+        }
+
+        .u-not-title {
+            display: block;
+            max-width: 85%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .z-read {
+            color: #999;
+        }
+
+        .m-status {
+            color: #fff;
+            padding: 0 10px 0 5px;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        .z-unread {
+            color: #428bca;
+        }
+
+        .m-page {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+        }
+    }
+
+    .z-empty {
+       position: absolute;
+       top: 25%;
+       left: 38%;
+    }
+}
+
+.g-dialog {
+    // .ant-modal-body {
+    //     min-height: 550px;
+    // }
+
+    .m-det-wp {
+        height: 395px;
+        overflow-y: scroll;
+        width: 100%;
+    }
+
+    .u-title {
+        width: 100%;
+        text-align: center;
+        line-height: 36px;
+        padding: 7px 0;
+        font-size: 26px;
+        color: #0585d0;
+        font-family: "微软雅黑", "宋体", "黑体", Arial;
+        font-weight: bold;
+        margin-bottom: 18px !important;
+        padding: 8px 0 5px 5px;
+    }
+
+    .u-time {
+        margin-bottom: 16px;
+        text-align: center;
+        font-family: Georgia, "Times New Roman", Times, serif;
+    }
+
+    .m-det-foot {
+        margin-top: 30px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        text-align: right;
+
+        &>p {
+            margin-bottom: 0;
+        }
+    }
+}

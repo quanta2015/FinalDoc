@@ -1,0 +1,37 @@
+/* 教师端内容集成后，样式修改 */
+.g-content{
+    padding: 40px 50px;
+}
+
+/* 系主任端全局样式 */
+.g-m {
+    padding: 30px 50px;
+    box-sizing: border-box;
+    width: 950px;
+}
+
+.g-m-title {
+    background: #010101;
+    color: #ffffff;
+    line-height: 30px;
+    display: flex;
+    flex-direction: row-reverse;
+    padding-right: 10px;
+    display: none;
+}
+
+// antd table组件
+table,
+tbody.ant-table-tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-table-row,
+.ant-table-thead>tr {
+    display: flex;
+}
+
+.ant-table-cell {
+    text-align: center;
+}

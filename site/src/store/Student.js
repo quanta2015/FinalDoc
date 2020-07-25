@@ -18,31 +18,35 @@ class Student extends BaseActions {
 
     @observable
     //时间轴内容
-    timeList = [
-        { title: '任务书', type: 'f_task', time: '2020年10月08日', status: 1, info: '' },
-        { title: '开题中期', time: '2020年12月12日', status: 2, grade: 0, info: [{ name: '开题报告', grade: 90 }, { name: '外文翻译', grade: 95 }, { name: '文献综述', grade: 85 }] },
-        { title: '论文审核', time: '2020年12月28日', status: 1, grade: 0, info: [{ name: '论文定稿', grade: 0 }, { name: '设计作品', grade: 0 }, { name: '作品说明书', grade: 0 }] },
-        { title: '论文答辩', time: '2021年04月08日', status: 0, grade: 0, info: [{ name: '导师评分', grade: 0 }, { name: '评阅评分', grade: 0 }, { name: '答辩评分', grade: 0 }] },
-        { title: '成绩审定', type: 'f_score_check', time: '2021年05月02日', status: 0, info: '' }
-    ]
+    timeList = []
 
     @observable
     //模板文件
-    docTemplate = [
-        { title: '开题报告', link: '' },
-        { title: '中期检查表', link: '' },
-        { title: '外文文献翻译', link: '' },
-        { title: '文献综述', link: '' },
-        { title: '论文格式', link: '' },
-        { title: '作品说明书', link: '' },
-        { title: '诚信承诺书', link: '' },
-        { title: '评审答辩成绩表', link: '' },
-        { title: '延缓答辩申请表', link: '' }
-    ]
+    docTemplate = []
+
+    @observable
+    //开题答辩成绩
+    opScore = []
+
+    @observable
+    //当前所处阶段细分
+    currStage = {
+        name: '选题阶段',
+        index: 1,
+        stage: ['发布课题', '选择课题', '双选成功']
+    }
+
+    @observable
+    //当前阶段（时间轴）
+    currState = {}
 
     @observable
     //指导日志
     insLog = []
+
+    @observable
+    // 答辩信息
+    replyList = []
 
     @action
     async getTopInfo(params) {
@@ -80,7 +84,7 @@ class Student extends BaseActions {
                     })
 
                     list.push({
-                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                        key: item.key, id: item.id, tid: item.tid, instructor: item.instructor, topic: item.topic, content: item.content,
                         phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
                         areas: areas,
                         color: color
@@ -90,10 +94,8 @@ class Student extends BaseActions {
             }
 
             runInAction(() => {
-                // this.topicList = r.data
                 this.topicList = list
             })
-            // return r.data
             return list
 
         } else {
@@ -193,6 +195,122 @@ class Student extends BaseActions {
     @action
     async deleteFile(params) {
         return await this.post(urls.API_STU_DEL_FILE, params)
+    }
+
+    @action
+    async getGuidance(params) {
+        const r = await this.post(urls.API_STU_GET_GUIDANCE, params)
+        if (r && r.code === 200 && r.data) {
+            // let lst = []
+            // if (r.data) {
+            //     r.data.map((item) => {
+            //         let date = item.time.split("-")
+            //         let time = date[0] + '年' + date[1] + '月' + date[2] + '日'
+            //         lst.push({
+            //             time,
+            //             way: item.way,
+            //             opinion: item.opinion
+            //         })
+            //     })
+            // }
+            runInAction(() => {
+                this.insLog = r.data
+            })
+            return r.data
+        } else {
+            message.error("网络错误")
+        }
+        return r
+    }
+
+    @action
+    async getAllStates() {
+        const r = await this.post(urls.API_STU_GET_ALLSTATES, null)
+        if (r && r.code === 200) {
+            let lst = []
+            if (r.data) {
+                r.data.map((item) => {
+                    if (item.title === "任务书") {
+                        lst.push({
+                            state: item.state,
+                            title: item.title,
+                            time: item.time,
+                            type: 'f_task'
+                        })
+                    } else if (item.title === "成绩审定") {
+                        lst.push({
+                            state: item.state,
+                            title: item.title,
+                            time: item.time,
+                            type: 'f_score_check'
+                        })
+                    } else {
+                        lst.push({
+                            state: item.state,
+                            title: item.title,
+                            time: item.time,
+                        })
+                    }
+                })
+            }
+            runInAction(() => {
+                this.timeList = lst
+            })
+            return lst
+        } else {
+            message.error('网络错误')
+        }
+        return r
+    }
+
+    @action
+    async getCurrentState() {
+        const r = await this.get(urls.API_STU_GET_CURSTATE)
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.currState = r.data
+            })
+            return r.data
+        } else {
+            message.error('网络错误')
+        }
+        return r
+    }
+
+    @action
+    async getTempFileList() {
+        const r = await this.post(urls.API_STU_GET_TEMP_FILE, null);
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.docTemplate = r.data;
+            })
+        } else {
+            message.error('网络错误')
+        }
+    }
+
+    @action
+    async getOpenScore(params) {
+        const r = await this.post(urls.API_STU_GET_OPSCORE, params)
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.opScore = r.data
+            })
+        } else {
+            message.error('网络错误')
+        }
+    }
+
+    @action
+    async getReplyInfo(params) {
+        const r = await this.post(urls.API_STU_GET_REPLY_INFO, params);
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.replyList = r.data;
+            })
+        } else {
+            message.error('网络错误')
+        }
     }
 }
 
