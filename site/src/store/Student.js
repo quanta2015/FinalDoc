@@ -44,6 +44,10 @@ class Student extends BaseActions {
     //指导日志
     insLog = []
 
+    @observable
+    // 答辩信息
+    replyList = []
+
     @action
     async getTopInfo(params) {
         const r = await this.post(urls.API_STU_GET_TOPINFO, params);
@@ -295,6 +299,12 @@ class Student extends BaseActions {
         } else {
             message.error('网络错误')
         }
+    }
+
+    @action
+    async getReplyInfo(params) {
+        const r = await this.post(urls.API_STU_GET_REPLY_INFO, params);
+        console.log(r);
     }
 }
 

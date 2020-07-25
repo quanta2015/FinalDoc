@@ -99,6 +99,7 @@ export default class TopicPG extends Component {
             showLog: false,
         })
     }
+
     render() {
         console.log('this is op', this.opScore)
         const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
@@ -124,21 +125,6 @@ export default class TopicPG extends Component {
                     </h2>
                     <div>
                         <ul className="m-time-line">
-
-                            {/* {
-                                this.timeList.map((item, id) =>
-                                    <li className={id <= currStage ? currStage === id ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
-                                        <div>
-                                            <h3>{item.time}</h3>
-                                            {
-                                                ((item.title === '任务书' && id >= TASK_FINISH) || (item.title === '成绩审定' && id >= GRADE_FINISH)) ?
-                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                    <p>{item.title}</p>
-                                            }
-                                        </div>
-                                    </li>
-                                )
-                            } */}
                             {
                                 this.currState[0] &&
                                 this.timeList.map((item) =>
@@ -175,6 +161,8 @@ export default class TopicPG extends Component {
                                             <FileUpload
                                                 type={item}
                                                 tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
+                                                afterUpdate={() => this.props.studentStore.getSelectTopic({ uid: this.usr.uid })}
+                                                delFile={() => this.props.studentStore.deleteFile({ type: item.type, tid: this.selectTpInfo.tid, sid: this.selectTpInfo.sid })}
                                             />
                                         </div>
                                     )}

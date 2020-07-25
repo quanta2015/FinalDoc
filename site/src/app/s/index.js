@@ -55,11 +55,17 @@ export default class Student extends Component {
     return this.props.studentStore.docTemplate;
   }
 
+  @computed
+  get replyList() {
+    return this.props.studentStore.replyList;
+  }
+
   componentDidMount() {
     if (!this.usr.uid) {
       route('/');
     }
     this.props.studentStore.getTempFileList();
+    // this.props.studentStore.getReplyInfo({ uid: this.usr.uid });
   }
 
   downloadFile = (item) => {
