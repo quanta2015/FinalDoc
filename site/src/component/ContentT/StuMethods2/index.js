@@ -185,7 +185,7 @@ export default class StuMethods extends BaseActions {
                       </div>
                       {
                         //这个地方应该是没有感叹号的。。方便你测试
-                          !this.state.auditOp &&
+                          false &&
                           <>
                           <div className="m-fdl-spaceline"></div>
                           <div className="m-file-down-load" onClick={()=>{route('/t_formOP')}}>
