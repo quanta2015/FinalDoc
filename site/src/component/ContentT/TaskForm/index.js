@@ -29,9 +29,6 @@ export default class TaskForm extends BaseActions {
 
   onFinishFailed = async  val => {
     message.error("请确认信息填写完整！")
-    //let sb = await this.post('http://localhost:8090/teacher/getTask',{pid:817,role:2})
-    // let sb = await this.post(urls.API_TEACHER_GET_TASK,{pid:817})
-    //console.log(sb);
   }
 
   render = () => {

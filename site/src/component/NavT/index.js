@@ -37,8 +37,6 @@ class NavT extends BaseActions {
     }
 
     x = await this.post(urls.API_TEACHER_AUDIT_OP_IS_MEMBER,{uid:this.usr.uid});
-    // x = await this.post("http://localhost:8090/auditOp/isTeamMember",{uid:this.usr.uid});
-
     if(x.flag){
       list.push(MENU_MAIN_T_AUDIT[1])
     }

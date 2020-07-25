@@ -49,12 +49,17 @@ const uploadFiles = [
 
 let x = { nx: "style", sb: "fff" }
 
-@inject('teacherStore')
+@inject('userStore','teacherStore')
 @observer
 export default class StuMethods extends BaseActions {
   constructor(props) {
     super(props)
   }
+
+  @computed
+    get usr() {
+        return this.props.userStore.usr;
+    }
 
 
   state = {
@@ -87,7 +92,9 @@ export default class StuMethods extends BaseActions {
     //获取学生文件列表
     let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
     l = (l.data)[0];
-    let flag = l.f_open && l.f_docs && l.tran;
+    console.log(l);
+    let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran);
+    console.log(flag);
     if (flag) {
       this.setState({ auditOp: true })
     }
@@ -185,10 +192,10 @@ export default class StuMethods extends BaseActions {
                       </div>
                       {
                         //这个地方应该是没有感叹号的。。方便你测试
-                          false &&
+                          this.state.auditOp &&
                           <>
                           <div className="m-fdl-spaceline"></div>
-                          <div className="m-file-down-load" onClick={()=>{route('/t_formOP')}}>
+                          <div className="m-file-down-load" onClick={()=>{this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": this.props.pid }).then(()=>{route('/t_formOP')})}}>
                             <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
                               <div className="m-f-down-inner">
                                 <div className="m-f-down-pic">

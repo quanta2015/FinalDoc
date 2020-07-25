@@ -79,8 +79,12 @@ export default class Home extends BaseActions {
         flag = false;
       }
     }
+    for (let i in data) {
+      if (data[i].status < 3 || data[i].status == 100) {
+        flag = true;
+      }
+    }
 
-    
     this.setState({ toplist: data });
     //获取申请列表
     data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })

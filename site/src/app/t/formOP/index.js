@@ -100,7 +100,7 @@ export default class Home extends Component {
                                                                 "reply":reply,
                                                                 "replyScore":replyScore,
                                                                 "score":score})
-                .then(()=>{route("/t_auditOP")});
+                .then(()=>{route("/t_manage")});
             else
                 this.props.teacherStore.AuditOp_submitTeamForm({"topicId":this.selectedTopic.id,
                                                                 "reply":reply,
