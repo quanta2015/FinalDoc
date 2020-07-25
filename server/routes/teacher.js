@@ -118,6 +118,9 @@ router.post('/getTidgetTopic', async(req, res) => {
                         r[index].pass = 4;
                     }
                     break;
+                case -1:
+                    r[index].pass = 3;
+                    break;
                 case 0:// 教师已新建课题
                     if (r[index].sel == 0) {// 未分配
                         r[index].pass = 0;
