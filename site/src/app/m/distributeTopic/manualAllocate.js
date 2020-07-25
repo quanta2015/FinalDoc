@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import  './manualAllocate.scss';
+import './manualAllocate.scss';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
 import { SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
 
@@ -14,7 +14,7 @@ const paginationProps = {
     position: ['topRight', 'bottomRight']
 }
 
-@inject('manageStore','userStore')
+@inject('manageStore', 'userStore')
 @observer
 export default class ManualAllocate extends Component {
     state = {
@@ -47,20 +47,20 @@ export default class ManualAllocate extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getJudge({"ide":this.usr.uid});
-        await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getTeaList({"ide":this.usr.uid});
+        await this.props.manageStore.getJudge({ "ide": this.usr.uid });
+        await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid });
         await this.props.manageStore.getAreasList();
         this.setState({
             teacher_info: toJS(this.distributeTopic.teacher_info),
             topic_info: toJS(this.distributeTopic.topic_info),
         });
-        
+
     }
 
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
-        if(this.state.tea_name === "" || this.state.tea_name === undefined){
+        if (this.state.tea_name === "" || this.state.tea_name === undefined) {
             selectedRowKeys = []
             message.info("请先选择审核教师！")
         }
@@ -195,18 +195,35 @@ export default class ManualAllocate extends Component {
         let res = await this.props.manageStore.allocateTopic(temp);
         console.log(res)
         if (res && res.code === 200) {
-            if(res.data[0].err === 0){
+            if (res.data[0].err === 0) {
                 message.success("分配成功！")
-            } else if (res.data[0].err === 1){
+                await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
+                await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+                await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
+
+                // 状态通知
+                /* • 系主任A分配课题审核
+                    始：系主任A
+                    终：所有被分配到的老师
+                    内容：您已被分配审核课题，请尽快完成   => 课题审核已分配
+                */
+                // 如果未审核课题数量为0，说明已将课题全部分配，审核课题老师已确定
+                if (this.distributeTopic.topic_info.length === 0) {
+                    const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0})
+                    if (res.code === 200) {
+                        console.log("站内信发送成功")
+                    } else {
+                        console.log("站内信发送失败")
+                    }
+                }
+
+                this.setState({
+                    topic_info: toJS(this.distributeTopic.topic_info),
+                });
+            } else if (res.data[0].err === 1) {
                 message.error("分配失败！请重试")
             }
-            await this.props.manageStore.getTopicList({"ide":this.usr.uid})
-            await this.props.manageStore.getCheckList({"ide":this.usr.uid})
-            await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
-            console.log(this.distributeTopic.topic_info.length)
-            this.setState({
-                topic_info: toJS(this.distributeTopic.topic_info),
-            });
+
         } else {
             message.error("分配失败！请重试")
         }
@@ -258,11 +275,11 @@ export default class ManualAllocate extends Component {
                 filterMultiple: false,
                 onFilter: (value, record) =>
                     record.areas.indexOf(value) !== -1,
-                render: (areas,record) => (
+                render: (areas, record) => (
                     <>
                         {
                             // console.log(areas),
-                            areas.map((tag,i) => {
+                            areas.map((tag, i) => {
                                 return (
                                     <Tag color={record.color[i]} >
                                         {tag}
@@ -289,32 +306,32 @@ export default class ManualAllocate extends Component {
                 <div className="m-top">
                     <div class="check_teacher">
                         <div class="title">审核教师</div>
-                        {(this.distributeTopic.judge_info.flag === 0) && 
-                        <Select
-                            value={this.state.tea_name}
-                            allowClear
-                            showSearch
-                            defaultActiveFirstOption={false}
-                            style={{ width: 400 }}
-                            placeholder="请选择审核教师"
-                            optionFilterProp="children"
-                            onChange={this.selectOnlyTea}
-                            filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
-                        >
-                            {this.state.teacher_info.map((item, i) =>
-                                <Select.Option key={item.tid}>{item.value}</Select.Option>
-                            )}
-                        </Select>
+                        {(this.distributeTopic.judge_info.flag === 0) &&
+                            <Select
+                                value={this.state.tea_name}
+                                allowClear
+                                showSearch
+                                defaultActiveFirstOption={false}
+                                style={{ width: 400 }}
+                                placeholder="请选择审核教师"
+                                optionFilterProp="children"
+                                onChange={this.selectOnlyTea}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            >
+                                {this.state.teacher_info.map((item, i) =>
+                                    <Select.Option key={item.tid}>{item.value}</Select.Option>
+                                )}
+                            </Select>
                         }
-                        {(this.distributeTopic.judge_info.flag === 1) && 
-                        <Select
-                            disabled
-                            style={{ width: 400 }}
-                            placeholder="已发布课题，不能再分配审核"
-                        >
-                        </Select>
+                        {(this.distributeTopic.judge_info.flag === 1) &&
+                            <Select
+                                disabled
+                                style={{ width: 400 }}
+                                placeholder="已发布课题，不能再分配审核"
+                            >
+                            </Select>
                         }
                     </div>
                     <div className="m-btn">

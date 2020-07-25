@@ -147,7 +147,7 @@ class User extends BaseActions {
   //状态通知 一对一
   @action
   async insertMessageToOne(param) {
-    return await this.post(urls.API_SYS_POST_MESSAGETOONE, param)
+    return await this.post(urls.API_SYS_POST_MESSAGETOONE, param) 
   }
 }
 

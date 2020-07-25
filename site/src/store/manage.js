@@ -423,9 +423,12 @@ class manager extends BaseActions {
       } else if (item.status === 4) {
         tag = "待审核";
         num = 4;
-      } else if (item.status === 5) {
+      } else if (item.status===5) {
         tag = "通过";
         num = 6;
+      } else if(item.status>=6) {
+        tag = "已发布";
+        num = 7;
       }
 
       temp.push({
@@ -439,7 +442,7 @@ class manager extends BaseActions {
       })
     })
 
-    // 通过
+    // 通过，已发布
     let arr = []
     // 未提交
     let arr1 = []
@@ -450,7 +453,7 @@ class manager extends BaseActions {
         arr.push(
           item.key
         )
-      }else if(item.status===5){
+      }else if(item.status>=5){
          count++;
       }else if(item.status < 4){
         arr1.push(
@@ -547,5 +550,9 @@ class manager extends BaseActions {
       return false;
     })
   }
+
+ 
+
+
 }
 export default new manager()

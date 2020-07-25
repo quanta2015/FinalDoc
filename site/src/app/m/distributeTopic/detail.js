@@ -133,7 +133,7 @@ export default class Detail extends Component {
 		});
 	};
 
-	showConfirm =  () => {
+	showConfirm = () => {
 		confirm({
 			title: <div style={{ fontSize: '20px' }}><br />确认后，不能再次发布！<br /><br /></div>,
 			icon: <ExclamationCircleOutlined style={{ fontSize: '28px', paddingTop: '30px', paddingLeft: '30px' }} />,
@@ -141,7 +141,7 @@ export default class Detail extends Component {
 			cancelText: '取消',
 			width: 500,
 
-			onOk:()=> {
+			onOk: () => {
 				console.log('OK');
 				this.release()
 			},
@@ -160,12 +160,30 @@ export default class Detail extends Component {
 			await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
 			await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
 			await this.props.manageStore.getJudge({ "ide": this.usr.uid })
+
+			// 状态通知
+			/* • 系主任A发布B系的所有课题
+				终：所有课题对应的出题教师
+				内容：您的课题已被发布  => 课题已发布
+
+				终：所有管理员
+				内容：B系已发布课题
+
+				终：所有该系的学生
+				内容：您所在系课题已发布，请尽快选定课题  => 课题已发布
+
+				始：（例）课题A带学生B的出题老师C
+				终：学生B
+				内容：课题《A》双选成功  => 双选成功
+			*/
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "topTea", "context": "课题已发布", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "topStu", "context": "课题已发布", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "admin", "context": this.usr.maj + "已发布课题", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "okStu", "context": "双选成功", "type": 1})
+			
 		} else {
 			message.info("发布失败！请重试")
 		}
-		// this.setState({
-		// 	check_visible: false,
-		// });
 	}
 
 
@@ -310,7 +328,7 @@ export default class Detail extends Component {
 					<Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
 						onRow={(record) => {
 							return {
-								onClick: () => {		 
+								onClick: () => {
 									this.state.own = record
 								}
 							}
@@ -336,7 +354,7 @@ export default class Detail extends Component {
 						<div class="m-title">
 							<div class="u-type">{this.state.own.type}</div>
 							<Tooltip title={this.state.own.topicTOPIC}>
-							<div class="u-topic">{this.state.own.topicTOPIC}</div>
+								<div class="u-topic">{this.state.own.topicTOPIC}</div>
 							</Tooltip>
 							<div class="u-tea-name">{this.state.own.teaName}</div>
 						</div>
