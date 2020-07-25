@@ -82,7 +82,10 @@ export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance'
 export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' 
 // 返回当前阶段
 export const API_STU_GET_CURSTATE = API_SERVER + '/student/getCurrentState' 
+// 获取模板文件
 export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplate'
+// 获取答辩信息
+export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';
