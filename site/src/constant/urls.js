@@ -144,6 +144,7 @@ export const API_SYS_TEACHER_AUDIT_OP_GET_TEAM = API_SERVER + '/auditOp/getTeam'
 export const API_SYS_TEACHER_AUDIT_OP_GET_AUDIT_PERMISSION = API_SERVER + '/auditOp/getAuditPermission';// 判断是否为审核组教师
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM = API_SERVER + '/auditOp/submitTutorForm';// 提交指导教师审核表单
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM = API_SERVER + '/auditOp/submitTeamForm';// 提交审核组审核表单
+export const API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER = API_SERVER + '/auditOp/isTeamLeader';// 判断是否为审核组组长
 
 
 
@@ -167,3 +168,10 @@ export const API_ADMIN_CALL_ANN_DETAIL = API_SERVER + '/admin'+'/getAnnouncement
 export const API_ADMIN_DOWNLOAD_FILE = API_SERVER + '/admin'+'/admindownload'
 //删除文件
 export const API_ADMIN_DELETE_UPLOAD_FILE = API_SERVER + '/admin'+'/delFile'
+
+//获取全部学生名单
+export const API_ADMIN_GET_ALL_STU_LIST = API_SERVER + '/admin'+'/getAllStu'
+//获取全部教师名单
+export const API_ADMIN_GET_ALL_TEA_LIST = API_SERVER + '/admin'+'/getAllTea'
+//修改名单某条信息
+export const API_ADMIN_EDIT_ONE_INFO = API_SERVER + '/admin'+'/editInfo'

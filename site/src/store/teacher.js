@@ -165,10 +165,26 @@ class Teacher extends BaseActions {
   }
 
   async AuditOp_submitTeamForm(params){
-    console.log(params);
     let result = await this.post (urls.API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM, params)
     if (result && result.code === 200) {
       message.success("表单提交成功")
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  // 判断是否为审核组组长
+  @observable
+  auditOP_isTeamLeader = true
+
+  @action
+  async AuditOp_isTeamLeader(params){
+    let result = await this.post (urls.API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER, params)
+    if (result && result.code === 200) {
+      runInAction(() => {
+        this.auditOP_isTeamLeader = result.flag
+      })
     } else {
       message.error("网络错误")
     }

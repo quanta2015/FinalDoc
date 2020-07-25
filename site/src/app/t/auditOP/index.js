@@ -66,6 +66,10 @@ export default class Home extends Component {
 				topicTypes:this.props.teacherStore.topicTypes
 			})
 		});
+
+		//获取教师审核权限
+		this.props.teacherStore.AuditOp_getAuditPermission({"userId": this.usr.uid});
+        this.props.teacherStore.AuditOp_isTeamLeader({"userId": this.usr.uid});
 	}
 
 	//选题名称查询
