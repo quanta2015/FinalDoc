@@ -378,30 +378,33 @@ router.post('/getOpenQuestionInfo', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql, params, res, (r) => {
-        switch (r[0]['week']) {
-            case '0':
-                r[0].week = '星期天';
-                break;
-            case '1':
-                r[0].week = '星期一';
-                break;
-            case '2':
-                r[0].week = '星期二';
-                break;
-            case '3':
-                r[0].week = '星期三';
-                break;
-            case '4':
-                r[0].week = '星期四';
-                break;
-            case '5':
-                r[0].week = '星期五';
-                break;
-            case '6':
-                r[0].week = '星期六';
-                break;
-            default:
-                break;
+        console.log(r);
+        if (r.length > 0) {
+            switch (r[0]['week']) {
+                case '0':
+                    r[0].week = '星期天';
+                    break;
+                case '1':
+                    r[0].week = '星期一';
+                    break;
+                case '2':
+                    r[0].week = '星期二';
+                    break;
+                case '3':
+                    r[0].week = '星期三';
+                    break;
+                case '4':
+                    r[0].week = '星期四';
+                    break;
+                case '5':
+                    r[0].week = '星期五';
+                    break;
+                case '6':
+                    r[0].week = '星期六';
+                    break;
+                default:
+                    break;
+            }
         }
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取开题答辩信息' });
