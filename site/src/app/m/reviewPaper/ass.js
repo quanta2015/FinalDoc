@@ -119,8 +119,8 @@ export default class Ass extends Component {
         })
     }
 
-    warning = async()=>{
-        let res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "taskTea", "context": "请您尽快提交任务书！" ,"type":0})
+    warning = async () => {
+        let res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "taskTea", "context": "请您尽快提交任务书！", "type": 0 })
         if (res && res.code === 200) {
             message.success("提醒成功！")
         } else {
@@ -163,7 +163,7 @@ export default class Ass extends Component {
     }
 
     showModal = async (record) => {
-        // console.log(toJS(record))
+        console.log(toJS(record))
         let task = await this.props.manageStore.getTaskContent({ "pid": record.key, "role": this.usr.role })
         //console.log(task)
         this.setState({
@@ -197,7 +197,7 @@ export default class Ass extends Component {
 
             },
             getCheckboxProps: record => ({
-                disabled: record.tag === "通过" || record.tag === "未提交", // Column configuration not to be checked
+                disabled: record.tag === "通过" || record.tag === "已发布" || record.tag === "未提交", // Column configuration not to be checked
             }),
             selections: [
                 // Table.SELECTION_ALL,
@@ -243,7 +243,7 @@ export default class Ass extends Component {
                     { text: '待审核', value: '待审核' },
                     { text: '未提交', value: '未提交' },
                     { text: '通过', value: '通过' },
-
+                    { text: '已发布', value: '已发布' },
                 ],
                 filterMultiple: false,
                 onFilter: (value, record) => record.tag === value,
@@ -256,14 +256,32 @@ export default class Ass extends Component {
                     else if (tag === "未提交") {
                         color = "red";
                     }
-                    else if (tag === "通过") {
+                    else if (tag === "通过" || tag === "已发布") {
                         color = "green"
                     }
                     // console.log(tag);
                     return (
-                        <Tag color={color} >
-                            {tag}
-                        </Tag>
+                        <div>
+                            {(tag === "通过") &&
+                                <Tooltip placement="top" title={"待生成pdf"}>
+                                    <Tag color={color} >
+                                        {tag}
+                                    </Tag>
+                                </Tooltip>
+                            }
+                            {(tag === "已发布") &&
+                                <Tooltip placement="top" title={"已生成pdf并发布到学生端"}>
+                                    <Tag color={color} >
+                                        {tag}
+                                    </Tag>
+                                </Tooltip>
+                            }
+                            {(tag === "待审核" || tag === "未提交") &&
+                                    <Tag color={color} >
+                                        {tag}
+                                    </Tag>
+                            }
+                        </div>
                     )
                 }
 
@@ -307,7 +325,7 @@ export default class Ass extends Component {
                         {/* 未提交的任务书 */}
                         {
                             (this.reviewPaper.uncommit_list.length > 0 && this.reviewPaper.suc === 0) &&
-                            <Tooltip placement="left" title={this.reviewPaper.uncommit_list.length+"篇未提交，一键提醒所有未提交任务书的指导教师"}>
+                            <Tooltip placement="left" title={this.reviewPaper.uncommit_list.length + "篇未提交，一键提醒所有未提交任务书的指导教师"}>
                                 <Button onClick={this.warning}>提醒</Button>
                             </Tooltip>
                         }
