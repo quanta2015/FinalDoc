@@ -63,6 +63,7 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.currState);
     }
 
+
     componentDidMount() {
         //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
         if (!this.usr.uid) {
@@ -73,6 +74,7 @@ export default class TopicPG extends Component {
         }
         this.props.studentStore.getAllStates()
         this.props.studentStore.getCurrentState()
+        this.props.studentStore.getOpenScore({ uid: this.usr.uid })
 
     }
 
@@ -98,6 +100,7 @@ export default class TopicPG extends Component {
         })
     }
     render() {
+        console.log('this is op', this.opScore)
         const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         const TASK_FINISH = 6;
         const GRADE_FINISH = 20;
@@ -180,24 +183,41 @@ export default class TopicPG extends Component {
                         )}
                     </div>
                 </div>
-                <div className="m-op-score">
-                    <div className="m-nm-lst">
-                        {STU_OP_SCORE.map((item) =>
-                            <div className="u-nm-itm">
-                                {item.name}
-                            </div>
-                        )}
-                    </div>
-                    <div className="m-sc-lst">
-                        {this.opScore.map((item) =>
+                {this.opScore.length > 0 &&
+                    <div className="m-op-score">
+                        <div className="m-nm-lst">
+                            {STU_OP_SCORE.map((item) =>
+                                <div className="u-nm-itm">
+                                    {item.name}
+                                </div>
+                            )}
+                        </div>
+                        <div className="m-sc-lst">
                             <div className="u-sc-itm">
-                                <span className="score">
-                                    {item.score}
-                                </span>
+                                {this.opScore[0].t_reply_score ?
+                                    <span className="score">
+                                        {this.opScore[0].t_reply_score}
+                                    </span> :
+                                    <span className="z-none">
+                                        尚未录入
+                                    </span>
+                                }
                             </div>
-                        )}
+
+                            <div className="u-sc-itm">
+                                {this.opScore[0].g_reply_score ?
+                                    <span className="score">
+                                        {this.opScore[0].g_reply_score}
+                                    </span> :
+                                    <span className="z-none">
+                                        尚未录入
+                                    </span>
+                                }
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
+
             </div >
         );
     }

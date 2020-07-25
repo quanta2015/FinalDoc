@@ -26,10 +26,7 @@ class Student extends BaseActions {
 
     @observable
     //开题答辩成绩
-    opScore = [
-        { score: 83, type: 'op_ins_score' },
-        { score: 80, type: 'op_grp_score' }
-    ]
+    opScore = []
 
     @observable
     //当前所处阶段细分
@@ -45,7 +42,7 @@ class Student extends BaseActions {
 
     @observable
     //指导日志
-    insLog = [] 
+    insLog = []
 
     @action
     async getTopInfo(params) {
@@ -280,8 +277,20 @@ class Student extends BaseActions {
     async getTempFileList() {
         const r = await this.post(urls.API_STU_GET_TEMP_FILE, null);
         if (r && r.code === 200) {
-            runInAction(()=> {
+            runInAction(() => {
                 this.docTemplate = r.data;
+            })
+        } else {
+            message.error('网络错误')
+        }
+    }
+
+    @action
+    async getOpenScore(params) {
+        const r = await this.post(urls.API_STU_GET_OPSCORE, params)
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.opScore = r.data
             })
         } else {
             message.error('网络错误')

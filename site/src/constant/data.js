@@ -111,8 +111,8 @@ export var FILE_UPLOAD_FORMAT =
 }
 
 export var STU_OP_SCORE = [
-   { name: '指导老师评分', type: 'ins_score' },
-   { name: '开题答辩小组评分', type: 'grp_score' }
+   { name: '指导老师评分', type: 't_reply_score' },
+   { name: '开题答辩小组评分', type: 'g_reply_score' }
 ]
 
 // 站内信类型
