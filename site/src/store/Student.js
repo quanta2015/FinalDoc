@@ -304,7 +304,13 @@ class Student extends BaseActions {
     @action
     async getReplyInfo(params) {
         const r = await this.post(urls.API_STU_GET_REPLY_INFO, params);
-        console.log(r);
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.replyList = r.data;
+            })
+        } else {
+            message.error('网络错误')
+        }
     }
 }
 

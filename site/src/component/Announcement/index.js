@@ -134,7 +134,7 @@ export default class Announcement extends Component {
                         </>:
                         <Empty
                             className="z-empty"
-                            description={<span>尚未发布通知</span>}
+                            description={<span>暂未发布</span>}
                         />
                     }
                 </div>

@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Empty } from 'antd';
 import { route } from 'preact-router';
 import { computed, toJS } from 'mobx';
 import Announcement from '../../component/Announcement';
@@ -65,7 +65,7 @@ export default class Student extends Component {
       route('/');
     }
     this.props.studentStore.getTempFileList();
-    // this.props.studentStore.getReplyInfo({ uid: this.usr.uid });
+    this.props.studentStore.getReplyInfo({ uid: this.usr.uid })
   }
 
   downloadFile = (item) => {
@@ -89,23 +89,28 @@ export default class Student extends Component {
           <div className="m-card">
             <span className="u-title">答辩信息</span>
             {
-              applyList.map((item, i) =>
+              this.replyList.length ?
+              this.replyList.map((item, i) =>
                 <div className="m-apply">
                   <div className="m-date">
                     <div className="u-ymd">
-                      <div className="u-d">{item.date.slice(item.date.lastIndexOf('-') + 1)}</div>
-                      <div className="u-ym">{item.date.slice(0, item.date.lastIndexOf('-'))}</div>
+                      <div className="u-d">{item.time.slice(0, 10).slice(item.time.slice(0, 10).lastIndexOf('-') + 1)}</div>
+                      <div className="u-ym">{item.time.slice(0, 10).slice(0, item.time.slice(0, 10).lastIndexOf('-'))}</div>
                     </div>
                     <div className="u-week">{item.week}</div>
                   </div>
                   <div className="m-detail">
-                    <div className="u-name">{item.name}</div>
-                    <p>时间：{item.date} {item.time}</p>
-                    <p>地点：{item.location}</p>
-                    <p>序号：{item.number}</p>
+                    <div className="u-name">开题答辩</div>
+                    <p>时间：{item.time}</p>
+                    <p>地点：{item.place}</p>
+                    <p>序号：{item.order}</p>
                   </div>
                 </div>
-              )
+              ):
+              <Empty
+                className="z-empty"
+                description={<span>暂未发布</span>}
+              />
             }
           </div>
           <div className="m-card">

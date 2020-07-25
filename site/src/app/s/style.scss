@@ -15,6 +15,7 @@
         }
 
         .m-card {
+            position: relative;
             width: 450px;
             min-height: 274px;
             padding: 10px 15px 5px 15px;
@@ -60,6 +61,12 @@
                     color: #444;
                 }
             }
+        }
+
+        .z-empty {
+            position: absolute;
+            top: 30%;
+            left: 28%;
         }
     }
 

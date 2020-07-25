@@ -76,7 +76,7 @@ class NavS extends Component {
             {this.usr.cls && <div className="u-cls">{this.usr.cls}</div>}
           </div>
           <div className="m-info">
-            {this.usr.uid && <span>{this.usr.uid}</span>}
+            {this.usr.uid && <span className="u-id">{this.usr.uid}</span>}
             {this.usr.name && <span>{this.usr.name}</span>}
           </div>
         </div>
