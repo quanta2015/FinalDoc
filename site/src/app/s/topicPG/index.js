@@ -101,7 +101,6 @@ export default class TopicPG extends Component {
     }
 
     render() {
-        console.log('this is op', this.opScore)
         const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         const TASK_FINISH = 6;
         const GRADE_FINISH = 20;
