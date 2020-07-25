@@ -176,6 +176,7 @@ class Check extends BaseActions {
                 this.state.nowTopic.status == 5 &&
                 <div className="state-extra">
                   <ReviewLine
+                    size={3}
                     list={this.props.checkList[this.props.checkList.map((x) => x.id).indexOf(this.state.nowTopic.id)]}
                     freshList={this.props.freshList} />
                 </div>

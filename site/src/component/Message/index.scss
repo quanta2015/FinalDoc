@@ -1,0 +1,40 @@
+.g-msg {
+    width: 920px;
+    overflow: hidden;
+    white-space: nowrap;
+    // text-overflow: ellipsis;
+    // margin-bottom: 15px;
+    .ant-alert {
+        width: max-content;
+        display: inline-flex;
+        margin-right: 20px;
+    }
+    .ant-alert-icon {
+        top: 10px;
+    }
+    .ant-alert-message {
+        font-size: 12px;
+        text-overflow: ellipsis;
+    }
+    .ant-alert-close-icon {
+        right: 10px;
+        top: 10px;
+    }
+}
+
+.has-overflow:after {
+    content: "more...";
+    position: relative;
+    // right: 10px;
+    // top: 10px;
+    
+    font: {
+        size: 12px;
+        weight: 500;
+        family: Georgia, "Times New Roman", Times, serif;
+    }
+}
+
+.z-notempty{
+    margin-bottom: 15px;
+}

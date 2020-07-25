@@ -9,32 +9,18 @@
 
   .g-logo {
     display: flex;
+    justify-content: center;
     width: 100%;
     padding: 10px 0;
-    margin-bottom: 5px;
+
+    .u-logo {
+      width: 30px;
+      margin-right: 8px;
+    }
 
     .u-title {
       color: #333;
-      font-size: 17px;
-      cursor: pointer;
-    }
-    
-    .m-msg {
-      display: flex;
-      padding: 0 5px;
-      width: 25%;
-    }
-
-    .m-msg > img {
-      width: 27px;
-      cursor: pointer;
-    }
-
-    .m-msg > .u-status {
-      color: red;
-      font-size: 14px;
-      line-height: 10px;
-      margin-left: -8px;
+      font-size: 18px;
     }
   }
 

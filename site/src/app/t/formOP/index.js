@@ -1,4 +1,5 @@
 import { Component } from 'preact';
+import { route } from 'preact-router';
 
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
@@ -49,9 +50,9 @@ export default class Home extends Component {
         return toJS(this.props.teacherStore.auditOP_isTutor);
     }
 
-    componentWillMount(){
-        // this.props.teacherStore.AuditOp_getAuditPermission();
-        console.log(this.isTutor)
+    @computed
+    get isTeamLeader() {
+        return toJS(this.props.teacherStore.auditOP_isTeamLeader);
     }
 
     //提交表单
@@ -91,10 +92,21 @@ export default class Home extends Component {
         if(flag)
             message.error("表单未完善");
         else{
-            // if(this.isTutor)
-            //     this.props.teacherStore.AuditOp_submitTutorForm(...)
-            // else
-            //     this.props.teacherStore.AuditOp_submitTeamForm(...)
+            if(this.isTutor)
+                this.props.teacherStore.AuditOp_submitTutorForm({"topicId":this.selectedTopic.id,
+                                                                "translation":translation,
+                                                                "summary":summary,
+                                                                "report":report,
+                                                                "reply":reply,
+                                                                "replyScore":replyScore,
+                                                                "score":score})
+                .then(()=>{route("/t_auditOP")});
+            else
+                this.props.teacherStore.AuditOp_submitTeamForm({"topicId":this.selectedTopic.id,
+                                                                "reply":reply,
+                                                                "replyScore":replyScore,
+                                                                "score":score})
+                .then(()=>{route("/t_auditOP")});
         }
     }
 
@@ -127,12 +139,23 @@ export default class Home extends Component {
                         dataSource={standards}
                         renderItem={ (item,index) => (
                             <List.Item>
+  
+                            {this.isTeamLeader && 
                             <div class="u-item-describe">
                                 {item}
                             </div>
+                            }
+
+                            {!this.isTeamLeader && 
+                            <div>
+                                {item}
+                            </div>
+                            }
+
+                            {this.isTeamLeader && 
                             <Form.Item name={"score"+index} rules={[{ required: true, message: '请输入分数' }]}>
                                 <InputNumber min={0} max={100} placeholder="分数"/>
-                            </Form.Item>
+                            </Form.Item>}
                             </List.Item>
                         )}
                     />
@@ -197,6 +220,7 @@ export default class Home extends Component {
                 </div>
                 }
 
+                {this.isTeamLeader && 
                 <div class="m-footer-audit">
                     <Divider orientation="left" plain>
                         答辩评分
@@ -210,12 +234,15 @@ export default class Home extends Component {
                         </Form.Item>
                     </div>
                 </div>
+                }
                 
+                {this.isTeamLeader && 
                 <div class="m-footer">
                     <Button type="primary" htmlType="submit" onClick={this.handleFormSubmit.bind(this, form)}>
                         提交
                     </Button>
                 </div>
+                }
                 </Form>
 			</div>
 		);

@@ -23,8 +23,6 @@ class User extends BaseActions {
   //站内信
   msgList = []
 
-  @observable
-  hasUnread = false
 
   @observable
   //通知列表 index 未读通知所处位置

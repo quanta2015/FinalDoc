@@ -1,5 +1,6 @@
 [data-component="t-formOP"]{
     overflow: auto;
+    height: 100%;
 
     .m-footer{
         margin-top: 16px;
@@ -18,6 +19,5 @@
     .u-reply-score{
         margin-top: 5px;
         display: flex;
-        flex-direction: row-reverse;
     }
 }

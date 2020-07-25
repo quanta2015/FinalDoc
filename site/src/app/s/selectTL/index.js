@@ -164,6 +164,7 @@ export default class TopicList extends Component {
                 topicList: [topicList[record.key]] // 选中后表格中只显示此项
             })
             this.props.studentStore.upStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[record.key].id })
+            this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.state.topicList[record.key].tid, context: "新学生选择您的课题", type: 2 })
         } else {
             for (let i = 0; i < del.length; i++) {
                 cha[i] = "选定"
@@ -189,6 +190,7 @@ export default class TopicList extends Component {
 
                         })
                 })
+            this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.state.topicList[0].tid, context: "学生取消选定您的课题", type: 3 })
         }
     }
 

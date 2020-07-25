@@ -13,6 +13,7 @@ export default class TaskForm extends BaseActions {
       message.error("您未添加进度安排！");
       return;
     }
+    console.log(val);
     let x = await this.post(urls.API_TEACHER_SAVE_TASK,{data:val,pid:this.props.pid})
     console.log(x);
     if(x.code==200){
@@ -21,6 +22,7 @@ export default class TaskForm extends BaseActions {
       message.error('提交错误，请检查网络')
     }
     this.props.close();
+    this.props.freshList();
 
     
   }

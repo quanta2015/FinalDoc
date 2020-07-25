@@ -99,11 +99,11 @@ class Teacher extends BaseActions {
   //获取数据
   @action
 	async AuditOp_getTopicList(params) {
-    let result = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, params);
-    // let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_TOPIC_LIST, params);
+    let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_TOPIC_LIST, params);
+    console.log(result)
     if (result && result.code === 200) {
       runInAction(() => {
-        this.auditOP_topicList = result.data
+        this.auditOP_topicList = result.result
       })
     } else {
       message.error("网络错误")
@@ -115,18 +115,12 @@ class Teacher extends BaseActions {
   @observable
   auditOP_team = {
     "leader":{
-      "name": "FCC"
+      "name": ""
     },
     "member":[
       {
-        "name": "ABB"
+        "name": ""
       },
-      {
-        "name": "BCC"
-      },
-      {
-        "name": "CDD"
-      }
     ]
   }
 
@@ -135,7 +129,7 @@ class Teacher extends BaseActions {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_TEAM, params);
     if (result && result.code === 200) {
       runInAction(() => {
-        this.auditOP_topicList = result.data
+        this.auditOP_team = result.result
       })
     } else {
       message.error("网络错误")
@@ -152,7 +146,7 @@ class Teacher extends BaseActions {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_AUDIT_PERMISSION, params);
     if (result && result.code === 200) {
       runInAction(() => {
-        this.auditOP_isTutor = result.data
+        this.auditOP_isTutor = result.result.flag
       })
     } else {
       message.error("网络错误")
@@ -174,6 +168,23 @@ class Teacher extends BaseActions {
     let result = await this.post (urls.API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM, params)
     if (result && result.code === 200) {
       message.success("表单提交成功")
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  // 判断是否为审核组组长
+  @observable
+  auditOP_isTeamLeader = true
+
+  @action
+  async AuditOp_isTeamLeader(params){
+    let result = await this.post (urls.API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER, params)
+    if (result && result.code === 200) {
+      runInAction(() => {
+        this.auditOP_isTeamLeader = result.flag
+      })
     } else {
       message.error("网络错误")
     }
