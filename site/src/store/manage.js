@@ -477,7 +477,7 @@ class manager extends BaseActions {
         return 1;
       }
     })
-    if (count === res.data.length){
+    if (count === res.data.length && res.data.length !== 0){
       suc=1
     }
     runInAction(() => {
