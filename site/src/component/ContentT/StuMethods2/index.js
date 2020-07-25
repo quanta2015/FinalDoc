@@ -178,7 +178,7 @@ export default class StuMethods extends BaseActions {
                         {
                           fileListOne.map((t) => {
                             let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
+                            return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
                           })
                         }
                         
@@ -211,7 +211,7 @@ export default class StuMethods extends BaseActions {
                         {
                           fileListTwo.map((t) => {
                             let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
+                            return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
                           })
                         }
                       </div>
@@ -224,7 +224,7 @@ export default class StuMethods extends BaseActions {
                         {
                           fileListThree.map((t) => {
                             let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
+                            return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
                           })
                         }
                       </div>

@@ -55,10 +55,13 @@ export default class Home extends BaseActions {
     checkBlockState: 0
   }
 
-  async componentDidMount() {
+  componentWillMount(){
     if (!this.usr.id) {
       route('/')
     }
+  }
+
+  componentDidMount() {
     this.getTopicList();
   }
 
@@ -66,11 +69,8 @@ export default class Home extends BaseActions {
    * 获取自己的课题列表
    */
   getTopicList = async () => {
-    
-
     await this.setState({checkBlockState: 0});
     let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    //let data = await this.post("http://localhost:8090/teacher/getTidgetTopic",{tea_id:this.usr.uid})
     data = data.data.map(filter);
     data.sort(sorter);
     let flag=true;
@@ -79,6 +79,7 @@ export default class Home extends BaseActions {
         flag = false;
       }
     }
+
     
     this.setState({ toplist: data });
     //获取申请列表
@@ -129,7 +130,6 @@ export default class Home extends BaseActions {
     const { placement, visible, tid } = this.state;
     return (
       <div className="manage-home" data-component="t-manage-home">
-
         {
           this.state.checkBlockState == 1 &&
           <CheckBlock
