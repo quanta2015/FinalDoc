@@ -180,7 +180,7 @@
   let data;
   $.get('/getStat',res=>{
     data = res.data;
-
+    console.log(data)
     let topic_name = []; 
     let len = data.p_name.length;
     for(let i = 0;i<len;i+=25){
