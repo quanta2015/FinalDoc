@@ -2,57 +2,116 @@
 
   .check-title{
     font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 20px;
-    font-weight: bolder;
-    padding: 5px 20px;
+    font-size: 16px;
+    padding: 10px 20px;
     color: white;
     width: 100%;
-    height: 61.6px;
+    height: 40px;
     background-color: black;
     display: flex;
+    color: #ccc;
     align-items: center;
     flex-direction: row-reverse;
   }
 
   .check-list{
     width: 100%;
-    //height: calc(100% - 61.6px);
-    // border: 1px solid #d9d9d9;
-    // border-radius: 2px;
     height: 100%;
     display: flex;
     font-size: 14px;
     font-variant: tabular-nums;
     line-height: 1.5715;
     position: relative;
+    padding: 0 80px 0 0 ;
   }
   .left{
     position: absolute;
     right: 0;
     display: flex;
     flex-direction: column;
-    padding: 0;
+    padding-top: 15px;
     margin: 0;
     z-index: 2;
   }
 
-  .nav-a{
-    padding: 2px 5px;
+  .nav-a {
     display: flex;
-    align-items: center;
+    flex-direction: column-reverse;
     justify-content: center;
+    align-items: center;
     border: 1px solid white;
+    padding: 5px 10px;
+    position: relative;
     background-color: #666;
     color: #eee;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    font-weight: bolder;
-    font-size: 22px;
+    height: 37px;
+    width: 70px;
+    margin-top: -5px;
     cursor: pointer;
+    
+  
+    &:hover i {
+      display:block;
+    }
+  
+    &:before {
+      content: '';
+      width: 0;
+      height: 0;
+      position: absolute;
+      right: -12px;
+      border: 6px solid #666;
+      top: 12px;
+      border-top: 17px solid #666;
+    }
+  
+    &:after {
+      content: '';
+      width: 0;
+      height: 0;
+      position: absolute;
+      right: -12px;
+      border: 6px solid transparent;
+      border-left: 6px solid #666;
+      border-bottom: 6px solid #666;
+      top: 0px;
+    }
+  
+    &.nav-a-active:after {
+        border-left: 6px solid #f60;
+        border-bottom: 6px solid #f60;
+    }
+  
+    &.nav-a-active:before {
+        border: 6px solid #f60;
+        border-top: 17px solid #f60;
+    }
+  
+    &>i {
+      display: none;
+      position: absolute;
+      background: #336699;
+      font-size: 12px;
+      right: 75px;
+      width: max-content;
+      padding: 5px 10px;
+      font-style: normal;
+  
+      &:after {
+        content:'';
+        position: absolute;
+        width:0;
+        height:0;
+        right: -10px;
+        border: 5px solid transparent;
+        border-left: 5px solid #336699;
+        top: 8px;
+      }
+    }
   }
+  
 
-  .nav-a:hover{
-    color: #fff;
-  }
 
   .nav-a-active{
     color: #fff;
@@ -68,6 +127,7 @@
     border: 1px solid #d9d9d9;
     border-left: 0;
     border-radius: 2px;
+    box-shadow: 3px 0px 7px rgba(0, 0, 0, 0.1);
   }
 
   .nav-n{
@@ -94,11 +154,9 @@
     justify-content: space-between;
   }
   .tophead-name{
-    //max-width: 550px;
     text-align: center;
-    margin: auto;
-
-    padding: 20px 90px 20px 20px;
+    width: 100%;
+    padding: 20px;
   }
 
   .state-extra{

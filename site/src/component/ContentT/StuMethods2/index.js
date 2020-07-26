@@ -1,13 +1,13 @@
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
-import { Card, Input, Tag, Button, Modal,Tooltip } from 'antd';
+import {  Modal, Tooltip, Divider } from 'antd';
 import style from './index.scss';
 import TaskForm from '../TaskFormSecond';
 import FileDownLoad from '../../FileDownLoad'
 
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { UserOutlined, BookOutlined, DownloadOutlined, CloseCircleOutlined ,CheckCircleOutlined} from '@ant-design/icons';
+import { UserOutlined, BookOutlined, DownloadOutlined, CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 import { route } from 'preact-router';
 
@@ -49,7 +49,7 @@ const uploadFiles = [
 
 let x = { nx: "style", sb: "fff" }
 
-@inject('userStore','teacherStore')
+@inject('userStore', 'teacherStore')
 @observer
 export default class StuMethods extends BaseActions {
   constructor(props) {
@@ -57,9 +57,9 @@ export default class StuMethods extends BaseActions {
   }
 
   @computed
-    get usr() {
-        return this.props.userStore.usr;
-    }
+  get usr() {
+    return this.props.userStore.usr;
+  }
 
 
   state = {
@@ -92,9 +92,7 @@ export default class StuMethods extends BaseActions {
     //获取学生文件列表
     let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
     l = (l.data)[0];
-    console.log(l);
     let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran);
-    console.log(flag);
     if (flag) {
       this.setState({ auditOp: true })
     }
@@ -120,128 +118,115 @@ export default class StuMethods extends BaseActions {
 
         </div>
         <div className="stumethods-pd">
-          <Card
-            tabList={tabListNoTitle}
-            size="small"
-            bordered={false}
-            onTabChange={(e) => { this.setState({ tab: e }) }}
-          >
-            {this.state.tab == 'publish' &&
-              <header className="stm-header">
-                <div className="note-block">
-                </div>
-                <div className="note-block">
-                  <div className="card-inner">
-                    <div className="file-block">
-                      {
-                        !this.state.links['f_task'] && 
-                        
-                        <>
-                          <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
-                              <div className="m-f-down-inner">
-                                <div className="m-f-down-pic">
-                                  <CloseCircleOutlined />
-                                </div>
-                                <p>
-                                  填写任务书
-                                </p>
-                              </div>
-                          </div>
-                          </>
-                      }
-                      {
-                        !!this.state.links['f_task'] && 
-                        <>
-                          <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
-                              <div className="m-f-down-inner">
-                                <div className="m-f-down-pic">
-                                  <CheckCircleOutlined />
-                                </div>
-                                <p>
-                                  重新填写任务书
-                                </p>
-                              </div>
-                          </div>
-                          </>
-                      }
-                    </div>
+          <div className="m-diviver">学生</div>
+          <header className="stm-header">
+            <div className="note-block">
+              <div className="card-inner">
+                <div className="one-of-three">
+                  <div className="f-title">
+                    1、开题中期
+                      </div>
+                  <div className="file-block">
+                    {
+                      fileListOne.map((t) => {
+                        let r = this.state.links[t.type];
+                        return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
+                      })
+                    }
+
                   </div>
 
                 </div>
-              </header>
-            }
-            {
-              this.state.tab == 'download' &&
-              <header className="stm-header">
-                <div className="note-block">
-                </div>
-                <div className="note-block">
-                  <div className="card-inner">
-                    <div className="one-of-three">
-                      <div className="f-title">
-                        1、开题中期
+                <div className="one-of-three">
+                  <div className="f-title">
+                    2、论文审核
                       </div>
-                      <div className="file-block">
-                        {
-                          fileListOne.map((t) => {
-                            let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
-                          })
-                        }
-                        
-                      </div>
-                      {
-                        //这个地方应该是没有感叹号的。。方便你测试
-                          this.state.auditOp &&
-                          <>
-                          <div className="m-fdl-spaceline"></div>
-                          <div className="m-file-down-load" onClick={()=>{this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": this.props.pid }).then(()=>{route('/t_formOP')})}}>
-                            <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
-                              <div className="m-f-down-inner">
-                                <div className="m-f-down-pic">
-                                  <CheckCircleOutlined />
-                                </div>
-                                <p>
-                                  填写审核
-                                </p>
-                              </div>
-                            </Tooltip>
-                          </div>
-                          </>
-                        }
-                    </div>
-                    <div className="one-of-three">
-                      <div className="f-title">
-                        2、论文审核
-                      </div>
-                      <div className="file-block">
-                        {
-                          fileListTwo.map((t) => {
-                            let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
-                          })
-                        }
-                      </div>
-                    </div>
-                    <div className="one-of-three">
-                      <div className="f-title">
-                        3、论文答辩
-                      </div>
-                      <div className="file-block">
-                        {
-                          fileListThree.map((t) => {
-                            let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
-                          })
-                        }
-                      </div>
-                    </div>
+                  <div className="file-block">
+                    {
+                      fileListTwo.map((t) => {
+                        let r = this.state.links[t.type];
+                        return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
+                      })
+                    }
                   </div>
                 </div>
-              </header>
+                <div className="one-of-three">
+                  <div className="f-title">
+                    3、论文答辩
+                      </div>
+                  <div className="file-block">
+                    {
+                      fileListThree.map((t) => {
+                        let r = this.state.links[t.type];
+                        return <FileDownLoad name={t.name} url={r} sid={this.props.sid} />
+                      })
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div className="m-diviver">教师</div>
+          <header className="stm-header">
+            <div className="note-block">
+              <div className="one-of-three">
+                <div className="card-inner">
+                  <div className="file-block">
+                    {
+                      !this.state.links['f_task'] &&
 
-            }
-          </Card>
+                      <>
+                        <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
+                          <div className="m-f-down-inner">
+                            <div className="m-f-down-pic">
+                              <CloseCircleOutlined />
+                            </div>
+                            <p>
+                              填写任务书
+                                </p>
+                          </div>
+                        </div>
+                      </>
+                    }
+                    {
+                      !!this.state.links['f_task'] &&
+                      <>
+                        <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
+                          <div className="m-f-down-inner">
+                            <div className="m-f-down-pic">
+                              <CheckCircleOutlined />
+                            </div>
+                            <p>
+                              重新填写任务书
+                                </p>
+                          </div>
+                        </div>
+                      </>
+                    }
+                    {
+                      this.state.auditOp &&
+                      <>
+                        <div className="m-file-down-load" onClick={() => { this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": this.props.pid }).then(() => { route('/t_formOP') }) }}>
+                          <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
+                            <div className="m-f-down-inner">
+                              <div className="m-f-down-pic">
+                                <CheckCircleOutlined />
+                              </div>
+                              <p>
+                                填写审核
+                                </p>
+                            </div>
+                          </Tooltip>
+                        </div>
+                      </>
+                    }
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </header>
+
         </div>
 
         <Modal

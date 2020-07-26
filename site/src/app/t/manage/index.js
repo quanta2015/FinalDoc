@@ -37,6 +37,7 @@ export default class Home extends BaseActions {
     super(props)
   }
 
+  sel = 1;
   state = {
     //发布课题抽屉可见性
     visible: false,
