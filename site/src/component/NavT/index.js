@@ -1,14 +1,12 @@
 import { Component } from 'preact';
 import { route } from 'preact-router';
 import './index.scss'
-
-import { CaretRightOutlined } from '@ant-design/icons';
-import more from './more.svg'
 import { MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import BaseActions from '../BaseActions'
 import * as urls from '../../constant/urls'
+import { message } from 'antd';
 
 
 @inject('userStore','teacherStore')
@@ -54,7 +52,12 @@ class NavT extends BaseActions {
     name: '选题阶段',
     index: 1,
     stage: ['发布课题', '选择课题','审核命题', '双选成功']
-}
+  }
+  
+  logout = ()=>{
+    window.localStorage.clear();
+    window.location.reload();
+  }
 
   render() {
     let cur = this.state.cur;
@@ -85,6 +88,9 @@ class NavT extends BaseActions {
                 <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
               </div>
             )}
+          </div>
+          <div className="m-logout" onClick={this.logout}>
+            <span>退出登录</span>
           </div>
           <div className="g-info">
             <div className="g-info-typeline">
