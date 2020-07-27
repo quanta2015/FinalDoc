@@ -8,6 +8,13 @@ import style from './index.scss'
 const { RangePicker } = DatePicker;
 const { Step } = Steps;
 
+const PRE_TIME_LINE = [
+  [[2020,8,1],[2020,10,30]],
+  [[2020,11,1,],[2021,0,20]],
+  [[2021,0,20],[2021,2,10]],
+  [[2021,3,10],[2021,6,10]]
+]
+
 export default class TaskForm extends BaseActions {
 
   state = {
@@ -17,8 +24,7 @@ export default class TaskForm extends BaseActions {
     technical_route: "",
     learn_content: "",
     reference: "",
-    ft: [[2000, 0, 1], [2000, 0, 1]],
-    timeline: [],
+    ft: [moment([2000, 0, 1]), moment([2000, 0, 1])],
     schedule: []
   }
 
@@ -93,8 +99,7 @@ export default class TaskForm extends BaseActions {
     data.schedule = this.state.schedule;
 
     let d = { data: data, pid: this.props.pid };
-    let x = await this.post(urls.API_TEACHER_SAVE_TASK, d)
-    console.log(x);
+    let x = await this.post(urls.API_TEACHER_SAVE_TASK, d);
     if (x.code == 200) {
       message.success('提交成功')
     } else {
@@ -113,16 +118,17 @@ export default class TaskForm extends BaseActions {
   componentWillMount = async () => {
     let x = await this.get(urls.API_TEACHER_GET_TIME_LINE);
     x = x.data;
-    let schedule = new Array(x.length);
-    for (let i = 0; i < x.length; i++) {
+    let schedule = new Array(4);
+    PRE_TIME_LINE[0][0] = x[0];
+    PRE_TIME_LINE[3][1] = x[1];
+    for (let i = 0; i < PRE_TIME_LINE.length; i++) {
       schedule[i] = {};
       schedule[i].content = "";
-      schedule[i].time = [moment(x[i][0]), moment(x[i][1])];
+      schedule[i].time = [moment(PRE_TIME_LINE[i][0]), moment(PRE_TIME_LINE[i][1])];
     }
     this.setState(
       {
-        timeline: x,
-        ft: [moment(x[0][0]), moment(x[x.length - 1][1])],
+        ft: [moment(x[0]), moment(x[1])],
         schedule: schedule
       })
   }
@@ -246,21 +252,15 @@ export default class TaskForm extends BaseActions {
                 <span className="redfont">*</span>
                 起止日期
               </div>
+              <RangePicker
+                value={this.state.ft}
+                onChange={(dates, ds) => { this.setState({ ft: dates }); this.removeErr(99) }}
+                style={{ width: 250 }}
+              />
               {
-                this.state.timeline.length > 0 &&
-                <>
-                  <RangePicker
-                    value={this.state.ft}
-                    onChange={(dates, ds) => { this.setState({ ft: dates }); this.removeErr(99) }}
-                    style={{ width: 250 }}
-                  />
-                  {
-                    this.state.errList.indexOf(99) >= 0 &&
-                    <span className="err-tip">* 请选择起止日期！</span>
-                  }
-                </>
+                this.state.errList.indexOf(99) >= 0 &&
+                <span className="err-tip">* 请选择起止日期！</span>
               }
-
               <div className="spacer-block"></div>
               <div className="task-cell-title">
                 <span className="redfont">*</span>
@@ -270,7 +270,7 @@ export default class TaskForm extends BaseActions {
                 {
                   this.state.schedule.length > 0 &&
                   this.state.schedule.map((x, i) => (
-
+                    
                     <div className="times-line">
                       <div className="time-line-cell">
                         <RangePicker

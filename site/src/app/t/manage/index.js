@@ -36,8 +36,6 @@ export default class Home extends BaseActions {
   constructor(props) {
     super(props)
   }
-
-  sel = 1;
   state = {
     //发布课题抽屉可见性
     visible: false,
@@ -74,18 +72,6 @@ export default class Home extends BaseActions {
     let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
     data = data.data.map(filter);
     data.sort(sorter);
-    let flag=true;
-    for (let i in data) {
-      if (data[i].status == 4) {
-        flag = false;
-      }
-    }
-    for (let i in data) {
-      if (data[i].status < 3 || data[i].status == 100) {
-        flag = true;
-      }
-    }
-
     this.setState({ toplist: data });
     //获取申请列表
     data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
@@ -93,10 +79,12 @@ export default class Home extends BaseActions {
     await this.setState({
       checkList: data
     });
-    if(flag){
-      this.setState({ checkBlockState: 1 })
-    }else{
+    let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
+    let sel = x.data;
+    if(sel){
       this.setState({ checkBlockState: 2 })
+    }else{
+      this.setState({ checkBlockState: 1 })
     }
     
   }

@@ -13,9 +13,7 @@ export default class TaskForm extends BaseActions {
       message.error("您未添加进度安排！");
       return;
     }
-    console.log(val);
     let x = await this.post(urls.API_TEACHER_SAVE_TASK,{data:val,pid:this.props.pid})
-    console.log(x);
     if(x.code==200){
       message.success('提交成功')
     }else{
@@ -145,7 +143,7 @@ export default class TaskForm extends BaseActions {
                       <Form.Item>
                         <Button
                           type="dashed"
-                          onClick={() => { add(); console.log(fields); }}
+                          onClick={() => { add(); }}
                           style={{ width: '80%' }}
                         >
                           <PlusOutlined /> 新增进度安排

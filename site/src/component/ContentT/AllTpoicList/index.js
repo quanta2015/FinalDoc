@@ -60,7 +60,6 @@ export default class AllTopicList extends BaseActions{
   ]
 
   myTagsort(a,b){
-    console.log(a);
     return a.name.localeCompare(b.name,'zh-CN')
   }
 
