@@ -156,29 +156,10 @@ router.post('/getGuidance', async(req, res) => {
  * @param {} 
  * @return: { state: int, time: str, title: str }
  */
-router.get('/getCurrentState', async(req, res) => {
-    let sql = `CALL PROC_GET_CURRENT_STATE`;
-    let params = {};
+router.post('/getCurrentState', async(req, res) => {
+    let sql = `CALL PROC_GET_CURRENT_STATE(?)`;
+    let params = req.body;
     callProc(sql, params, res, (r) => {
-        switch (r[0]['state']) {
-            case 1:
-                r[0].title = '任务书';
-                break;
-            case 2:
-                r[0].title = '开题中期';
-                break;
-            case 3:
-                r[0].title = '论文审核';
-                break;
-            case 4:
-                r[0].title = '论文答辩';
-                break;
-            case 5:
-                r[0].title = '成绩审定';
-                break;
-            default:
-                break;
-        }
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取当前阶段与截止时间'});
     })
@@ -202,13 +183,17 @@ router.get('/getCurrentState', async(req, res) => {
 
 /**
  * @description: 所有阶段及其截止时间
- * @param {} 
+ * @param { uid: str } 
  * @return: { state: int, time: str, title: str }
  */
 router.post('/getAllStates', async(req, res) => {
-    let sql = `CALL PROC_GET_ALL_STATES`;
-    let params = {};
+    let sql = `CALL PROC_GET_ALL_STATES(?)`;
+    let params = req.body;
     callProc(sql, params, res, (r) => {
+        r.splice(1, 1);
+        r.splice(1, 1);
+        r[0].state_name = '任务书';
+        r[4].state_name = '成绩审定';
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功返回所有阶段及其截止时间' });
     })
