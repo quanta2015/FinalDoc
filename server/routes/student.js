@@ -209,27 +209,6 @@ router.post('/getAllStates', async(req, res) => {
     let sql = `CALL PROC_GET_ALL_STATES`;
     let params = {};
     callProc(sql, params, res, (r) => {
-        r.forEach(element => {
-            switch (element['state']) {
-                case 1:
-                    element.title = '任务书';
-                    break;
-                case 2:
-                    element.title = '开题中期';
-                    break;
-                case 3:
-                    element.title = '论文审核';
-                    break;
-                case 4:
-                    element.title = '论文答辩';
-                    break;
-                case 5:
-                    element.title = '成绩审定';
-                    break;
-                default:
-                    break;
-            }
-        });
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功返回所有阶段及其截止时间' });
     })
