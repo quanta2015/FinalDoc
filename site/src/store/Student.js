@@ -224,31 +224,31 @@ class Student extends BaseActions {
     }
 
     @action
-    async getAllStates() {
-        const r = await this.post(urls.API_STU_GET_ALLSTATES, null)
+    async getAllStates(params) {
+        const r = await this.post(urls.API_STU_GET_ALLSTATES, params)
         if (r && r.code === 200) {
             let lst = []
             if (r.data) {
-                r.data.map((item) => {
+                r.data.map((item,index) => {
                     if (item.title === "任务书") {
                         lst.push({
-                            state: item.state,
-                            title: item.title,
-                            time: item.time,
+                            state: index,
+                            title: item.state_name,
+                            time: item.state_end,
                             type: 'f_task'
                         })
                     } else if (item.title === "成绩审定") {
                         lst.push({
-                            state: item.state,
-                            title: item.title,
-                            time: item.time,
+                            state: index,
+                            title: item.state_name,
+                            time: item.state_end,
                             type: 'f_score_check'
                         })
                     } else {
                         lst.push({
-                            state: item.state,
-                            title: item.title,
-                            time: item.time,
+                            state: index,
+                            title: item.state_name,
+                            time: item.state_end,
                         })
                     }
                 })
@@ -258,21 +258,21 @@ class Student extends BaseActions {
             })
             return lst
         } else {
-            message.error('网络错误')
+            // message.error('网络错误')
         }
         return r
     }
 
     @action
-    async getCurrentState() {
-        const r = await this.get(urls.API_STU_GET_CURSTATE)
+    async getCurrentState(params) {
+        const r = await this.post(urls.API_STU_GET_CURSTATE,params)
         if (r && r.code === 200) {
             runInAction(() => {
                 this.currState = r.data
             })
             return r.data
         } else {
-            message.error('网络错误')
+            // message.error('网络错误')
         }
         return r
     }
