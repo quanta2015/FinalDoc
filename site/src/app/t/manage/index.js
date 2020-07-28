@@ -81,6 +81,7 @@ export default class Home extends BaseActions {
     });
     let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
     let sel = x.data;
+    if(data.length==0)sel = false;
     if(sel){
       this.setState({ checkBlockState: 2 })
     }else{
