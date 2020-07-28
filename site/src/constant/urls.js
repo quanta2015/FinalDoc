@@ -1,4 +1,4 @@
-import { API_SERVER } from './apis'
+import { API_SERVER, LOCAL_SERVER } from './apis'
 
 
 // 用户接口声明
@@ -132,6 +132,7 @@ export const API_TEACHER_AUDIT_OP_IS_MEMBER = API_SERVER + `/auditOp/isTeamMembe
 export const API_TEACHER_GET_TIME_LINE = API_SERVER + '/teacher/getTimeLine'
 //获取是否为第二阶段
 export const API_TEACHER_GET_SEL = API_SERVER + '/teacher/getSel'
+//export const API_TEACHER_GET_SEL = LOCAL_SERVER + '/teacher/getSel'
 
 // 任课教师-初期审核
 export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';// 获取审核命题列表

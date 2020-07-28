@@ -69,19 +69,20 @@ export default class Home extends BaseActions {
    */
   getTopicList = async () => {
     await this.setState({checkBlockState: 0});
-    let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    data = data.data.map(filter);
-    data.sort(sorter);
-    this.setState({ toplist: data });
+    let tdata = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
+    tdata = tdata.data.map(filter);
+    tdata.sort(sorter);
+    this.setState({ toplist: tdata });
     //获取申请列表
-    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
+    let data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
     data = data.data;
     await this.setState({
       checkList: data
     });
     let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
     let sel = x.data;
-    if(data.length==0)sel = false;
+    console.log(sel);
+    if(tdata.length==0){sel = false;}
     if(sel){
       this.setState({ checkBlockState: 2 })
     }else{
