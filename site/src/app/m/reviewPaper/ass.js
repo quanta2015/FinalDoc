@@ -3,10 +3,12 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './ass.scss';
 import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined,ExclamationCircleOutlined } from '@ant-design/icons';
+ 
 import Item from 'antd/lib/list/Item';
 
 const { Option } = Select;
+const { confirm } = Modal;
 
 
 
@@ -58,6 +60,9 @@ export default class Ass extends Component {
 
     async componentDidMount() {
         await this.props.manageStore.getTaskList({ "ide": this.usr.uid });
+        await this.props.manageStore.getJudgeOpDef({ "ide": this.usr.uid });
+        await this.props.manageStore.getStatusOpDef({ "ide": this.usr.uid });
+         
 
     }
 
@@ -152,13 +157,35 @@ export default class Ass extends Component {
 
         })
     }
+
+    //进入开题答辩阶段
+    showConfirm = () => {
+        confirm({
+            title: <div style={{ fontSize: '20px' }}><br />是否确认进入开题答辩<br /><br /></div>,
+            icon: <ExclamationCircleOutlined style={{ fontSize: '28px', paddingTop: '30px', paddingLeft: '30px' }} />,
+            okText: '确认',
+            cancelText: '取消',
+            width: 500,
+
+            onOk: () => {
+                console.log('OK');
+                this.openDefense()
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
+    
+    //进入开题答辩阶段
     openDefense = async () => {
-        // let res = await this.props.manageStore.openDefense(temp);
-        // if (res && res.code === 200) {
-        //     message.success("已进入开题答辩阶段，请分配答辩小组！")
-        // } else {
-        //     message.error("未进入开题答辩阶段！请重试")
-        // }
+        let res = await this.props.manageStore.openDefense({ "ide": this.usr.uid });
+        if (res && res.code === 200) {
+            message.success("已进入开题答辩阶段，请分配答辩小组！")
+        } else {
+            message.error("未进入开题答辩阶段！请重试")
+        }
+        await this.props.manageStore.getStatusOpDef({ "ide": this.usr.uid });
 
     }
 
@@ -346,8 +373,14 @@ export default class Ass extends Component {
                             <Button type="primary" onClick={this.reviewTask}>通过</Button>
                         }
                         {
-                            (this.reviewPaper.suc === 1) &&
-                            <Button type="primary" onClick={this.openDefense}>进入开题答辩阶段</Button>
+                           
+                            (this.reviewPaper.suc===1 && this.reviewPaper.judge_op===1) &&
+                            <Button type="primary" onClick={this.showConfirm}>进入开题答辩阶段</Button>
+                        }
+                        {
+
+                            (this.reviewPaper.status_op === 1) &&
+                            <Button type="primary" disabled>已进入开题答辩阶段</Button>
                         }
 
                     </div>

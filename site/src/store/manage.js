@@ -405,6 +405,10 @@ class manager extends BaseActions {
     // 未提交的任务书
     uncommit_list: [],
     suc:0,
+    //判断能否进入下一个阶段
+    judge_op:undefined,
+    //是否已经开题答辩
+    status_op:undefined,
   }
 
   @action
@@ -516,6 +520,30 @@ class manager extends BaseActions {
     return await this.post(urls.API_MAN_POST_RP_REVIEWTASK, param)
      
   }
+
+  //判断是否可以一键进入开题答辩
+  //{"ide":20021578}
+  @action
+  async getJudgeOpDef(param) {
+    let res = await this.post(urls.API_MAN_POST_RP_JUDEGOPENDEFENCE, param)
+    this.reviewPaper.judge_op=res.data[0].flag;
+  }
+
+  //进入开题答辩阶段
+  @action
+  async openDefense(param) {
+    return await this.post(urls.API_MAN_POST_RP_NEXTOPENDEFENCE, param)
+
+  }
+
+  //判断是否可以一键进入开题答辩
+  //{"ide":20021578}
+  @action
+  async getStatusOpDef(param) {
+    let res = await this.post(urls.API_MAN_POST_RP_STATUSOPENDEFENCE, param)
+    this.reviewPaper.status_op = res.data[0].flag;
+  }
+
 
   // 查看某位学生上传的文件
   // {"topic_id":int}

@@ -55,6 +55,10 @@ export const API_MAN_POST_OPEND_DEFENSE = API_SERVER + ''
 //审核任务书、论文定稿等
 export const API_MAN_POST_RP_TASKLIST = API_SERVER + '/auditMg/taskList'
 export const API_MAN_POST_RP_REVIEWTASK = API_SERVER + '/auditMg/reviewTask'
+export const API_MAN_POST_RP_JUDEGOPENDEFENCE = API_SERVER + '/auditMg/judgeOpDef'
+export const API_MAN_POST_RP_NEXTOPENDEFENCE = API_SERVER + '/auditMg/nextOpDef'
+export const API_MAN_POST_RP_STATUSOPENDEFENCE = API_SERVER + '/auditMg/statusOpDef'
+
 
 
 // 查看论文进度
