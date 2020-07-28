@@ -4,14 +4,14 @@
  * @Author: wyx
  * @Date: 2020-07-09 09:44:03
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-23 17:13:10
+ * @LastEditTime: 2020-07-28 10:11:03
  */ 
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 import './annMag/annMg.scss'
-import { Tabs, Radio, Button } from 'antd';
+import { Tabs, Radio, Button, Modal } from 'antd';
 import AnnounceManage from './annMag/annMg.js'
 import FileManage from './fileMag'
 import TLIST from './nameList/tList.js'
@@ -25,6 +25,7 @@ export default class Ann extends Component {
 
   state = {
     value: 1,
+    visible: false,
   }
 
   @computed
@@ -42,6 +43,25 @@ export default class Ann extends Component {
   onChange = e => {
     this.setState({
         value: e.target.value,
+    });
+  };
+
+  //添加信息模态框相关
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
     });
   };
 
@@ -65,7 +85,7 @@ export default class Ann extends Component {
                   </Radio.Group>
                   <Button
                     className="m-release-btn"
-                    onClick={this.handleAdd}
+                    onClick={this.showModal}
                     type="primary"
                     style={{
                       marginBottom: 16,
@@ -73,6 +93,20 @@ export default class Ann extends Component {
                   >
                     添加信息
                   </Button>
+                  <Modal
+                    title="添加信息"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                  >
+                    <Radio.Group>
+                      <Radio.Button value="teacher">teacher</Radio.Button>
+                      <Radio.Button value="student">student</Radio.Button>
+                    </Radio.Group>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                  </Modal>
                 </div>
                 {(this.state.value === 1) &&
                     <TLIST />
