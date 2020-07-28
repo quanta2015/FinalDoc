@@ -149,6 +149,12 @@ class User extends BaseActions {
   async insertMessageToOne(param) {
     return await this.post(urls.API_SYS_POST_MESSAGETOONE, param) 
   }
+
+  @action
+  logout() {
+    window.localStorage.clear();
+    window.location.reload();
+  }
 }
 
 export default new User()
