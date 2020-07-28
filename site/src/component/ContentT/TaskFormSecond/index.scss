@@ -6,14 +6,29 @@
     flex-direction: column;
     justify-content: space-between;
 
+    .task-steps{
+      padding-bottom: 20px;
+      border-bottom: 2px solid #eee;
+
+      .m-step-title{
+        font-weight: 600;
+        font-size: small;
+      }
+    }
+
     .task-content{
       padding: 20px;
+      margin: 10px 0;
       height: 100%;
       overflow-y: auto;
 
       .task-cell{
         display: flex;
         flex-direction: column;
+
+        .spacer-block{
+          height: 20px;
+        }
 
         .task-cell-title{
           padding: 10px;
@@ -24,7 +39,6 @@
             color: red;
             padding-right: 10px;
           }
-  
         }
 
         .cell-times{
@@ -37,31 +51,23 @@
             justify-content: space-between;
             margin-bottom: 10px;
 
-
             .time-line-cell{
               display: flex;
               flex-direction: column;
               height: 50px;
             }
-
-
           }
-
         }
 
         .err-tip{
           color: red;
           font-size: 10px;
         }
-
-
       }
 
       .hided{
         display: none;
       }
-
-      
     }
 
     .task-btns{
@@ -74,20 +80,9 @@
         
       }
     }
-
-
-
   }
   
-
   .warning{
     color: red;
   }
-
-  
-
-  
-
-
-
 }

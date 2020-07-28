@@ -140,6 +140,7 @@ class Check extends BaseActions {
                     className={this.state.cur != i ? 'nav-a' : 'nav-a nav-a-active'}
                     onClick={() => { this.switchTo(i) }}
                   >
+                    <i>{x.name}</i>
                     {x.id}
                   </span>
                 )

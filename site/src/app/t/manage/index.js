@@ -36,7 +36,6 @@ export default class Home extends BaseActions {
   constructor(props) {
     super(props)
   }
-
   state = {
     //发布课题抽屉可见性
     visible: false,
@@ -55,10 +54,13 @@ export default class Home extends BaseActions {
     checkBlockState: 0
   }
 
-  async componentDidMount() {
+  componentWillMount(){
     if (!this.usr.id) {
       route('/')
     }
+  }
+
+  componentDidMount() {
     this.getTopicList();
   }
 
@@ -66,31 +68,25 @@ export default class Home extends BaseActions {
    * 获取自己的课题列表
    */
   getTopicList = async () => {
-    
-
     await this.setState({checkBlockState: 0});
-    let data = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    //let data = await this.post("http://localhost:8090/teacher/getTidgetTopic",{tea_id:this.usr.uid})
-    data = data.data.map(filter);
-    data.sort(sorter);
-    let flag=true;
-    for (let i in data) {
-      if (data[i].status == 4) {
-        flag = false;
-      }
-    }
-    
-    this.setState({ toplist: data });
+    let tdata = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
+    tdata = tdata.data.map(filter);
+    tdata.sort(sorter);
+    this.setState({ toplist: tdata });
     //获取申请列表
-    data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
+    let data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
     data = data.data;
     await this.setState({
       checkList: data
     });
-    if(flag){
-      this.setState({ checkBlockState: 1 })
-    }else{
+    let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
+    let sel = x.data;
+    console.log(sel);
+    if(tdata.length==0){sel = false;}
+    if(sel){
       this.setState({ checkBlockState: 2 })
+    }else{
+      this.setState({ checkBlockState: 1 })
     }
     
   }
@@ -129,7 +125,6 @@ export default class Home extends BaseActions {
     const { placement, visible, tid } = this.state;
     return (
       <div className="manage-home" data-component="t-manage-home">
-
         {
           this.state.checkBlockState == 1 &&
           <CheckBlock

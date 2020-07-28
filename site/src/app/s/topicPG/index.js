@@ -72,9 +72,12 @@ export default class TopicPG extends Component {
         if (!this.selectTpInfo) {
             route('/s_selectTL')
         }
-        this.props.studentStore.getAllStates()
-        this.props.studentStore.getCurrentState()
-        this.props.studentStore.getOpenScore({ uid: this.usr.uid })
+        if (this.usr.uid) {
+            this.props.studentStore.getAllStates({ uid: this.usr.uid })
+            this.props.studentStore.getCurrentState({ uid: this.usr.uid })
+            this.props.studentStore.getOpenScore({ uid: this.usr.uid })
+        }
+
 
     }
 
@@ -127,7 +130,7 @@ export default class TopicPG extends Component {
                             {
                                 this.currState[0] &&
                                 this.timeList.map((item) =>
-                                    <li className={item.state <= this.currState[0].state ? this.currState[0].state === item.state ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
+                                    <li className={item.time <= this.currState[0].time ? this.currState[0].time === item.time ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
                                         <div>
                                             <h3>{item.time}</h3>
                                             {

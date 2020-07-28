@@ -27,21 +27,6 @@ export default class Student extends Component {
       ann_title: '2021届毕业设计（论文）时间安排和具体工作要求',
       ann_content: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
       time: '2020-07-15'
-    }],
-    applyList: [{
-      name: '开题答辩',
-      date: '2020-12-10',
-      time: '18:30',
-      week: '星期一',
-      location: '勤园6-101',
-      number: 16
-    }, {
-      name: '论文一辩',
-      date: '2020-12-10',
-      time: '18:30',
-      week: '星期一',
-      location: '勤园6-101',
-      number: 16
     }]
   }
 
@@ -79,7 +64,7 @@ export default class Student extends Component {
   }
 
   render() {
-    const { applyList, selectItem } = this.state;
+    const { selectItem } = this.state;
     const FILE_STAGE = ['开题中期', '论文定稿', '论文答辩'];
     return (
       <div className="g-s">

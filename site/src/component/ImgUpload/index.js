@@ -103,7 +103,6 @@ class UploadImage extends BaseActions {
 
     onUpload = async (img)=>{
         this.setState({})
-        //await this.post("http://localhost:8090/upload",{uid:this.props.uid,type:"sign",file:img})
         let x = await this.post(API_SYS_UPLOAD_SIGN,{uid:this.props.uid,type:"sign",file:img})
         this.setState({uploaded:true})
         

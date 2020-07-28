@@ -8,6 +8,13 @@ import style from './index.scss'
 const { RangePicker } = DatePicker;
 const { Step } = Steps;
 
+const PRE_TIME_LINE = [
+  [[2020,8,1],[2020,10,30]],
+  [[2020,11,1,],[2021,0,20]],
+  [[2021,0,20],[2021,2,10]],
+  [[2021,3,10],[2021,6,10]]
+]
+
 export default class TaskForm extends BaseActions {
 
   state = {
@@ -17,8 +24,7 @@ export default class TaskForm extends BaseActions {
     technical_route: "",
     learn_content: "",
     reference: "",
-    ft: [[2000, 0, 1], [2000, 0, 1]],
-    timeline: [],
+    ft: [moment([2000, 0, 1]), moment([2000, 0, 1])],
     schedule: []
   }
 
@@ -27,23 +33,23 @@ export default class TaskForm extends BaseActions {
     let err_page = -1;
     let flag = false;
     //约束判断
-    if(!this.state.ft){
+    if (!this.state.ft) {
       flag = true;
-        err.push(99)
-        err_page=3;
+      err.push(99)
+      err_page = 3;
     }
-    for(let i = 0; i < this.state.schedule.length ; i++){
-      if(this.state.schedule[i].content.trim()==""){
+    for (let i = 0; i < this.state.schedule.length; i++) {
+      if (this.state.schedule[i].content.trim() == "") {
         flag = true;
-        err.push((i+1)*100+2)
-        err_page=3;
+        err.push((i + 1) * 100 + 2)
+        err_page = 3;
       }
     }
-    for(let i = 0; i < this.state.schedule.length ; i++){
-      if(!this.state.schedule[i].time){
+    for (let i = 0; i < this.state.schedule.length; i++) {
+      if (!this.state.schedule[i].time) {
         flag = true;
-        err.push((i+1)*100+1)
-        err_page=3;
+        err.push((i + 1) * 100 + 1)
+        err_page = 3;
       }
     }
     if (this.state.reference.trim() == "") {
@@ -74,16 +80,16 @@ export default class TaskForm extends BaseActions {
     }
 
     Modal.confirm({
-      title:"提交任务书",
-      content:"请确认您的信息填写无误！",
-      okText:"提交",
-      cancelText:"取消",
-      onOk:this.pushData,
-      onCancel:()=>{}
+      title: "提交任务书",
+      content: "请确认您的信息填写无误！",
+      okText: "提交",
+      cancelText: "取消",
+      onOk: this.pushData,
+      onCancel: () => { }
     })
   }
 
-  pushData=async ()=>{
+  pushData = async () => {
     let data = {};
     data.target = this.state.target;
     data.technical_route = this.state.technical_route;
@@ -92,12 +98,11 @@ export default class TaskForm extends BaseActions {
     data.ft = this.state.ft;
     data.schedule = this.state.schedule;
 
-    let d = {data:data,pid:this.props.pid};
-    let x = await this.post(urls.API_TEACHER_SAVE_TASK,d)
-    console.log(x);
-    if(x.code==200){
+    let d = { data: data, pid: this.props.pid };
+    let x = await this.post(urls.API_TEACHER_SAVE_TASK, d);
+    if (x.code == 200) {
       message.success('提交成功')
-    }else{
+    } else {
       message.error('提交错误，请检查网络')
     }
 
@@ -113,16 +118,17 @@ export default class TaskForm extends BaseActions {
   componentWillMount = async () => {
     let x = await this.get(urls.API_TEACHER_GET_TIME_LINE);
     x = x.data;
-    let schedule = new Array(x.length);
-    for (let i = 0; i < x.length; i++) {
+    let schedule = new Array(4);
+    PRE_TIME_LINE[0][0] = x[0];
+    PRE_TIME_LINE[3][1] = x[1];
+    for (let i = 0; i < PRE_TIME_LINE.length; i++) {
       schedule[i] = {};
       schedule[i].content = "";
-      schedule[i].time = [moment(x[i][0]), moment(x[i][1])];
+      schedule[i].time = [moment(PRE_TIME_LINE[i][0]), moment(PRE_TIME_LINE[i][1])];
     }
     this.setState(
       {
-        timeline: x,
-        ft: [moment(x[0][0]), moment(x[x.length - 1][1])],
+        ft: [moment(x[0]), moment(x[1])],
         schedule: schedule
       })
   }
@@ -139,18 +145,18 @@ export default class TaskForm extends BaseActions {
     this.setState({ schedule: s })
   }
 
-  removeTimeLine(index){
-    
+  removeTimeLine(index) {
+
     let s = [];
-    this.state.schedule.forEach((e,i)=>{if(i!=index)s.push(e)});
-    this.setState({schedule:[]},()=>{
+    this.state.schedule.forEach((e, i) => { if (i != index) s.push(e) });
+    this.setState({ schedule: [] }, () => {
       this.setState({ schedule: s })
     })
   }
 
-  addTimeLine=()=>{
+  addTimeLine = () => {
     let s = this.state.schedule;
-    s.push({content:"",time:[moment(),moment()]});
+    s.push({ content: "", time: [moment(), moment()] });
     this.setState({ schedule: s })
   }
 
@@ -164,10 +170,10 @@ export default class TaskForm extends BaseActions {
               progressDot
               current={this.state.cur}
             >
-              <Step title={(<>总体目标<br />及性能要求</>)} />
-              <Step title={(<>研究内容<br />及技术路线</>)} />
-              <Step title="参考文献" />
-              <Step title="起止日期及进度安排" />
+              <Step title={<span className="m-step-title">总体目标</span>} />
+              <Step title={<span className="m-step-title">研究内容</span>} />
+              <Step title={<span className="m-step-title">参考文献</span>} />
+              <Step title={<span className="m-step-title">日期进度</span>} />
             </Steps>
           </div>
           <div className="task-content">
@@ -204,6 +210,7 @@ export default class TaskForm extends BaseActions {
                 this.state.errList.indexOf(11) >= 0 &&
                 <span className="err-tip">* 请填写研究内容！</span>
               }
+              <div className="spacer-block"></div>
               <div className={this.state.errList.indexOf(12) < 0 ? 'task-cell-title' : 'task-cell-title warning'}>
                 <span className="redfont">*</span>
                 拟采用的技术路线
@@ -245,21 +252,16 @@ export default class TaskForm extends BaseActions {
                 <span className="redfont">*</span>
                 起止日期
               </div>
+              <RangePicker
+                value={this.state.ft}
+                onChange={(dates, ds) => { this.setState({ ft: dates }); this.removeErr(99) }}
+                style={{ width: 250 }}
+              />
               {
-                this.state.timeline.length > 0 &&
-                <>
-                <RangePicker
-                  value={this.state.ft}
-                  onChange={(dates, ds) => { this.setState({ ft: dates }) ;this.removeErr(99)}}
-                  style={{ width: 250 }}
-                />
-                {
-                  this.state.errList.indexOf(99) >= 0 &&
-                  <span className="err-tip">* 请选择起止日期！</span>
-                }
-                </>
+                this.state.errList.indexOf(99) >= 0 &&
+                <span className="err-tip">* 请选择起止日期！</span>
               }
-
+              <div className="spacer-block"></div>
               <div className="task-cell-title">
                 <span className="redfont">*</span>
                 进度安排列表
@@ -273,10 +275,10 @@ export default class TaskForm extends BaseActions {
                       <div className="time-line-cell">
                         <RangePicker
                           value={x.time}
-                          onChange={(dates, ds) => { this.freshScheduleDates(dates, i) ;this.removeErr((i+1)*100+1)}}
+                          onChange={(dates, ds) => { this.freshScheduleDates(dates, i); this.removeErr((i + 1) * 100 + 1) }}
                         />
                         {
-                          this.state.errList.indexOf((i+1) * 100 + 1) >= 0 &&
+                          this.state.errList.indexOf((i + 1) * 100 + 1) >= 0 &&
                           <span className="err-tip">* 请选择起止日期！</span>
                         }
                       </div>
@@ -286,21 +288,21 @@ export default class TaskForm extends BaseActions {
                           autoSize={{ minRows: 1, maxRows: 7 }}
                           placeholder="请输入安排内容"
                           value={x.content}
-                          onChange={(x) => { this.freshScheduleContent(x.target.value, i) ;this.removeErr((i+1)*100+1)}}
+                          onChange={(x) => { this.freshScheduleContent(x.target.value, i); this.removeErr((i + 1) * 100 + 1) }}
                         />
                         {
-                          this.state.errList.indexOf((i+1) * 100 + 2) >= 0 &&
+                          this.state.errList.indexOf((i + 1) * 100 + 2) >= 0 &&
                           <span className="err-tip">* 请输入安排内容！</span>
                         }
                       </div>
                       {
-                        this.state.schedule.length>0&&
+                        this.state.schedule.length > 0 &&
                         <MinusCircleOutlined
-                        style={{ margin: '0 10px 0 0', fontSize: "18px",cursor:"pointer" }}
-                        onClick={()=>this.removeTimeLine(i)}
-                      />
+                          style={{ margin: '0 10px 0 0', fontSize: "18px", cursor: "pointer" }}
+                          onClick={() => this.removeTimeLine(i)}
+                        />
                       }
-                      
+
                     </div>
                   ))
                 }

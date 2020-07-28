@@ -135,7 +135,6 @@ class Publish extends BaseActions {
 
   postInfo = async () => {
     let data;
-    console.log(this.name);
 
     if (this.state.area.length == 0) {
       alert("请选择研究方向！")

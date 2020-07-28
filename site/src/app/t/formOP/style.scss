@@ -2,14 +2,36 @@
     overflow: auto;
     height: 100%;
 
-    .m-footer{
+    .m-footer-action{
         margin-top: 16px;
         display: flex;
         flex-direction: row-reverse;
     }
 
-    .u-item-describe{
-        width: 670px;
+    .u-content{
+        padding: 10px;
+        background-color:#fafafa;
+        border: 1px solid #ccc;
+        &:after{
+            content:'';
+            visibility:hidden;
+            display:block;
+            clear:both;
+        }
+    }
+
+    .u-btn-prev{
+        margin-right: 15px;
+    }
+
+    .u-divider{
+        margin: 5px 0;
+    }
+
+    .u-input-num-item{
+        margin-top: 15px;
+        margin-bottom: 5px;
+        float: right;
     }
 
     .u-intro h3{
@@ -17,7 +39,6 @@
     }
 
     .u-reply-score{
-        margin-top: 5px;
-        display: flex;
+        margin: 0;
     }
 }
