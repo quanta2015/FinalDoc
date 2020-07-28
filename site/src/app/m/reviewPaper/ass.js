@@ -374,7 +374,7 @@ export default class Ass extends Component {
                         }
                         {
                            
-                            (this.reviewPaper.suc===1 && this.reviewPaper.judge_op===1) &&
+                            (this.reviewPaper.suc === 1 && this.reviewPaper.judge_op === 1 && this.reviewPaper.status_op === 0) &&
                             <Button type="primary" onClick={this.showConfirm}>进入开题答辩阶段</Button>
                         }
                         {
