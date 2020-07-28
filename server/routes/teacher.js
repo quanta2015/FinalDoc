@@ -443,7 +443,7 @@ router.post('/getSel',async(req,res)=>{
     console.log(req.body);
     callProc(sql,req.body,res,r=>{
         let data = false;
-        if(r[0].sel != 0 && r[0].sel != 1){
+        if(r.length>0 &&r[0].sel != 0 && r[0].sel != 1){
             data = true;
         }
         res.status(200).json({code:200,data,message:"已获取是否到达第二阶段"})
