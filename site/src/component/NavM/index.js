@@ -130,7 +130,7 @@ class NavM extends BaseActions {
             </div>
           </div>
         </div>
-        <div className="u-block">123</div>
+        {/* <div className="u-block">123</div> */}
       </div>
     )
   }
