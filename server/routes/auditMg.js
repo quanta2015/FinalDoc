@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-06 11:00:47
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-28 10:40:24
+ * @LastEditTime: 2020-07-28 16:10:27
  */ 
 
 const express = require('express');
@@ -109,6 +109,20 @@ router.post('/nextOpDef', async(req, res) => {
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '一键进入开题答辩'})
+	});
+});
+
+/**
+ * @test: test font
+ * @msg: 是否已经进入开题答辩 状态判断
+ * @param {ide:String} 
+ * @return: 
+ */
+router.post('/statusOpDef', async(req, res) => {
+  let sql = `CALL MG_A_PROC_OPDEF_STATUS(?)`;
+	let params = req.body;
+	callProc(sql, params, res, (r) => {
+		res.status(200).json({code: 200, data: r, msg: '开题答辩状态判断'})
 	});
 });
 
