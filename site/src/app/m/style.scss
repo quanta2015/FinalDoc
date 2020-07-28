@@ -4,6 +4,21 @@
 }
 
 /* 系主任端全局样式 */
+.g-m-cnt {
+    height: 100%;
+    overflow: auto;
+
+     &::-webkit-scrollbar {
+        width: 10px;
+        background-color: #eee;
+    }
+
+     &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #e3e3e3;
+    }
+}
+
 .g-m {
     padding: 30px 50px;
     box-sizing: border-box;

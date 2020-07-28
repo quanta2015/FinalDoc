@@ -23,7 +23,7 @@ export default class Manage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="g-m-cnt">
         <div className="g-m-title">公告栏</div>
         <div className="g-m m-m">
           <Message />
