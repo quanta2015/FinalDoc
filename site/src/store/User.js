@@ -152,17 +152,12 @@ class User extends BaseActions {
 
   @action
   logout() {
-    
-    window.localStorage.clear();
-    window.location.reload();
+    token.removeUser();
+    // window.localStorage.clear();
+    // window.location.reload();
   }
   
 
-  @action
-  removeUser() {
-    
-    token.removeUser();
-  }
 }
 
 export default new User()
