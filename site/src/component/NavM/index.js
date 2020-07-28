@@ -60,6 +60,11 @@ class NavM extends BaseActions {
     route('/m')
   }
 
+  logout = () => {
+    window.localStorage.clear();
+    window.location.reload();
+  }
+
   render() {
     const len = MENU_MAIN_M.length
     return (
@@ -105,7 +110,9 @@ class NavM extends BaseActions {
             )}
           </div>
           <div className="g-info">
-            <div className="m-logout">退出登录</div>
+            <div className="m-logout" onClick={this.logout}>
+              <span>退出登录</span>
+            </div>
             <div className="m-info">
               {/* <div>身份：系主任</div>
               <div>姓名：{this.usr.name}</div>
