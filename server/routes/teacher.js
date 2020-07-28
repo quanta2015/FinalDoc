@@ -408,11 +408,9 @@ router.post('/getTask',async(req,res)=>{
             return;
         }
         if(path.endsWith('.pdf')&&data.role!=2){
-            console.log("?");
             res.download(path);
         }else{
             path = path.replace(/.pdf/,'.json');
-            console.log(path);
             let s = JSON.parse( fs.readFileSync(path,'utf-8'));
             res.status(200).json({code:200,data:s,message:'已成功获取任务书'})
         }
@@ -424,7 +422,6 @@ router.post('/canPublish',async(req,res)=>{
     console.log(data);
     let sql = 'CALL PROC_CHECK_CAN_PUBLISH(?)';
     callProc(sql,data,res,r=>{
-        console.log(r);
         res.status(200).json({code:200,r,message:'已获取是否能发布新课题'})
     })
 })
@@ -433,15 +430,23 @@ router.get('/getTimeLine',async (req,res)=>{
     let sql = "CALL PROC_GET_TIME_LINE";
     callProc(sql,{},res,r=>{
         let data = [];
-        for(let i in r){
-            data.push([])
-            let t = r[i].t_start;
-            data[i].push([t.getFullYear(),t.getMonth(),t.getDate()]);
-            t = r[i].t_end;
-            data[i].push([t.getFullYear(),t.getMonth(),t.getDate()]);
-        }
-        console.log(data);
+        let t = r[0].from;
+        data.push([t.getFullYear(),t.getMonth(),t.getDate()]);
+        t = r[0].to;
+        data.push([t.getFullYear(),t.getMonth(),t.getDate()]);
         res.status(200).json({code:200,data,message:"已获取时间线"})
+    })
+})
+
+router.post('/getSel',async(req,res)=>{
+    let sql = "CALL PROC_T_IF_STATE_TWO(?)";
+    console.log(req.body);
+    callProc(sql,req.body,res,r=>{
+        let data = false;
+        if(r[0].sel != 0 && r[0].sel != 1){
+            data = true;
+        }
+        res.status(200).json({code:200,data,message:"已获取是否到达第二阶段"})
     })
 })
 
