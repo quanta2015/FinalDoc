@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-06 11:00:47
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-18 08:51:07
+ * @LastEditTime: 2020-07-28 10:40:24
  */ 
 
 const express = require('express');
@@ -12,7 +12,7 @@ const router = express.Router();
 const db = require('../util/db');
 const callProc = require('../util').callProc;
 
-/*
+/**
  * @name: 
  * @test: test font
  * @msg: 查看课题进度 --本系
@@ -28,7 +28,7 @@ router.post('/viewProgress', async(req, res) => {
   });
 
   
-/*
+/**
   * @name: 
   * @test: test font
   * @msg: 课题文件相关字段接口
@@ -43,7 +43,7 @@ router.post('/viewProgress', async(req, res) => {
        });
    });
 
-/*
+/**
   * @name: 
   * @test: test font
   * @msg: 课题任务书列表 --本系
@@ -58,7 +58,7 @@ router.post('/viewProgress', async(req, res) => {
       });
   });
 
-  /*
+/**
   * @name: 
   * @test: test font
   * @msg: 审核任务书
@@ -82,4 +82,36 @@ router.post('/viewProgress', async(req, res) => {
     });
   });
    
+/**
+ * @test: test font
+ * @msg: 判断是否能够进入开题答辩阶段
+ * @param {ide:String} 
+ * @return: 
+ */
+router.post('/judgeOpDef', async(req, res) => {
+  let sql = `CALL MG_A_PROC_JUDGE_STATUS(?)`;
+	let params = req.body;
+	callProc(sql, params, res, (r) => {
+		res.status(200).json({code: 200, data: r, msg: '是否能够进入开题答辩'})
+	});
+});
+
+
+/**
+ * @test: test font
+ * @msg: 一键进入开题答辩
+ *        前端等所有任务书通过之后发起请求，后端发布所有已通过(topic表status=5)的同系课题
+ * @param {ide:String} 
+ * @return: 
+ */
+router.post('/nextOpDef', async(req, res) => {
+  let sql = `CALL MG_A_PROC_NEXT_STATE(?)`;
+	let params = req.body;
+	callProc(sql, params, res, (r) => {
+		res.status(200).json({code: 200, data: r, msg: '一键进入开题答辩'})
+	});
+});
+
+
+
   module.exports = router
