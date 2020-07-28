@@ -5,6 +5,7 @@ import axios from 'axios'
 import { message } from 'antd'
 
 import token from '../util/token.js'
+import { route } from 'preact-router'
 
 var ROLE = 2
 
@@ -153,8 +154,9 @@ class User extends BaseActions {
   @action
   logout() {
     token.removeUser();
-    // window.localStorage.clear();
-    // window.location.reload();
+    this.usr ={}
+    route("/")
+    
   }
   
 
