@@ -230,14 +230,14 @@ class Student extends BaseActions {
             let lst = []
             if (r.data) {
                 r.data.map((item,index) => {
-                    if (item.title === "任务书") {
+                    if (item.state_name === "任务书") {
                         lst.push({
                             state: index,
                             title: item.state_name,
                             time: item.state_end,
                             type: 'f_task'
                         })
-                    } else if (item.title === "成绩审定") {
+                    } else if (item.state_name === "成绩审定") {
                         lst.push({
                             state: index,
                             title: item.state_name,
