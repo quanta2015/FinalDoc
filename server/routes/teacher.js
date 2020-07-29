@@ -15,6 +15,18 @@ const formidable = require('formidable');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const moment = require('moment');
+const db = require('../util/db');
+const myCall = (sql,data)=>{
+    return new Promise((resolve)=>{
+        db.procedureSQL(sql, JSON.stringify(data), (err, ret) => {
+            if (err) {
+                res.status(500).json({code: -1, msg: '提交请求失败，请联系管理员！', data: null})
+            } else {
+                resolve(ret)
+            }
+        })
+    })
+}
 
 /**
  * @name: getAllType
@@ -318,10 +330,13 @@ router.get('/getAllPassedTopic', async(req, res) => {
 router.post('/getAllTopicFiles', async(req, res) => {
     let sql = `CALL PROC_GET_TOPICID_ALL_TOPIC_FILES(?)`;
     let params = req.body;
-    callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '所有课题的文件已返回'});
-    })
+    let data = await myCall(sql,params);
+    let sql2 = `call PROC_OP_CAN_SUBMIT(?)`;
+    let can_submit = await myCall(sql2,{topicId:params.pid,role:0});
+    data.push(can_submit[0].flag==1);
+    res.status(200).json({code: 200, data, msg: '所有课题的文件已返回'});
 })
+
 
 /**
  * @name: getStudentUntied
