@@ -43,8 +43,8 @@ class NavS extends Component {
   }
 
   logout = () => {
-    console.log("退出登录")
     this.props.userStore.logout();
+    this.props.studentStore.initStuStore();
   }
 
   render() {

@@ -49,6 +49,21 @@ class Student extends BaseActions {
     replyList = []
 
     @action
+    initStuStore() {
+        runInAction(() => {
+            this.topInfo = {};
+            this.topicList = {};
+            this.selectTpInfo = {};
+            this.timeList = [];
+            this.docTemplate = [];
+            this.opScore = [];
+            this.currState = {};
+            this.insLog = [];
+            this.replyList = [];
+        })
+    }
+
+    @action
     async getTopInfo(params) {
         const r = await this.post(urls.API_STU_GET_TOPINFO, params);
         if (r && r.code === 200) {

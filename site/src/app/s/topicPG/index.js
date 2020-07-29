@@ -10,22 +10,6 @@ import './index.scss'
 import LogRecord from '../../../component/LogRecord';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
-//传入列表，返回当前所处阶段
-let getStage = (status, info) => {
-    let tmp = Math.abs(status) - 7;
-    if (tmp < 0 && !info) {
-        return -1;
-    } else if (tmp < 0 && info) {
-        return 0;
-    } else if (tmp < 2 && info) {
-        return tmp + 1;
-    } else if (tmp < 5 && info) {
-        return tmp;
-    } else if (tmp === 5 && info) {
-        return tmp - 1;
-    }
-}
-
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicPG extends Component {
@@ -104,7 +88,6 @@ export default class TopicPG extends Component {
     }
 
     render() {
-        const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         const TASK_FINISH = 6;
         const GRADE_FINISH = 20;
         const status = this.selectTpInfo.status
