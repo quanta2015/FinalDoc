@@ -115,7 +115,8 @@ export const API_TEACHER_GET_SUGG = API_SERVER +'/teacher/getTidToTsugg'
 //获取全部已通过topic
 export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic'
 //获取学生文件列表
-export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
+//export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
+export const API_TEACHER_GET_FILE_BY_TOPIC = LOCAL_SERVER + '/teacher/getAllTopicFiles'
 //解绑学生
 export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
 //获取所有选题类型(get)

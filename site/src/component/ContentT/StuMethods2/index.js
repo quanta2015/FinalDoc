@@ -90,9 +90,9 @@ export default class StuMethods extends BaseActions {
     })
 
     //获取学生文件列表
-    let l = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
-    l = (l.data)[0];
-    let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran);
+    let file_data = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
+    let l = (file_data.data)[0];
+    let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran) && !file_data.data[1];
     if (flag) {
       this.setState({ auditOp: true })
     }
@@ -192,7 +192,7 @@ export default class StuMethods extends BaseActions {
                       !!this.state.links['f_task'] &&
                       <>
                         <div className="m-file-down-load" onClick={() => { this.setState({ modal_visiable: true }) }}>
-                          <div className="m-f-down-inner">
+                          <div className="m-f-down-inner m-f-down-inner-active">
                             <div className="m-f-down-pic">
                               <CheckCircleOutlined />
                             </div>
