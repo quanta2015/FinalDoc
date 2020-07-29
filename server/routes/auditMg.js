@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-06 11:00:47
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-28 16:10:27
+ * @LastEditTime: 2020-07-29 10:15:17
  */ 
 
 const express = require('express');
@@ -75,7 +75,8 @@ router.post('/viewProgress', async(req, res) => {
     topic_char = topic_char.substring(0, topic_char.length - 1);
 
     let sql = `CALL MG_A_PROC_REVIEW_TASK(?)`;
-    let params = {topic_id:topic_char,
+    let params = {ide:req.body.ide,
+                 topic_id:topic_char,
                 topic_len:topic_len};
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '审核任务书'})
