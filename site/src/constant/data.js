@@ -24,7 +24,7 @@ export var MENU_MAIN_M =
    { title: '审核任务书', path: '/m_reviewPaper', icon: progress },
    { title: '组织开题答辩', path: '/m_organizeOpendefence', icon: group },
    { title: '查看论文进度', path: '/m_viewProgress', icon: article },
-   { title: '组织终期答辩', path: '/m_organizeFinaldefence', icon: group },
+   // { title: '组织终期答辩', path: '/m_organizeFinaldefence', icon: group },
    ]
 
 export var MENU_MAIN_T =

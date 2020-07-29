@@ -1,9 +1,9 @@
-.u-block {
-  width: 250px;
-}
+// .u-block {
+//   width: 250px;
+// }
 
 .g-mg-nav {
-  position:fixed;
+  // position:fixed;
   width: 250px;
   height: 100%;
   display: flex;
@@ -30,6 +30,7 @@
       color: #666;
       text-align: center;
       line-height: 32px;
+      cursor: pointer;
     }
 
     .m-info {

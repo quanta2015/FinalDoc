@@ -5,6 +5,7 @@ import axios from 'axios'
 import { message } from 'antd'
 
 import token from '../util/token.js'
+import { route } from 'preact-router'
 
 var ROLE = 2
 
@@ -149,6 +150,16 @@ class User extends BaseActions {
   async insertMessageToOne(param) {
     return await this.post(urls.API_SYS_POST_MESSAGETOONE, param) 
   }
+
+  @action
+  logout() {
+    token.removeUser();
+    this.usr ={}
+    route("/")
+    
+  }
+  
+
 }
 
 export default new User()
