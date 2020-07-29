@@ -148,6 +148,8 @@ export default class Ass extends Component {
         if (res && res.code === 200) {
             message.success("审核成功！")
             await this.props.manageStore.getTaskList({ "ide": this.usr.uid })
+            await this.props.manageStore.getJudgeOpDef({ "ide": this.usr.uid });
+            await this.props.manageStore.getStatusOpDef({ "ide": this.usr.uid });
 
         } else {
             message.error("审核失败！请重试")
