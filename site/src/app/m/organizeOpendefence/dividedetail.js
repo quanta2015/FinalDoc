@@ -153,6 +153,12 @@ export default class DivideDetail extends Component {
                 ...this.getColumnSearchProps('members'),
             },
             {
+                title: '地点',
+                dataIndex: 'address',
+                key: 'address',
+                ...this.getColumnSearchProps('address'),
+            },
+            {
                 title: '答辩课题',
                 key: 'action',
                 render: (text, record) => (
