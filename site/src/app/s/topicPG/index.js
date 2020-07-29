@@ -118,33 +118,35 @@ export default class TopicPG extends Component {
                     <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
                     <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                <div className="m-cont">
-                    <h2 className="u-title">
-                        论文进度
+                {this.timeList && this.timeList.length !== 0 &&
+                    < div className="m-cont">
+                        <h2 className="u-title">
+                            论文进度
                         <Tooltip placement="right" title={text}>
-                            <QuestionCircleOutlined style={{ fontSize: 16, color: '#999', paddingLeft: 5 }} />
-                        </Tooltip>
-                    </h2>
-                    <div>
-                        <ul className="m-time-line">
-                            {
-                                this.currState[0] &&
-                                this.timeList.map((item) =>
-                                    <li className={item.time <= this.currState[0].time ? this.currState[0].time === item.time ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
-                                        <div>
-                                            <h3>{item.time}</h3>
-                                            {
-                                                ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
-                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                    <p>{item.title}</p>
-                                            }
-                                        </div>
-                                    </li>
-                                )
-                            }
-                        </ul>
+                                <QuestionCircleOutlined style={{ fontSize: 16, color: '#999', paddingLeft: 5 }} />
+                            </Tooltip>
+                        </h2>
+                        <div>
+                            <ul className="m-time-line">
+                                {
+                                    this.currState[0] &&
+                                    this.timeList.map((item) =>
+                                        <li className={item.time <= this.currState[0].time ? this.currState[0].time === item.time ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
+                                            <div>
+                                                <h3>{item.time}</h3>
+                                                {
+                                                    ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
+                                                        <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                        <p>{item.title}</p>
+                                                }
+                                            </div>
+                                        </li>
+                                    )
+                                }
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                }
                 <div className="m-cont">
                     <h2 className="u-title">材料递交</h2>
                     <Button className="u-log" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
@@ -173,7 +175,8 @@ export default class TopicPG extends Component {
                         )}
                     </div>
                 </div>
-                {this.opScore.length > 0 &&
+                {
+                    this.opScore.length > 0 &&
                     <div className="m-op-score">
                         <div className="m-nm-lst">
                             {STU_OP_SCORE.map((item) =>

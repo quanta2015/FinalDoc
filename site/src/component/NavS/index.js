@@ -42,6 +42,11 @@ class NavS extends Component {
     })
   }
 
+  logout = () => {
+    console.log("退出登录")
+    this.props.userStore.logout();
+  }
+
   render() {
     return (
       <div className="g-stu-nav">
@@ -68,7 +73,7 @@ class NavS extends Component {
           )}
         </div>
         <div className="g-footer">
-          <div className="m-setting">
+          <div className="m-setting" onClick={this.logout}>
             <span>退出登录</span>
           </div>
           <div className="m-tag">
