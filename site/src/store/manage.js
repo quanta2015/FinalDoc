@@ -275,6 +275,7 @@ class manager extends BaseActions {
         gid: item.gid,
         leader: item.leader,
         members: item.names,
+        address: item.address,
       })
     })
     runInAction(() => {
