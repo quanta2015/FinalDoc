@@ -45,7 +45,7 @@ export default class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div className="g-m-cnt">
                 <div className="g-m-title">组织开题答辩</div>
                 <div className="g-m g-ogp">
                     <Tabs defaultActiveKey="1" >

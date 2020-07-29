@@ -52,7 +52,7 @@ export default class Home extends Component {
     };
     render() {
         return (
-            <div>
+            <div className="g-m-cnt">
                 <div className="g-m-title">分配审核选题</div>
                 <div className="g-m g-dt">
                     <Tabs defaultActiveKey="1">

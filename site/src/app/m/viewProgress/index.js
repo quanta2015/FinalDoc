@@ -21,7 +21,7 @@ export default class Home extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="g-m-cnt">
 				<div className="g-m-title">查看论文进度</div>
 				<div className="g-m g-vp">
 					<TotalSchedule />
