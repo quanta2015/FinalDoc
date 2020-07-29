@@ -94,6 +94,7 @@ export default class TopicPG extends Component {
         const f_task = this.selectTpInfo.f_task
         const f_score_check = this.selectTpInfo.f_score_check
         const text = '该进度仅表示整体流程进度，与您的实际上交情况无关'
+        console.log('this is tl', this.timeList, 'this is cur', this.currState)
         return (
             <div className="g-stu-prog">
                 <div className="m-hd">
@@ -101,7 +102,7 @@ export default class TopicPG extends Component {
                     <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
                     <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                {this.timeList && this.timeList.length !== 0 &&
+                {this.timeList && this.timeList.length !== 0 && this.currState[0] &&
                     < div className="m-cont">
                         <h2 className="u-title">
                             论文进度
