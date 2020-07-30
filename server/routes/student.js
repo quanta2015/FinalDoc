@@ -273,67 +273,14 @@ router.post('/getAllStudentTemplate', async(req, res) => {
 
 // 获取status阶段
 // params: { uid: str }
-router.post("/getStudentTopicStatus", async(req, res) => {
-    let sql = `CALL PROC_GET_STUDENT_TOPIC_STATUS(?)`;
-    let params = req.body;
-    callProc_N(sql, params, 2, res, (r) => {
-        console.log(r);
-        var result = []
-        var results = {};
-        var status;
-        console.log(r[1]);
-        if (r[1].length == 0) {
-            status = r[0][0]['status'];
-            switch (status) {
-                case 0:
-                    // 发布课题
-                    results.status = 11;
-                    break;
-                case 1:
-                    if (r[0][0]['sel'] == -1) {
-                        // 选择课题
-                        results.status = 12;
-                    } else {
-                        results.status = 11;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            status = r[0][1]['status'];
-            switch (status) {
-                case -1:
-                    // 学生被拒绝
-                    results.status = 12;
-                    break;
-                case 2:
-                    // 学生选择课题
-                    results.status = 12;
-                    break;
-                case 3:
-                    // 双选成功
-                    results.status = 13;
-                    break;
-                case 4:
-                    results.status = 13;
-                    break;
-                case 5:
-                    results.status = 13;
-                    break;
-                case 6:
-                    // 学生下载任务书
-                    results.status = 21;
-                    break;
-                default:
-                    break;
-            }
-        }
-        
-        result.push(results)
-        res.status(200).json({ code: 200, data: result, msg: '成功获取阶段状态' });
-    })
-})
+// router.post("/getStudentTopicStatus", async(req, res) => {
+//     let sql = `CALL PROC_GET_STUDENT_TOPIC_STATUS(?)`;
+//     let params = req.body;
+//     callProc_N(sql, params, 2, res, (r) => {
+//         console.log(r);
+//         res.status(200).json({ code: 200, data: r, msg: '成功获取阶段状态' });
+//     })
+// })
 
 // 获取开题答辩信息
 // params: { uid: str }
