@@ -1,4 +1,5 @@
 
+
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
@@ -10,7 +11,7 @@ const { TabPane } = Tabs;
 
 @inject('userStore')
 @observer
-export default class topicAdmin extends Component {
+export default class scoreAnalysis extends Component {
 
   state = {
     value: 1,
@@ -35,7 +36,7 @@ export default class topicAdmin extends Component {
       <>
         <div>
             <spam>
-                选题管理页面
+                成绩分析界面
             </spam>
         </div>
       </>

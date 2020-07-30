@@ -10,7 +10,7 @@ const { TabPane } = Tabs;
 
 @inject('userStore')
 @observer
-export default class topicAdmin extends Component {
+export default class reviewdebate extends Component {
 
   state = {
     value: 1,
@@ -35,7 +35,7 @@ export default class topicAdmin extends Component {
       <>
         <div>
             <spam>
-                选题管理页面
+                评阅答辩界面
             </spam>
         </div>
       </>
