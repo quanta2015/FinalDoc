@@ -101,7 +101,7 @@ export default class TopicPG extends Component {
                     <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
                     <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                {this.timeList && this.timeList.length !== 0 &&
+                {this.timeList && this.timeList.length !== 0 && this.currState[0] &&
                     < div className="m-cont">
                         <h2 className="u-title">
                             论文进度
