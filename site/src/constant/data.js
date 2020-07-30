@@ -141,7 +141,7 @@ export var ADMIN_NAV_DATA = [
        { title: "option1", path: "/admin" },
        { title: "option2", path: "/admin" },
      ],
-     path: "/admin",
+     path: "/admin_topic_admin",
      icon: "BankOutlined",
      stateNum:1,
    },

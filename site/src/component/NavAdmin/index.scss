@@ -35,6 +35,15 @@
       width: 100%;
       align-self: flex-end;
       background-color: #666;
+      .m-logout{
+        width: 100%;
+        align-content: center;
+        text-align: center;
+        height: 40px;
+        font-size: 16px;
+       
+        background-color: #fff;
+      }
       .g-info-typeline{
         background-color: #4caf50de;
         display: flex;
@@ -48,6 +57,16 @@
         color: #666;
         text-align: center;
         line-height: 32px;
+        transition: .3s;
+        span{
+          color: grey;
+        }
+        &:hover {
+          background:#cc3300;
+          span{
+            color: #fff;
+          }
+        }
         
       }
   

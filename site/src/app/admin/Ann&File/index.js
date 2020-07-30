@@ -21,7 +21,7 @@ const { TabPane } = Tabs;
 
 @inject('userStore')
 @observer
-export default class Ann extends Component {
+export default class fileAnnName extends Component {
 
   state = {
     value: 1,

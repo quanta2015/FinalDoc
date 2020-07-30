@@ -81,6 +81,7 @@ class App extends Component {
           <AsyncRoute   path='/admin_ann' getComponent={ () => import('./app/admin/Ann&File').then(module => module.default) }/>
           <AsyncRoute   path='/admin_file' getComponent={ () => import('./app/admin/Ann&File/fileMag').then(module => module.default) }/>
           <AsyncRoute   path='/admin_sys_set' getComponent={ () => import('./app/admin/SysCal/index').then(module => module.default) }/>
+          <AsyncRoute   path='/admin_topic_admin' getComponent={ () => import('./app/admin/TopicMag/index.js').then(module => module.default) }/>
           </Router>
         </div>
       </div>

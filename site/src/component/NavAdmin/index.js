@@ -61,6 +61,10 @@ class NavAdmin extends BaseActions {
   gohome = () => {
     route("/m");
   };
+  logout = () => {
+    this.props.userStore.logout();
+   
+  }
 
   render() {
     let cur = this.state.cur;
@@ -95,7 +99,10 @@ class NavAdmin extends BaseActions {
                 key={i + 4}
                 onClick={this.doMenu.bind(this, item.path, i + 4)}
               >
-                <div className='z-icon '>  <BankOutlined /></div>
+                <div className="z-icon ">
+                  {" "}
+                  <BankOutlined />
+                </div>
 
                 <span className="m-menu-span">{item.title}</span>
               </div>
@@ -118,6 +125,9 @@ class NavAdmin extends BaseActions {
           </div>
           <div className="g-info">
             <div className="m-info">
+              <div className="m-logout"  onClick={this.logout}>
+                <span>退出登录</span>
+              </div>
               <div className="g-info-typeline">
                 <div className="g-info-type">教务处</div>
               </div>
