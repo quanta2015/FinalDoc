@@ -2,9 +2,35 @@ import { Component } from 'preact';
 import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { MENU_MAIN_S } from '../../constant/data';
+import { MENU_MAIN_S, STU_NAV_STAGE } from '../../constant/data';
 import logo from '../../static/public/scl_logo.png';
 import './index.scss'
+
+const getStage = (topicList, status) => {
+  // stageId为大阶段，currId为小阶段
+  let stageId = 0, currId = 0;
+  if (status && status <= 8) stageId = 1;
+  if (status && status > 8) stageId = 2;
+
+  switch (stageId) {
+    case 0:
+      if (topicList.length && !status) currId = 1;
+      if (status) currId = 2;
+      break;
+    case 1:
+      if (status === 6) currId = 1;
+      if (status === 7) currId = 2;
+      if (status === 8) currId = 3;
+      break;
+    case 2:
+      break;
+    default:
+      break;
+  }
+
+  return { stageId: stageId, currId: currId }
+}
+
 
 @inject('userStore', 'studentStore')
 @observer
@@ -22,6 +48,11 @@ class NavS extends Component {
   }
 
   @computed
+  get topicList() {
+    return toJS(this.props.studentStore.topicList);
+  }
+
+  @computed
   get usr() {
     return this.props.userStore.usr;
   }
@@ -34,6 +65,7 @@ class NavS extends Component {
 
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
+    this.props.studentStore.getTopicList({ uid: this.usr.uid });
   }
 
   doMenu = (path, i) => {
@@ -48,6 +80,7 @@ class NavS extends Component {
   }
 
   render() {
+    const { stageId, currId } = getStage(this.topicList, this.selectTpInfo.status);
     return (
       <div className="g-stu-nav">
         <div className="g-logo">
@@ -57,8 +90,8 @@ class NavS extends Component {
           <div className="u-title">毕业设计管理系统</div>
         </div>
         <div className="g-st">
-          {this.currStage.stage.map((item, id) =>
-            <span className={id === this.currStage.index ? 'm-st active' : 'm-st'}>{item}</span>
+          {STU_NAV_STAGE[stageId].map((item, id) =>
+            <span className={id === currId ? 'm-st active' : 'm-st'}>{item}</span>
           )}
         </div>
         <div className="g-menu">

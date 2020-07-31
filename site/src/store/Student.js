@@ -29,14 +29,6 @@ class Student extends BaseActions {
     opScore = []
 
     @observable
-    //当前所处阶段细分
-    currStage = {
-        name: '选题阶段',
-        index: 1,
-        stage: ['发布课题', '选择课题', '双选成功']
-    }
-
-    @observable
     //当前阶段（时间轴）
     currState = {}
 

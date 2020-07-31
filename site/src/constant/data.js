@@ -116,6 +116,13 @@ export var STU_OP_SCORE = [
    { name: '开题答辩小组评分', type: 'g_reply_score' }
 ]
 
+// 学生端 Nav阶段名
+export var STU_NAV_STAGE = [
+   ['发布课题', '选择课题', '双选成功'],
+   ['任务下达', '提交材料', '审核开题', '开题答辩'],
+   ['提交材料', '评阅审核', '论文答辩', '成绩审定']
+]
+
 // 站内信类型
 export var MSG_TYPE = [
    "info", "success", "warning", "error"
