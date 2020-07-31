@@ -3,8 +3,8 @@
  * @version: 1.0
  * @Author: 
  * @Date: 2020-07-09 10:14:36
- * @LastEditors: wyx
- * @LastEditTime: 2020-07-23 16:32:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-31 12:30:19
  */
 
 
@@ -271,6 +271,16 @@ router.post('/editInfo', async(req, res) => {
     let sql = `CALL PROC_EDIT_ONE_INFO(?)`;
     callProc(sql, params, res, (r) => {
         res.status(200).json({ code: 200, data: r, msg: '修改名单信息成功！' });
+    })
+})
+
+// 获取教师姓名，阶段，课题名及课题id
+// params: {}
+router.post('/getTopicAndTeacher', async(req, res) => {
+    let sql = `CALL PROC_GET_ALL_TOPIC_AND_TEACHER`;
+    let params = {};
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({ code: 200, data: r, msg: '获取课题阶段成功！' });
     })
 })
 
