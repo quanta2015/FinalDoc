@@ -351,7 +351,6 @@ router.post('/insertGuidance', async(req, res) => {
 router.post('/updateGuidance', async(req, res) => {
     let sql = `CALL PROC_UPDATE_GUIDANCE(?)`;
     let params = req.body;
-    params.time = new Date();
     console.log(params);
     callProc_N(sql, params, 2, res, (r) => {
         console.log(r);
