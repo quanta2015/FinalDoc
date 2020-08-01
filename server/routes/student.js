@@ -347,7 +347,7 @@ router.post('/insertGuidance', async(req, res) => {
 })
 
 // 修改指导日志
-// params: { pid: int, time: date, way: str, opinion: str }
+// params: { id: int, time: date, way: str, opinion: str }
 router.post('/updateGuidance', async(req, res) => {
     let sql = `CALL PROC_UPDATE_GUIDANCE(?)`;
     let params = req.body;
