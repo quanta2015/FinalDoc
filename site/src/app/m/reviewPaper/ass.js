@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './ass.scss';
-import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag } from 'antd';
+import { Table, Modal, Select, Descriptions, Input, Button, Space, message, Tooltip, Tag} from 'antd';
 import { SearchOutlined,ExclamationCircleOutlined } from '@ant-design/icons';
  
 import Item from 'antd/lib/list/Item';
@@ -455,29 +455,42 @@ export default class Ass extends Component {
                             <div className="m-cont-item">
                                 <div class="u-time">
                                     <div class="u-num">{this.state.ft[0]}</div>
-                                    <div>至</div>
+                                    <div>~</div>
                                     <div class="u-num">{this.state.ft[1]}</div>
                                 </div>
                             </div>
-                            <div class="m-s-title">进度安排：</div>
+                            <div class="m-s-table" >  
+                                <div class="m-s-title">进度安排：</div>
+                            <table class="t"  width='750'>
+                                {/* <caption class='title'>进度安排：</caption> */}
+                                <tr>
+                                    <th width="50">序号</th>
+                                    <th width="200">时间</th>
+                                    <th width="500">内容</th>
+                                </tr>
 
-                            {this.state.schedule.map((item) => {
+                            {this.state.schedule.map((item,i) => {
                                 return (
-                                    <div className="m-cont-item">
-                                        <div className="list">
-                                            <div class="u-time">
-                                                <div class="u-num">{item.time[0]}</div>
-                                                <div>至</div>
-                                                <div class="u-num">{item.time[1]}</div>
-                                            </div>
-                                            <div>{item.content}</div>
 
-                                        </div>
-                                    </div>
+                                     
+                                    
+                                       
+                                           <tr>
+                                            <td width="50" class='box'>{i+1}</td>
+                                        <td width="200" class='box'>{item.time[0]}~{item.time[1]}</td>
+                                            <td width="500">{item.content}dfsg的方式发生的范德萨根深蒂固水电费 的所得税 </td>
+
+
+                                           </tr>
+
+                                        
+                                       
+                                    
                                 )
                             })}
+                            </table>
 
-
+                            </div>
                         </div>
                     </div>
                 </Modal>

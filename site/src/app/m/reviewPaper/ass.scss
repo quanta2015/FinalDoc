@@ -28,48 +28,35 @@ tbody.ant-table-tbody {
         margin-left: 15px;
         
     }
-
     .m-ass_top_box {
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
     }
-
     .m-ass_table .ant-table-cell:nth-last-child(4) {
         // width: 250px;
         width: 200px;
     }
-
     .m-ass_table .ant-table-cell:nth-last-child(3) {
         // width: 240px;
         width: 300px;
     }
-
-    
-
     .m-ass_table .ant-table-cell:nth-last-child(2) {
         // width:300px;
         width: 150px;
     }
-
     .m-ass_table .ant-table-cell:nth-last-child(1) {
         // width: 250px;
         width: 150px;
     }
-
     .m-ass_table .ant-table-placeholder .ant-table-cell{
         width: 850px;
     }
-
-    .m-ass_noTopicNum {
-        
-        
+    .m-ass_noTopicNum {   
         font-size: 16px;
         font-weight: bold;
-    
     }
 }
-
 .g-mod-task {
     white-space: pre-line;
     margin-top: -80px;
@@ -78,7 +65,6 @@ tbody.ant-table-tbody {
         justify-content:space-between;
         align-items:center;
         padding:0 20px ;
-
         .u-type{
             color:white;
             font-size: 14px;
@@ -99,11 +85,8 @@ tbody.ant-table-tbody {
             font-size: 14px;
         }
     }
-
     .m-cont {
-         
         margin-right: -23px;
-        
         padding:20px ;
         max-height: 450px;
         overflow:auto;
@@ -120,13 +103,12 @@ tbody.ant-table-tbody {
     }
     .m-cont-item{
         padding-left: 30px;
+        padding-right: 30px;
         .u-time{
             display: flex;
             flex-direction: row;
             .u-num{
                 font-size: 17px;
-                 color:orangered;
-                font-family: Georgia;
             }
         }
         .list{
@@ -134,4 +116,32 @@ tbody.ant-table-tbody {
     }  
     }
     }
+    .m-s-table{
+.t {
+    margin-left: 30px;
+    margin-top: 20px;
+}
+.t .title{
+     padding: 8px;
+     font-weight: bolder;
+      border : 1px  #666666 solid;
+     border-bottom:none;
+     color: #666;
+     
+}
+.t th {
+    border : 1px #666666 solid;
+    padding: 8px;
+    text-align: center;
+    
+}
+.t .box{
+    text-align: center;
+}
+.t td {
+    padding: 8px;
+    border : 1px #666666 solid;
+    border-top:none;
+}
+}
 }
