@@ -179,15 +179,15 @@ export default class TotalSchedule extends Component {
 			dataIndex: 'tName',
 			...this.getColumnSearchProps('tName'),
 		},
-		{
-			title: '当前阶段',
-			key: 'phase',
-			dataIndex: 'phase',
-			filters: phase,
-			filterMultiple: false,
-			onFilter: (value, record) =>
-				record.phase.indexOf(value) !== -1,
-		},
+		// {
+		// 	title: '当前阶段',
+		// 	key: 'phase',
+		// 	dataIndex: 'phase',
+		// 	filters: phase,
+		// 	filterMultiple: false,
+		// 	onFilter: (value, record) =>
+		// 		record.phase.indexOf(value) !== -1,
+		// },
 		{
 			title: '状态',
 			key: 'status',
@@ -209,15 +209,15 @@ export default class TotalSchedule extends Component {
 				)
 			}
 		},
-		{
-			title: '文件下载',
-			key: 'more',
-			render: (text, record) => (
-				<Space size="middle">
-					<a onClick={() => this.showModal(record)}>详情</a>
-				</Space>
-			),
-		},
+		// {
+		// 	title: '文件下载',
+		// 	key: 'more',
+		// 	render: (text, record) => (
+		// 		<Space size="middle">
+		// 			<a onClick={() => this.showModal(record)}>详情</a>
+		// 		</Space>
+		// 	),
+		// },
 	];
 
 	render() {

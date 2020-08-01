@@ -40,6 +40,16 @@ class manager extends BaseActions {
       item.area_list.split(",").map((item) => {
         areas += item.split("|")[1] + " "
       })
+      // 给领域排序
+      areas.sort(function (a, b) {
+          if (a < b) {
+            return -1;
+          } else if (a > b) {
+            return 1;
+          }
+          return 0;
+      })
+      /* ******* */
       teaName.push({
         tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
         value: item.maj + "-" + item.Tname + "-" + areas,

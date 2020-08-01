@@ -40,28 +40,25 @@
 
  .m-div-dtl-modal .table{
 
-    .ant-table-cell {
-    text-align: center;
-    }
-
     .ant-table-cell:nth-last-child(4){
-    width: 300px;
+        text-align: left;
+        width: 340px;
     }
 
     .ant-table-cell:nth-last-child(3){
-    width: 150px;
+        width: 130px;
     }
 
     .ant-table-cell:nth-last-child(2){
-    width: 200px;
+        width: 200px;
     }
 
-    ant-table-cell:nth-last-child(1){
-    width: 150px;
+    .ant-table-cell:nth-last-child(1){
+        width: 130px;
     }
 
     .ant-table-placeholder .ant-table-cell{
-    width: 800px;
+        width: 800px;
     }
 
 

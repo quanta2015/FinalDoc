@@ -16,7 +16,7 @@ const topic_paginationProps = {
         return `共 ${total} 条`;
     }),
     showSizeChanger: false,
-    pageSize: 5,
+    pageSize:15,
 }
 
 @inject('manageStore', 'userStore')
