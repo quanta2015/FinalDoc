@@ -91,6 +91,7 @@ tbody.ant-table-tbody {
         padding:20px ;
         max-height: 450px;
         overflow:auto;
+         font-size: 16px;
     .m-f-title{
         margin: 20px 0;
         font-size: 20px;
@@ -101,16 +102,28 @@ tbody.ant-table-tbody {
         text-indent:2em;
         font-size: 16px;
         font-weight: bold;
+         
     }
+     
     .m-cont-item{
         padding-left: 30px;
         padding-right: 30px;
         .u-time{
             display: flex;
             flex-direction: row;
-            .u-num{
-                font-size: 17px;
+            
+            .m-s-scd{
+                 margin: 10px 0;
+                text-indent:2em;
+                padding:2px 8px;
+                font-weight: bold;
+                
             }
+            .m-date{
+                font-size: 16px;
+                
+            } 
+
         }
         .list{
         padding-bottom: 10px;     

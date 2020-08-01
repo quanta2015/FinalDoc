@@ -45,6 +45,8 @@ export default class Ass extends Component {
         task: {},
         schedule: [],
         ft: [],
+        ft1: [],
+        ft2: [],
 
     };
 
@@ -195,6 +197,8 @@ export default class Ass extends Component {
         console.log(toJS(record))
         let task = await this.props.manageStore.getTaskContent({ "pid": record.key, "role": this.usr.role })
         //console.log(task)
+        let ft1 = (toJS(task.ft)[0]).split("-")
+        let ft2 = (toJS(task.ft)[1]).split("-")
         this.setState({
             visible: true,
             topic_type: record.type,
@@ -204,7 +208,10 @@ export default class Ass extends Component {
             task: toJS(task),
             schedule: toJS(task.schedule),
             ft: toJS(task.ft),
+            ft1: ft1,
+            ft2: ft2,
         });
+        
     };
 
     handleCancel = e => {
@@ -451,18 +458,20 @@ export default class Ass extends Component {
                                 {this.state.task.reference}
                             </div>
                             <div class="m-f-title">二、起止日期及进度安排</div>
-                            <div class="m-s-title">起止日期：</div>
+                            {/* //<div class="m-s-title">起止日期：</div> */}
+                             
                             <div className="m-cont-item">
                                 <div class="u-time">
-                                    <div class="u-num">{this.state.ft[0]}</div>
-                                    <div>~</div>
-                                    <div class="u-num">{this.state.ft[1]}</div>
+                                     
+                                    <div class="m-date"  ><span class="m-s-scd">起止日期：</span> 20{this.state.ft1[0]}年{this.state.ft1[1]}月{this.state.ft1[2]}日&nbsp;至&nbsp;</div>
+                                     
+                                    <div class="m-date">20{this.state.ft2[0]}年{this.state.ft2[1]}月{this.state.ft2[2]}日</div>
                                 </div>
                             </div>
                             <div class="m-s-table" >  
-                                <div class="m-s-title">进度安排：</div>
+                                {/* <div class="m-s-title">进度安排：</div> */}
                             <table class="t"  width='750'>
-                                {/* <caption class='title'>进度安排：</caption> */}
+                                <caption class='title'>进度安排：</caption>
                                 <tr>
                                     <th width="50">序号</th>
                                     <th width="200">时间</th>
@@ -477,7 +486,7 @@ export default class Ass extends Component {
                                        
                                            <tr>
                                             <td width="50" class='box'>{i+1}</td>
-                                        <td width="200" class='box'>{item.time[0]}~{item.time[1]}</td>
+                                        <td width="200" class='box'>{item.time[0]}&nbsp;~ &nbsp;{item.time[1]}</td>
                                             <td width="500">{item.content}</td>
 
 
