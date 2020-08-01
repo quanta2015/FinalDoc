@@ -1,6 +1,20 @@
 import { Component } from 'preact'
 import { inject, observer } from 'mobx-react'
-import { Form, Button, Input, List, Comment, Select, Typography, Space, Popconfirm, message, Modal, Empty } from 'antd'
+import {
+    Form,
+    Button,
+    Input,
+    List,
+    Comment,
+    Select,
+    Typography,
+    Space,
+    Popconfirm,
+    message,
+    Modal,
+    Empty,
+    DatePicker
+} from 'antd'
 import moment from 'moment'
 import './index.scss'
 import { computed, toJS } from 'mobx'
@@ -27,6 +41,7 @@ class LogRecord extends Component {
             value: '',
             isInEdit: false,
             sel: '学校',
+            date: moment().format('YYYY-MM-DD')
         }
     }
     @computed
@@ -42,12 +57,6 @@ class LogRecord extends Component {
                         comments: this.insLog,
                     }, () => {
                         let { comments } = this.state
-                        // console.log('this is comments', comments)
-                        if (comments[0].time === moment().format('YYYY-MM-DD'))
-                            this.setState({
-                                sel: comments[0].way,
-                                value: comments[0].opinion
-                            })
                     })
 
                 }
@@ -65,65 +74,45 @@ class LogRecord extends Component {
             submitting: true,
         });
         if (!this.state.isInEdit) { // 若不在编辑状态中 提交后输入框内显示的内容为本日日志内容（方便编辑）
-            if (comments[0] && comments[0].time === moment().format('YYYY-MM-DD')) { // 如果当前日期与最近一条日志日期相等，则更新最近一条
-                let time = comments[0].time
-                let way = this.state.sel
-                comments[0] = { opinion: value, time, way }
-                setTimeout(() => {
-                    this.setState({
-                        submitting: false,
-                        value: value,
-                        comments: comments,
-                    });
-                    // 调用后端接口update本条comment 按日期查
-                }, 1000);
-            } else { // 若当前日期为新（本日尚未提交过日志） 则加入一条新日志
-                setTimeout(() => {
-                    this.setState({
-                        submitting: false,
-                        value: value,
-                        comments: [
-                            {
-                                opinion: this.state.value,
-                                time: moment().format('YYYY-MM-DD'),
-                                way: this.state.sel,
-                            },
-                            ...this.state.comments,
-                        ],
-                    });
-                    //调用后端接口insert本条comment
-                }, 1000);
-            }
+            setTimeout(() => {
+                this.setState({
+                    submitting: false,
+                    // value: value,
+                    value: '',
+                    comments: [
+                        {
+                            opinion: this.state.value,
+                            // time: moment().format('YYYY-MM-DD'),
+                            time: this.state.date,
+                            way: this.state.sel,
+                        },
+                        ...this.state.comments,
+                    ],
+                });
+                //调用后端接口insert本条comment
+            }, 1000);
+            setTimeout(() => {
+                message.success('提交成功')
+            }, 1000)
 
         } else { // 若在编辑状态中
-            if (editedItemIndex === 0 && comments[editedItemIndex].time === moment().format('YYYY-MM-DD')) { // 编辑最新的指导日志
-                setTimeout(() => {
-                    let time = comments[editedItemIndex].time
-                    let way = this.state.sel
-                    comments[editedItemIndex] = { opinion: value, time, way }
-                    this.setState({
-                        submitting: false,
-                        value: value,// 提交后输入框内也直接显示最新内容，方便编辑
-                        isInEdit: false,
-                        comments
-                    })
-                    // 调用后端接口update本条comment
-                }, 1000)
-            } else { // 编辑之前的指导日志
-                setTimeout(() => {
-                    let time = comments[editedItemIndex].time
-                    let way = this.state.sel
-                    comments[editedItemIndex] = { opinion: value, time, way }
-                    this.setState({
-                        submitting: false,
-                        value: '', // 提交后输入框清空
-                        isInEdit: false,
-                        comments
-                    })
-                    // 调用后端接口update本条comment
-                }, 1000)
-            }
+            setTimeout(() => {
+                // let time = comments[editedItemIndex].time
+                let time = this.state.date
+                let way = this.state.sel
+                comments[editedItemIndex] = { opinion: value, time, way }
+                this.setState({
+                    submitting: false,
+                    value: '', // 提交后输入框清空
+                    isInEdit: false,
+                    comments
+                })
+                // 调用后端接口update本条comment
+            }, 1000)
+            setTimeout(() => {
+                message.success('编辑成功')
 
+            }, 1000)
         }
 
     };
@@ -159,14 +148,17 @@ class LogRecord extends Component {
             comments
         })
     }
-    handleSelChange = (value) => {
-    }
+
     handleSelect = (value, elem) => {
         this.setState({
             sel: elem.key
         })
     }
-
+    handleDateChange = (data, dataString) => {
+        this.setState({
+            date: dataString
+        })
+    }
     render() {
         const { comments, submitting, value } = this.state;
         return (
@@ -181,7 +173,9 @@ class LogRecord extends Component {
                     footer={[]}
                 >
                     <Space align="baseline">
-                        <p type="text" className="m-pos">请选择指导地点/指导方式</p>
+                        <p>指导日期</p>
+                        <DatePicker onChange={this.handleDateChange} defaultValue={moment(this.state.date, 'YYYY-MM-DD')} />
+                        <p type="text" className="m-pos">指导地点/方式</p>
                         <Select
                             className="m-pos"
                             defaultValue={this.state.sel}
@@ -198,13 +192,14 @@ class LogRecord extends Component {
                                 })
                             }
                         </Select>
+
                     </Space>
                     <Comment
                         content={
 
                             <>
                                 <Form.Item>
-                                    <TextArea rows={4} onChange={this.handleChange} defaultValue={value} value={value} placeholder="请输入今日的指导日志..."
+                                    <TextArea rows={4} onChange={this.handleChange} defaultValue={value} value={value} placeholder="请输入指导日志..."
                                         ref={input => {
                                             if (input) {
                                                 setTimeout(() => {
@@ -227,18 +222,18 @@ class LogRecord extends Component {
                             </>
                         }
                     />
-                    {
+                    {/* {
                         comments.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                    }
+                    } */}
                     {
                         comments.length > 0 && (
                             <List
                                 dataSource={comments}
                                 header={`${comments.length} 条记录`}
                                 itemLayout="horizontal"
-                                pagination={{
-                                    pageSize: 2,
-                                }}
+                                // pagination={{
+                                //     pageSize: 3,
+                                // }}
                                 renderItem={(item) => (
                                     <List.Item
                                         actions={[

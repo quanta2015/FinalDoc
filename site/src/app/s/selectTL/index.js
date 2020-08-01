@@ -16,7 +16,7 @@ const customizeRenderEmpty = () => (
     <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
         <SmileOutlined type="smile" style={{ fontSize: 30, }} />
         <br />
-        <p style={{ fontSize: 20 }}>没有可选课题</p>
+        <p style={{ fontSize: 20 }}>暂无可选课题</p>
     </div>
 );
 
@@ -73,6 +73,9 @@ export default class TopicList extends Component {
                                 })
                             }
                         })
+                    // this.setState({
+                    //     topicList: this.topicList
+                    // })
                 }
             })
     }
