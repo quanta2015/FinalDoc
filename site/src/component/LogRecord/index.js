@@ -12,7 +12,7 @@ import {
     Popconfirm,
     message,
     Modal,
-    Empty,
+    Spin,
     DatePicker
 } from 'antd'
 import moment from 'moment'
@@ -41,12 +41,16 @@ class LogRecord extends Component {
             value: '',
             isInEdit: false,
             sel: '学校',
-            date: moment().format('YYYY-MM-DD')
+            date: moment().format('YYYY-MM-DD'),
         }
     }
     @computed
     get insLog() {
         return toJS(this.props.studentStore.insLog);
+    }
+    @computed
+    get selectTpInfo() {
+        return toJS(this.props.studentStore.selectTpInfo)
     }
 
     componentDidMount = () => {
@@ -55,10 +59,7 @@ class LogRecord extends Component {
                 if (r && r.length) {
                     this.setState({
                         comments: this.insLog,
-                    }, () => {
-                        let { comments } = this.state
                     })
-
                 }
             })
     }
@@ -77,41 +78,60 @@ class LogRecord extends Component {
             setTimeout(() => {
                 this.setState({
                     submitting: false,
-                    // value: value,
                     value: '',
-                    comments: [
-                        {
-                            opinion: this.state.value,
-                            // time: moment().format('YYYY-MM-DD'),
-                            time: this.state.date,
-                            way: this.state.sel,
-                        },
-                        ...this.state.comments,
-                    ],
+                    // comments: [
+                    //     {
+                    //         opinion: this.state.value,
+                    //         // time: moment().format('YYYY-MM-DD'),
+                    //         time: this.state.date,
+                    //         way: this.state.sel,
+                    //     },
+                    //     ...this.state.comments,
+                    // ],
                 });
                 //调用后端接口insert本条comment
+                this.props.studentStore.insertGuidance({
+                    pid: this.selectTpInfo.id,
+                    time: this.state.date,
+                    way: this.state.sel,
+                    opinion: this.state.value
+                }).then(() => {
+                    message.success('提交成功')
+
+                    this.props.studentStore.getGuidance({ sid: this.props.sid })
+                        .then(() => {
+                            this.setState({
+                                comments: this.insLog,
+                            })
+                        })
+                })
             }, 1000);
-            setTimeout(() => {
-                message.success('提交成功')
-            }, 1000)
 
         } else { // 若在编辑状态中
             setTimeout(() => {
                 // let time = comments[editedItemIndex].time
                 let time = this.state.date
                 let way = this.state.sel
+                let id = comments[editedItemIndex].id
                 comments[editedItemIndex] = { opinion: value, time, way }
                 this.setState({
                     submitting: false,
                     value: '', // 提交后输入框清空
                     isInEdit: false,
-                    comments
+                    // comments
                 })
                 // 调用后端接口update本条comment
-            }, 1000)
-            setTimeout(() => {
-                message.success('编辑成功')
+                this.props.studentStore.updateGuidance({ id, time: this.state.date, way, opinion: value })
+                    .then(() => {
+                        message.success('编辑成功')
+                        this.props.studentStore.getGuidance({ sid: this.props.sid })
+                            .then(() => {
+                                this.setState({
+                                    comments: this.insLog,
+                                })
+                            })
 
+                    })
             }, 1000)
         }
 
@@ -130,6 +150,7 @@ class LogRecord extends Component {
             editedItemIndex: comments.indexOf(item),
             sel: item.way,
             isInEdit: true,
+            date: item.time,
         })
         message.info({
             content: '请在输入框内编辑',
@@ -139,6 +160,8 @@ class LogRecord extends Component {
 
     handleDelete = (item) => {
         let comments = [...this.state.comments]
+        this.props.studentStore.delGuidance({ id: item.id })
+        // console.log('this is del_id', item.id)
         if (comments.indexOf(item) >= 0) {
             comments.splice(comments.indexOf(item), 1)
         }
@@ -158,6 +181,7 @@ class LogRecord extends Component {
         this.setState({
             date: dataString
         })
+
     }
     render() {
         const { comments, submitting, value } = this.state;
@@ -174,7 +198,7 @@ class LogRecord extends Component {
                 >
                     <Space align="baseline">
                         <p>指导日期</p>
-                        <DatePicker onChange={this.handleDateChange} defaultValue={moment(this.state.date, 'YYYY-MM-DD')} />
+                        <DatePicker onChange={this.handleDateChange} defaultValue={moment(this.state.date, 'YYYY-MM-DD')} value={moment(this.state.date, 'YYYY-MM-DD')} />
                         <p type="text" className="m-pos">指导地点/方式</p>
                         <Select
                             className="m-pos"
@@ -222,34 +246,34 @@ class LogRecord extends Component {
                             </>
                         }
                     />
-                    {/* {
-                        comments.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                    } */}
+
                     {
                         comments.length > 0 && (
-                            <List
-                                dataSource={comments}
-                                header={`${comments.length} 条记录`}
-                                itemLayout="horizontal"
-                                // pagination={{
-                                //     pageSize: 3,
-                                // }}
-                                renderItem={(item) => (
-                                    <List.Item
-                                        actions={[
-                                            <Button type="primary" size="small" onClick={() => this.handleEdit(item)}>编辑</Button>,
-                                            <Popconfirm title="删除此记录？" onConfirm={() => this.handleDelete(item)} okText="确认" cancelText="取消">
-                                                <Button size="small">删除</Button>
-                                            </Popconfirm>
-                                        ]} >
-                                        <List.Item.Meta
-                                            title={(<><span className="u-time">{item.time} </span><span>{item.way}</span></>)}
-                                        // description={<p>{item.opinion}</p>}
-                                        />
-                                        {item.opinion}
-                                    </List.Item>
-                                )}
-                            />
+                            <Spin spinning={this.state.submitting}>
+                                <List
+                                    dataSource={comments}
+                                    header={`${comments.length} 条记录`}
+                                    itemLayout="horizontal"
+                                    // pagination={{
+                                    //     pageSize: 3,
+                                    // }}
+                                    renderItem={(item) => (
+                                        <List.Item
+                                            actions={[
+                                                <Button type="primary" size="small" onClick={() => this.handleEdit(item)}>编辑</Button>,
+                                                <Popconfirm title="删除此记录？" onConfirm={() => this.handleDelete(item)} okText="确认" cancelText="取消">
+                                                    <Button size="small">删除</Button>
+                                                </Popconfirm>
+                                            ]} >
+                                            <List.Item.Meta
+                                                title={(<><span className="u-time">{item.time} </span><span>{item.way}</span></>)}
+                                            // description={<p>{item.opinion}</p>}
+                                            />
+                                            {item.opinion}
+                                        </List.Item>
+                                    )}
+                                />
+                            </Spin>
                         )
                     }
 

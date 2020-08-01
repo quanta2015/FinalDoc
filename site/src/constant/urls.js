@@ -81,6 +81,12 @@ export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
 //所有指导日志
 export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' 
+//增加指导日志
+export const API_STU_ADD_GUIDANCE = API_SERVER+'/student/insertGuidance'
+//删除指导日志
+export const API_STU_DEL_GUIDANCE = API_SERVER + '/student/delGuidance'
+//更改指导日志
+export const API_STU_EDIT_GUIDANCE = API_SERVER + '/student/updateGuidance'
 //所有阶段以及截止时间
 export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' 
 // 返回当前阶段

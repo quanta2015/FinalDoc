@@ -71,7 +71,7 @@ class Student extends BaseActions {
     @action
     async getTopicList(params) {
         const r = await this.post(urls.API_STU_GET_TTLLIST, params);
-        if (r && r.code === 200) {
+        if (r && r.code === 200 && r.data) {
             let list = []
 
             if (r.data) {
@@ -102,6 +102,7 @@ class Student extends BaseActions {
 
             runInAction(() => {
                 this.topicList = list
+
             })
             return list
 
@@ -236,7 +237,7 @@ class Student extends BaseActions {
         if (r && r.code === 200) {
             let lst = []
             if (r.data) {
-                r.data.map((item,index) => {
+                r.data.map((item, index) => {
                     if (item.state_name === "任务书") {
                         lst.push({
                             state: index,
@@ -272,7 +273,7 @@ class Student extends BaseActions {
 
     @action
     async getCurrentState(params) {
-        const r = await this.post(urls.API_STU_GET_CURSTATE,params)
+        const r = await this.post(urls.API_STU_GET_CURSTATE, params)
         if (r && r.code === 200) {
             runInAction(() => {
                 this.currState = r.data
@@ -318,6 +319,39 @@ class Student extends BaseActions {
         } else {
             message.error('网络错误')
         }
+    }
+
+    @action
+    async insertGuidance(params) {
+        const r = await this.post(urls.API_STU_ADD_GUIDANCE, params)
+        if (r && r.code === 200) {
+            return true
+        } else {
+            message.error('网络错误');
+        }
+        return r;
+    }
+
+    @action
+    async delGuidance(params) {
+        const r = await this.post(urls.API_STU_DEL_GUIDANCE, params)
+        if (r && r.code === 200) {
+            return true
+        } else {
+            message.error('网络错误');
+        }
+        return r;
+    }
+
+    @action
+    async updateGuidance(params) {
+        const r = await this.post(urls.API_STU_EDIT_GUIDANCE, params)
+        if (r && r.code === 200) {
+            return true
+        } else {
+            message.error('网络错误');
+        }
+        return r;
     }
 }
 

@@ -48,11 +48,13 @@
         width: 200px;
         .ant-btn-sm {
             padding: 0px 5px;
+            width: 56px;
+            height: 32px;
         }
         .ant-btn > span {
             height: 24px;
-            position: relative;
-            top: -1px;
+            // position: relative;
+            // top: -1px;
         }
     }
 
@@ -104,11 +106,13 @@
         width: 200px;
         .ant-btn-sm {
             padding: 0px 5px;
+            width: 56px;
+            height: 32px;
+            position: relative;
+            top: -6px;
         }
         .ant-btn > span {
             height: 24px;
-            position: relative;
-            top: -1px;
         }
     }
     td.ant-table-cell:nth-last-child(3) {

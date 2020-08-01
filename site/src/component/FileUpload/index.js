@@ -142,7 +142,7 @@ class FileUpload extends Component {
                 < div className="ant-upload-text" >上传</div>
             </div>
         )
-        console.log(this.props.disabled);
+        // console.log(this.props.disabled);
         return (
             <div className="g-upload">
                 <div
