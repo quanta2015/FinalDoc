@@ -21,7 +21,11 @@ const filter = (t) => {
 }
 //按照通过状态排序topic列表
 const sorter = (x, y) => {
-  return y.status - x.status;
+  let y1 = y.status;
+  if(y1==3)y1 = 10;
+  let x1 = x.status;
+  if(x1==3)x1 = 10;
+  return y1-x1;
 }
 
 @inject('userStore')
@@ -70,7 +74,9 @@ export default class Home extends BaseActions {
   getTopicList = async () => {
     await this.setState({checkBlockState: 0});
     let tdata = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
+    console.log(tdata);
     tdata = tdata.data.map(filter);
+    
     tdata.sort(sorter);
     this.setState({ toplist: tdata });
     //获取申请列表
@@ -81,10 +87,14 @@ export default class Home extends BaseActions {
     });
     let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
     let sel = x.data;
-    console.log(sel);
+    
     if(tdata.length==0){sel = false;}
     if(sel){
-      this.setState({ checkBlockState: 2 })
+      tdata.forEach((x)=>{!x.sid?sel=false:1;})
+    }
+    console.log(sel);
+    if(sel){
+      this.setState({ checkBlockState: 1 })
     }else{
       this.setState({ checkBlockState: 1 })
     }

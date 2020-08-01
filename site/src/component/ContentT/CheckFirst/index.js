@@ -11,6 +11,7 @@ import StuMethods from '../StuMethods'
 import DeleteSpan from '../../../icon/Icons/Delete'
 import ReWrite from '../../../icon/Icons/ReWrite'
 import Watch from '../../../icon/Icons/Watch'
+import Unbind from '../../../icon/Icons/Unbind'
 import ReviewLine from '../Review';
 import TaskList from '../TaskForm'
 
@@ -98,6 +99,14 @@ class Check extends BaseActions {
     })
   }
 
+  onTied = async (id) => {
+    let r = confirm("您确定要解绑该学生么？")
+    if (r) {
+      await this.post(urls.API_TEACHER_UNTIED, { pid: id });
+      this.props.freshList();
+    }
+  }
+
   StateExtra = (t) => (
     <div className="state-extra">
       {t.status == 3 && <Tag color="blue">审核已通过</Tag>}
@@ -115,6 +124,9 @@ class Check extends BaseActions {
         }
         {
           (t.status == 100) && <span onClick={() => { this.getSugg(t.id) }}><Watch /></span>
+        }
+        {
+          !!t.sid && <span onClick={()=>{ this.onTied(t.id)}}><Unbind /></span>
         }
       </div>
     </div>
@@ -148,10 +160,10 @@ class Check extends BaseActions {
                       {this.StateExtra(t)}
                     </div>
 
-                    {(t.status == 4 || t.status == 5) &&
+                    {t.sid!=""&&(t.status == 4 || t.status == 5) &&
                       <div className="stu-body">
                         {t.sid != null &&
-                          <StuMethods sid={t.sid} tid={this.usr.uid} pid={t.id} freshList={this.props.freshList} />
+                          <StuMethods sid={t.sid} tid={this.usr.uid} pid={t.id}  />
                         }
                         {
                           t.sid == null && this.props.checkList.map((x) => { return x.id }).indexOf(t.id) >= 0 &&

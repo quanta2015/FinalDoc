@@ -2,9 +2,9 @@
  * @Description: 
  * @version: 
  * @Author: queue
- * @Date: 2020-07-30 20:02:23
+ * @Date: 2020-08-01 16:29:48
  * @LastEditors: queue
- * @LastEditTime: 2020-08-01 16:39:01
+ * @LastEditTime: 2020-08-01 16:41:11
  */ 
 import { Component } from 'preact';
 import { createFromIconfontCN } from '@ant-design/icons';
@@ -16,7 +16,7 @@ const IconFont = createFromIconfontCN({
 });
 import style from '../index.scss';
 
-class ReWrite extends Component {
+class DeleteSpan extends Component {
 
   constructor(props) {
     super(props)
@@ -34,12 +34,12 @@ class ReWrite extends Component {
             onMouseEnter={() => { this.setState({ show: true }) }}
             onMouseLeave={() => { this.setState({ show: false }) }}
           >
-            <IconFont type="iconwrite" />
+            <IconFont type="iconiconset0127" />
           </span>
           {
             this.state.show &&
             <span className="tip">
-              重新编辑
+              解绑该学生
         </span>
           }
         </span></span>
@@ -48,4 +48,4 @@ class ReWrite extends Component {
   }
 }
 
-export default ReWrite;
+export default DeleteSpan;
