@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { MENU_MAIN_S, STU_NAV_STAGE } from '../../constant/data';
-import logo from '../../static/public/scl_logo.png';
+import logo from '../../static/public/logo.svg';
 import './index.scss'
 
 const getStage = (topicList, status) => {
