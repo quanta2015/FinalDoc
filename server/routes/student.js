@@ -110,8 +110,8 @@ router.post('/delFile', async (req, res) => {
 });
 
 /**
- * @description: 查看指导意见
- * @param {sid: str} 
+ * @description: 查看指导日志
+ * @param { sid: str } 
  * @return: 
  */
 router.post('/getGuidance', async(req, res) => {
@@ -331,6 +331,43 @@ router.post('/getOpenScore', async(req, res) => {
     callProc(sql, params, res, (r) => {
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功获取开题答辩成绩' });
+    })
+})
+
+// 增加指导日志
+// params: { pid: int, time: date, way: str, opinion: str }
+router.post('/insertGuidance', async(req, res) => {
+    let sql = `CALL PROC_INSERT_GUIDANCE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc_N(sql, params, 2, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功插入指导日志' });
+    })
+})
+
+// 修改指导日志
+// params: { pid: int, time: date, way: str, opinion: str }
+router.post('/updateGuidance', async(req, res) => {
+    let sql = `CALL PROC_UPDATE_GUIDANCE(?)`;
+    let params = req.body;
+    params.time = new Date();
+    console.log(params);
+    callProc_N(sql, params, 2, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功修改指导日志' });
+    })
+})
+
+// 删除指导日志
+// params: { id: int }
+router.post('/delGuidance', async(req, res) => {
+    let sql = `CALL PROC_DELETE_GUIDANCE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc_N(sql, params, 2, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功删除指导日志' });
     })
 })
 
