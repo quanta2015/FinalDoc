@@ -148,6 +148,7 @@ export default class TopicPG extends Component {
                                             <FileUpload
                                                 type={item}
                                                 tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
+                                                disabled={this.selectTpInfo.status - 5 > 0 ? false : true}
                                                 afterUpdate={() => this.props.studentStore.getSelectTopic({ uid: this.usr.uid })}
                                                 delFile={() => this.props.studentStore.deleteFile({ type: item.type, tid: this.selectTpInfo.tid, sid: this.selectTpInfo.sid })}
                                             />
