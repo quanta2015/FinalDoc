@@ -370,7 +370,10 @@ export default class Detail extends Component {
 								{(this.state.own.sugg === null) && <span>无</span>}
 								{(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>}
 							</div>
-							<div class="dtl"><span class="expln">课题简介:</span>{this.state.own.content}</div>
+							<div class="dtl">
+								<span class="expln">课题简介:</span>
+								<div className="expln_cnt">{this.state.own.content}</div>
+							</div>
 						</div>
 					</div>
 				</Modal>

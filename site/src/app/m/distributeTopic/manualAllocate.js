@@ -209,7 +209,7 @@ export default class ManualAllocate extends Component {
                 */
                 // 如果未审核课题数量为0，说明已将课题全部分配，审核课题老师已确定
                 if (this.distributeTopic.topic_info.length === 0) {
-                    const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0})
+                    const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0 })
                     if (res.code === 200) {
                         console.log("站内信发送成功")
                     } else {
@@ -278,7 +278,7 @@ export default class ManualAllocate extends Component {
                 render: (areas, record) => (
                     <>
                         {
-                            // console.log(areas),
+                            console.log(areas),
                             areas.map((tag, i) => {
                                 return (
                                     <Tag color={record.color[i]} >
@@ -385,7 +385,10 @@ export default class ManualAllocate extends Component {
                             <div class="u-tea-name">{this.state.own.tName}</div>
                         </div>
                         <div class="m-cont">
-                            <div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.state.own.content}</div>
+                            <div class="dtl">
+                                <span class="expln">课题简介:</span>
+                                <div className="expln_cnt">{this.state.own.content}</div>
+                            </div>
                         </div>
 
                     </div>
