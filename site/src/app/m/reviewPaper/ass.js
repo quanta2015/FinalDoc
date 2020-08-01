@@ -478,7 +478,7 @@ export default class Ass extends Component {
                                            <tr>
                                             <td width="50" class='box'>{i+1}</td>
                                         <td width="200" class='box'>{item.time[0]}~{item.time[1]}</td>
-                                            <td width="500">{item.content}dfsg的方式发生的范德萨根深蒂固水电费 的所得税 </td>
+                                            <td width="500">{item.content}</td>
 
 
                                            </tr>
