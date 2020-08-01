@@ -26,6 +26,7 @@ class NavAdmin extends BaseActions {
         title: "1、选题阶段",
         content: ["指定命题", "分配命题", "审核命题", "双选命题"],
         active: 2,
+        navOver: false,
       },
     };
   }
@@ -57,25 +58,44 @@ class NavAdmin extends BaseActions {
       route(path);
     });
   };
+  goSettingSchedule = () => {
+    route("/admin_schedule_set");
+  };
 
   gohome = () => {
     route("/m");
   };
   logout = () => {
     this.props.userStore.logout();
+  };
+  changeNav = () => {
+    this.setState({
+      navOver: true,
+    });
+  };
+  returnNav = () => {
+    setTimeout( ()=> {this.setState({
+      navOver: false,
+    })},250)
    
-  }
+  };
 
   render() {
     let cur = this.state.cur;
     let status = this.state.status;
+    let navOver = this.state.navOver;
     return (
       <div data-component="navAdmin">
         <div className="g-admin-nav">
           <div className="g-logo">
             <div onClick={this.gohome}>毕业设计命题系统</div>
           </div>
-          <div className="g-st">
+          <div
+            className="g-st"
+            onClick={this.goSettingSchedule}
+            onMouseOver={this.changeNav}
+            onMouseLeave={this.returnNav}
+          >
             {this.state.status.content.map((c, i) => {
               return (
                 <>
@@ -89,6 +109,14 @@ class NavAdmin extends BaseActions {
                 </>
               );
             })}
+            {navOver && (
+              <div className="m-admin-nav-over">
+                <div className="z-admin-nav-over">
+                <BankOutlined className="z-icon" />
+                  <span className="z-admin-nav-over-span">设定进度</span>
+                </div>
+              </div>
+            )}
           </div>
           <div className="g-menu">
             {ADMIN_NAV_DATA.map((item, i) => (
@@ -125,7 +153,7 @@ class NavAdmin extends BaseActions {
           </div>
           <div className="g-info">
             <div className="m-info">
-              <div className="m-logout"  onClick={this.logout}>
+              <div className="m-logout" onClick={this.logout}>
                 <span>退出登录</span>
               </div>
               <div className="g-info-typeline">

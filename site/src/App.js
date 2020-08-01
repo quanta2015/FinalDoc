@@ -85,7 +85,7 @@ class App extends Component {
           <AsyncRoute   path='/admin_mid_check' getComponent={ () => import('./app/admin/MidCheck/index.js').then(module => module.default) }/>
           <AsyncRoute   path='/admin_debate_review' getComponent={ () => import('./app/admin/ReviewDebate/index.js').then(module => module.default) }/>
           <AsyncRoute   path='/admin_score_analysis' getComponent={ () => import('./app/admin/ScoreAnalysis/index.js').then(module => module.default) }/>
-         
+          <AsyncRoute path='/admin_schedule_set' getComponent={() => import('./app/admin/timeline/index').then(module => module.default)} />
           </Router>
         </div>
       </div>
