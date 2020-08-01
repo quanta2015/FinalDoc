@@ -52,26 +52,29 @@ export default class Home extends Component {
     };
     render() {
         return (
-            <div className="g-dt">
-                <Tabs defaultActiveKey="1">
-                    <TabPane tab="分配课题" key="1">
-                        <div className="m-choose">
-                            <Radio.Group onChange={this.onChange} value={this.state.value}>
-                                <Radio value={1}>自动分配</Radio>
-                                <Radio value={2}>手动分配</Radio>
-                            </Radio.Group>
-                        </div>
-                        {(this.state.value === 1) &&
-                            <AutoAllocate />
-                        }
-                        {(this.state.value === 2) &&
-                            <ManualAllocate />
-                        }
-                    </TabPane>
-                    <TabPane tab="审核详情" key="2">
-                        <Detail />
-                    </TabPane>
-                </Tabs>
+            <div className="g-m-cnt">
+                <div className="g-m-title">分配审核选题</div>
+                <div className="g-m g-dt">
+                    <Tabs defaultActiveKey="1">
+                        <TabPane tab="分配课题" key="1">
+                            <div className="m-choose">
+                                <Radio.Group onChange={this.onChange} value={this.state.value}>
+                                    <Radio value={1}>自动分配</Radio>
+                                    <Radio value={2}>手动分配</Radio>
+                                </Radio.Group>
+                            </div>
+                            {(this.state.value === 1) &&
+                                <AutoAllocate />
+                            }
+                            {(this.state.value === 2) &&
+                                <ManualAllocate />
+                            }
+                        </TabPane>
+                        <TabPane tab="审核详情" key="2">
+                            <Detail />
+                        </TabPane>
+                    </Tabs>
+                </div>
             </div>
         );
     }

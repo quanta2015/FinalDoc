@@ -10,22 +10,6 @@ import './index.scss'
 import LogRecord from '../../../component/LogRecord';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
-//传入列表，返回当前所处阶段
-let getStage = (status, info) => {
-    let tmp = Math.abs(status) - 7;
-    if (tmp < 0 && !info) {
-        return -1;
-    } else if (tmp < 0 && info) {
-        return 0;
-    } else if (tmp < 2 && info) {
-        return tmp + 1;
-    } else if (tmp < 5 && info) {
-        return tmp;
-    } else if (tmp === 5 && info) {
-        return tmp - 1;
-    }
-}
-
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicPG extends Component {
@@ -63,6 +47,7 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.currState);
     }
 
+
     componentDidMount() {
         //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
         if (!this.usr.uid) {
@@ -71,8 +56,12 @@ export default class TopicPG extends Component {
         if (!this.selectTpInfo) {
             route('/s_selectTL')
         }
-        this.props.studentStore.getAllStates()
-        this.props.studentStore.getCurrentState()
+        if (this.usr.uid) {
+            this.props.studentStore.getAllStates({ uid: this.usr.uid })
+            this.props.studentStore.getCurrentState({ uid: this.usr.uid })
+            this.props.studentStore.getOpenScore({ uid: this.usr.uid })
+        }
+
 
     }
 
@@ -97,8 +86,8 @@ export default class TopicPG extends Component {
             showLog: false,
         })
     }
+
     render() {
-        const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         const TASK_FINISH = 6;
         const GRADE_FINISH = 20;
         const status = this.selectTpInfo.status
@@ -112,48 +101,35 @@ export default class TopicPG extends Component {
                     <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
                     <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                <div className="m-cont">
-                    <h2 className="u-title">
-                        论文进度
+                {this.timeList && this.timeList.length !== 0 && this.currState[0] &&
+                    < div className="m-cont">
+                        <h2 className="u-title">
+                            论文进度
                         <Tooltip placement="right" title={text}>
-                            <QuestionCircleOutlined style={{ fontSize: 16, color: '#999', paddingLeft: 5 }} />
-                        </Tooltip>
-                    </h2>
-                    <div>
-                        <ul className="m-time-line">
-
-                            {/* {
-                                this.timeList.map((item, id) =>
-                                    <li className={id <= currStage ? currStage === id ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
-                                        <div>
-                                            <h3>{item.time}</h3>
-                                            {
-                                                ((item.title === '任务书' && id >= TASK_FINISH) || (item.title === '成绩审定' && id >= GRADE_FINISH)) ?
-                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                    <p>{item.title}</p>
-                                            }
-                                        </div>
-                                    </li>
-                                )
-                            } */}
-                            {
-                                this.currState[0] &&
-                                this.timeList.map((item) =>
-                                    <li className={item.state <= this.currState[0].state ? this.currState[0].state === item.state ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
-                                        <div>
-                                            <h3>{item.time}</h3>
-                                            {
-                                                ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
-                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                    <p>{item.title}</p>
-                                            }
-                                        </div>
-                                    </li>
-                                )
-                            }
-                        </ul>
+                                <QuestionCircleOutlined style={{ fontSize: 16, color: '#999', paddingLeft: 5 }} />
+                            </Tooltip>
+                        </h2>
+                        <div>
+                            <ul className="m-time-line">
+                                {
+                                    this.currState[0] &&
+                                    this.timeList.map((item) =>
+                                        <li className={item.time <= this.currState[0].time ? this.currState[0].time === item.time ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
+                                            <div>
+                                                <h3>{item.time}</h3>
+                                                {
+                                                    ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
+                                                        <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                        <p>{item.title}</p>
+                                                }
+                                            </div>
+                                        </li>
+                                    )
+                                }
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                }
                 <div className="m-cont">
                     <h2 className="u-title">材料递交</h2>
                     <Button className="u-log" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
@@ -172,6 +148,9 @@ export default class TopicPG extends Component {
                                             <FileUpload
                                                 type={item}
                                                 tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
+                                                disabled={this.selectTpInfo.status - 5 > 0 ? false : true}
+                                                afterUpdate={() => this.props.studentStore.getSelectTopic({ uid: this.usr.uid })}
+                                                delFile={() => this.props.studentStore.deleteFile({ type: item.type, tid: this.selectTpInfo.tid, sid: this.selectTpInfo.sid })}
                                             />
                                         </div>
                                     )}
@@ -180,24 +159,42 @@ export default class TopicPG extends Component {
                         )}
                     </div>
                 </div>
-                <div className="m-op-score">
-                    <div className="m-nm-lst">
-                        {STU_OP_SCORE.map((item) =>
-                            <div className="u-nm-itm">
-                                {item.name}
-                            </div>
-                        )}
-                    </div>
-                    <div className="m-sc-lst">
-                        {this.opScore.map((item) =>
+                {
+                    this.opScore.length > 0 &&
+                    <div className="m-op-score">
+                        <div className="m-nm-lst">
+                            {STU_OP_SCORE.map((item) =>
+                                <div className="u-nm-itm">
+                                    {item.name}
+                                </div>
+                            )}
+                        </div>
+                        <div className="m-sc-lst">
                             <div className="u-sc-itm">
-                                <span className="score">
-                                    {item.score}
-                                </span>
+                                {this.opScore[0].t_reply_score ?
+                                    <span className="score">
+                                        {this.opScore[0].t_reply_score}
+                                    </span> :
+                                    <span className="z-none">
+                                        尚未录入
+                                    </span>
+                                }
                             </div>
-                        )}
+
+                            <div className="u-sc-itm">
+                                {this.opScore[0].g_reply_score ?
+                                    <span className="score">
+                                        {this.opScore[0].g_reply_score}
+                                    </span> :
+                                    <span className="z-none">
+                                        尚未录入
+                                    </span>
+                                }
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
+
             </div >
         );
     }

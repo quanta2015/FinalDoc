@@ -1,0 +1,88 @@
+[data-component="taskformtwo"]{
+  
+  .taskformtwo{
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .task-steps{
+      padding-bottom: 20px;
+      border-bottom: 2px solid #eee;
+
+      .m-step-title{
+        font-weight: 600;
+        font-size: small;
+      }
+    }
+
+    .task-content{
+      padding: 20px;
+      margin: 10px 0;
+      height: 100%;
+      overflow-y: auto;
+
+      .task-cell{
+        display: flex;
+        flex-direction: column;
+
+        .spacer-block{
+          height: 20px;
+        }
+
+        .task-cell-title{
+          padding: 10px;
+          font-size: 16px;
+          font-weight: 600;
+  
+          .redfont{
+            color: red;
+            padding-right: 10px;
+          }
+        }
+
+        .cell-times{
+          display: flex;
+          flex-direction: column;
+
+          .times-line{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            .time-line-cell{
+              display: flex;
+              flex-direction: column;
+              height: 50px;
+            }
+          }
+        }
+
+        .err-tip{
+          color: red;
+          font-size: 10px;
+        }
+      }
+
+      .hided{
+        display: none;
+      }
+    }
+
+    .task-btns{
+      display: flex;
+      flex-direction: row-reverse;
+
+      .task-btn{
+        width: 100px;
+        margin: 0 20px;
+        
+      }
+    }
+  }
+  
+  .warning{
+    color: red;
+  }
+}

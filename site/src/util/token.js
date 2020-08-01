@@ -29,6 +29,7 @@ export const saveUser = (data) => {
 }
 
 export const removeUser = () => {
+  console.log("删除本地用户信息")
   window.localStorage.removeItem(USER_KEY)
 }
 

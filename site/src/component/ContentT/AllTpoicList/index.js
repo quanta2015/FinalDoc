@@ -50,7 +50,7 @@ export default class AllTopicList extends BaseActions{
       dataIndex:'area',
       key:'area',
       render:(r) => (
-        r.map((x)=>
+        r.sort(this.myTagsort).map((x)=>
           <Tag color={x.color}>
             {x.name}
           </Tag>
@@ -58,6 +58,10 @@ export default class AllTopicList extends BaseActions{
       )
     }
   ]
+
+  myTagsort(a,b){
+    return a.name.localeCompare(b.name,'zh-CN')
+  }
 
   mysort(arr){
     let uid = this.props.uid;

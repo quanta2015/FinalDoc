@@ -14,7 +14,7 @@ const isValidFormat = (formatList, fileFormat) => {
     return true;
 }
 
-@inject('userStore', 'studentStore')
+@inject('userStore')
 @observer
 class FileUpload extends Component {
     state = {
@@ -50,6 +50,9 @@ class FileUpload extends Component {
                 fileUrl: info.file.response.data
             })
             message.success(`成功上传文件《${info.file.name}》`)
+            if (this.props.afterUpdate) {
+                this.props.afterUpdate();
+            }
             if(!!this.props.freshOuter){
                 this.props.freshOuter();
             }
@@ -107,20 +110,23 @@ class FileUpload extends Component {
     }
 
     handleDel = () => {
-        let params = { type: this.props.type.type, tid: this.props.tpInfo.tid, sid: this.props.tpInfo.sid };
-        this.props.studentStore.deleteFile(params)
-            .then(r => {
-                if (r.code === 200) {
-                    this.props.studentStore.getSelectTopic({ uid: this.props.tpInfo.sid });
-                    this.setState({
-                        fileUrl: "",
-                        showDel: false,
-                        loading: false
-                    })
-                } else {
-                    message.error('网络错误');
-                }
-            })
+        if (this.props.delFile) {
+            this.props.delFile()
+                .then(r => {
+                    if (r.code === 200) {
+                        if (this.props.afterUpdate) {
+                            this.props.afterUpdate();
+                        }
+                        this.setState({
+                            fileUrl: "",
+                            showDel: false,
+                            loading: false
+                        })
+                    } else {
+                        message.error('网络错误');
+                    }
+                })
+        }
     }
 
     render() {
@@ -136,10 +142,11 @@ class FileUpload extends Component {
                 < div className="ant-upload-text" >上传</div>
             </div>
         )
+        console.log(this.props.disabled);
         return (
             <div className="g-upload">
                 <div
-                    className={fileUrl ? "m-filewp z-submit-wp" : "m-filewp"}
+                    className={!this.props.disabled ? fileUrl ? "m-filewp z-submit-wp" : "m-filewp" : "m-filewp z-disable-wp"}
                     onMouseOver={this.handleHover}
                     onMouseLeave={this.handleMouseOut}
                 >
@@ -153,15 +160,16 @@ class FileUpload extends Component {
                         data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid } }}
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
+                        disabled={this.props.disabled}
                     >
                         {(fileUrl && !loading) ? <CheckOutlined className="z-success"/> : uploadButton}
                     </Upload>
                 </div>
                 {   fileUrl ?
                     <Tooltip placement="bottom" title={text}>
-                        <p className="z-submit-p" onClick={this.downloadFile}>{fileType.name}</p>
+                        <p className="z-submit-p u-file-name" onClick={this.downloadFile}>{fileType.name}</p>
                     </Tooltip> :
-                    <p>{fileType.name}</p>
+                    <p className="u-file-name">{fileType.name}</p>
                 }
             </div>
         )

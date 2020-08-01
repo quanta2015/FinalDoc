@@ -5,6 +5,7 @@ import axios from 'axios'
 import { message } from 'antd'
 
 import token from '../util/token.js'
+import { route } from 'preact-router'
 
 var ROLE = 2
 
@@ -18,6 +19,15 @@ class User extends BaseActions {
   //   maj: '物联网软工系',
   //   role:2,    // 0: teacher 1:student 2: manage
   // }
+
+  @observable
+  //站内信
+  msgList = []
+
+
+  @observable
+  //通知列表 index 未读通知所处位置
+  noticeList = { index: null, data: [] }
 
   @action
   getUser() {
@@ -71,6 +81,85 @@ class User extends BaseActions {
       return false;
     })
   }
+
+  @action
+  async getAllMessages(params) {
+    const r = await this.post(urls.API_SYS_GET_MESSAGES, params)
+    if (r && r.code === 200) {
+      if (r.data) {
+        runInAction(() => {
+          this.msgList = r.data
+        })
+        return r.data
+      }
+    } else {
+      message.error("网络错误")
+    }
+    return r
+  }
+
+  @action
+  async readMessages(params) {
+    const r = await this.post(urls.API_SYS_READ_MESSAGES, params)
+    if (r && r.code === 200) {
+      return true;
+    }
+  }
+
+  @action
+  setReadStatus(hasUnread) {
+    this.hasUnread = hasUnread
+  }
+
+  @action
+  // r.data: [[{已读公告1},{}...],[{未读公告1},{}...]]
+  async getNoticeList() {
+    let params = { uid: this.usr.uid, role: this.usr.role };
+    const r = await this.post(urls.API_SYS_GET_NOTICE, params);
+    if (r && r.code === 200 && r.data) {
+      let unreadIndex = r.data[1].length - 1;
+      runInAction(() => {
+        this.noticeList.index = unreadIndex;
+        this.noticeList.data = [...r.data[1], ...r.data[0]];
+      })
+      return (r.data[1].length + r.data[0].length)
+    } else {
+      // message.error("网络错误")
+    }
+  }
+
+  @action
+  async readNotice(aid) {
+    let params = { uid: this.usr.uid, ann_id: aid }
+    const r = await this.post(urls.API_SYS_READ_NOTICE, params);
+    if (r && r.code === 200) {
+      return true;
+    }
+  }
+
+  //状态通知 一对多
+  //params: { from: str, to: str, context: str }
+  //from:id
+  // to:admin 管理员; allTea 全体教师; audTea 本系审核教师; topTea 本系课题对应教师; allStu 全体学生; topStu 本系学生
+  @action
+  async insertMessageToMany(param) {
+    return await this.post(urls.API_SYS_POST_MESSAGETOMANY, param)
+  }
+  //状态通知 一对一
+  @action
+  async insertMessageToOne(param) {
+    return await this.post(urls.API_SYS_POST_MESSAGETOONE, param) 
+  }
+
+  @action
+  logout() {
+    token.removeUser();
+    this.usr ={}
+    route("/")
+    
+  }
+  
+
 }
 
 export default new User()

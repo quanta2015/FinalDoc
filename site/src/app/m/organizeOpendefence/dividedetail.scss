@@ -1,14 +1,3 @@
-table,
-tbody.ant-table-tbody {
-    display: flex;
-    flex-direction: column;
-}
-
-.ant-table-row,
-.ant-table-thead>tr {
-    display: flex;
-}
-
 .g-div-dtl{
 
     .m-table{
@@ -16,17 +5,19 @@ tbody.ant-table-tbody {
         text-align: center;
     }
 
-
-    .ant-table-cell:nth-last-child(5) {
+  .ant-table-cell:nth-last-child(6) {
         width: 100px;
+    }
+    .ant-table-cell:nth-last-child(5) {
+        width: 120px;
     }
 
     .ant-table-cell:nth-last-child(4) {
-    width: 120px;
+    width: 310px;
     }
 
     .ant-table-cell:nth-last-child(3) {
-    width: 380px;
+    width:  120px;
     }
  
     .ant-table-cell:nth-last-child(2) {
@@ -38,11 +29,16 @@ tbody.ant-table-tbody {
     }
 
     .ant-table-placeholder .ant-table-cell{
-    width: 800px;
+    width: 850px;
     }
 
+    }
+   
+
+
 }
-    .m-modal .table{
+
+ .m-div-dtl-modal .table{
 
     .ant-table-cell {
     text-align: center;
@@ -70,8 +66,3 @@ tbody.ant-table-tbody {
 
 
 }
-
-
-
-}
-

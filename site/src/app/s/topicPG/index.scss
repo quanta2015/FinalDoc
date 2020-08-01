@@ -156,6 +156,7 @@
         position: relative;
         top: 10px;
         .m-nm-lst {
+            
             display: inline-block;
             // text-align: right;
             .u-nm-itm {
@@ -171,10 +172,17 @@
                 position: relative;
                 left: 32px;
                 .score {
-                    font-family: Georgia, "Times New Roman", Times, serif;
-                    font-weight: bold;
-                    font-size: 20px;
+                    font: {
+                        family: Georgia, "Times New Roman", Times, serif;
+                        weight: bold;
+                        size: 20px;
+                    }
                     color: #ff653e;
+                }
+                .z-none {
+                    position: relative;
+                    right: 30px;
+                    color: #333;
                 }
             }
         }

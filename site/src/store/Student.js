@@ -19,54 +19,14 @@ class Student extends BaseActions {
     @observable
     //时间轴内容
     timeList = []
-    // timeList = [
-    //     { title: '任务书', type: 'f_task', time: '2020-10-08' },
-    //     { title: '开题中期', time: '2020-12-12' },
-    //     { title: '论文审核', time: '2020-12-28' },
-    //     { title: '论文答辩', time: '2021-04-08' },
-    //     { title: '成绩审定', type: 'f_score_check', time: '2021-05-02' }
-    // ]
 
     @observable
     //模板文件
-    docTemplate = [{
-        name: '开题中期',
-        file: [
-            { title: '开题报告', link: '' },
-            { title: '外文文献翻译', link: '' },
-            { title: '文献综述', link: '' },
-            { title: '中期检查表', link: '' },
-        ]
-    }, {
-        name: '论文定稿',
-        file: [
-            { title: '论文格式', link: '' },
-            { title: '作品说明书', link: '' },
-            { title: '诚信承诺书', link: '' },
-        ]
-    }, {
-        name: '论文答辩',
-        file: [
-            { title: '评审答辩成绩表', link: '' },
-            { title: '延缓答辩申请表', link: '' }
-        ]
-    }
-    ]
+    docTemplate = []
 
     @observable
     //开题答辩成绩
-    opScore = [
-        { score: 83, type: 'op_ins_score' },
-        { score: 80, type: 'op_grp_score' }
-    ]
-
-    @observable
-    //当前所处阶段细分
-    currStage = {
-        name: '选题阶段',
-        index: 1,
-        stage: ['发布课题', '选择课题', '双选成功']
-    }
+    opScore = []
 
     @observable
     //当前阶段（时间轴）
@@ -77,15 +37,23 @@ class Student extends BaseActions {
     insLog = []
 
     @observable
-    //通知列表 index 未读通知所处位置
-    noticeList = { index: null, data: [] }
+    // 答辩信息
+    replyList = []
 
-    @observable
-    //站内信
-    msgList = []
-
-    @observable
-    hasUnread = false
+    @action
+    initStuStore() {
+        runInAction(() => {
+            this.topInfo = {};
+            this.topicList = {};
+            this.selectTpInfo = {};
+            this.timeList = [];
+            this.docTemplate = [];
+            this.opScore = [];
+            this.currState = {};
+            this.insLog = [];
+            this.replyList = [];
+        })
+    }
 
     @action
     async getTopInfo(params) {
@@ -123,7 +91,7 @@ class Student extends BaseActions {
                     })
 
                     list.push({
-                        key: item.key, id: item.id, instructor: item.instructor, topic: item.topic, content: item.content,
+                        key: item.key, id: item.id, tid: item.tid, instructor: item.instructor, topic: item.topic, content: item.content,
                         phone: item.phone, status: item.status, status_: item.status_, category: item.category, sid: item.sid,
                         areas: areas,
                         color: color
@@ -263,31 +231,31 @@ class Student extends BaseActions {
     }
 
     @action
-    async getAllStates() {
-        const r = await this.post(urls.API_STU_GET_ALLSTATES, null)
+    async getAllStates(params) {
+        const r = await this.post(urls.API_STU_GET_ALLSTATES, params)
         if (r && r.code === 200) {
             let lst = []
             if (r.data) {
-                r.data.map((item) => {
-                    if (item.title === "任务书") {
+                r.data.map((item,index) => {
+                    if (item.state_name === "任务书") {
                         lst.push({
-                            state: item.state,
-                            title: item.title,
-                            time: item.time,
+                            state: index,
+                            title: item.state_name,
+                            time: item.state_end,
                             type: 'f_task'
                         })
-                    } else if (item.title === "成绩审定") {
+                    } else if (item.state_name === "成绩审定") {
                         lst.push({
-                            state: item.state,
-                            title: item.title,
-                            time: item.time,
+                            state: index,
+                            title: item.state_name,
+                            time: item.state_end,
                             type: 'f_score_check'
                         })
                     } else {
                         lst.push({
-                            state: item.state,
-                            title: item.title,
-                            time: item.time,
+                            state: index,
+                            title: item.state_name,
+                            time: item.state_end,
                         })
                     }
                 })
@@ -297,92 +265,59 @@ class Student extends BaseActions {
             })
             return lst
         } else {
-            message.error('网络错误')
+            // message.error('网络错误')
         }
         return r
     }
 
     @action
-    async getCurrentState() {
-        const r = await this.get(urls.API_STU_GET_CURSTATE)
+    async getCurrentState(params) {
+        const r = await this.post(urls.API_STU_GET_CURSTATE,params)
         if (r && r.code === 200) {
             runInAction(() => {
                 this.currState = r.data
             })
             return r.data
         } else {
+            // message.error('网络错误')
+        }
+        return r
+    }
+
+    @action
+    async getTempFileList() {
+        const r = await this.post(urls.API_STU_GET_TEMP_FILE, null);
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.docTemplate = r.data;
+            })
+        } else {
             message.error('网络错误')
         }
-        return r
     }
 
     @action
-    // r.data: [[{已读公告1},{}...],[{未读公告1},{}...]]
-    async getNoticeList(params) {
-        const r = await this.post(urls.API_STU_GET_NOTICE, params);
-        if (r && r.code === 200 && r.data) {
-            let unreadIndex = r.data[1].length - 1;
+    async getOpenScore(params) {
+        const r = await this.post(urls.API_STU_GET_OPSCORE, params)
+        if (r && r.code === 200) {
             runInAction(() => {
-                this.noticeList.index = unreadIndex;
-                this.noticeList.data = [...r.data[1], ...r.data[0]];
+                this.opScore = r.data
             })
-            return (r.data[1].length + r.data[0].length)
         } else {
-            // message.error("网络错误")
+            message.error('网络错误')
         }
     }
 
     @action
-    async readNotice(params) {
-        const r = await this.post(urls.API_STU_READ_NOTICE, params);
+    async getReplyInfo(params) {
+        const r = await this.post(urls.API_STU_GET_REPLY_INFO, params);
         if (r && r.code === 200) {
-            return true;
-        }
-    }
-
-    @action
-    async getAllMessages(params) {
-        const r = await this.post(urls.API_STU_GET_MESSAGES, params)
-        if (r && r.code === 200) {
-            if (r.data) {
-                let lst = []
-                r.data.map((item) => {
-                    item.map((e) => {
-                        lst.push({
-                            time: e.time,
-                            context: e.msg_context,
-                            check_flag: e.check_flag
-                        })
-                    })
-                })
-                runInAction(() => {
-                    this.msgList = lst
-                })
-                return lst
-
-                runInAction(() => {
-                    this.msgList = r.data
-                })
-                return r.data
-            }
-
+            runInAction(() => {
+                this.replyList = r.data;
+            })
         } else {
-            message.error("网络错误")
+            message.error('网络错误')
         }
-        return r
-    }
-
-    @action
-    async readMessages(params) {
-        const r = await this.post(urls.API_STU_READ_MESSAGES, params)
-        if (r && r.code === 200) {
-            return true;
-        }
-    }
-
-    @action
-    setReadStatus(hasUnread) {
-        this.hasUnread = hasUnread
     }
 }
 

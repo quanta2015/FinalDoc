@@ -94,6 +94,23 @@ export default class AutoAllocate extends Component {
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
             await this.props.manageStore.getCheckList({"ide":this.usr.uid})
             await this.props.manageStore.getAuditCount({"ide":this.usr.uid})
+
+            // 状态通知
+            /* • 系主任A分配课题审核
+                始：系主任A
+                终：所有被分配到的老师
+                内容：您已被分配审核课题，请尽快完成   => 课题审核已分配
+            */
+           // 如果未审核课题数量为0，说明已将课题全部分配，审核课题老师已确定
+           if(this.distributeTopic.topic_info.length === 0){
+               const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0})
+                if(res.code === 200){
+                    console.log("站内信发送成功")
+                }else{
+                    console.log("站内信发送失败")
+                }
+           }
+
         } else {
             message.info("分配失败！请重试")
         }

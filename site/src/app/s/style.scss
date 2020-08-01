@@ -1,105 +1,18 @@
 .g-s {
     padding: 16px;
     width: 950px;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
-    .m-banner {
-        display: flex;
-        position: relative;
-        height: 94px;
-        padding: 5px 15px;
-        background-color: #e9f1f8;
-        border-top: 1px solid #d4d7da;
-        border-left: 1px solid #d4d7da;
-        border-right: 1px solid #d4d7da;
-
-        .u-title {
-            align-self: flex-end;
-            font-size: 24px;
-            font-weight: bold;
-            color: #336699;
-        }
-
-        .m-top-list {
-            position: absolute;
-            right: 25px;
-            width: 60%;
-            list-style: square;
-            align-self: center;
-        }
-
-        .m-top-item {
-            display: flex;
-        }
-
-        .u-top-title {
-            display: block;
-            width: 65%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #1d1d1d;
-            cursor: pointer;
-        }
-
-        .u-top-date {
-            margin-left: 15px;
-            font-family: Georgia, "Times New Roman", Times, serif;
-        }
+    &::-webkit-scrollbar {
+        width: 10px;
+        background-color: #eee;
     }
 
-    .m-not-wp {
-        position: relative;
-        border: 1px solid #dddcdc;
-        height: 245px;
-        padding: 0 15px;
-
-        .m-not-list {
-            padding-left: 0;
-            list-style: none;
-        }
-
-        .m-not-item {
-            display: flex;
-            padding: 10px 0;
-            border-top: 1px solid #eee;
-        }
-
-        .u-not-date {
-            font-family: Georgia, "Times New Roman", Times, serif;
-            color: #ff6600;
-            width: 80px;
-        }
-
-        .u-not-title {
-            display: block;
-            max-width: 85%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #000;
-            cursor: pointer;
-        }
-
-        .z-read {
-            color: #999;
-        }
-
-        .m-status {
-            color: #fff;
-            padding: 0 10px 0 5px;
-            font-size: 18px;
-            line-height: 18px;
-        }
-
-        .z-unread {
-            color: #428bca;
-        }
-
-        .m-page {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-        }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #e3e3e3;
     }
 
     .m-other {
@@ -114,6 +27,7 @@
         }
 
         .m-card {
+            position: relative;
             width: 450px;
             min-height: 274px;
             padding: 10px 15px 5px 15px;
@@ -160,6 +74,12 @@
                 }
             }
         }
+
+        .z-empty {
+            position: absolute;
+            top: 30%;
+            left: 28%;
+        }
     }
 
     .m-tmplate {
@@ -188,24 +108,5 @@
         .u-tmp-title span {
             font-family: Georgia, "Times New Roman", Times, serif;
         }
-    }
-}
-
-.g-dialog {
-    // .ant-modal-body {
-    //     min-height: 550px;
-    // }
-
-    .u-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
-        text-align: center;
-    }
-
-    .u-time {
-        margin-bottom: 16px;
-        text-align: center;
-        font-family: Georgia, "Times New Roman", Times, serif;
     }
 }

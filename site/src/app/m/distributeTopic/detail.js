@@ -3,6 +3,9 @@ import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './detail.scss';
 import { Table, Tag, Space, message, Modal, Button, Descriptions, Input, Tooltip, Popconfirm } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 import { SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
 
@@ -130,6 +133,24 @@ export default class Detail extends Component {
 		});
 	};
 
+	showConfirm = () => {
+		confirm({
+			title: <div style={{ fontSize: '20px' }}><br />确认后，不能再次发布！<br /><br /></div>,
+			icon: <ExclamationCircleOutlined style={{ fontSize: '28px', paddingTop: '30px', paddingLeft: '30px' }} />,
+			okText: '确认',
+			cancelText: '取消',
+			width: 500,
+
+			onOk: () => {
+				console.log('OK');
+				this.release()
+			},
+			onCancel() {
+				console.log('Cancel');
+			},
+		});
+	}
+
 	release = async () => {
 		let res = await this.props.manageStore.getRelease({ "ide": this.usr.uid });
 		if (res && res.code === 200) {
@@ -139,13 +160,32 @@ export default class Detail extends Component {
 			await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
 			await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
 			await this.props.manageStore.getJudge({ "ide": this.usr.uid })
+
+			// 状态通知
+			/* • 系主任A发布B系的所有课题
+				终：所有课题对应的出题教师
+				内容：您的课题已被发布  => 课题已发布
+
+				终：所有管理员
+				内容：B系已发布课题
+
+				终：所有该系的学生
+				内容：您所在系课题已发布，请尽快选定课题  => 课题已发布
+
+				始：（例）课题A带学生B的出题老师C
+				终：学生B
+				内容：课题《A》双选成功  => 双选成功
+			*/
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "topTea", "context": "课题已发布", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "topStu", "context": "课题已发布", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "admin", "context": this.usr.maj + "已发布课题", "type": 0})
+			await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "okStu", "context": "双选成功", "type": 1})
+			
 		} else {
 			message.info("发布失败！请重试")
 		}
-		// this.setState({
-		// 	check_visible: false,
-		// });
 	}
+
 
 	render() {
 		let { filteredInfo } = this.state;
@@ -183,8 +223,8 @@ export default class Detail extends Component {
 					{ text: '未通过', value: 0 },
 					{ text: '通过', value: 1 },
 					{ text: '待审核', value: 2 },
-					{ text: '待学生选题',value: 3 },
-					{ text: '有学生选择',value: 4 },
+					{ text: '待学生选题', value: 3 },
+					{ text: '有学生选择', value: 4 },
 				],
 
 				filterMultiple: false,
@@ -204,13 +244,13 @@ export default class Detail extends Component {
 						tag = "通过";
 						color = "green";
 					}
-					else if(result === 0) {
+					else if (result === 0) {
 						tag = "未通过";
 						color = "red"
-					}else if(result === 3){
+					} else if (result === 3) {
 						tag = "待学生选题";
 						color = "blue"
-					}else if(result === 4){
+					} else if (result === 4) {
 						tag = "有学生选择";
 						color = "green"
 					}
@@ -249,15 +289,15 @@ export default class Detail extends Component {
 			tag = "通过";
 			color = "green";
 		}
-		else if (this.state.own.result === 0){
+		else if (this.state.own.result === 0) {
 			tag = "未通过";
 			color = "red"
 		}
-		else if (this.state.own.result === 3){
+		else if (this.state.own.result === 3) {
 			tag = "待学生选择";
 			color = "blue"
 		}
-		else if (this.state.own.result === 4){
+		else if (this.state.own.result === 4) {
 			tag = "有学生选择";
 			color = "green"
 		}
@@ -273,9 +313,9 @@ export default class Detail extends Component {
 						</Tooltip>
 					}
 					{(this.distributeTopic.auditCount.unAudit === 0 && this.distributeTopic.auditCount.unPassed === 0 && this.distributeTopic.auditCount.Passed !== 0 && this.distributeTopic.topic_info.length === 0 && this.distributeTopic.judge_info.flag === 0) &&
-						<Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消">
-							<Button type="primary" >发布课题</Button>
-						</Popconfirm>
+						// <Popconfirm placement="top" title={"确认后，不能再次发布"} onConfirm={this.release} okText="确认" cancelText="取消">
+						<Button type="primary" onClick={this.showConfirm}>发布课题</Button>
+						// </Popconfirm>
 					}
 					{
 
@@ -289,9 +329,7 @@ export default class Detail extends Component {
 						onRow={(record) => {
 							return {
 								onClick: () => {
-									console.log(record)
 									this.state.own = record
-									console.log(this.state.own)
 								}
 							}
 						}}
@@ -299,71 +337,43 @@ export default class Detail extends Component {
 						pagination={paginationProps}
 					/>
 				</div>
-
 				<Modal
 					title={null}
-					closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
-						fontSize: '28px',
-					}} />}
+					// closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
+					// 	fontSize: '28px',
+					// }} />}
+					closable={false}
 					visible={this.state.visible}
 					onCancel={this.handleCancel}
-					footer={null}
+					// footer={null}
+					footer={[<Button onClick={this.handleCancel}>关闭</Button>]}
 					width={900}
 					className="g-mod-close"
 				>
 					<div class="m-dtl-mod">
 						<div class="m-title">
 							<div class="u-type">{this.state.own.type}</div>
-							<div class="u-topic">{this.state.own.topicTOPIC}</div>
+							<Tooltip title={this.state.own.topicTOPIC}>
+								<div class="u-topic">{this.state.own.topicTOPIC}</div>
+							</Tooltip>
 							<div class="u-tea-name">{this.state.own.teaName}</div>
 						</div>
 						<div class="m-cont">
-							<div class="dtl"><span class="expln">课题简介:</span>{this.state.own.content}</div>
-							<div class="dtl"><span class="expln">审核建议:</span>
-								{
-									(this.state.own.sugg === null) && <span>无</span>
-								}
-								{
-									(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>
-								}
-							</div>
 							<div class="dtl"><span class="expln">审核状态:</span>
-								{
-									(this.state.own.result === 1) && <Tag color={"green"} >
-										通过
-									</Tag>
-								}
-								{
-									(this.state.own.result === 0) && <Tag color={"red"} >
-										未通过
-									</Tag>
-								}
-								{
-									(this.state.own.result === 2) && <Tag color={"blue"} >
-										待审核
-									</Tag>
-								}
-								{
-									(this.state.own.result === 3) && <Tag color={"blue"} >
-										待学生选择
-									</Tag>
-								}
-								{
-									(this.state.own.result === 4) && <Tag color={"green"} >
-										有学生选择
-									</Tag>
-								}
+								{(this.state.own.result === 1) && <Tag color={"green"} >通过</Tag>}
+								{(this.state.own.result === 0) && <Tag color={"red"} >未通过</Tag>}
+								{(this.state.own.result === 2) && <Tag color={"blue"} >待审核</Tag>}
+								{(this.state.own.result === 3) && <Tag color={"blue"} >待学生选择</Tag>}
+								{(this.state.own.result === 4) && <Tag color={"green"} >有学生选择</Tag>}
 							</div>
-							 
+							<div class="dtl"><span class="expln">审核建议:</span>
+								{(this.state.own.sugg === null) && <span>无</span>}
+								{(this.state.own.sugg !== null) && <span>{this.state.own.sugg}</span>}
+							</div>
+							<div class="dtl"><span class="expln">课题简介:</span>{this.state.own.content}</div>
 						</div>
-
 					</div>
-
-
-
 				</Modal>
-
-
 			</div>
 		);
 	}

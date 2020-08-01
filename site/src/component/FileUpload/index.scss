@@ -22,9 +22,19 @@
         }
     }
 
+    .z-disable-wp {
+        &:hover {
+            border: 1px dashed #c5c4c4;
+        }
+    }
+
     .z-submit-p {
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    .u-file-name {
+        margin: 14px 0;
     }
 
     .u-del {
