@@ -72,7 +72,8 @@ export default class StuMethods extends BaseActions {
     tab: 'publish',
     links: [],
     modal_visiable: false,
-    auditOp: false
+    auditOp: false,
+    changeWWW:false
   }
 
   getStuInfo = async () => {
@@ -97,6 +98,11 @@ export default class StuMethods extends BaseActions {
       this.setState({ auditOp: true })
     }
     this.setState({ links: l })
+    if(file_data.data[1]){
+      this.setState({changeWWW:true})
+    }else{
+      this.setState({changeWWW:false})
+    }
   }
 
   render() {
@@ -108,7 +114,7 @@ export default class StuMethods extends BaseActions {
       }
     }
     return (
-      <div className="stumethods" data-component="stumethods">
+      <div className="stumethods" data-component="stumethodstwo">
         <div className="stu-info">
           <span className="note-title"><span className="mr-long"><UserOutlined /></span>学生信息</span>
 
@@ -197,28 +203,34 @@ export default class StuMethods extends BaseActions {
                               <CheckCircleOutlined />
                             </div>
                             <p>
-                              重新填写任务书
-                                </p>
+                              修改任务书
+                            </p>
                           </div>
                         </div>
                       </>
                     }
                     {
                       this.state.auditOp &&
-                      <>
-                        <div className="m-file-down-load" onClick={() => { this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": this.props.pid }).then(() => { route('/t_formOP') }) }}>
-                          <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
-                            <div className="m-f-down-inner">
-                              <div className="m-f-down-pic">
-                                <CheckCircleOutlined />
-                              </div>
-                              <p>
-                                填写审核
-                                </p>
+                      <div className="m-file-down-load" onClick={() => { this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": this.props.pid }).then(() => { route('/t_formOP') }) }}>
+                        <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
+                          <div className="m-f-down-inner">
+                            <div className="m-f-down-pic">
+                              <CheckCircleOutlined />
                             </div>
-                          </Tooltip>
-                        </div>
-                      </>
+                            <p>
+                              {
+                                this.state.changeWWW&&
+                                <>填写审核</>
+                              }
+                              {
+                                !this.state.changeWWW&&
+                                <>修改审核</>
+                              }
+                              
+                            </p>
+                          </div>
+                        </Tooltip>
+                      </div>
                     }
                   </div>
                 </div>

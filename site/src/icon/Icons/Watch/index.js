@@ -1,9 +1,17 @@
+/*
+ * @Description: 
+ * @version: 
+ * @Author: queue
+ * @Date: 2020-07-30 20:02:23
+ * @LastEditors: queue
+ * @LastEditTime: 2020-08-01 16:38:52
+ */ 
 import { Component } from 'preact';
 import { createFromIconfontCN } from '@ant-design/icons';
 
 const IconFont = createFromIconfontCN({
   scriptUrl: [
-    '//at.alicdn.com/t/font_1907726_g4uqtocpzea.js'
+    '//at.alicdn.com/t/font_1907726_65bvv1771ws.js'
   ],
 });
 import style from '../index.scss';
