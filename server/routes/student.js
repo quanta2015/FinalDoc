@@ -289,36 +289,56 @@ router.post('/getOpenQuestionInfo', async(req, res) => {
     let params = req.body;
     console.log(params);
     callProc(sql, params, res, (r) => {
-        console.log(r);
-        if (r.length > 0) {
-            switch (r[0]['week']) {
+        var i = 1;
+        var result = [];
+        try {
+            r.forEach(element => {
+                element.order = i;
+                i++;
+                if (element.sid == params.uid) {
+                    console.log("------------------------------");
+                    delete element.sid;
+                    delete element.topic;
+                    result.push(element);
+                    throw new Error("EndForeach");
+                }
+                console.log(element);
+            });
+        } catch (error) {
+            if (error.message != "EndForeach") {
+                throw error;
+            }
+        }
+        console.log(result);
+        if (result.length > 0) {
+            switch (result[0]['week']) {
                 case '0':
-                    r[0].week = '星期天';
+                    result[0].week = '星期天';
                     break;
                 case '1':
-                    r[0].week = '星期一';
+                    result[0].week = '星期一';
                     break;
                 case '2':
-                    r[0].week = '星期二';
+                    result[0].week = '星期二';
                     break;
                 case '3':
-                    r[0].week = '星期三';
+                    result[0].week = '星期三';
                     break;
                 case '4':
-                    r[0].week = '星期四';
+                    result[0].week = '星期四';
                     break;
                 case '5':
-                    r[0].week = '星期五';
+                    result[0].week = '星期五';
                     break;
                 case '6':
-                    r[0].week = '星期六';
+                    result[0].week = '星期六';
                     break;
                 default:
                     break;
             }
         }
-        console.log(r);
-        res.status(200).json({ code: 200, data: r, msg: '成功获取开题答辩信息' });
+        console.log(result);
+        res.status(200).json({ code: 200, data: result, msg: '成功获取开题答辩信息' });
     })
 })
 
