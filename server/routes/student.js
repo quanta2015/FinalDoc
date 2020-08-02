@@ -271,16 +271,79 @@ router.post('/getAllStudentTemplate', async(req, res) => {
     })
 })
 
-// 获取status阶段
+// 获取nav上的status阶段
 // params: { uid: str }
-// router.post("/getStudentTopicStatus", async(req, res) => {
-//     let sql = `CALL PROC_GET_STUDENT_TOPIC_STATUS(?)`;
-//     let params = req.body;
-//     callProc_N(sql, params, 2, res, (r) => {
-//         console.log(r);
-//         res.status(200).json({ code: 200, data: r, msg: '成功获取阶段状态' });
-//     })
-// })
+router.post("/getStudentTopicStatus", async(req, res) => {
+    let sql = `CALL PROC_GET_STUDENT_TOPIC_STATUS(?)`;
+    let params = req.body;
+    console.log(params);
+    var result = [];
+    var results = {};
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        if (params['uid'] == r[0]['sid']) {
+            console.log("是本人的课题id，干就完了！");
+            r[0]['status'] = parseInt(r[0]['status']);
+            console.log(r[0]['status']);
+            if (r[0]['status'] < 4) {
+                results.stageId = 0;
+                switch (r[0]['status']) {
+                    case -1:
+                        results.currId = 0;
+                        break;
+                    case 2:
+                        results.currId = 1;
+                        break;
+                    case 3:
+                        results.currId = 2;
+                        break;
+                    default:
+                        break;
+                }
+            } else if (r[0]['status'] < 9) {
+                results.stageId = 1;
+                switch (r[0]['status']) {
+                    case 4:
+                        results.currId = 0;
+                        break;
+                    case 5:
+                        results.currId = 0;
+                        break;
+                    case 6:
+                        results.currId = 1;
+                        break;
+                    case 7:
+                        results.currId = 2;
+                        break;
+                    case 8:
+                        results.currId = 3;
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                // 下一阶段，status逻辑未完成
+                results.stageId = 2;
+                results.currId = 0;
+            }
+        } else {
+            console.log("你个糟老头子坏得很，居然不是我的课题！");
+            results.stageId = 0;
+            switch (r[0]['status']) {
+                case '0':
+                    results.currId = 0;
+                    break;
+                case '1':
+                    results.currId = 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+        result.push(results);
+        res.status(200).json({ code: 200, data: result, msg: '成功获取阶段状态' });
+    })
+})
 
 // 获取开题答辩信息
 // params: { uid: str }
