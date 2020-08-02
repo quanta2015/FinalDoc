@@ -162,26 +162,42 @@ class TpActions extends Component {
                 </Tooltip>
 
                 <Modal
-                    title="提出建议"
+                    className="t-ContentT-TpActions-Modal"
+                    title={null}
                     visible={adviceModalVisible}
                     onOk={this.handleAdviceOk.bind(this, this.props.record.id, advice)}
                     confirmLoading={confirmLoading}
                     onCancel={this.handleAdviceCancel}
+                    closable={false}
+                    width={900}
                 >
-                    <p>{ModalText}</p>
-                    <TextArea value={advice} onChange={this.adviceChange} rows={3}></TextArea>
+                    <div>
+                        <div class="m-title">
+							<div class="u-none"></div>
+							<div class="u-topic">提出建议</div>
+							<div class="u-none"></div>
+						</div>
+                    </div>
+                    <div class="m-cont">
+                        <p>{ModalText}</p>
+                        <TextArea value={advice} onChange={this.adviceChange} rows={15} placeholder="请输入建议"></TextArea>
+                    </div>
                 </Modal>
 
                 <Modal
                     className="t-ContentT-TpActions-Modal"
-                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
-                        fontSize: '28px',
-                    }} />}
                     title={null}
                     visible={contentModalVisible}
                     confirmLoading={confirmLoading}
-                    onCancel={this.handleContentCancel}
-                    footer={null}
+                    footer={[
+                        <Button key="back" onClick={this.handleContentCancel}>
+                            关闭
+                        </Button>,
+                        <Button type="primary" onClick={this.handleContentSubmit.bind(this, contentTextAreaVisible, this.props.record.id, advice)}>
+                            提交
+                        </Button>
+                    ]}
+                    closable={false}
                     width={900}
                 >
                     <div>
@@ -195,13 +211,8 @@ class TpActions extends Component {
                         <div class="dtl"><span class="expln">课题简介:&nbsp;</span>{this.selectedTopic.content}</div>
                         <Switch className="u-switch" checkedChildren="通过选题" unCheckedChildren="提出建议" defaultChecked onChange={this.switchContentAdvise}/>
                         <div>
-                            { contentTextAreaVisible && <TextArea className="u-textarea" rows={3} value={advice} onChange={this.adviceChange} placeholder={ModalText}></TextArea>}
+                            { contentTextAreaVisible && <TextArea className="u-textarea" rows={12} value={advice} onChange={this.adviceChange} placeholder={ModalText}></TextArea>}
                         </div>
-                    </div>
-                    <div class="m-footer">
-                        <Button type="primary" shape="round" onClick={this.handleContentSubmit.bind(this, contentTextAreaVisible, this.props.record.id, advice)}>
-                            提交
-                        </Button>
                     </div>
                 </Modal>
             </div>

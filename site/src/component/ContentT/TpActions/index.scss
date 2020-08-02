@@ -33,6 +33,7 @@
     }
 
     .m-cont{
+        height: 400px;
         padding: 20px;
         .dtl{
             font-size: 16px;
@@ -54,12 +55,6 @@
     .m-footer{
         display: flex;
         flex-direction: row-reverse;
-    }
-
-    .ant-modal-close{
-        position: absolute;
-        top: -24px;
-        right: -30px;       
     }
 }
     

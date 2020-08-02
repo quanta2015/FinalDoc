@@ -94,7 +94,7 @@ export default class Home extends BaseActions {
     }
     console.log(sel);
     if(sel){
-      this.setState({ checkBlockState: 1 })
+      this.setState({ checkBlockState: 2 })
     }else{
       this.setState({ checkBlockState: 1 })
     }
