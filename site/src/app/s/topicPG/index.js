@@ -148,6 +148,7 @@ export default class TopicPG extends Component {
                                             <FileUpload
                                                 type={item}
                                                 tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
+                                                disabled={this.selectTpInfo.status - 5 > 0 ? false : true}
                                                 afterUpdate={() => this.props.studentStore.getSelectTopic({ uid: this.usr.uid })}
                                                 delFile={() => this.props.studentStore.deleteFile({ type: item.type, tid: this.selectTpInfo.tid, sid: this.selectTpInfo.sid })}
                                             />
@@ -162,14 +163,8 @@ export default class TopicPG extends Component {
                     this.opScore.length > 0 &&
                     <div className="m-op-score">
                         <div className="m-nm-lst">
-                            {STU_OP_SCORE.map((item) =>
-                                <div className="u-nm-itm">
-                                    {item.name}
-                                </div>
-                            )}
-                        </div>
-                        <div className="m-sc-lst">
-                            <div className="u-sc-itm">
+                            <div className="u-nm-itm">
+                                <span>指导老师评分</span>
                                 {this.opScore[0].t_reply_score ?
                                     <span className="score">
                                         {this.opScore[0].t_reply_score}
@@ -179,8 +174,8 @@ export default class TopicPG extends Component {
                                     </span>
                                 }
                             </div>
-
-                            <div className="u-sc-itm">
+                            <div className="u-nm-itm">
+                                <span>开题答辩评分</span>
                                 {this.opScore[0].g_reply_score ?
                                     <span className="score">
                                         {this.opScore[0].g_reply_score}

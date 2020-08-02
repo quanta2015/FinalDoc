@@ -15,7 +15,12 @@
             width: 720px;
             position: absolute;
             overflow: scroll;
-            height: 100vh;
+            max-height: 100vh;
+            min-height: 350px;
+            top: 20px;
+        }
+        .ant-modal-footer {
+            padding: 0;
         }
         .ant-btn > span {
             display: inline-block;
@@ -23,8 +28,21 @@
             position: relative;
             top: -1px;
         }
-        .u-time{
-            font-family: Georgia, 'Times New Roman', Times, serif;
+        .ant-list {
+            max-height: 300px;
+            overflow: auto;
+            &::-webkit-scrollbar {
+                width: 0 !important;
+            }
+            -ms-overflow-style: none;
+            // overflow: -moz-scrollbars-none;
+        }
+        .m-pos {
+            position: relative;
+            left: 262px;
+        }
+        .u-time {
+            font-family: Georgia, "Times New Roman", Times, serif;
         }
     }
 }

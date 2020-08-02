@@ -81,6 +81,12 @@ export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
 //所有指导日志
 export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' 
+//增加指导日志
+export const API_STU_ADD_GUIDANCE = API_SERVER+'/student/insertGuidance'
+//删除指导日志
+export const API_STU_DEL_GUIDANCE = API_SERVER + '/student/delGuidance'
+//更改指导日志
+export const API_STU_EDIT_GUIDANCE = API_SERVER + '/student/updateGuidance'
 //所有阶段以及截止时间
 export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' 
 // 返回当前阶段
@@ -91,6 +97,9 @@ export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplat
 export const API_STU_GET_OPSCORE = API_SERVER + '/student/getOpenScore'
 // 获取答辩信息
 export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
+// 获取nav栏状态
+export const API_STU_GET_NAV_STAGE = API_SERVER + '/student/getStudentTopicStatus'
+
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';
