@@ -97,6 +97,9 @@ export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplat
 export const API_STU_GET_OPSCORE = API_SERVER + '/student/getOpenScore'
 // 获取答辩信息
 export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
+// 获取nav栏状态
+export const API_STU_GET_NAV_STAGE = API_SERVER + '/student/getStudentTopicStatus'
+
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';

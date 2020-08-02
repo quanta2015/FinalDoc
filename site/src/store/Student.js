@@ -353,6 +353,11 @@ class Student extends BaseActions {
         }
         return r;
     }
+
+    @action
+    async getNavStage(params) {
+        return this.post(urls.API_STU_GET_NAV_STAGE, params);
+    }
 }
 
 export default new Student()

@@ -6,32 +6,6 @@ import { MENU_MAIN_S, STU_NAV_STAGE } from '../../constant/data';
 import logo from '../../static/public/logo.svg';
 import './index.scss'
 
-const getStage = (topicList, status) => {
-  // stageId为大阶段，currId为小阶段
-  let stageId = 0, currId = 0;
-  if (status && status <= 8) stageId = 1;
-  if (status && status > 8) stageId = 2;
-
-  switch (stageId) {
-    case 0:
-      if (topicList.length && !status) currId = 1;
-      if (status) currId = 2;
-      break;
-    case 1:
-      if (status === 6) currId = 1;
-      if (status === 7) currId = 2;
-      if (status === 8) currId = 3;
-      break;
-    case 2:
-      break;
-    default:
-      break;
-  }
-
-  return { stageId: stageId, currId: currId }
-}
-
-
 @inject('userStore', 'studentStore')
 @observer
 class NavS extends Component {
@@ -39,6 +13,8 @@ class NavS extends Component {
     super(props)
     this.state = {
       cur: 0,
+      stageId: 0,
+      currId: 0
     }
   }
 
@@ -57,15 +33,17 @@ class NavS extends Component {
     return this.props.userStore.usr;
   }
 
-  @computed
-  get currStage() {
-    return this.props.studentStore.currStage;
-  }
-
-
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
-    this.props.studentStore.getTopicList({ uid: this.usr.uid });
+    this.props.studentStore.getNavStage({ uid: this.usr.uid })
+    .then(r => {
+      let stageId = r.data[0].stageId ? r.data[0].stageId: 0;
+      let currId = r.data[0].currId ? r.data[0].currId : 0;
+      this.setState({
+        stageId: stageId,
+        currId: currId
+      })
+    })
   }
 
   doMenu = (path, i) => {
@@ -80,7 +58,8 @@ class NavS extends Component {
   }
 
   render() {
-    const { stageId, currId } = getStage(this.topicList, this.selectTpInfo.status);
+    // stageId为大阶段，currId为小阶段
+    const { stageId, currId } = this.state;
     return (
       <div className="g-stu-nav">
         <div className="g-logo">
