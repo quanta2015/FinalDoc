@@ -283,7 +283,6 @@ router.post("/getStudentTopicStatus", async(req, res) => {
         console.log(r);
         if (params['uid'] == r[0]['sid']) {
             console.log("是本人的课题id，干就完了！");
-            r[0]['status'] = parseInt(r[0]['status']);
             console.log(r[0]['status']);
             if (r[0]['status'] < 4) {
                 results.stageId = 0;
@@ -329,18 +328,14 @@ router.post("/getStudentTopicStatus", async(req, res) => {
         } else {
             console.log("你个糟老头子坏得很，居然不是我的课题！");
             results.stageId = 0;
-            switch (r[0]['status']) {
-                case '0':
-                    results.currId = 0;
-                    break;
-                case '1':
-                    results.currId = 1;
-                    break;
-                default:
-                    break;
+            if (r[0]['sel'] == -1) {
+                results.currId = 1;
+            } else {
+                results.currId = 0;
             }
         }
         result.push(results);
+        console.log(result);
         res.status(200).json({ code: 200, data: result, msg: '成功获取阶段状态' });
     })
 })
