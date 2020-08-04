@@ -61,8 +61,8 @@ export default class TotalSchedule extends Component {
 	};
 
 	@computed
-	get stu_list() {
-		return this.props.manageStore.stu_list;
+	get summary() {
+		return this.props.manageStore.summary;
 	}
 
 	@computed
@@ -224,7 +224,7 @@ export default class TotalSchedule extends Component {
 		return (
 			<div>
 				<div class="g-tol-tbl">
-					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.stu_list)} />
+					<Table pagination={paginationProps} columns={this.columns} dataSource={toJS(this.summary.stu_list)} />
 				</div>
 				<Modal
 					title={this.state.row_name + "同学已上交的文件"}

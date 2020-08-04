@@ -324,11 +324,10 @@ class manager extends BaseActions {
   }
 
   @observable
-  stu_list = []
-
-
-
-
+  summary = {
+    stu_list : [],
+    tea_topic_num : []
+  }
 
   // 查看该系全体学生的论文进度
   // {"gid":int}
@@ -400,7 +399,23 @@ class manager extends BaseActions {
       })
     })
     runInAction(() => {
-      this.stu_list = temp;
+      this.summary.stu_list = temp;
+    })
+  }
+
+  // 查看该系教师出题情况
+  // {"gid":int}
+  @action
+  teaTopicNum(param) {
+    let temp = [
+      {"tname":"周迪斌","alltopic":8,"choosetopic":7},
+      {"tname":"丁丹丹","alltopic":8,"choosetopic":7},
+      {"tname":"单振宇","alltopic":6,"choosetopic":6},
+      {"tname":"刘富昌","alltopic":4,"choosetopic":4},
+      {"tname":"李阳","alltopic":8,"choosetopic":8},
+    ]
+    runInAction(() => {
+      this.summary.tea_topic_num = temp;
     })
   }
 
