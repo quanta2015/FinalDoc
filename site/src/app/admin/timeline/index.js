@@ -34,7 +34,7 @@ import {
 } from "antd";
 import StuSchedule from "./stu_schedule/index.js";
 import TeaSchedule from "./tea_schedule/index.js";
-import "./timeline.scss"
+import "./timeline.scss";
 const { TabPane } = Tabs;
 
 @inject("userStore")
@@ -61,8 +61,8 @@ export default class Ann extends Component {
     return (
       <>
         <div className="g-admin-timeline">
-          <div className="g-admin-content">
-            <Card title="设定进度" bordered={false}>
+          <div className="g-admin-timeset">
+            <Card title="设定流程进度" bordered={false}>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="学生端进度设置" key="1">
                   <StuSchedule />
@@ -71,24 +71,7 @@ export default class Ann extends Component {
                   <TeaSchedule />
                 </TabPane>
               </Tabs>
-              <Row gutter={[0, 0]}>
-                <Col span={8}>
-
-                  <div className="admin-content">
-                    <div className="g-ann">
-
-                      {/* <div className="m-m">公告模块</div> */}
-                    </div>
-                  </div>
-
-                </Col>
-                <Col span={1}>
-
-                </Col>
-                <Col span={15}>
-                  <Calendar onPanelChange={this.onPanelChange} />
-                </Col>
-              </Row>
+              
             </Card>
           </div>
         </div>

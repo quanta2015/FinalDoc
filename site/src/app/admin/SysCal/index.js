@@ -4,7 +4,6 @@ import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 
 import { Tabs } from 'antd';
-import Schedule from './schedule/index.js'
 
 
 const { TabPane } = Tabs;

@@ -6,57 +6,58 @@
  * @LastEditors: wyx
  * @LastEditTime: 2020-07-09 20:36:02
  */
+.admin-content {
+  .g-ann {
+    position: fixed;
+    top: 0px;
 
-.g-ann {
-  position: fixed;
-  top: 0px;
+    bottom: 0;
+    padding: 30px 45px;
+    width: 950px;
 
-  bottom: 0;
-  padding: 30px 45px;
-  width: 950px;
+    background-color: #fff;
+    overflow: scroll;
+    //antd-table组件
+    table,
+    tbody.ant-table-tbody {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 3vh;
+    }
 
-  background-color: #fff;
-  overflow: scroll;
-  //antd-table组件
-  table,
-  tbody.ant-table-tbody {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 3vh;
+    .ant-table-row,
+    .ant-table-thead > tr {
+      display: flex;
+    }
+
+    //表头标题位置
+    .ant-table-cell {
+      text-align: center;
+    }
+
+    //表头宽度
+    .m-detail-table {
+      .ant-table-cell:nth-last-child(4) {
+        width: 460px;
+        text-align: left;
+      }
+      .ant-table-cell:nth-last-child(3) {
+        width: 150px;
+      }
+      .ant-table-cell:nth-last-child(2) {
+        width: 150px;
+      }
+      .ant-table-cell:nth-last-child(1) {
+        width: 100px;
+      }
+      // 表格中无数据时的默认样式
+      .ant-table-placeholder .ant-table-cell {
+        width: 800px;
+      }
+    }
+
+    //发布公告按钮
   }
-
-  .ant-table-row,
-  .ant-table-thead > tr {
-    display: flex;
-  }
-
-  //表头标题位置
-  .ant-table-cell {
-    text-align: center;
-  }
-
-  //表头宽度
-  .m-detail-table {
-    .ant-table-cell:nth-last-child(4) {
-      width: 460px;
-      text-align: left;
-    }
-    .ant-table-cell:nth-last-child(3) {
-      width: 150px;
-    }
-    .ant-table-cell:nth-last-child(2) {
-      width: 150px;
-    }
-    .ant-table-cell:nth-last-child(1) {
-      width: 100px;
-    }
-    // 表格中无数据时的默认样式
-    .ant-table-placeholder .ant-table-cell {
-      width: 800px;
-    }
-  }
-
-  //发布公告按钮
 }
 .m-release-btn {
   margin-bottom: 15px;
@@ -86,7 +87,7 @@
       font-size: 26px;
       color: #0585d0;
       font-family: "微软雅黑", "宋体", "黑体", Arial;
-     
+
       font-weight: bold;
 
       margin-bottom: 18px !important;
@@ -99,7 +100,6 @@
       margin-left: 10px;
       text-align: right;
     }
-    
   }
   .label-text {
     font-size: 16px;
@@ -188,7 +188,7 @@
     font-size: 16px;
   }
 }
-.m-popconfirm{
-  height: 109px!important;
+.m-popconfirm {
+  height: 109px !important;
   width: 500px;
 }
