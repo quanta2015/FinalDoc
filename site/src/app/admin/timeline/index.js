@@ -62,32 +62,33 @@ export default class Ann extends Component {
       <>
         <div className="g-admin-timeline">
           <div className="g-admin-content">
-          <Card title="设定进度"  bordered={false}>
-            <Row gutter={[0, 0]}>
-              <Col span={8}>
-                
+            <Card title="设定进度" bordered={false}>
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="学生端进度设置" key="1">
+                  <StuSchedule />
+                </TabPane>
+                <TabPane tab="教师端进度设置" key="2">
+                  <TeaSchedule />
+                </TabPane>
+              </Tabs>
+              <Row gutter={[0, 0]}>
+                <Col span={8}>
+
                   <div className="admin-content">
                     <div className="g-ann">
-                      <Tabs defaultActiveKey="1">
-                        <TabPane tab="学生端进度设置" key="1">
-                          <StuSchedule />
-                        </TabPane>
-                        <TabPane tab="教师端进度设置" key="2">
-                          <TeaSchedule />
-                        </TabPane>
-                      </Tabs>
+
                       {/* <div className="m-m">公告模块</div> */}
                     </div>
                   </div>
-                
-              </Col>
-              <Col span={1}>
-                
-              </Col>
-              <Col span={15}>
-                <Calendar onPanelChange={this.onPanelChange} />
-              </Col>
-            </Row>
+
+                </Col>
+                <Col span={1}>
+
+                </Col>
+                <Col span={15}>
+                  <Calendar onPanelChange={this.onPanelChange} />
+                </Col>
+              </Row>
             </Card>
           </div>
         </div>
