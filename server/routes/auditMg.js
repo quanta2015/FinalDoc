@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-06 11:00:47
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-29 10:15:17
+ * @LastEditTime: 2020-08-07 12:04:24
  */ 
 
 const express = require('express');
@@ -26,6 +26,21 @@ router.post('/viewProgress', async(req, res) => {
           res.status(200).json({code: 200, data: r, msg: '查看本系课题进度'})
       });
   });
+
+/**
+ * @name: 
+ * @test: test font
+ * @msg: 查看各个老师课题数量信息 --本系
+ * @param {ide:String} 
+ * @return: 
+ */
+router.post('/viewTeaCount', async(req, res) => {
+  let sql = `CALL MG_A_PROC_TEA_COUNT(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '查看本系老师课题数量'})
+    });
+});
 
   
 /**
