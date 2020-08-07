@@ -2,6 +2,7 @@ import { Component } from "preact";
 import { route } from "preact-router";
 import { inject, observer } from "mobx-react";
 import { computed, toJS } from "mobx";
+import moment from 'moment';
 import {
   Table,
   Pagination,
@@ -31,11 +32,17 @@ import {
   Tabs,
   Calendar,
 } from "antd";
-
 const { RangePicker } = DatePicker;
-@inject("userStore")
+const { Option } = Select;
+@inject("userStore", "adminStore")
 @observer
 export default class scheduleSet extends Component {
+  state = {
+    majorSelected: false,
+    major: "",
+    timelineData: null,
+    timeOption: [],
+  };
   @computed
   get usr() {
     return toJS(this.props.userStore.usr);
@@ -45,17 +52,67 @@ export default class scheduleSet extends Component {
     console.log("this.usr.uid");
     if (!this.usr.uid) route("/");
   }
-   onRangeChange=(date, dateString)=> {
+  onRangeChange = (date, dateString) => {
     console.log(dateString);
+  };
+  onSelectChange = (value) => {
+    let param = {
+      major: value,
+      role: 0,
+    };
+    this.props.adminStore.getTimeline(param).then((r) => {
+     
+      this.setState({ majorSelected: true, timeOption: r });
+    });
+  };
+  componentDidUpdate(){
+    console.log("更新")
   }
-  
-
   render() {
     console.log("========管理端系统设置->时间进度设定 界面页面===========");
+    const { majorSelected, major, timeOption, timelineData } = this.state;
     return (
       <div>
-        <div>管理端系统设置->时间进度设定 界面页面</div>
-        <RangePicker onChange={this.onRangeChange} renderExtraFooter={() => 'extra footer'} />
+        <Row gutter={[0, 0]}>
+          <Col span={8}>
+            <div>
+              <div>学生端时间进度设置界面</div>
+              <Select
+                placeholder="请选择专业系"
+                style={{ width: 278 }}
+                onChange={this.onSelectChange}
+                size="middle"
+              >
+                <Option value="计算机系">计算机系</Option>
+                <Option value="金融系">金融系</Option>
+                <Option value="物联网软工系">物联网软工系</Option>
+              </Select>
+              {majorSelected &&
+                timeOption.map((item, index) => {
+                 
+                  return (
+                    <div>
+                      <div>{item.state_name}</div>
+                      <div>
+                        <RangePicker
+                        defaultValue={[moment(item.state_start),moment(item.state_end)]}
+                        
+                          key={item.state_id}
+                          onChange={this.onRangeChange}
+                          renderExtraFooter={() => "extra footer"}
+                          
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </Col>
+          <Col span={1}></Col>
+          <Col span={15}>
+            <Calendar onPanelChange={this.onPanelChange} />
+          </Col>
+        </Row>
       </div>
     );
   }

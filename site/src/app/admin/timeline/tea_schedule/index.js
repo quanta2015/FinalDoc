@@ -2,7 +2,7 @@ import { Component } from "preact";
 import { route } from "preact-router";
 import { inject, observer } from "mobx-react";
 import { computed, toJS } from "mobx";
-
+import moment from 'moment';
 import {
   Table,
   Pagination,
@@ -33,7 +33,8 @@ import {
   Calendar,
 } from "antd";
 const { RangePicker } = DatePicker;
-@inject("userStore")
+const { Option } = Select;
+@inject("userStore", "adminStore")
 @observer
 export default class scheduleSet extends Component {
   state = {
@@ -55,13 +56,13 @@ export default class scheduleSet extends Component {
     console.log(dateString);
   };
   onSelectChange = (value) => {
-    this.setState({ majorSelected: true });
     let param = {
       major: value,
       role: 1,
     };
-
-    console.log(`selected ${param}`);
+    this.props.adminStore.getTimeline(param).then((r) => {
+      this.setState({ majorSelected: true, timeOption: r });
+    });
   };
 
   render() {
@@ -72,7 +73,7 @@ export default class scheduleSet extends Component {
         <Row gutter={[0, 0]}>
           <Col span={8}>
             <div>
-              <div>管理端系统设置->时间进度设定 界面页面</div>
+              <div>教师端时间进度设置界面</div>
               <Select
                 placeholder="请选择专业系"
                 style={{ width: 278 }}
@@ -83,17 +84,24 @@ export default class scheduleSet extends Component {
                 <Option value="金融系">金融系</Option>
                 <Option value="物联网软工系">物联网软工系</Option>
               </Select>
-              {majorSelected && (
-                <div>
-                  <div>开题报告：</div>
-                  <div>
-                    <RangePicker
-                      onChange={this.onRangeChange}
-                      renderExtraFooter={() => "extra footer"}
-                    />
-                  </div>
-                </div>
-              )}
+              {majorSelected &&
+                timeOption.map((item, index) => {
+                  return (
+                    <div>
+                      <div>{item.state_name}</div>
+                      <div>
+                        <RangePicker
+                        defaultValue={[moment(item.state_start),moment(item.state_end)]}
+                        
+                        key={item.state_id}
+                          onChange={this.onRangeChange}
+                          renderExtraFooter={() => "extra footer"}
+                          
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </Col>
           <Col span={1}></Col>
