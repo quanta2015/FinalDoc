@@ -4,7 +4,7 @@
  * @Author: 
  * @Date: 2020-07-09 10:14:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-31 12:30:19
+ * @LastEditTime: 2020-08-07 21:50:51
  */
 
 
@@ -281,6 +281,18 @@ router.post('/getTopicAndTeacher', async(req, res) => {
     let params = {};
     callProc(sql, params, res, (r) => {
         res.status(200).json({ code: 200, data: r, msg: '获取课题阶段成功！' });
+    })
+})
+
+// 获取timeline内state_id、相关阶段名称、开始日期、结束日期
+// params: { major: str, role: int }
+router.post('/getMajorTimeline', async(req, res) => {
+    let sql = `CALL PROC_GET_MAJOR_TIMELINE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '获取时间阶段成功！' });
     })
 })
 
