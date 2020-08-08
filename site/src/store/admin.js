@@ -217,6 +217,21 @@ class admin extends BaseActions {
     }
     return r;
   }
+
+
+  @action
+  async changeTimeline(params) {
+    const r = await this.post(urls.API_ADMIN_CHANGE_TIMELINE_WITH_MAJOR, params);
+    if (r && r.code === 200) {
+      runInAction(() => {
+        message.success("修改时间流程详情成功");
+      });
+      return r.data;
+    } else {
+      message.error("网络错误");
+    }
+    return r;
+  }
 }
 
 export default new admin();

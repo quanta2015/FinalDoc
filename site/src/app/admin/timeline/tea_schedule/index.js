@@ -1,7 +1,7 @@
 import { Component } from "preact";
 import { route } from "preact-router";
 import { inject, observer } from "mobx-react";
-import { computed, toJS } from "mobx";
+import { computed, toJS, values } from "mobx";
 import moment from 'moment';
 import {
   Table,
@@ -52,8 +52,19 @@ export default class scheduleSet extends Component {
     console.log("this.usr.uid");
     if (!this.usr.uid) route("/");
   }
-  onRangeChange = (date, dateString) => {
-    console.log(dateString);
+  onRangeChange = (id, dateString) => {
+    console.log(dateString)
+    let params={
+      role:1,
+      state_id:id,
+      state_start:dateString[0],
+      state_end:dateString[1]
+    }
+    console.log(params);
+    this.props.adminStore.changeTimeline(params).then((r) => {
+      console.log(r)
+    });
+
   };
   onSelectChange = (value) => {
     let param = {
@@ -94,7 +105,7 @@ export default class scheduleSet extends Component {
                         defaultValue={[moment(item.state_start),moment(item.state_end)]}
                         
                         key={item.state_id}
-                          onChange={this.onRangeChange}
+                          onChange={(dates,dateStrings)=>this.onRangeChange(item.state_id,dateStrings)}
                           renderExtraFooter={() => "extra footer"}
                           
                         />

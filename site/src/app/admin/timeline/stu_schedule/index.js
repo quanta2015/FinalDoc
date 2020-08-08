@@ -52,8 +52,19 @@ export default class scheduleSet extends Component {
     console.log("this.usr.uid");
     if (!this.usr.uid) route("/");
   }
-  onRangeChange = (date, dateString) => {
-    console.log(dateString);
+  onRangeChange = (id, dateString) => {
+    console.log(dateString)
+    let params = {
+      role: 1,
+      state_id: id,
+      state_start: dateString[0],
+      state_end: dateString[1]
+    }
+    console.log(params);
+    this.props.adminStore.changeTimeline(params).then((r) => {
+      console.log(r)
+    });
+
   };
   onSelectChange = (value) => {
     let param = {
@@ -61,11 +72,11 @@ export default class scheduleSet extends Component {
       role: 0,
     };
     this.props.adminStore.getTimeline(param).then((r) => {
-     
+      console.log(r)
       this.setState({ majorSelected: true, timeOption: r });
     });
   };
-  componentDidUpdate(){
+  componentDidUpdate() {
     console.log("更新")
   }
   render() {
@@ -89,18 +100,18 @@ export default class scheduleSet extends Component {
               </Select>
               {majorSelected &&
                 timeOption.map((item, index) => {
-                 
+
                   return (
                     <div>
                       <div>{item.state_name}</div>
                       <div>
                         <RangePicker
-                        defaultValue={[moment(item.state_start),moment(item.state_end)]}
-                        
+                          defaultValue={[moment(item.state_start), moment(item.state_end)]}
+
                           key={item.state_id}
-                          onChange={this.onRangeChange}
+                          onChange={(dates, dateStrings) => this.onRangeChange(item.state_id, dateStrings)}
                           renderExtraFooter={() => "extra footer"}
-                          
+
                         />
                       </div>
                     </div>
