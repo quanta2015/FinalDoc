@@ -103,7 +103,7 @@ export default class StuMethods extends BaseActions {
     return (
       <div data-component="stumethods">
         <div className="note-block">
-          <span className="note-title">指导学生</span>
+          <span className="note-title">指导学生:</span>
           <Card style={{ width: 600 }}>
             <span className="note-info-span">{this.props.sid}</span>
             <span className="note-info-span">{this.state.name}</span>

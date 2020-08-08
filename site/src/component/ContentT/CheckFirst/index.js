@@ -126,7 +126,7 @@ class Check extends BaseActions {
           (t.status == 100) && <span onClick={() => { this.getSugg(t.id) }}><Watch /></span>
         }
         {
-          !!t.sid && <span onClick={()=>{ this.onTied(t.id)}}><Unbind /></span>
+          !!t.sid && this.props.checkList.map((x) =>x.id).indexOf(t.id) < 0 && <span onClick={()=>{ this.onTied(t.id)}}><Unbind /></span>
         }
       </div>
     </div>
@@ -159,14 +159,15 @@ class Check extends BaseActions {
                       {PanelHeader(t.name, t.id, t.sid, t.status)}
                       {this.StateExtra(t)}
                     </div>
-
-                    {t.sid!=""&&(t.status == 4 || t.status == 5) &&
+                    {console.log(t.sid,t.status)}
+                    {t.sid!=""&&t.sid!=null&&(t.status == 4 || t.status == 5) &&
                       <div className="stu-body">
-                        {t.sid != null &&
+                        {
+                          this.props.checkList.map((x) =>x.id).indexOf(t.id) < 0 &&
                           <StuMethods sid={t.sid} tid={this.usr.uid} pid={t.id}  />
                         }
                         {
-                          t.sid == null && this.props.checkList.map((x) => { return x.id }).indexOf(t.id) >= 0 &&
+                          this.props.checkList.map((x) =>x.id).indexOf(t.id) >= 0 &&
                           <ReviewLine list={this.props.checkList[this.props.checkList.map((x) => x.id).indexOf(t.id)]} freshList={this.props.freshList} />
                         }
                       </div>
