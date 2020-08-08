@@ -37,20 +37,24 @@ export default class Student extends Component {
 
   @computed
   get docTemplate() {
-    return this.props.studentStore.docTemplate;
+    return toJS(this.props.studentStore.docTemplate);
   }
 
   @computed
   get replyList() {
-    return this.props.studentStore.replyList;
+    return toJS(this.props.studentStore.replyList);
   }
 
   componentDidMount() {
     if (!this.usr.uid) {
       route('/');
     }
-    this.props.studentStore.getTempFileList();
-    this.props.studentStore.getReplyInfo({ uid: this.usr.uid })
+    if (!this.docTemplate.length) {
+      this.props.studentStore.getTempFileList();
+    }
+    if (!this.replyList.length) {
+      this.props.studentStore.getReplyInfo({ uid: this.usr.uid });
+    }
   }
 
   downloadFile = (item) => {
