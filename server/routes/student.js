@@ -281,7 +281,11 @@ router.post("/getStudentTopicStatus", async(req, res) => {
     var results = {};
     callProc(sql, params, res, (r) => {
         console.log(r);
-        if (params['uid'] == r[0]['sid']) {
+        if (r.length == 0) {
+            console.log('课题都没创建还想看，阁下何不乘风起，扶摇直上九万里:)');
+            results.stageId = 0;
+            results.currId = 0;
+        } else if (params['uid'] == r[0]['sid']) {
             console.log("是本人的课题id，干就完了！");
             console.log(r[0]['status']);
             if (r[0]['status'] < 4) {
