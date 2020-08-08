@@ -194,4 +194,4 @@ export const API_ADMIN_EDIT_ONE_INFO = API_SERVER + '/admin'+'/editInfo'
 // 获取timeline内state_id、相关阶段名称、开始日期、结束日期
 export const API_ADMIN_GET_TIMELINE_WITH_MAJOR = API_SERVER + '/admin'+'/getMajorTimeline'
 // 修改timeline内开始日期、结束日期
-export const API_ADMIN_CHANGE_TIMELINE_WITH_MAJOR = LOCAL_SERVER + '/admin'+'/updateMajorTimeline'
+export const API_ADMIN_CHANGE_TIMELINE_WITH_MAJOR = API_SERVER + '/admin'+'/updateMajorTimeline'
