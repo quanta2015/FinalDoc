@@ -473,10 +473,8 @@ router.post('/getDeferAppliStatus', async(req, res) => {
     callProc(sql, params, res, (r) => {
         if (r[0]['teaOpi'] == null) {
             r[0].index = 0;
-        } else if (r[0]['teaOpi'] != null && r[0]['manOpi'] == null) {
+        } else (r[0]['teaOpi'] != null && r[0]['manOpi'] == null) {
             r[0].index = 1;
-        } else {
-            r[0].index = 2;
         }
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功查询延缓答辩申请当前状态' });
