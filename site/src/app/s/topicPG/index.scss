@@ -28,18 +28,19 @@
     .m-cont {
         padding-top: 40px;
         width: 100%;
-        .ant-btn {
-            padding: 0 4px;
+
+        .m-title-wp {
+            display: flex;
+            width: 100%;
         }
-        .ant-btn > span {
-            height: 24px;
-            position: relative;
-            top: -3px;
-            margin: 2px 0;
+
+        .m-btn-wp {
+            display: flex;
+            margin-left: auto;
         }
-        .ant-btn > .anticon + span,
-        .ant-btn > span + .anticon {
-            margin-left: 1px;
+
+        .u-btn {
+            margin-right: 10px;
         }
     }
 
@@ -124,7 +125,27 @@
         }
     }
 
-    .m-filewp {
+    .m-stage:last-child {
+        // .m-file-wp {
+        //     justify-content: flex-start;
+        // }
+
+        // .m-upload:last-child {
+        //     margin-left: 20px;
+        // }
+
+        .m-upload:nth-child(2), .m-upload:nth-child(3) {
+            .avatar-uploader > .ant-upload {
+                width: 110px;
+            }
+
+            .m-filewp {
+                width: 112px;
+            }
+        }
+    }
+
+    .m-file-wp {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
@@ -143,12 +164,6 @@
     .u-title {
         font-size: 18px;
         font-weight: 550;
-    }
-
-    .u-log {
-        float: right;
-        margin: 0;
-        margin-top: -37px;
     }
 
     .m-op-score {
