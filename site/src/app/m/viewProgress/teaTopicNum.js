@@ -90,25 +90,25 @@ export default class TeaTopicNum extends Component {
     columns = [
         {
             title: '教师姓名',
-            dataIndex: 'tname',
-            key: 'tname',
-            ...this.getColumnSearchProps('tname'),
+            dataIndex: 'name',
+            key: 'name',
+            ...this.getColumnSearchProps('name'),
         },
         {
             title: '出题数量',
-            dataIndex: 'alltopic',
-            key: 'alltopic',
+            dataIndex: 'all',
+            key: 'all',
             sorter: {
-                compare: (a, b) => a.alltopic - b.alltopic,
+                compare: (a, b) => a.all - b.all,
                 multiple: 2,
             },
         },
         {
             title: '被选数量',
-            dataIndex: 'choosetopic',
-            key: 'choosetopic',
+            dataIndex: 'selected',
+            key: 'selected',
             sorter: {
-                compare: (a, b) => a.choosetopic - b.choosetopic,
+                compare: (a, b) => a.selected - b.selected,
                 multiple: 1,
             },
         },
