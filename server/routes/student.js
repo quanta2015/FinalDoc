@@ -493,12 +493,16 @@ router.post('/getIfCanDefAppli', async(req, res) => {
     console.log(params);
     callProc(sql, params, res, (r) => {
         console.log(r);
-        var today = new Date();
-        var start = new Date(r[0]['start']);
-        var end = new Date(r[0]['end']);
         var result = [];
-        var flag = { 'flag': today >= start && today <= end };
-        result.push(flag);
+        if (r.length == 0) {
+            result = [{ 'flag': false }];
+        } else {
+            var today = new Date();
+            var start = new Date(r[0]['start']);
+            var end = new Date(r[0]['end']);
+            var flag = { 'flag': today >= start && today <= end };
+            result.push(flag);
+        }
         res.status(200).json({ code: 200, data: result, msg: '成功查询当前能否进行延缓申请' });
     })
 })
