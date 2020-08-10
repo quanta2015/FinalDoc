@@ -98,7 +98,7 @@ export default class TopicList extends Component {
                 } else {
                     this.props.studentStore.getTopicList({ uid: this.usr.uid })
                         .then(r => {
-                            if (r.length) {
+                            if (r && r.length) {
                                 this.setState({
                                     topicList: r,
                                 }, () => {
