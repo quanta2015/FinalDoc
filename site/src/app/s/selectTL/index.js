@@ -10,8 +10,7 @@ import 'antd/dist/antd.css';
 import './index.scss'
 import { computed, toJS } from 'mobx';
 
-var del = []
-var cha = []
+
 const customizeRenderEmpty = () => (
     <div style={{ textAlign: 'center', marginLeft: 300, width: 300 }}>
         <SmileOutlined type="smile" style={{ fontSize: 30, }} />
@@ -41,6 +40,10 @@ export default class TopicList extends Component {
         searchText: '',
         searchedColumn: '',
         loading: false,
+        del: '',
+        cha: '',
+        tea: [],
+        tmp: [],
     }
 
     @computed
@@ -54,6 +57,9 @@ export default class TopicList extends Component {
     }
 
     componentDidMount() {
+        let { tea, tmp } = this.state;
+
+
         if (!this.usr.uid) {
             route('/')
         }
@@ -63,6 +69,31 @@ export default class TopicList extends Component {
                     this.setState({
                         topicList: r,
                         isAudi: true,
+                    }, () => {
+                        let { topicList } = this.state;
+
+
+                        for (let i = 0; i < topicList.length; i++) {
+                            // topicList[i].key = i;
+                            topicList[i].status = 1
+                            if (!tea.includes(topicList[i].instructor)) {
+                                tea.push(topicList[i].instructor)
+                            }
+
+                        }
+
+                        for (let i = 0; i < tea.length; i++) {
+                            tmp[i] = { text: tea[i], value: tea[i] }
+                        }
+
+                        this.setState({
+                            topicList,
+                            del: 'text',
+                            cha: '取消',
+                            tea,
+                            tmp,
+                        })
+
                     })
                 } else {
                     this.props.studentStore.getTopicList({ uid: this.usr.uid })
@@ -70,12 +101,31 @@ export default class TopicList extends Component {
                             if (r.length) {
                                 this.setState({
                                     topicList: r,
+                                }, () => {
+                                    let { topicList } = this.state;
+                                    for (let i = 0; i < topicList.length; i++) {
+                                        topicList[i].key = i;
+                                        if (!tea.includes(topicList[i].instructor)) {
+                                            tea.push(topicList[i].instructor)
+                                        }
+
+                                    }
+
+                                    for (let i = 0; i < tea.length; i++) {
+                                        tmp[i] = { text: tea[i], value: tea[i] }
+                                    }
+
+                                    this.setState({
+                                        topicList,
+                                        del: 'primary',
+                                        cha: '选定',
+                                        tea,
+                                        tmp,
+                                    })
+
                                 })
                             }
                         })
-                    // this.setState({
-                    //     topicList: this.topicList
-                    // })
                 }
             })
     }
@@ -163,95 +213,51 @@ export default class TopicList extends Component {
     handleClick = (record) => {
         let { topicList, isAudi } = this.state;
         if (!isAudi) { // 学生不在审核状态中，此时按钮均为选定，点击后显示一条数据，按钮变为取消，进入审核状态
-            for (let i = 0; i < del.length; i++) {
-                cha[i] = "取消"
-                del[i] = "text"
-            }
             topicList[record.key].status = 1
             this.setState({
                 isAudi: true,
-                topicList: [topicList[record.key]] // 选中后表格中只显示此项
+                // topicList: [topicList[record.key]],// 选中后表格中只显示此项
+                topicList: [record],
+                cha: '取消',
+                del: 'text',
+            }, () => {
+                this.props.studentStore.upStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
+                this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.state.topicList[0].tid, context: "新学生选择您的课题", type: 2 })
             })
-            this.props.studentStore.upStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[record.key].id })
-            this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.state.topicList[record.key].tid, context: "新学生选择您的课题", type: 2 })
         } else {
-            for (let i = 0; i < del.length; i++) {
-                cha[i] = "选定"
-                del[i] = "primary"
-            }
             this.setState({
                 loading: true,
                 isAudi: false,
+                del: '',
+                cha: '',
             })
             this.props.studentStore.delStuTopicList({ uid: this.usr.uid, cid: this.state.topicList[0].id })
                 .then(res => {
+                    this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.state.topicList[0].tid, context: "学生取消选定您的课题", type: 3 })
                     this.props.studentStore.getTopicList({ uid: this.usr.uid })
                         .then(r => {
+
                             this.setState({
                                 loading: true,
+                                topicList: r,
+                                del: 'primary',
+                                cha: '选定'
                             })
                             setTimeout(() => {
                                 this.setState({
                                     loading: false,
-                                    topicList: r,
                                 })
-                            }, 150)
+                            }, 250)
 
                         })
                 })
-            this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.state.topicList[0].tid, context: "学生取消选定您的课题", type: 3 })
+
+
         }
     }
 
     render() {
-        let { topicList, rowDetail, isAudi } = this.state;
-        let tea = []
-        let tmp = []
-        let field = []
-        let _field = []
-        let area = []
-        if (!isAudi) {
-            for (let i = 0; i < topicList.length; i++) {
-                topicList[i].key = i;
-                del.push("primary")
-                cha.push("选定")
-                if (!tea.includes(topicList[i].instructor)) {
-                    tea.push(topicList[i].instructor)
-                }
-                if (!field.includes(topicList[i].areas)) {
-                    field.push(topicList[i].areas)
-                }
-            }
-
-        } else {
-            for (let i = 0; i < topicList.length; i++) {
-                topicList[i].key = i;
-                topicList[i].status = 1
-                del.push("text")
-                cha.push("取消")
-                if (!tea.includes(topicList[i].instructor)) {
-                    tea.push(topicList[i].instructor)
-                }
-                if (!field.includes(topicList[i].areas)) {
-                    field.push(topicList[i].areas)
-                }
-            }
-        }
-
-        for (let i = 0; i < field.length; i++) {
-            for (let j = 0; j < field[i].length; j++) {
-                if (!area.includes(field[i][j])) {
-                    area.push(field[i][j])
-                }
-            }
-        }
-        for (let i = 0; i < tea.length; i++) {
-            tmp[i] = { text: tea[i], value: tea[i] }
-        }
-        for (let i = 0; i < area.length; i++) {
-            _field[i] = { text: area[i], value: area[i] }
-        }
-
+        let { topicList, rowDetail, isAudi, del, cha, tmp } = this.state;
         const paginationProps = {
             hideOnSinglePage: true,
             showSizeChanger: false,
@@ -294,7 +300,7 @@ export default class TopicList extends Component {
                 dataIndex: 'operation',
                 key: 'operation',
                 render: (text, record) =>
-                    <Button size="small" type={del[record.key]} onClick={() => this.handleClick(record)} >{cha[record.key]}</Button>
+                    <Button size="small" type={del} onClick={() => this.handleClick(record)} >{cha}</Button>
             }
         ]
         const aft_column = [
@@ -333,7 +339,7 @@ export default class TopicList extends Component {
                 dataIndex: 'operation',
                 key: 'operation',
                 render: (text, record) =>
-                    <Button size="small" type={del[record.key]} onClick={() => this.handleClick(record)} >{cha[record.key]}</Button>
+                    <Button size="small" type={del} onClick={() => this.handleClick(record)} >{cha}</Button>
             }
         ]
         return (
