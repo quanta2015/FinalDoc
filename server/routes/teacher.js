@@ -3,8 +3,8 @@
  * @version: 1.0
  * @Author: East Wind
  * @Date: 2020-07-09 10:05:28
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-07-09 14:21:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-10 18:44:59
  */ 
 
 const url = require('url');
@@ -334,6 +334,11 @@ router.post('/getAllTopicFiles', async(req, res) => {
     let sql2 = `call PROC_OP_CAN_SUBMIT(?)`;
     let can_submit = await myCall(sql2,{topicId:params.pid,role:0});
     data.push(can_submit[0].flag==1);
+    sql2 = `call PROC_T_GET_DE(?)`;
+    can_submit = await myCall(sql2,{pid:params.pid});
+    if(can_submit.length!=0){
+        data.push(can_submit[0])
+    }
     res.status(200).json({code: 200, data, msg: '所有课题的文件已返回'});
 })
 
@@ -455,13 +460,32 @@ router.get('/getTimeLine',async (req,res)=>{
 
 router.post('/getSel',async(req,res)=>{
     let sql = "CALL PROC_T_IF_STATE_TWO(?)";
-    console.log(req.body);
     callProc(sql,req.body,res,r=>{
         let data = false;
         if(r.length>0 &&r[0].sel != 0 && r[0].sel != 1){
             data = true;
         }
         res.status(200).json({code:200,data,message:"已获取是否到达第二阶段"})
+    })
+})
+
+/**
+ * pid,type
+ */
+router.post('/passDelay',async(req,res)=>{
+    let sql = 'call PROC_T_PASS_DE(?)';
+    callProc(sql,req.body,res,r=>{
+        res.status(200).json({code:200,message:"成功通过请求"})
+    })
+})
+
+/**
+ * pid,type
+ */
+router.post('/refuseDelay',async(req,res)=>{
+    let sql = 'call PROC_T_REFUSE_DE(?)';
+    callProc(sql,req.body,res,r=>{
+        res.status(200).json({code:200,message:"成功拒绝请求"})
     })
 })
 
