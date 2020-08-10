@@ -159,7 +159,6 @@ class Check extends BaseActions {
                       {PanelHeader(t.name, t.id, t.sid, t.status)}
                       {this.StateExtra(t)}
                     </div>
-                    {console.log(t.sid,t.status)}
                     {t.sid!=""&&t.sid!=null&&(t.status == 4 || t.status == 5) &&
                       <div className="stu-body">
                         {

@@ -1,0 +1,49 @@
+[data-component="delay"]{
+
+  .delay-block{
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .de-title{
+      font-size: 25px;
+      width: 100%;
+      margin: 0 0 30px 0;
+    }
+
+    .de-content{
+      margin-bottom: auto;
+    }
+
+    .de-btns{
+      width: 100%;
+      display: flex;
+      flex-direction: row-reverse;
+      .ml-long{
+        margin-left: 20px;
+      }
+    }
+  }
+
+  
+
+  .mr-long{
+    margin-right:20px
+  }
+
+  .m-short{
+    margin: 0 10px;
+  }
+
+  .blue-font{
+    color: blue;
+  }
+
+  .red-font{
+    color: red;
+  }
+
+  
+}
+

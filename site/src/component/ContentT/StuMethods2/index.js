@@ -1,15 +1,25 @@
+/*
+ * @Author: your name
+ * @Date: 2020-08-10 14:43:23
+ * @LastEditTime: 2020-08-10 18:40:07
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \FinalDoc\site\src\component\ContentT\StuMethods2\index.js
+ */
 import BaseActions from '../../BaseActions';
 import * as urls from '../../../constant/urls'
 import {  Modal, Tooltip, Divider } from 'antd';
 import style from './index.scss';
 import TaskForm from '../TaskFormSecond';
+import Delay from '../Delay';
 import FileDownLoad from '../../FileDownLoad'
 
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { UserOutlined, BookOutlined, DownloadOutlined, CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { UserOutlined, BookOutlined, DownloadOutlined, CloseCircleOutlined, CheckCircleOutlined ,ExclamationCircleOutlined} from '@ant-design/icons';
 
 import { route } from 'preact-router';
+
 
 const tabListNoTitle = [
   {
@@ -73,7 +83,9 @@ export default class StuMethods extends BaseActions {
     links: [],
     modal_visiable: false,
     auditOp: false,
-    changeWWW:false
+    changeWWW:false,
+    stude:null,
+    stude_modal:false
   }
 
   getStuInfo = async () => {
@@ -93,6 +105,7 @@ export default class StuMethods extends BaseActions {
     //获取学生文件列表
     let file_data = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
     let l = (file_data.data)[0];
+    console.log(file_data);
     let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran) && !file_data.data[1];
     if (flag) {
       this.setState({ auditOp: true })
@@ -102,6 +115,11 @@ export default class StuMethods extends BaseActions {
       this.setState({changeWWW:true})
     }else{
       this.setState({changeWWW:false})
+    }
+    if(!!file_data.data[2]){
+      this.setState({stude:file_data.data[2]})
+    }else{
+      this.setState({stude:null})
     }
   }
 
@@ -232,6 +250,24 @@ export default class StuMethods extends BaseActions {
                         </Tooltip>
                       </div>
                     }
+                    {
+                      
+                      this.state.stude &&
+                      <div className="m-file-down-load"
+                        onClick={()=>{this.setState({stude_modal:true})}}
+                      >
+                        <Tooltip placement="top" title={"您的学生申请了延迟答辩"}>
+                          <div className="m-f-down-inner">
+                            <div className="m-f-down-pic">
+                            <ExclamationCircleOutlined />
+                            </div>
+                            <p>
+                              延迟答辩
+                            </p>
+                          </div>
+                        </Tooltip>
+                      </div>
+                    }
                   </div>
                 </div>
 
@@ -250,6 +286,21 @@ export default class StuMethods extends BaseActions {
           onCancel={() => { this.setState({ modal_visiable: false }) }}
         >
           <TaskForm ref={x => this.task = x} pid={this.props.pid} close={() => { this.setState({ modal_visiable: false }) }} freshList={this.props.freshList} />
+        </Modal>
+
+        <Modal
+          title="审核学生申请"
+          visible={this.state.stude_modal}
+          width={900}
+          footer={null}
+          onCancel={()=>{this.setState({stude_modal:false})}}
+        >
+          <Delay 
+            stu={{name:this.state.name,sid:this.props.sid,id:this.props.pid}} 
+            freshList={()=>{this.setState({stude_modal:false},()=>this.setState({stude:null}))}}
+            deInfo={this.state.stude}
+          />
+
         </Modal>
       </div>
     )

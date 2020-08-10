@@ -74,9 +74,8 @@ export default class Home extends BaseActions {
   getTopicList = async () => {
     await this.setState({checkBlockState: 0});
     let tdata = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    console.log(tdata);
+    //console.log(tdata);
     tdata = tdata.data.map(filter);
-    
     tdata.sort(sorter);
     this.setState({ toplist: tdata });
     //获取申请列表
@@ -87,12 +86,10 @@ export default class Home extends BaseActions {
     });
     let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
     let sel = x.data;
-    
     if(tdata.length==0){sel = false;}
     if(sel){
-      tdata.forEach((x)=>{!x.sid?sel=false:1;})
+      tdata.forEach(x=>!x.sid?sel=false:1)
     }
-    console.log(sel);
     if(sel){
       this.setState({ checkBlockState: 2 })
     }else{

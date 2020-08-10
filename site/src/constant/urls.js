@@ -146,7 +146,10 @@ export const API_TEACHER_AUDIT_OP_IS_MEMBER = API_SERVER + `/auditOp/isTeamMembe
 export const API_TEACHER_GET_TIME_LINE = API_SERVER + '/teacher/getTimeLine'
 //获取是否为第二阶段
 export const API_TEACHER_GET_SEL = API_SERVER + '/teacher/getSel'
-//export const API_TEACHER_GET_SEL = LOCAL_SERVER + '/teacher/getSel'
+//通过推迟
+export const API_TEACHER_PASS_DE = API_SERVER + '/teacher/passDelay';
+//拒绝推迟
+export const API_TEACHER_RUFUSE_DE = API_SERVER + '/teacher/refuseDelay';
 
 // 任课教师-初期审核
 export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';// 获取审核命题列表
