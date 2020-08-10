@@ -3,8 +3,8 @@
  * @version: 1.0
  * @Author: East Wind
  * @Date: 2020-07-09 10:05:28
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-07-09 14:21:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-08-10 14:38:41
  */ 
 
 const url = require('url');
@@ -331,9 +331,11 @@ router.post('/getAllTopicFiles', async(req, res) => {
     let sql = `CALL PROC_GET_TOPICID_ALL_TOPIC_FILES(?)`;
     let params = req.body;
     let data = await myCall(sql,params);
-    let sql2 = `call PROC_OP_CAN_SUBMIT(?)`;
-    let can_submit = await myCall(sql2,{topicId:params.pid,role:0});
-    data.push(can_submit[0].flag==1);
+    let sql2 = `call PROC_T_GET_DE(?)`;
+    let can_submit = await myCall(sql2,{pid:params.pid});
+    if(can_submit.length!=0){
+        data.push({reason:can_submit[0].reason})
+    }
     res.status(200).json({code: 200, data, msg: '所有课题的文件已返回'});
 })
 
