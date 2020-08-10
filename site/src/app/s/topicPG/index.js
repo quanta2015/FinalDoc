@@ -19,7 +19,9 @@ export default class TopicPG extends Component {
             showModal: false,
             selectItem: null,
             showLog: false,
-            showDefer: false
+            showDefer: false,    // 控制modal是否可见
+            canDefer: false,     // 控制是否显示按钮
+            showProcess: false,  // 控制modal显示输入框还是时间轴
         }
     }
 
@@ -48,8 +50,7 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.currState);
     }
 
-
-    componentDidMount() {
+    async componentDidMount() {
         if (!this.usr.uid) {
             route('/')
         }
@@ -61,8 +62,19 @@ export default class TopicPG extends Component {
             this.props.studentStore.getCurrentState({ uid: this.usr.uid })
             this.props.studentStore.getOpenScore({ uid: this.usr.uid })
         }
+        const canDeferFromTime = await this.props.studentStore.getShowDefer({ uid: this.usr.uid })
+        const canDeferFromAction = await this.props.studentStore.getDeferAppliProgs({ sid: this.usr.uid })
+        // 存在未结束的申请
+        const showProgress = !!canDeferFromAction.length && !canDeferFromAction[0].pass
+        // 不含已通过的申请
+        const unfinishDefer = !!canDeferFromAction.length && canDeferFromAction[0].pass !== 1
+        // 时间上可申请 且未成功申请
+        const canDefer = canDeferFromTime[0].flag && (!canDeferFromAction.length || unfinishDefer)
 
-
+        this.setState({
+            canDefer: canDefer,
+            showProcess: showProgress
+        })
     }
 
     downloadFile = (item) => {
@@ -100,7 +112,9 @@ export default class TopicPG extends Component {
     }
 
     onSubmitDefer = () => {
-        // 修改 showProcess 对应的值
+        this.setState({
+            showProcess: true
+        })
     }
 
     render() {
@@ -150,7 +164,7 @@ export default class TopicPG extends Component {
                     <div className="m-title-wp">
                         <h2 className="u-title">材料递交</h2>
                         <div className="m-btn-wp">
-                            <Button className="u-btn" onClick={this.showDefer} size="small"><EditOutlined />申请延缓</Button>
+                            {this.state.canDefer && <Button className="u-btn" onClick={this.showDefer} size="small"><EditOutlined />申请延缓</Button>}
                             <Button className="u-btn" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
                         </div>
                     </div>
@@ -161,9 +175,10 @@ export default class TopicPG extends Component {
                     />
                     <DeferReply
                         showDefer={this.state.showDefer}
-                        showProcess={true}
+                        showProcess={this.state.showProcess}
                         afterSubmit={this.onSubmitDefer}
                         onCancel={this.onCloseDefer}
+                        sid={this.usr.uid}
                     />
                     <div className="m-topic-info">
                         {FILE_UPLOAD_TYPE.map((item, id) =>

@@ -99,7 +99,12 @@ export const API_STU_GET_OPSCORE = API_SERVER + '/student/getOpenScore'
 export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
 // 获取nav栏状态
 export const API_STU_GET_NAV_STAGE = API_SERVER + '/student/getStudentTopicStatus'
-
+// 提交延缓答辩申请
+export const API_STU_SUBMIT_DEFER = API_SERVER + '/student/insertDeferApplication'
+// 查询延缓答辩申请内容
+export const API_STU_GET_DEFER_PRG = API_SERVER + '/student/getDeferAppliStatus'
+// 判断当前延缓答辩申请入口是否开放
+export const API_STU_GET_DEFER_SHOW = API_SERVER + '/student/getIfCanDefAppli'
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';

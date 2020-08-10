@@ -1,35 +1,57 @@
 import { Component } from 'preact';
+import { inject, observer } from 'mobx-react';
+import { computed, toJS } from 'mobx'
 import { Button, Modal, Typography, Input, mesage, message } from 'antd'
 import './index.scss'
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
+@inject('studentStore')
+@observer
 export default class TopicPG extends Component {
     constructor(props) {
         super()
+        this.state = {
+            loading: false,
+            showProcess: false,
+        }
     }
 
-    // mock data
-    deferProgresss = [
-        {content: '那天在外地，想请个假，请老师通过，谢谢老师！'},
-        {content: '同意'}
-    ]
+    @computed
+    get derApplication() {
+        return toJS(this.props.studentStore.derApplication);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.state.showProcess === prevProps.showProcess && prevProps.showProcess !== this.props.showProcess) {
+            this.setState({
+                showProcess: this.props.showProcess
+            })
+        }
+    }
 
     handleSubmit = async () => {
         const reason = this.reason.state.value || '';
         if(reason) {
-            // 添加申请
+            this.setState({
+                loading: true,
+                reason: reason
+            })
+            await this.props.studentStore.insertDeferApl({uid: this.props.sid, reason: reason})
+            await this.props.studentStore.getDeferAppliProgs({ sid: this.props.sid })
+            message.success('您的申请已提交')
+            this.setState({
+                loading: false
+            })
             this.props.afterSubmit();
         } else {
             message.error('申请理由不能为空');
         }
-        console.log(this.reason.state.value);
     }
 
     render() {
-        const process = ['发出申请', '导师审批', '系主任审批']
-        const currProgress = this.deferProgresss.length - 1;
+        const process = ['发出申请', '导师审批']
         return (
             <Modal
                 className="g-stu-defer"
@@ -41,17 +63,16 @@ export default class TopicPG extends Component {
                 destroyOnClose={true}
             >
                 {
-                    this.props.showProcess ?
+                    this.state.showProcess && this.derApplication.reason ?
                     <div className="m-tl-container">
                         {
-                            process.map((item, index) => 
-                                <div className={currProgress >= index ? currProgress === index ? "m-timeline-item z-focus" : "m-timeline-item z-active" : "m-timeline-item"}>
+                            process.map((item, i) => 
+                                <div className={this.derApplication.index >= i ? this.derApplication.index === i ? "m-timeline-item z-focus" : "m-timeline-item z-active" : "m-timeline-item"}>
                                     {   
-                                        currProgress >= index ?
+                                        this.derApplication.index >= i ?
                                         <>
                                             <span className="u-title">{item}</span>
-                                            {/* <span className="u-time">{this.deferProgresss[index].time}</span> */}
-                                            <p className="u-content">{this.deferProgresss[index].content}</p>
+                                                <p className="u-content">{this.derApplication.data[i]}</p>
                                         </>:
                                         <span className="u-title">{item}</span>
                                     }
@@ -61,7 +82,7 @@ export default class TopicPG extends Component {
                     </div>
                     :<>
                         <TextArea ref={reason => this.reason = reason} rows={4} placeholder="请输入申请理由..." />
-                        <Button className="m-btn" type="primary" onClick={this.handleSubmit}>提交</Button>
+                        <Button className="m-btn" loading={this.state.loading} type="primary" onClick={this.handleSubmit}>提交</Button>
                     </>
                 }
             </Modal>
