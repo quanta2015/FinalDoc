@@ -2,13 +2,13 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import { Tag, Button, Modal, message, Tooltip } from 'antd'
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, message, Tooltip } from 'antd'
+import { PlusOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
-import { FILE_UPLOAD_TYPE, STU_FU_STATUS, STU_OP_SCORE } from '../../../constant/data'
+import { FILE_UPLOAD_TYPE } from '../../../constant/data'
 import './index.scss'
 import LogRecord from '../../../component/LogRecord';
-import { QuestionCircleOutlined } from '@ant-design/icons'
+import DeferReply from '../../../component/DeferReply'
 
 @inject('studentStore', 'userStore')
 @observer
@@ -19,6 +19,9 @@ export default class TopicPG extends Component {
             showModal: false,
             selectItem: null,
             showLog: false,
+            showDefer: false,    // 控制modal是否可见
+            canDefer: false,     // 控制是否显示按钮
+            showProcess: false,  // 控制modal显示输入框还是时间轴
         }
     }
 
@@ -47,9 +50,7 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.currState);
     }
 
-
-    componentDidMount() {
-        //todo: 后端获取3个阶段显示的时间点列表 更新store中的值
+    async componentDidMount() {
         if (!this.usr.uid) {
             route('/')
         }
@@ -61,8 +62,19 @@ export default class TopicPG extends Component {
             this.props.studentStore.getCurrentState({ uid: this.usr.uid })
             this.props.studentStore.getOpenScore({ uid: this.usr.uid })
         }
+        const canDeferFromTime = await this.props.studentStore.getShowDefer({ uid: this.usr.uid })
+        const canDeferFromAction = await this.props.studentStore.getDeferAppliProgs({ sid: this.usr.uid })
+        // 存在未结束的申请
+        const showProgress = !!canDeferFromAction.length && !canDeferFromAction[0].pass
+        // 不含已通过的申请
+        const unfinishDefer = !!canDeferFromAction.length && canDeferFromAction[0].pass !== 1
+        // 时间上可申请 且未成功申请
+        const canDefer = canDeferFromTime[0].flag && (!canDeferFromAction.length || unfinishDefer)
 
-
+        this.setState({
+            canDefer: canDefer,
+            showProcess: showProgress
+        })
     }
 
     downloadFile = (item) => {
@@ -81,9 +93,27 @@ export default class TopicPG extends Component {
         })
     }
 
-    onClose = () => {
+    showDefer = () => {
+        this.setState({
+            showDefer: true,
+        })
+    }
+
+    onCloseLog = () => {
         this.setState({
             showLog: false,
+        })
+    }
+
+    onCloseDefer = () => {
+        this.setState({
+            showDefer: false,
+        })
+    }
+
+    onSubmitDefer = () => {
+        this.setState({
+            showProcess: true
         })
     }
 
@@ -131,18 +161,30 @@ export default class TopicPG extends Component {
                     </div>
                 }
                 <div className="m-cont">
-                    <h2 className="u-title">材料递交</h2>
-                    <Button className="u-log" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
+                    <div className="m-title-wp">
+                        <h2 className="u-title">材料递交</h2>
+                        <div className="m-btn-wp">
+                            {this.state.canDefer && <Button className="u-btn" onClick={this.showDefer} size="small"><EditOutlined />申请延缓</Button>}
+                            <Button className="u-btn" type="primary" onClick={this.showLog} size="small"><PlusOutlined />指导日志</Button>
+                        </div>
+                    </div>
                     <LogRecord
                         showLog={this.state.showLog}
-                        onCancel={this.onClose}
+                        onCancel={this.onCloseLog}
+                        sid={this.usr.uid}
+                    />
+                    <DeferReply
+                        showDefer={this.state.showDefer}
+                        showProcess={this.state.showProcess}
+                        afterSubmit={this.onSubmitDefer}
+                        onCancel={this.onCloseDefer}
                         sid={this.usr.uid}
                     />
                     <div className="m-topic-info">
                         {FILE_UPLOAD_TYPE.map((item, id) =>
                             <div className="m-stage">
                                 <h3 className="u-title"><span>0{id + 1} / </span>{item.stage}</h3>
-                                <div className="m-filewp">
+                                <div className="m-file-wp">
                                     {item.file.map((item) =>
                                         <div className="m-upload">
                                             <FileUpload

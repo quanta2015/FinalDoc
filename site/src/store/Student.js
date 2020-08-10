@@ -40,6 +40,10 @@ class Student extends BaseActions {
     // 答辩信息
     replyList = []
 
+    @observable
+    // 延缓答辩申请进度
+    derApplication = {}
+
     @action
     initStuStore() {
         runInAction(() => {
@@ -52,6 +56,7 @@ class Student extends BaseActions {
             this.currState = {};
             this.insLog = [];
             this.replyList = [];
+            this.derApplication = {};
         })
     }
 
@@ -356,7 +361,32 @@ class Student extends BaseActions {
 
     @action
     async getNavStage(params) {
-        return this.post(urls.API_STU_GET_NAV_STAGE, params);
+        return await this.post(urls.API_STU_GET_NAV_STAGE, params);
+    }
+
+    @action 
+    async insertDeferApl(params) {
+        return await this.post(urls.API_STU_SUBMIT_DEFER, params)
+    }
+
+    @action
+    async getShowDefer(params) {
+        const r = await this.post(urls.API_STU_GET_DEFER_SHOW, params);
+        return r.data
+    }
+
+    @action
+    async getDeferAppliProgs(params) {
+        const r = await this.post(urls.API_STU_GET_DEFER_PRG, params);
+        let data = {}
+        if (r.data.length) {
+            data = r.data[0]
+            data.data = [data.reason, data.teaOpi]
+        }
+        runInAction(() => {
+            this.derApplication = data
+        })
+        return r.data
     }
 }
 
