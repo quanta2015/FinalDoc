@@ -453,7 +453,8 @@ router.post('/delGuidance', async(req, res) => {
 })
 
 // 插入延缓答辩申请
-// params: { uid: str, reason: str }
+// params: { uid: str, reason: str, type: int }
+// type: 1  开题延缓；2  论文延缓
 router.post('/insertDeferApplication', async(req, res) => {
     let sql = `CALL PROC_INSERT_DEFER_APPLICATION(?)`;
     let params = req.body;
@@ -465,7 +466,7 @@ router.post('/insertDeferApplication', async(req, res) => {
 })
 
 // 查询延缓答辩申请当前的阶段
-// params: { sid: str }
+// params: { sid: str, type: int }
 router.post('/getDeferAppliStatus', async(req, res) => {
     let sql = `CALL PROC_GET_DEFER_APPLI_STATUS(?)`;
     let params = req.body;
@@ -473,8 +474,10 @@ router.post('/getDeferAppliStatus', async(req, res) => {
     callProc(sql, params, res, (r) => {
         if (r[0]['teaOpi'] == null) {
             r[0].index = 0;
-        } else {
+        } else if (r[0]['teaOpi'] != null && r[0]['manOpi'] == null) {
             r[0].index = 1;
+        } else {
+            r[0].index = 2;
         }
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功查询延缓答辩申请当前状态' });
@@ -482,7 +485,8 @@ router.post('/getDeferAppliStatus', async(req, res) => {
 })
 
 // 判断当前能否进行延缓申请
-// params: { uid: str}
+// params: { uid: str, type: int }
+// 等一个数据库调整
 router.post('/getIfCanDefAppli', async(req, res) => {
     let sql = `CALL PROC_GET_CAN_DEF_APPLI(?)`;
     let params = req.body;
