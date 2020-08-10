@@ -184,6 +184,15 @@ class LogRecord extends Component {
         })
 
     }
+    downloadFile = () => {
+        let params = { file: this.selectTpInfo['f_guide_log'], id: this.selectTpInfo.sid, name: '指导日志' };
+        this.props.userStore.downloadFile(params)
+            .then(r => {
+                if (!r) {
+                    message.error('网络错误');
+                }
+            })
+    }
     render() {
         const { comments, submitting, value } = this.state;
         // const STATUS = this.selectTpInfo.status === 9
@@ -250,7 +259,7 @@ class LogRecord extends Component {
                                         <Button htmlType="submit" loading={submitting} onClick={this.handleSubmit} type="primary">
                                             提交
         </Button>
-                                        {IN_PAPER_REPLY && <Button icon={<DownloadOutlined />}>导 出</Button>}
+                                        {IN_PAPER_REPLY && <Button onClick={this.downloadFile} icon={<DownloadOutlined />}>导 出</Button>}
                                     </Space>
                                 </Form.Item>
                             </>

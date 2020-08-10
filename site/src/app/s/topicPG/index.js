@@ -187,35 +187,6 @@ export default class TopicPG extends Component {
                         )}
                     </div>
                 </div>
-                {/* {
-                    this.opScore.length > 0 &&
-                    <div className="m-op-score">
-                        <div className="m-nm-lst">
-                            <div className="u-nm-itm">
-                                <span>指导老师评分</span>
-                                {this.opScore[0].t_reply_score ?
-                                    <span className="score">
-                                        {this.opScore[0].t_reply_score}
-                                    </span> :
-                                    <span className="z-none">
-                                        尚未录入
-                                    </span>
-                                }
-                            </div>
-                            <div className="u-nm-itm">
-                                <span>开题答辩评分</span>
-                                {this.opScore[0].g_reply_score ?
-                                    <span className="score">
-                                        {this.opScore[0].g_reply_score}
-                                    </span> :
-                                    <span className="z-none">
-                                        尚未录入
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                } */}
 
             </div >
         );
