@@ -473,7 +473,7 @@ router.post('/getDeferAppliStatus', async(req, res) => {
     callProc(sql, params, res, (r) => {
         if (r[0]['teaOpi'] == null) {
             r[0].index = 0;
-        } else (r[0]['teaOpi'] != null && r[0]['manOpi'] == null) {
+        } else {
             r[0].index = 1;
         }
         console.log(r);
