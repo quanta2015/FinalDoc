@@ -495,14 +495,18 @@ router.post('/getIfCanDefAppli', async(req, res) => {
     console.log("--------------------");
     callProc(sql, params, res, (r) => {
         console.log(r);
+        console.log(r[0]['status']);
         var result = [];
         if (r.length == 0) {
             result = [{ 'flag': false }];
         } else {
             if (params['type'] == 1) {
                 // 开题答辩延期
+                result = [{ 'flag': r[0]['status'] >= 6 && r[0]['status'] < 8 }];
             } else {
-                
+                // 论文答辩延期
+                // 等topic表status备注，暂时false
+                result = [{ 'flag': false }];
             }
         }
         res.status(200).json({ code: 200, data: result, msg: '成功查询当前能否进行延缓申请' });
