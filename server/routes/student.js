@@ -190,8 +190,7 @@ router.post('/getAllStates', async(req, res) => {
     let sql = `CALL PROC_GET_ALL_STATES(?)`;
     let params = req.body;
     callProc(sql, params, res, (r) => {
-        r.splice(1, 1);
-        r.splice(1, 1);
+        console.log(r);
         r[0].state_name = '任务书';
         r[4].state_name = '成绩审定';
         console.log(r);
@@ -493,17 +492,18 @@ router.post('/getIfCanDefAppli', async(req, res) => {
     let sql = `CALL PROC_GET_CAN_DEF_APPLI(?)`;
     let params = req.body;
     console.log(params);
+    console.log("--------------------");
     callProc(sql, params, res, (r) => {
         console.log(r);
         var result = [];
         if (r.length == 0) {
             result = [{ 'flag': false }];
         } else {
-            var today = new Date();
-            var start = new Date(r[0]['start']);
-            var end = new Date(r[0]['end']);
-            var flag = { 'flag': today >= start && today <= end };
-            result.push(flag);
+            if (params['type'] == 1) {
+                // 开题答辩延期
+            } else {
+                
+            }
         }
         res.status(200).json({ code: 200, data: result, msg: '成功查询当前能否进行延缓申请' });
     })
