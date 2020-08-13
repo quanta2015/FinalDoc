@@ -343,9 +343,9 @@ router.post("/getStudentTopicStatus", async(req, res) => {
     })
 })
 
-// 获取开题答辩信息
+// 获取最近答辩信息
 // params: { uid: str }
-router.post('/getOpenQuestionInfo', async(req, res) => {
+router.post('/getQuestionInfo', async(req, res) => {
     let sql =  `CALL PROC_GET_OPEN_QUESTION_INFO(?)`;
     let params = req.body;
     console.log(params);
