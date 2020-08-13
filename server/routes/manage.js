@@ -16,22 +16,32 @@ const callProc = require('../util').callProc;
 /**
  * @name: 
  * @test: test font
- * @msg: 获取全部教师列表 --权限
+ * @msg: 获取全部教师列表 --本系  --分配审核人、评阅人两次使用
  * @param {ide:String} 
  * @return: data
  */
 router.post('/teacherList', async(req, res) => {
-  let sql = `CALL MG_M_PROC_TEA_LIST(?)`;
   let params = req.body;
-	callProc(sql, params, res, (r) => {
-		res.status(200).json({code: 200, data: r, msg: '取教师列表'})
+
+  if(req.body.status == 1){   //审核
+    let sql = `CALL MG_M_PROC_TEA_LIST(?)`;
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data: r, msg: '取教师列表'})
     });
+  }
+  if(req.body.status == 2){    //评阅
+    let sql = `CALL MG_FM_PROC_TEA_LIST(?)`;
+    callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '取副教授及以上教师列表'})
+    });
+  }
+  
 });
 
 /**
  * @name: 
  * @test: test font
- * @msg: 获取未分配审核的课题列表 --权限
+ * @msg: 获取未分配审核的课题列表 --本系 --分配审核人、评阅人两次使用
  * @param {ide:String} 
  * @return: 
  */
@@ -73,7 +83,7 @@ router.post('/checkList', async(req, res) => {
 /**
  * @name: 
  * @test: test font
- * @msg: 审核老师自动分配课题 --权限
+ * @msg: 自动分配课题 --本系  --分配审核人、评阅人两次使用
  * @param {ide:String,number:int,teacher_id:[String,String,...]} 
  * @return: 
  */
@@ -96,7 +106,7 @@ router.post('/randAllocate',async(req,res) => {
 /**
  * @name: 
  * @test: test font
- * @msg: 给审核老师手动分配课题接口
+ * @msg: 手动分配课题   --分配审核人、评阅人两次使用
  * @param {topic_id: [int,int,...],teacher_id:String}
  * @return: 
  */
@@ -181,22 +191,5 @@ router.post('/judgeTopic', async(req, res) => {
 	});
 });
 
-//迁至auditTp
-// router.post('/checkUpdateYes', async(req, res) => {
-//   let sql = `CALL PROC_CHECK_UPDATE_YES_M(?)`;
-//   let params = req.body;
-//   callProc(sql, params, res, (r) => {
-//     res.status(200).json({code: 200, data: r, msg: '审核方通过该课题'})
-//   });
-// });
-
-
-// router.post('/checkUpdateNo', async(req, res) => {
-//   let sql = `CALL PROC_CHECK_UPDATE_NO_M(?)`;
-//   let params = req.body;
-//   callProc(sql, params, res, (r) => {
-//     res.status(200).json({code: 200, data: r, msg: '审核方打回该课题'})
-//   });
-// });
 
 module.exports = router

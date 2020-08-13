@@ -15,6 +15,7 @@ let path = require("path");
 const manage = require('./routes/manage');
 const openGp = require('./routes/openGp');
 const auditMg = require('./routes/auditMg');
+const auditFm = require('./routes/auditFm');
 const student = require('./routes/student');
 const topic = require('./routes/topic');
 const auditTp = require('./routes/auditTp');
@@ -37,6 +38,7 @@ app.use(express.static(__dirname + '/'))
 app.use('/manage', manage);
 app.use('/openGp', openGp);
 app.use('/auditMg', auditMg);
+app.use('/auditFm', auditFm);
 app.use('/student', student);
 app.use('/topic', topic);
 app.use('/auditTp', auditTp);
