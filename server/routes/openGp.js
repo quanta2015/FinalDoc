@@ -36,15 +36,24 @@ router.post('/teacherList', async(req, res) => {
    * @return: 
    */
   router.post('/topicList', async(req, res) => {
-    let sql = `CALL MG_G_PROC_TOPIC_LIST(?)`;
-      let params = req.body;
+    let params = req.body;
+    if(req.body.status == 1) {
+      let sql = `CALL MG_G_PROC_TOPIC_LIST(?)`;
       callProc(sql, params, res, (r) => {
           res.status(200).json({code: 200, data: r, msg: '取课题列表'})
-    });
+      });
+    }
+    if(req.body.status == 2) {
+      let sql = `CALL MG_G_PROC_TOPIC_LIST_DE(?)`;
+      callProc(sql, params, res, (r) => {
+          res.status(200).json({code: 200, data: r, msg: '取课题列表--延缓'})
+      });
+    }
+    
   });
 
 
-   /**
+  /**
    * @name: 
    * @test: test font
    * @msg: 取分组列表  --权限
@@ -99,15 +108,24 @@ router.post('/handleGroup', async(req, res) => {
     }
     topic_char = topic_char.substring(0, topic_char.length - 1);
     
-    let sql = `CALL MG_G_PROC_HANDLE_GROUP(?)`;
-      let params = {leader_id:req.body.leader_id,
-                    teacher_id:teacher_char,
-                    teacher_len:teacher_len,
-                    topic_id:topic_char,
-                    topic_len:topic_len};
+    let params = {leader_id:req.body.leader_id,
+      teacher_id:teacher_char,
+      teacher_len:teacher_len,
+      topic_id:topic_char,
+      topic_len:topic_len};
+
+    if(req.body.status == 1) {
+      let sql = `CALL MG_G_PROC_HANDLE_GROUP_N(?)`;
       callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组'})
+        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组-正常'})
       });
+    }
+    if(req.body.status == 2) {
+      let sql = `CALL MG_G_PROC_HANDLE_GROUP_D(?)`;
+      callProc(sql, params, res, (r) => {
+        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组-延缓'})
+      });
+    }
   });
 
 
@@ -130,11 +148,11 @@ router.post('/randGroup', async(req, res) => {
   teacher_char = teacher_char.substring(0, teacher_char.length - 1);
   
   let sql = `CALL MG_G_PROC_RAND_GROUP(?)`;
-    let params = {ide:req.body.ide,
-                  leader_id:req.body.leader_id,
-                  teacher_id:teacher_char,
-                  teacher_len:teacher_len,
-                  topic_len:topic_len};
+  let params = {ide:req.body.ide,
+                leader_id:req.body.leader_id,
+                teacher_id:teacher_char,
+                teacher_len:teacher_len,
+                topic_len:topic_len};
     callProc(sql, params, res, (r) => {
       res.status(200).json({code: 200, data:r, msg: '开题答辩自动分组'})
     });
@@ -158,13 +176,22 @@ router.post('/tenTopic', async(req, res) => {
   }
   teacher_char = teacher_char.substring(0, teacher_char.length - 1);
   
-  let sql = `CALL MG_G_PROC_TEN_TOPIC(?)`;
   let params = {ide:req.body.ide,
-                teacher_id:teacher_char,
-                teacher_len:teacher_len};
-  callProc(sql, params, res, (r) => {
-    res.status(200).json({code: 200, data:r, msg: '开题答辩自动十个课题'})
-  });
+    teacher_id:teacher_char,
+    teacher_len:teacher_len};
+
+  if(req.body.status == 1) {
+    let sql = `CALL MG_G_PROC_TEN_TOPIC(?)`;
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data:r, msg: '开题答辩自动十个课题'})
+    });
+  }
+  if(req.body.status == 2) {
+    let sql = `CALL MG_G_PROC_TEN_TOPIC_DE(?)`;
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data:r, msg: '开题答辩自动十个课题--延缓'})
+    });
+  }
 });
   /**
    * @name: 
