@@ -492,9 +492,6 @@ export default class Ass extends Component {
 
                                            </tr>
 
-                                        
-                                       
-                                    
                                 )
                             })}
                             </table>
