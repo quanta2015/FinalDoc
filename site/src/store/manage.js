@@ -42,12 +42,12 @@ class manager extends BaseActions {
       })
       // 给领域排序
       areas.sort(function (a, b) {
-          if (a < b) {
-            return -1;
-          } else if (a > b) {
-            return 1;
-          }
-          return 0;
+        if (a < b) {
+          return -1;
+        } else if (a > b) {
+          return 1;
+        }
+        return 0;
       })
       /* ******* */
       teaName.push({
@@ -324,11 +324,10 @@ class manager extends BaseActions {
   }
 
   @observable
-  stu_list = []
-
-
-
-
+  summary = {
+    stu_list: [],
+    tea_topic_num: []
+  }
 
   // 查看该系全体学生的论文进度
   // {"gid":int}
@@ -400,7 +399,25 @@ class manager extends BaseActions {
       })
     })
     runInAction(() => {
-      this.stu_list = temp;
+      this.summary.stu_list = temp;
+    })
+  }
+
+  // 查看该系教师出题情况
+  // {"gid":int}
+  @action
+  async teaTopicNum(param) {
+    let res = await this.post(urls.API_MAN_POST_VIEWTEACOUNT, param)
+    res.data.sort(function (a, b) {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    })
+    runInAction(() => {
+      this.summary.tea_topic_num = res.data;
     })
   }
 
@@ -415,11 +432,11 @@ class manager extends BaseActions {
     to_audit_list: [],
     // 未提交的任务书
     uncommit_list: [],
-    suc:0,
+    suc: 0,
     //判断能否进入下一个阶段
-    judge_op:undefined,
+    judge_op: undefined,
     //是否已经开题答辩
-    status_op:undefined,
+    status_op: undefined,
   }
 
   @action
@@ -433,15 +450,15 @@ class manager extends BaseActions {
       let tag = ""
       let num = 5
 
-      if (item.status <4) {
+      if (item.status < 4) {
         tag = "未提交";
       } else if (item.status === 4) {
         tag = "待审核";
         num = 4;
-      } else if (item.status===5) {
+      } else if (item.status === 5) {
         tag = "通过";
         num = 6;
-      } else if(item.status>=6) {
+      } else if (item.status >= 6) {
         tag = "已发布";
         num = 7;
       }
@@ -461,16 +478,16 @@ class manager extends BaseActions {
     let arr = []
     // 未提交
     let arr1 = []
-    let count=0
-    let suc=0
+    let count = 0
+    let suc = 0
     temp.map((item, i) => {
       if (item.status === 4) {
         arr.push(
           item.key
         )
-      }else if(item.status>=5){
-         count++;
-      }else if(item.status < 4){
+      } else if (item.status >= 5) {
+        count++;
+      } else if (item.status < 4) {
         arr1.push(
           item.key
         )
@@ -492,8 +509,8 @@ class manager extends BaseActions {
         return 1;
       }
     })
-    if (count === res.data.length && res.data.length !== 0){
-      suc=1
+    if (count === res.data.length && res.data.length !== 0) {
+      suc = 1
     }
     runInAction(() => {
       this.reviewPaper.task_info = temp;
@@ -529,7 +546,7 @@ class manager extends BaseActions {
   @action
   async reviewTask(param) {
     return await this.post(urls.API_MAN_POST_RP_REVIEWTASK, param)
-     
+
   }
 
   //判断是否可以一键进入开题答辩
@@ -537,7 +554,7 @@ class manager extends BaseActions {
   @action
   async getJudgeOpDef(param) {
     let res = await this.post(urls.API_MAN_POST_RP_JUDEGOPENDEFENCE, param)
-    this.reviewPaper.judge_op=res.data[0].flag;
+    this.reviewPaper.judge_op = res.data[0].flag;
   }
 
   //进入开题答辩阶段
@@ -590,7 +607,7 @@ class manager extends BaseActions {
     })
   }
 
- 
+
 
 
 }

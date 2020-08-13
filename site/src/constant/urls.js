@@ -63,6 +63,8 @@ export const API_MAN_POST_RP_STATUSOPENDEFENCE = API_SERVER + '/auditMg/statusOp
 
 // 查看论文进度
 export const API_MAN_POST_VIEWPROGRESS = API_SERVER + '/auditMg/viewProgress'
+// 查看本系老师课题数量
+export const API_MAN_POST_VIEWTEACOUNT = API_SERVER + '/auditMg/viewTeaCount'
 // 查看某位学生上传的文件
 export const API_MAN_POST_VIEWFILES = API_SERVER + '/auditMg/viewFiles'
 
