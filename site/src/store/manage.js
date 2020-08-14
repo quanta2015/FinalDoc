@@ -306,6 +306,14 @@ class manager extends BaseActions {
   // {"ide":"20130006"}
   async getGroupList_ogp(param) {
     const res = await this.post(urls.API_MAN_POST_OGP_GROUPLIST, param);
+    res.data.sort(function (a, b) {
+      if (a.time > b.time) {
+        return 1;
+      } else if (a.time < b.time) {
+        return -1;
+      }
+      return 0;
+    })
     let group = [];
     res.data.map((item, i) => {
       group.push({
@@ -314,18 +322,11 @@ class manager extends BaseActions {
         leader: item.leader,
         members: item.names,
         address: item.address,
-        time:item.time,
+        time: item.time.slice(2, 10) +" "+ item.time.slice(11, 16),
       })
     })
 
-    group.sort(function (a, b) {
-      if (a.time < b.time) {
-        return 1;
-      } else if (a.time > b.time) {
-        return -1;
-      }
-      return 0;
-    })
+   
     runInAction(() => {
       this.openDefenseGroup.group_list = group;
     })
