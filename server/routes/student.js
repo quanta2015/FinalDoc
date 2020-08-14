@@ -190,8 +190,7 @@ router.post('/getAllStates', async(req, res) => {
     let sql = `CALL PROC_GET_ALL_STATES(?)`;
     let params = req.body;
     callProc(sql, params, res, (r) => {
-        r.splice(1, 1);
-        r.splice(1, 1);
+        console.log(r);
         r[0].state_name = '任务书';
         r[4].state_name = '成绩审定';
         console.log(r);
@@ -453,7 +452,8 @@ router.post('/delGuidance', async(req, res) => {
 })
 
 // 插入延缓答辩申请
-// params: { uid: str, reason: str }
+// params: { uid: str, reason: str, type: int }
+// type: 1  开题延缓；2  论文延缓
 router.post('/insertDeferApplication', async(req, res) => {
     let sql = `CALL PROC_INSERT_DEFER_APPLICATION(?)`;
     let params = req.body;
@@ -465,16 +465,20 @@ router.post('/insertDeferApplication', async(req, res) => {
 })
 
 // 查询延缓答辩申请当前的阶段
-// params: { sid: str }
+// params: { sid: str, type: int }
 router.post('/getDeferAppliStatus', async(req, res) => {
     let sql = `CALL PROC_GET_DEFER_APPLI_STATUS(?)`;
     let params = req.body;
     console.log(params);
     callProc(sql, params, res, (r) => {
-        if (r[0]['teaOpi'] == null) {
-            r[0].index = 0;
-        } else if (r[0]['teaOpi'] != null && r[0]['manOpi'] == null) {
-            r[0].index = 1;
+        if (r.length != 0) {
+            if (r[0]['teaOpi'] == null) {
+                r[0].index = 0;
+            } else if (r[0]['teaOpi'] != null && r[0]['manOpi'] == null) {
+                r[0].index = 1;
+            } else {
+                r[0].index = 2;
+            }
         }
         console.log(r);
         res.status(200).json({ code: 200, data: r, msg: '成功查询延缓答辩申请当前状态' });
@@ -482,19 +486,29 @@ router.post('/getDeferAppliStatus', async(req, res) => {
 })
 
 // 判断当前能否进行延缓申请
-// params: { uid: str}
+// params: { uid: str, type: int }
+// 等一个数据库调整
 router.post('/getIfCanDefAppli', async(req, res) => {
     let sql = `CALL PROC_GET_CAN_DEF_APPLI(?)`;
     let params = req.body;
     console.log(params);
+    console.log("--------------------");
     callProc(sql, params, res, (r) => {
         console.log(r);
-        var today = new Date();
-        var start = new Date(r[0]['start']);
-        var end = new Date(r[0]['end']);
+        console.log(r[0]['status']);
         var result = [];
-        var flag = { 'flag': today >= start && today <= end };
-        result.push(flag);
+        if (r.length == 0) {
+            result = [{ 'flag': false }];
+        } else {
+            if (params['type'] == 1) {
+                // 开题答辩延期
+                result = [{ 'flag': r[0]['status'] >= 6 && r[0]['status'] < 8 }];
+            } else {
+                // 论文答辩延期
+                // 等topic表status备注，暂时false
+                result = [{ 'flag': false }];
+            }
+        }
         res.status(200).json({ code: 200, data: result, msg: '成功查询当前能否进行延缓申请' });
     })
 })
