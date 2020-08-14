@@ -179,10 +179,15 @@ class manager extends BaseActions {
     teacher_info: [],
     // 未分配课题列表
     topic_info: [],
+      // 延期课题列表
+      topicde_info: [],
     //自动分配十个课题
     sug_topic_id: [],
     // 开题分组信息
     group_list: [],
+    //置空
+      select_leader:undefined,
+      select_member:[],
   }
   // 自动显示十个答辩课题
   // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
@@ -220,6 +225,29 @@ class manager extends BaseActions {
     )
     runInAction(() => {
       this.openDefenseGroup.topic_info = topic;
+    })
+
+  }
+
+  @action
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTopicListDe_ogp(param) {
+    const res = await this.post(urls.API_MAN_POST_OGP_TOPICLIST, param);
+    let topic = []
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+    res.data.map((item) =>
+      topic.push({
+        key: item.key,
+        sName: item.sName,
+        topic: item.name + "-" + item.topic,
+        content: item.content,
+        tName: item.name,
+        classname: item.class,
+      })
+    )
+    runInAction(() => {
+      this.openDefenseGroup.topicde_info = topic;
     })
 
   }
@@ -286,7 +314,17 @@ class manager extends BaseActions {
         leader: item.leader,
         members: item.names,
         address: item.address,
+        time:item.time,
       })
+    })
+
+    group.sort(function (a, b) {
+      if (a.time < b.time) {
+        return 1;
+      } else if (a.time > b.time) {
+        return -1;
+      }
+      return 0;
     })
     runInAction(() => {
       this.openDefenseGroup.group_list = group;

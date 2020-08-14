@@ -127,7 +127,8 @@ export default class DivideDetail extends Component {
             // 刷新分组列表
             await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
             await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
+            await this.props.manageStore.getTopicListDe_ogp({ "ide": this.usr.uid,"status":2 });
+            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid, "status": 1 });
         } else {
             message.info("删除失败！")
         }
@@ -151,6 +152,12 @@ export default class DivideDetail extends Component {
                 dataIndex: 'members',
                 key: 'members',
                 ...this.getColumnSearchProps('members'),
+            },
+            {
+                title: '时间',
+                dataIndex: 'time',
+                key: 'time',
+                ...this.getColumnSearchProps('time'),
             },
             {
                 title: '地点',

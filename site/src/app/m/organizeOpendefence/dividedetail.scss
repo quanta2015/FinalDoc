@@ -5,15 +5,18 @@
         text-align: center;
     }
 
-  .ant-table-cell:nth-last-child(6) {
+  .ant-table-cell:nth-last-child(7) {
+        width: 70px;
+    }
+    .ant-table-cell:nth-last-child(6) {
         width: 100px;
     }
-    .ant-table-cell:nth-last-child(5) {
-        width: 120px;
-    }
 
+    .ant-table-cell:nth-last-child(5) {
+    width: 260px;
+    }
     .ant-table-cell:nth-last-child(4) {
-    width: 310px;
+    width:  100px;
     }
 
     .ant-table-cell:nth-last-child(3) {
