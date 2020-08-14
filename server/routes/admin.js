@@ -296,4 +296,16 @@ router.post('/getMajorTimeline', async(req, res) => {
     })
 })
 
+// 获取timeline内state_id、相关阶段名称、开始日期、结束日期
+// params: { major: str, role: int }
+router.post('/updateMajorTimeline', async(req, res) => {
+    let sql = `CALL PROC_UPDATE_MAJOR_TIMELINE(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '获取时间阶段成功！' });
+    })
+})
+
 module.exports = router
