@@ -2,8 +2,8 @@ import { Component } from 'preact';
 import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
-import { MENU_MAIN_S } from '../../constant/data';
-import logo from '../../static/public/scl_logo.png';
+import { MENU_MAIN_S, STU_NAV_STAGE } from '../../constant/data';
+import logo from '../../static/public/logo.svg';
 import './index.scss'
 
 @inject('userStore', 'studentStore')
@@ -13,6 +13,8 @@ class NavS extends Component {
     super(props)
     this.state = {
       cur: 0,
+      stageId: 0,
+      currId: 0
     }
   }
 
@@ -22,18 +24,26 @@ class NavS extends Component {
   }
 
   @computed
+  get topicList() {
+    return toJS(this.props.studentStore.topicList);
+  }
+
+  @computed
   get usr() {
     return this.props.userStore.usr;
   }
 
-  @computed
-  get currStage() {
-    return this.props.studentStore.currStage;
-  }
-
-
   componentDidMount() {
     this.props.studentStore.getSelectTopic({ uid: this.usr.uid });
+    this.props.studentStore.getNavStage({ uid: this.usr.uid })
+    .then(r => {
+      let stageId = r.data[0].stageId ? r.data[0].stageId: 0;
+      let currId = r.data[0].currId ? r.data[0].currId : 0;
+      this.setState({
+        stageId: stageId,
+        currId: currId
+      })
+    })
   }
 
   doMenu = (path, i) => {
@@ -43,11 +53,13 @@ class NavS extends Component {
   }
 
   logout = () => {
-    console.log("退出登录")
     this.props.userStore.logout();
+    this.props.studentStore.initStuStore();
   }
 
   render() {
+    // stageId为大阶段，currId为小阶段
+    const { stageId, currId } = this.state;
     return (
       <div className="g-stu-nav">
         <div className="g-logo">
@@ -57,8 +69,8 @@ class NavS extends Component {
           <div className="u-title">毕业设计管理系统</div>
         </div>
         <div className="g-st">
-          {this.currStage.stage.map((item, id) =>
-            <span className={id === this.currStage.index ? 'm-st active' : 'm-st'}>{item}</span>
+          {STU_NAV_STAGE[stageId].map((item, id) =>
+            <span className={id === currId ? 'm-st active' : 'm-st'}>{item}</span>
           )}
         </div>
         <div className="g-menu">

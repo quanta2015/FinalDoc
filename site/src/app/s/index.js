@@ -77,17 +77,20 @@ export default class Student extends Component {
               this.replyList.length ?
               this.replyList.map((item, i) =>
                 <div className="m-apply">
-                  <div className="m-date">
-                    <div className="u-ymd">
-                      <div className="u-d">{item.time.slice(0, 10).slice(item.time.slice(0, 10).lastIndexOf('-') + 1)}</div>
-                      <div className="u-ym">{item.time.slice(0, 10).slice(0, item.time.slice(0, 10).lastIndexOf('-'))}</div>
+                  {
+                    item.time && 
+                    <div className="m-date">
+                      <div className="u-ymd">
+                        <div className="u-d">{item.time.slice(0, 10).slice(item.time.slice(0, 10).lastIndexOf('-') + 1)}</div>
+                        <div className="u-ym">{item.time.slice(0, 10).slice(0, item.time.slice(0, 10).lastIndexOf('-'))}</div>
+                      </div>
+                      <div className="u-week">{item.week}</div>
                     </div>
-                    <div className="u-week">{item.week}</div>
-                  </div>
+                  }
                   <div className="m-detail">
                     <div className="u-name">开题答辩</div>
-                    <p>时间：{item.time}</p>
-                    <p>地点：{item.place}</p>
+                    {item.time && <p>时间：{item.time}</p>}
+                    <p>地点：{item.gtd_cls}</p>
                     <p>序号：{item.order}</p>
                   </div>
                 </div>
@@ -100,7 +103,7 @@ export default class Student extends Component {
           </div>
           <div className="m-card">
             <span className="u-title">模板文件</span>
-            {this.docTemplate.length && this.docTemplate.map((item, i) =>
+            {!!this.docTemplate.length && this.docTemplate.map((item, i) =>
               <div className="m-tmp-wp">
                 <div className="u-tmp-title"><span>0{i + 1}</span> / {FILE_STAGE[i]}</div>
                 <div className="m-tmplate">

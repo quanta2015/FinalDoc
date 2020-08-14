@@ -83,6 +83,12 @@ export const API_STU_GET_STPINFO = API_SERVER + '/student/calStuDoubleSlelctSucc
 export const API_STU_DEL_FILE = API_SERVER + '/student/delFile'
 //所有指导日志
 export const API_STU_GET_GUIDANCE = API_SERVER + '/student/getGuidance' 
+//增加指导日志
+export const API_STU_ADD_GUIDANCE = API_SERVER+'/student/insertGuidance'
+//删除指导日志
+export const API_STU_DEL_GUIDANCE = API_SERVER + '/student/delGuidance'
+//更改指导日志
+export const API_STU_EDIT_GUIDANCE = API_SERVER + '/student/updateGuidance'
 //所有阶段以及截止时间
 export const API_STU_GET_ALLSTATES = API_SERVER + '/student/getAllStates' 
 // 返回当前阶段
@@ -93,6 +99,9 @@ export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplat
 export const API_STU_GET_OPSCORE = API_SERVER + '/student/getOpenScore'
 // 获取答辩信息
 export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
+// 获取nav栏状态
+export const API_STU_GET_NAV_STAGE = API_SERVER + '/student/getStudentTopicStatus'
+
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';
@@ -122,6 +131,7 @@ export const API_TEACHER_GET_SUGG = API_SERVER +'/teacher/getTidToTsugg'
 export const API_TEACHER_GET_ALL_TOPIC =API_SERVER + '/teacher/getAllPassedTopic'
 //获取学生文件列表
 export const API_TEACHER_GET_FILE_BY_TOPIC = API_SERVER + '/teacher/getAllTopicFiles'
+//export const API_TEACHER_GET_FILE_BY_TOPIC = LOCAL_SERVER + '/teacher/getAllTopicFiles'
 //解绑学生
 export const API_TEACHER_UNTIED = API_SERVER + '/teacher/getStudentUntied'
 //获取所有选题类型(get)
@@ -138,7 +148,10 @@ export const API_TEACHER_AUDIT_OP_IS_MEMBER = API_SERVER + `/auditOp/isTeamMembe
 export const API_TEACHER_GET_TIME_LINE = API_SERVER + '/teacher/getTimeLine'
 //获取是否为第二阶段
 export const API_TEACHER_GET_SEL = API_SERVER + '/teacher/getSel'
-//export const API_TEACHER_GET_SEL = LOCAL_SERVER + '/teacher/getSel'
+//通过推迟
+export const API_TEACHER_PASS_DE = API_SERVER + '/teacher/passDelay';
+//拒绝推迟
+export const API_TEACHER_RUFUSE_DE = API_SERVER + '/teacher/refuseDelay';
 
 // 任课教师-初期审核
 export const API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST = API_SERVER + '/auditTp/getTopicList';// 获取审核命题列表
@@ -183,3 +196,7 @@ export const API_ADMIN_GET_ALL_STU_LIST = API_SERVER + '/admin'+'/getAllStu'
 export const API_ADMIN_GET_ALL_TEA_LIST = API_SERVER + '/admin'+'/getAllTea'
 //修改名单某条信息
 export const API_ADMIN_EDIT_ONE_INFO = API_SERVER + '/admin'+'/editInfo'
+// 获取timeline内state_id、相关阶段名称、开始日期、结束日期
+export const API_ADMIN_GET_TIMELINE_WITH_MAJOR = API_SERVER + '/admin'+'/getMajorTimeline'
+// 修改timeline内开始日期、结束日期
+export const API_ADMIN_CHANGE_TIMELINE_WITH_MAJOR = API_SERVER + '/admin'+'/updateMajorTimeline'

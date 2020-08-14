@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-23 16:17:28
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-23 17:26:55
+ * @LastEditTime: 2020-07-27 17:41:27
  */ 
 
 import { Component } from 'preact';
@@ -12,13 +12,13 @@ import { useState } from 'preact/hooks';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './tList.scss';
-import { Table, Input, InputNumber, Popconfirm, Form, Radio, Space, Button, message } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Radio, Space, Button, message, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons'
-
 
 @inject('adminStore', 'userStore')
 @observer
 export default class TLIST extends Component {
+
     state = {
         //filteredInfo: null,
         searchText: '',
@@ -29,10 +29,10 @@ export default class TLIST extends Component {
 	get nameListManage() {
 		return this.props.adminStore.nameListManage;
     }
-    
+
     async componentDidMount() {
-		await this.props.adminStore.getAllTeaList();
-	}
+        await this.props.adminStore.getAllTeaList();
+    }
 
 
     clearFilters = () => {
@@ -93,10 +93,7 @@ export default class TLIST extends Component {
         render: (text) => text,
     });
 
-
-
     render(){
-        // const { mode } = this.state;
         //筛选相关
         let { filteredInfo } = this.state;
         filteredInfo = filteredInfo || {};
@@ -111,7 +108,20 @@ export default class TLIST extends Component {
         children,
         ...restProps
         }) => {
-        const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+        // const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+        const inputNode = (inputType === 'select1' ? 
+        <Select placeholder="请选择系...">
+            <Option value="计算机系">计算机系</Option>
+            <Option value="金融系">金融系</Option>
+            <Option value="物联网软工系">物联网软工系</Option>
+        </Select> 
+        : (inputType === 'select2' ? 
+            <Select placeholder="请选择职称...">
+            <Option value="讲师">讲师</Option>
+            <Option value="副教授">副教授</Option>
+            <Option value="教授">教授</Option>
+            </Select>  
+        : <Input />));
         return (
             <td {...restProps}>
             {editing ? (
@@ -169,9 +179,7 @@ export default class TLIST extends Component {
                     newData.splice(index, 1, { ...item, ...row });
                     setData(newData);
                     setEditingKey('');
-                    //console.log(toJS(newData[index]))
                     let params = toJS(newData[index]);
-                    // console.log(params)
                     let res = await this.props.adminStore.editInfo(params);     //修改某条信息
                     if (res && res.code === 200) {
                         message.success('修改成功！');
@@ -237,19 +245,22 @@ export default class TLIST extends Component {
                 render: (_, record) => {
                     const editable = isEditing(record);
                     return editable ? (
-                    <span>
-                        <a
-                        href="javascript:;"
-                        onClick={() => save(record.key)}
-                        style={{
-                            marginRight: 8,
-                        }}
-                        >
-                        保存
-                        </a>
-                        <Popconfirm title="确定取消吗?" onConfirm={cancel}>
-                        <a>取消</a>
+                        <span>
+                        <Popconfirm title="确定保存吗?" 
+                            onConfirm={()=>save(record.key)} 
+                            onCancel={cancel}>
+                            <a
+                            href="javascript:;"
+                            style={{
+                                marginRight: 8,
+                            }}
+                            >
+                            保存
+                            </a>
                         </Popconfirm>
+                        <a onClick={cancel}>
+                            取消
+                        </a>
                     </span>
                     ) : (
                     <a disabled={editingKey !== ''} onClick={() => edit(record)}>
@@ -268,8 +279,8 @@ export default class TLIST extends Component {
                 ...col,
                 onCell: record => ({
                     record,
-                    inputType: 'text',
-                    //inputType: col.dataIndex === 'age' ? 'number' : 'text',
+                    // inputType_one: col.dataIndex === 'maj' ? 'select' : 'text',
+                    inputType: col.dataIndex === 'maj' ? 'select1' : (col.dataIndex === 'job_title' ? 'select2' : 'text'),
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: isEditing(record),

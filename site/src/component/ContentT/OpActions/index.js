@@ -14,7 +14,6 @@ import {
 import {
     FileSearchOutlined,
     AuditOutlined,
-    CloseCircleTwoTone,
 } from '@ant-design/icons';
 
 const { TextArea } = Input;
@@ -75,14 +74,15 @@ class OpActions extends BaseActions {
 
                 <Modal
                     className="t-ContentT-OpActions-Modal"
-                    closeIcon={< CloseCircleTwoTone twoToneColor="#999" style={{
-                        fontSize: '28px',
-                    }} />}
                     title={null}
                     visible={visible}
                     confirmLoading={confirmLoading}
-                    onCancel={this.handleContentCancel}
-                    footer={null}
+                    footer={[
+                        <Button key="back" onClick={this.handleContentCancel}>
+                            关闭
+                        </Button>,
+                    ]}
+                    closable={false}
                     width={900}
                 >
                     <div>

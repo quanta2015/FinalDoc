@@ -172,6 +172,10 @@ export default class Home extends Component {
         });
     }
 
+    setScore(score,index){
+        document.querySelector("#score"+index).value = score;
+    }
+
 	render() {
         const {current,steps} = this.state;
         const [form] = Form.useForm();
@@ -243,15 +247,23 @@ export default class Home extends Component {
                         {current==0 &&
                         <div>
                             {standards.map( (item,index) => 
-                                <div>
-                                    <Divider className="u-divider" orientation="left">{item.title}</Divider>
+                                <div class="m-block">
                                     <div class="u-content">
+                                        <p class="u-content-title">{item.title}</p>
                                         {item.content}
-                                        {this.isTeamLeader && 
+                                    </div>
+                                    {this.isTeamLeader && 
+                                    <div class="u-righter">
                                         <Form.Item className="u-input-num-item" name={"score"+index} rules={[{ required: true, message: '请输入分数' }]}>
                                             <InputNumber min={0} max={100} placeholder="分数"/>
-                                        </Form.Item>}
-                                    </div>
+                                        </Form.Item>
+                                        <div class="u-select">
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,95,index)}>优</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,85,index)}>良</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,75,index)}>中</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,65,index)}>差</div>
+                                        </div>
+                                    </div>}
                                 </div>
                             )}
                         </div>
@@ -260,9 +272,9 @@ export default class Home extends Component {
                         {current==1 && this.isTutor &&
                         <div>
                             {fileState.map( (item,index) => 
-                                <div>
-                                    <Divider className="u-divider" orientation="left">{item.title}</Divider>
-                                    <div class="u-content">
+                                <div class="m-file-block">
+                                    <div class="u-file-content">
+                                        <p class="u-content-title">{item.title}</p>
                                     {index == 0 &&
                                     <div class="u-intro">
                                         <h3>译文文本要求</h3>
@@ -303,19 +315,19 @@ export default class Home extends Component {
                                         <h3>研究的预期目标及主要特点、创新点</h3>
                                     </div>
                                     }
+                                    </div>
                                     <Form.Item name={item.form_name} rules={[{ required: true, message: '请输入你的导师评语' }]}>
                                         <TextArea rows={3} placeholder={item.title+"-导师评语"}/>
                                     </Form.Item>
-                                    </div>
                                 </div>
                             )}
                         </div>
                         }
 
                         { current == steps.length - 1 && this.isTeamLeader && 
-                        <div>
-                            <Divider className="u-divider" orientation="left">开题答辩</Divider>
+                        <div class="m-block">
                             <div class="u-content">
+                                <p class="u-content-title">开题答辩</p>
                                 <Form.Item name="reply" rules={[{ required: true, message: '请输入你的导师评语' }]}>
                                     <TextArea rows={3} placeholder="开题评审意见（主要包括毕业设计（论文）的设计思想、开题准备及进展情况）"/>
                                 </Form.Item>

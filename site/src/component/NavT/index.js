@@ -55,8 +55,7 @@ class NavT extends BaseActions {
   }
   
   logout = ()=>{
-    window.localStorage.clear();
-    window.location.reload();
+    this.props.userStore.logout();
   }
 
   render() {

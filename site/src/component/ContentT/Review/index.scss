@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-07-30 20:02:23
+ * @LastEditTime: 2020-08-08 13:55:57
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \FinalDoc\site\src\component\ContentT\Review\index.scss
+ */
 [data-component="review"]{
 
   .review-tool{
@@ -12,6 +20,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 45px;
   }
 
   .review-block{

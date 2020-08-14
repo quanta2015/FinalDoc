@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-07-23 16:17:38
  * @LastEditors: wyx
- * @LastEditTime: 2020-07-23 17:28:09
+ * @LastEditTime: 2020-07-27 17:24:40
  */ 
 
 import { Component } from 'preact';
@@ -12,7 +12,7 @@ import { useState } from 'preact/hooks';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import './sList.scss';
-import { Table, Input, InputNumber, Popconfirm, Form, Radio, Space, Button, message } from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Radio, Space, Button, message, Select} from 'antd';
 import { SearchOutlined } from '@ant-design/icons'
 
 
@@ -108,7 +108,16 @@ export default class SLIST extends Component {
         children,
         ...restProps
         }) => {
-        const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+        //const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+        const inputNode = inputType === 'select' ? 
+        <Select
+            placeholder="请选择系..."
+        >
+            <Option value="计算机系">计算机系</Option>
+            <Option value="金融系">金融系</Option>
+            <Option value="物联网软工系">物联网软工系</Option>
+        </Select> 
+        : <Input />;
         return (
             <td {...restProps}>
             {editing ? (
@@ -223,18 +232,21 @@ export default class SLIST extends Component {
                     const editable = isEditing(record);
                     return editable ? (
                     <span>
-                        <a
-                        href="javascript:;"
-                        onClick={() => save(record.key)}
-                        style={{
-                            marginRight: 8,
-                        }}
-                        >
-                        保存
-                        </a>
-                        <Popconfirm title="确定取消吗?" onConfirm={cancel}>
-                        <a>取消</a>
+                        <Popconfirm title="确定保存吗?" 
+                            onConfirm={()=>save(record.key)} 
+                            onCancel={cancel}>
+                            <a
+                            href="javascript:;"
+                            style={{
+                                marginRight: 8,
+                            }}
+                            >
+                            保存
+                            </a>
                         </Popconfirm>
+                        <a onClick={cancel}>
+                            取消
+                        </a>
                     </span>
                     ) : (
                     <a disabled={editingKey !== ''} onClick={() => edit(record)}>
@@ -253,8 +265,8 @@ export default class SLIST extends Component {
                 ...col,
                 onCell: record => ({
                     record,
-                    inputType: 'text',
-                    //inputType: col.dataIndex === 'age' ? 'number' : 'text',
+                    //inputType: 'text',
+                    inputType: col.dataIndex === 'maj' ? 'select' : 'text',
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: isEditing(record),

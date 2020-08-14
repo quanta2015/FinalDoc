@@ -114,7 +114,14 @@ export var FILE_UPLOAD_FORMAT =
 
 export var STU_OP_SCORE = [
    { name: '指导老师评分', type: 't_reply_score' },
-   { name: '开题答辩小组评分', type: 'g_reply_score' }
+   { name: '开题答辩评分', type: 'g_reply_score' }
+]
+
+// 学生端 Nav阶段名
+export var STU_NAV_STAGE = [
+   ['发布课题', '选择课题', '双选成功'],
+   ['任务下达', '提交材料', '审核开题', '开题答辩'],
+   ['提交材料', '评阅审核', '论文答辩', '成绩审定']
 ]
 
 // 站内信类型
@@ -127,64 +134,110 @@ export var MSG_TYPE = [
 //管理端nav
 export var ADMIN_NAV_DATA = [
    {
-     title: "公告文档",
-     childData: [
-       { title: "公告管理", path: "/admin_ann" },
-       { title: "文档管理", path: "/admin_file" },
-     ],
-     path: "/admin_ann",
-     icon: "BankOutlined",
-     stateNum:0,
+      title: "公告文档",
+      childData: [
+         { title: "公告管理", path: "/admin_ann" },
+         { title: "文档管理", path: "/admin_file" },
+      ],
+      path: "/admin_ann",
+      icon: "BankOutlined",
+      stateNum: 0,
    },
    {
-     title: "选题管理",
-     childData: [
-       { title: "option1", path: "/admin" },
-       { title: "option2", path: "/admin" },
-     ],
-     path: "/admin",
-     icon: "BankOutlined",
-     stateNum:1,
+      title: "选题管理",
+      childData: [
+         { title: "option1", path: "/admin" },
+         { title: "option2", path: "/admin" },
+      ],
+      path: "/admin_topic_admin",
+      icon: "BankOutlined",
+      stateNum: 1,
    },
    {
-     title: "中期检查",
-     childData: [
-       { title: "option1", path: "/admin" },
-       { title: "option2", path: "/admin" },
-     ],
-     path: "/admin",
-     icon: "BankOutlined",
-     stateNum:2,
+      title: "中期检查",
+      childData: [
+         { title: "option1", path: "/admin" },
+         { title: "option2", path: "/admin" },
+      ],
+      path: "/admin_mid_check",
+      icon: "BankOutlined",
+      stateNum: 2,
    },
    {
-     title: "评阅答辩",
-     childData: [
-       { title: "option1", path: "/admin" },
-       { title: "option2", path: "/admin" },
-     ],
-     path: "/admin",
-     icon: "BankOutlined",
-     stateNum:3,
+      title: "评阅答辩",
+      childData: [
+         { title: "option1", path: "/admin" },
+         { title: "option2", path: "/admin" },
+      ],
+      path: "/admin_debate_review",
+      icon: "BankOutlined",
+      stateNum: 3,
    },
    {
-     title: "成绩分析",
-     childData: [
-       { title: "option1", path: "/admin" },
-       { title: "option2", path: "/admin" },
-     ],
-     path: "/admin",
-     icon: "BankOutlined",
-     stateNum:4,
+      title: "成绩分析",
+      childData: [
+         { title: "option1", path: "/admin" },
+         { title: "option2", path: "/admin" },
+      ],
+      path: "/admin_score_analysis",
+      icon: "BankOutlined",
+      stateNum: 4,
    },
    {
-     title: "系统设置",
-     childData: [
-       { title: "option1", path: "/admin" },
-       { title: "option2", path: "/admin" },
-     ],
-     path: "/admin_sys_set",
-     icon: "BankOutlined",
-     stateNum:0,
+      title: "系统设置",
+      childData: [
+         { title: "option1", path: "/admin" },
+         { title: "option2", path: "/admin" },
+      ],
+      path: "/admin_sys_set",
+      icon: "BankOutlined",
+      stateNum: 0,
    },
- ];
- 
+];
+//色彩管理
+export var colorIndex = [
+   "#2ae0c8",
+   "#a2e1d4",
+   "#acf6ef",
+   "#cbf5fb",
+   "#bdf3d4",
+   "#e6e2c3",
+   "#e3c887",
+   "#fad8be",
+   "#fbb8ac",
+   "#fe6673",
+   "#666666",
+   "#666699",
+   "#6666CC",
+   "#6666FF",
+   "#669966",
+   "#669999",
+   "#6699CC",
+   "#6699FF",
+   "#66CC66",
+   "#66CC99",
+   "#66CCCC",
+   "#66CCFF",
+   "#66FF66",
+   "#66FF99",
+   "#66FFCC",
+   "#66FFFF",
+   "#996666",
+   "#996699",
+   "#9966CC",
+   "#9966FF",
+   "#999966",
+   "#999999",
+   "#9999CC",
+   "#9999FF",
+   "#99CC66",
+   "#99CC99",
+   "#99CCCC",
+   "#99CCFF",
+   "#99FF66",
+   "#99FF99",
+   "#99FFCC",
+   "#99FFFF"
+
+
+]

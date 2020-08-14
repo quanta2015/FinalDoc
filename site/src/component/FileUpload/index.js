@@ -142,10 +142,11 @@ class FileUpload extends Component {
                 < div className="ant-upload-text" >上传</div>
             </div>
         )
+        // console.log(this.props.disabled);
         return (
             <div className="g-upload">
                 <div
-                    className={fileUrl ? "m-filewp z-submit-wp" : "m-filewp"}
+                    className={!this.props.disabled ? fileUrl ? "m-filewp z-submit-wp" : "m-filewp" : "m-filewp z-disable-wp"}
                     onMouseOver={this.handleHover}
                     onMouseLeave={this.handleMouseOut}
                 >
@@ -159,15 +160,16 @@ class FileUpload extends Component {
                         data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid } }}
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
+                        disabled={this.props.disabled}
                     >
                         {(fileUrl && !loading) ? <CheckOutlined className="z-success"/> : uploadButton}
                     </Upload>
                 </div>
                 {   fileUrl ?
                     <Tooltip placement="bottom" title={text}>
-                        <p className="z-submit-p" onClick={this.downloadFile}>{fileType.name}</p>
+                        <p className="z-submit-p u-file-name" onClick={this.downloadFile}>{fileType.name}</p>
                     </Tooltip> :
-                    <p>{fileType.name}</p>
+                    <p className="u-file-name">{fileType.name}</p>
                 }
             </div>
         )

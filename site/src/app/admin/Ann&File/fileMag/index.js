@@ -72,6 +72,13 @@ export default class fileManage extends Component {
     this.setState({
       fileLaunchSucc: false,
       modalVisiable: false,
+      uploaded: false,
+      uploading: false,
+      loading: false,
+      fileUrl: "",
+      showDel: false,
+      fileName: null,
+      fillnameUpdate: false,
     });
   };
   handleModalCancel = () => {
@@ -294,8 +301,8 @@ export default class fileManage extends Component {
                           placement="rightTop"
                           title={"操作"}
                           trigger="click"
-                          visible={popovervisiable}
-                          onVisibleChange={this.handleVisibleChange}
+                          // visible={popovervisiable}
+                          // onVisibleChange={this.handleVisibleChange}
                           content={
                             <div className="m-admin-file-card-extra">
                               <div className="n-admin-file-card-extra">

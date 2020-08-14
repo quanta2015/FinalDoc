@@ -156,22 +156,14 @@
         position: relative;
         top: 10px;
         .m-nm-lst {
-            
             display: inline-block;
             // text-align: right;
             .u-nm-itm {
                 line-height: 38px;
-            }
-        }
-        .m-sc-lst {
-            display: inline-block;
-            position: relative;
-            left: 75px;
-            .u-sc-itm {
-                line-height: 38px;
-                position: relative;
-                left: 32px;
+               
                 .score {
+                    position: relative;
+                    left: 135px;
                     font: {
                         family: Georgia, "Times New Roman", Times, serif;
                         weight: bold;
@@ -180,6 +172,8 @@
                     color: #ff653e;
                 }
                 .z-none {
+                    position: relative;
+                    left: 105px;
                     position: relative;
                     right: 30px;
                     color: #333;

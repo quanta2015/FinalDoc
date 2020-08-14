@@ -74,8 +74,8 @@ export default class InfoDialog extends Component {
                                     })
                                 }
                             </div>
-                            {   
-                                topic.phone && 
+                            {
+                                topic.phone &&
                                 <div className="m-teainfo">
                                     <span className="m-title">联系方式：</span>
                                     <span>{topic.phone}</span>
@@ -83,14 +83,15 @@ export default class InfoDialog extends Component {
                             }
                             <div className="m-content">
                                 <span className="m-title">课题简介：</span>
-                                <span>{topic.content}</span>
+                                <br />
+                                <p className="u-ph">{topic.content}</p>
                             </div>
                         </div>
                     </Modal>
                 }
 
             </div>
-            
+
         );
     }
 }

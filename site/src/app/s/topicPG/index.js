@@ -10,22 +10,6 @@ import './index.scss'
 import LogRecord from '../../../component/LogRecord';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
-//传入列表，返回当前所处阶段
-let getStage = (status, info) => {
-    let tmp = Math.abs(status) - 7;
-    if (tmp < 0 && !info) {
-        return -1;
-    } else if (tmp < 0 && info) {
-        return 0;
-    } else if (tmp < 2 && info) {
-        return tmp + 1;
-    } else if (tmp < 5 && info) {
-        return tmp;
-    } else if (tmp === 5 && info) {
-        return tmp - 1;
-    }
-}
-
 @inject('studentStore', 'userStore')
 @observer
 export default class TopicPG extends Component {
@@ -104,7 +88,6 @@ export default class TopicPG extends Component {
     }
 
     render() {
-        const currStage = getStage(this.selectTpInfo.status, this.selectTpInfo.f_task);
         const TASK_FINISH = 6;
         const GRADE_FINISH = 20;
         const status = this.selectTpInfo.status
@@ -118,7 +101,7 @@ export default class TopicPG extends Component {
                     <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
                     <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                {this.timeList && this.timeList.length !== 0 &&
+                {this.timeList && this.timeList.length !== 0 && this.currState[0] &&
                     < div className="m-cont">
                         <h2 className="u-title">
                             论文进度
@@ -165,6 +148,7 @@ export default class TopicPG extends Component {
                                             <FileUpload
                                                 type={item}
                                                 tpInfo={this.selectTpInfo ? this.selectTpInfo : {}}
+                                                disabled={this.selectTpInfo.status - 5 > 0 ? false : true}
                                                 afterUpdate={() => this.props.studentStore.getSelectTopic({ uid: this.usr.uid })}
                                                 delFile={() => this.props.studentStore.deleteFile({ type: item.type, tid: this.selectTpInfo.tid, sid: this.selectTpInfo.sid })}
                                             />
@@ -179,14 +163,8 @@ export default class TopicPG extends Component {
                     this.opScore.length > 0 &&
                     <div className="m-op-score">
                         <div className="m-nm-lst">
-                            {STU_OP_SCORE.map((item) =>
-                                <div className="u-nm-itm">
-                                    {item.name}
-                                </div>
-                            )}
-                        </div>
-                        <div className="m-sc-lst">
-                            <div className="u-sc-itm">
+                            <div className="u-nm-itm">
+                                <span>指导老师评分</span>
                                 {this.opScore[0].t_reply_score ?
                                     <span className="score">
                                         {this.opScore[0].t_reply_score}
@@ -196,8 +174,8 @@ export default class TopicPG extends Component {
                                     </span>
                                 }
                             </div>
-
-                            <div className="u-sc-itm">
+                            <div className="u-nm-itm">
+                                <span>开题答辩评分</span>
                                 {this.opScore[0].g_reply_score ?
                                     <span className="score">
                                         {this.opScore[0].g_reply_score}

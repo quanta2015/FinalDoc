@@ -91,14 +91,6 @@ export default class StuMethods extends BaseActions {
     })
   }
 
-  onTied = async () => {
-    let r = confirm("您确定要解绑该学生么？")
-    if (r) {
-      await this.post(urls.API_TEACHER_UNTIED, { pid: this.props.pid });
-      this.props.freshList();
-    }
-  }
-
 
   render() {
     {
@@ -111,85 +103,13 @@ export default class StuMethods extends BaseActions {
     return (
       <div data-component="stumethods">
         <div className="note-block">
-          <span className="note-title"><span  className="mr-long"><UserOutlined /></span>学生信息</span>
+          <span className="note-title">指导学生:</span>
           <Card style={{ width: 600 }}>
             <span className="note-info-span">{this.props.sid}</span>
             <span className="note-info-span">{this.state.name}</span>
             <span className="note-info-span">{this.state.cls}</span>
           </Card>
-          <Button onClick={this.onTied} className="ml-long">解绑</Button>
         </div>
-
-        {/* <Card
-          tabList={tabListNoTitle}
-          size="small"
-          bordered={false}
-          onTabChange={(e) => { this.setState({ tab: e }) }}
-        >
-          {this.state.tab == 'publish' &&
-            <header className="stm-header">
-              <div className="note-block">
-              </div>
-              <div className="note-block">
-                  <div className="card-inner">
-                    <div className="file-block">
-                      <FileUpload freshOuter={this.props.freshList} type={{ name: '任务书', type: 'f_task'}} tpInfo={{ tid: this.props.tid, sid: this.props.sid ,f_task:this.state.links['f_task']}} />
-                    </div>
-              </div>
-            </header>
-          }
-          {
-            this.state.tab == 'download' &&
-            <header className="stm-header">
-              <div className="note-block">
-              </div>
-              <div className="note-block">
-                  <div className="card-inner">
-                    <div className="one-of-three">
-                      <div className="f-title">
-                        1、开题中期
-                      </div>
-                      <div className="file-block">
-                        {
-                          fileListOne.map((t) => {
-                            let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
-                          })
-                        }
-                      </div>
-                    </div>
-                    <div className="one-of-three">
-                      <div className="f-title">
-                        2、论文审核
-                      </div>
-                      <div className="file-block">
-                        {
-                          fileListTwo.map((t) => {
-                            let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
-                          })
-                        }
-                      </div>
-                    </div>
-                    <div className="one-of-three">
-                      <div className="f-title">
-                        3、论文答辩
-                      </div>
-                      <div className="file-block">
-                        {
-                          fileListThree.map((t) => {
-                            let r = this.state.links[t.type];
-                            return <FileDownLoad name={t.name} url={r} sid={this.state.sid} />
-                          })
-                        }
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </header>
-
-          }
-        </Card> */}
       </div>
     )
   }

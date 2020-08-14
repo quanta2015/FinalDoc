@@ -1,4 +1,4 @@
-[data-component="stumethods"]{
+[data-component="stumethodstwo"]{
 
   .ant-card-head .ant-tabs{
     padding-left: 300px;
@@ -112,6 +112,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 120px;
+  }
+
+  .m-f-down-inner-active{
+    color: #1890ff;
+
+    &>.m-f-down-pic{
+      border-color: #1890ff;
+    }
   }
 
   .m-f-down-pic{

@@ -18,6 +18,7 @@
     align-items: center;
     border-right: 1px solid #EFEFEF;
     
+    
     .g-logo {
       color: #333;
       font-size: 17px;
@@ -35,6 +36,15 @@
       width: 100%;
       align-self: flex-end;
       background-color: #666;
+      .m-logout{
+        width: 100%;
+        align-content: center;
+        text-align: center;
+        height: 40px;
+        font-size: 16px;
+       
+        background-color: #fff;
+      }
       .g-info-typeline{
         background-color: #4caf50de;
         display: flex;
@@ -48,6 +58,16 @@
         color: #666;
         text-align: center;
         line-height: 32px;
+        transition: .3s;
+        span{
+          color: grey;
+        }
+        &:hover {
+          background:#cc3300;
+          span{
+            color: #fff;
+          }
+        }
         
       }
   
@@ -131,6 +151,122 @@
         width: 100%;
         background: #fff;
         color: #333;
+        .m-admin-nav-over{
+          background-color: #fff;
+          position: absolute;
+         
+          height: 50px;
+         
+          width: 249px;
+          opacity: 0;
+          transition: .3s;
+          .z-admin-nav-over{
+            align-items: center;
+            display: flex;
+            margin-top: 10px;
+            height: 35px;
+            margin-bottom: 5px;
+            width: 249px;
+            position: absolute;
+            padding: 5px 10px;
+            transition: .3s;
+            justify-content: center;
+            background-color:rgba(102, 102, 102, 1), ;
+            font-size: 16px;
+            box-shadow: 0 1px 3px #CECECE;
+            span{
+              color: #fff;
+            }
+            .z-admin-nav-over-span{
+           
+                width: 96px;
+             
+            }
+            
+          }
+        }
+       
+        .m-admin-nav-over:hover{
+          display: flex;
+          background-color: #fff;
+          position: absolute;
+         
+          height: 50px;
+         
+          width: 249px;
+          opacity: 1;
+
+        .z-admin-nav-over{
+          align-items: center;
+          display: flex;
+          margin-top: 10px;
+          height: 35px;
+          margin-bottom: 5px;
+          width: 249px;
+          position: absolute;
+          padding: 5px 10px;
+          transition: .3s;
+          justify-content: center;
+          background-color:rgba(102, 102, 102, 1), ;
+          font-size: 16px;
+          box-shadow: 0 1px 3px #CECECE;
+          span{
+            color: #fff;
+          }
+          .z-admin-nav-over-span{
+         
+              width: 96px;
+           
+          }
+          
+        }
+        .z-admin-nav-over::before {
+          align-items: center;
+          display: flex;
+          margin-top: 10px;
+          height: 35px;
+          margin-bottom: 5px;
+          width: 249px;
+          position: absolute;
+          padding: 5px 10px;
+          transition: .3s;
+          justify-content: center;
+          background-color:#fff ;
+          opacity: 0.2;
+          font-size: 16px;
+          span{
+            color: #fff;
+          }
+          .z-admin-nav-over-span{
+         
+              width: 96px;
+           
+          }
+        }
+        .z-admin-nav-over:hover {
+          align-items: center;
+          display: flex;
+          margin-top: 10px;
+          height: 35px;
+          margin-bottom: 5px;
+          width: 249px;
+          position: absolute;
+          padding: 5px 10px;
+          transition: .3s;
+          justify-content: center;
+          background-color:#cc3300 ;
+          
+          font-size: 16px;
+          span{
+            color: #fff;
+          }
+          .z-admin-nav-over-span{
+         
+              width: 96px;
+           
+          }
+        }
+      }
     }
   
     .m-st {
@@ -222,10 +358,7 @@
           background:#cc3300;
         }
   
-        .z-icon {
-          width: 28px;
-          margin-right: 6px;
-        }
+       
       }
     }
   }
@@ -235,5 +368,9 @@
     margin-top: 10px;
     color: #336699;
     cursor: pointer;
+  }
+  .z-icon {
+    
+    margin-right: 10px;
   }
 }

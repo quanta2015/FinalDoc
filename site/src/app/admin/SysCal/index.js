@@ -4,7 +4,6 @@ import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
 
 import { Tabs } from 'antd';
-import Schedule from './schedule/index.js'
 
 
 const { TabPane } = Tabs;
@@ -32,17 +31,13 @@ export default class Ann extends Component {
     return (
       <>
         <div className="admin-content">
-          <div className="g-ann">
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="学生端进度设置" key="1">
-                <Schedule />
-              </TabPane>
-              <TabPane tab="教师端进度设置" key="2">
-                <Schedule />
-              </TabPane>
-            </Tabs>
-            {/* <div className="m-m">公告模块</div> */}
-          </div>
+         
+         系统设置页面
+         <br></br>
+         <br></br>
+         <br></br>
+         
+         ←点击此处进入时间进度管理
         </div>
 
       </>
