@@ -3,8 +3,8 @@ import { inject, observer } from 'mobx-react'
 import { computed, observable, toJS } from 'mobx'
 import { route } from 'preact-router';
 import './style.scss'
-import AutoAllocate from './autoAllocate.js'
-import ManualAllocate from './manualAllocate.js'
+import AutoAllocate from '../distributeTopic/autoAllocate.js'
+import ManualAllocate from '../distributeTopic/manualAllocate.js'
 import Detail from './detail.js'
 import { Radio, Select, Tabs } from 'antd';
 const { Option } = Select;
@@ -32,6 +32,11 @@ export default class Home extends Component {
     }
 
     @computed
+    get distributeReviewers() {
+        return this.props.manageStore.distributeReviewers;
+    }
+
+    @computed
     get usr() {
         return this.props.userStore.usr;
     }
@@ -43,6 +48,7 @@ export default class Home extends Component {
         await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
         await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
         await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
+        await this.props.manageStore.getStatusFdDef({ "ide": this.usr.uid });
     }
     // 切换自动手动单选框
     onChange = e => {
@@ -53,7 +59,7 @@ export default class Home extends Component {
     render() {
         return (
             <div className="g-m-cnt">
-                <div className="g-m-title">分配审核选题</div>
+                <div className="g-m-title">分配评阅人</div>
                 <div className="g-m g-dt">
                     <Tabs defaultActiveKey="1">
                         <TabPane tab="分配课题" key="1">
@@ -65,20 +71,20 @@ export default class Home extends Component {
                             </div>
                             {(this.state.value === 1) &&
                                 <AutoAllocate 
-                                status={1}
-                                judge={this.distributeTopic.judge_info.flag}
-                                title="审核"
-                                tip="已发布课题，不能再分配审核"/>
+                                status={2}
+                                judge={this.distributeReviewers.status_fd}
+                                title="评阅"
+                                tip="已进入终期答辩阶段，不能再分配评阅教师"/>
                             }
                             {(this.state.value === 2) &&
-                                <ManualAllocate
-                                status={1} 
-                                judge={this.distributeTopic.judge_info.flag}
-                                title="审核"
-                                tip="已发布课题，不能再分配审核"/>
+                                <ManualAllocate 
+                                status={2}
+                                judge={this.distributeReviewers.status_fd}
+                                title="评阅"
+                                tip="已进入终期答辩阶段，不能再分配评阅教师"/>
                             }
                         </TabPane>
-                        <TabPane tab="审核详情" key="2">
+                        <TabPane tab="评阅详情" key="2">
                             <Detail />
                         </TabPane>
                     </Tabs>

@@ -588,7 +588,7 @@ class manager extends BaseActions {
 
   }
 
-  //判断是否可以一键进入开题答辩
+  //判断是否进入开题答辩
   //{"ide":20021578}
   @action
   async getJudgeOpDef(param) {
@@ -644,6 +644,39 @@ class manager extends BaseActions {
     }).catch(e => {
       return false;
     })
+  }
+
+
+  @observable
+  distributeReviewers = {
+    //判断能否进入下一个阶段
+    judge_fd: undefined,
+    //是否已经开题答辩
+    status_fd: undefined,
+  }
+
+
+  //判断是否进入开题答辩
+  //{"ide":20021578}
+  @action
+  async getJudgeFdDef(param) {
+    let res = await this.post(urls.API_MAN_POST_FM_JUDEGFINALDEFENCE, param)
+    this.distributeReviewers.judge_fd = res.data[0].flag;
+  }
+
+  //进入开题答辩阶段
+  @action
+  async finalDefense(param) {
+    return await this.post(urls.API_MAN_POST_FM_NEXTFINALDEFENCE, param)
+
+  }
+
+  //判断是否可以一键进入开题答辩
+  //{"ide":20021578}
+  @action
+  async getStatusFdDef(param) {
+    let res = await this.post(urls.API_MAN_POST_FM_STATUSFINALDEFENCE, param)
+    this.distributeReviewers.status_fd = res.data[0].flag;
   }
 
 

@@ -34,7 +34,7 @@ export default class AutoAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getJudge({"ide":this.usr.uid});
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getTeaList({"ide":this.usr.uid});
+        await this.props.manageStore.getTeaList({"ide":this.usr.uid,"status":this.props.status});
         // if (this.distributeTopic.topic_info.length < this.state.num){
         //     this.state.num = this.distributeTopic.topic_info.length
         //     this.setState({
@@ -54,7 +54,7 @@ export default class AutoAllocate extends Component {
         if (value.length > this.state.teaNum) {
             // 删除最后一项
             value.pop()
-            message.info("分配审核课题数量为" + this.state.num + "篇，最多只能选择" + this.state.teaNum + "位教师")
+            message.info("分配"+this.props.title+"课题数量为" + this.state.num + "篇，最多只能选择" + this.state.teaNum + "位教师")
         }
         this.setState({
             select_teacher: value,
@@ -64,7 +64,7 @@ export default class AutoAllocate extends Component {
     // 提交自动分配
     autoDistribute = async () => {
         if (this.state.select_teacher.length === 0) {
-            message.info("还未选择审核老师！")
+            message.info("还未选择"+this.props.title+"老师！")
             return;
         }
         let tea_id = []
@@ -103,7 +103,7 @@ export default class AutoAllocate extends Component {
             */
            // 如果未审核课题数量为0，说明已将课题全部分配，审核课题老师已确定
            if(this.distributeTopic.topic_info.length === 0){
-               const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0})
+               const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题"+this.props.title+"已分配", "type": 0})
                 if(res.code === 200){
                     console.log("站内信发送成功")
                 }else{
@@ -165,14 +165,14 @@ export default class AutoAllocate extends Component {
                     已选<span class="num">{this.state.select_teacher.length}</span>位
                 </div>
                 <div class="select_tea">
-                    {(this.distributeTopic.judge_info.flag === 0) && 
+                    {(this.props.judge === 0) && 
                     <Select
                         value={this.state.select_teacher}
                         defaultActiveFirstOption={false}
                         ref={selectItem => this.selectItem = selectItem}
                         mode="multiple"
                         style={{ width: 500 }}
-                        placeholder="请选择审核教师"
+                        placeholder={"请选择"+this.props.title+"教师"}
                         onChange={this.addSelectTeacher}
                         optionLabelProp="label"
                         allowClear
@@ -182,11 +182,11 @@ export default class AutoAllocate extends Component {
                         )}
                     </Select>
                     }
-                    {(this.distributeTopic.judge_info.flag === 1) && 
+                    {(this.props.judge === 1) && 
                     <Select
                         disabled
                         style={{ width: 500 }}
-                        placeholder="已发布课题，不能再分配审核"
+                        placeholder={this.props.tip}
                     >
                     </Select>
                     }

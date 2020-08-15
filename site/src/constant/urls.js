@@ -68,6 +68,11 @@ export const API_MAN_POST_VIEWTEACOUNT = API_SERVER + '/auditMg/viewTeaCount'
 // 查看某位学生上传的文件
 export const API_MAN_POST_VIEWFILES = API_SERVER + '/auditMg/viewFiles'
 
+//一键进入最终答辩阶段
+export const API_MAN_POST_FM_JUDEGFINALDEFENCE = API_SERVER + '/auditFm/judgeFinDef'
+export const API_MAN_POST_FM_NEXTFINALDEFENCE = API_SERVER + '/auditFm/nextFinDef '
+export const API_MAN_POST_FM_STATUSFINALDEFENCE = API_SERVER + '/auditFm/statusFinDef'
+
 
 
 // 学生接口声明

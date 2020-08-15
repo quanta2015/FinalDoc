@@ -73,6 +73,7 @@ class App extends Component {
             <AsyncRoute path='/m' getComponent={() => import('./app/m').then(module => module.default)} />
             <AsyncRoute path='/m_distributeTopic' getComponent={() => import('./app/m/distributeTopic').then(module => module.default)} />
             <AsyncRoute path='/m_organizeOpendefence' getComponent={() => import('./app/m/organizeOpendefence').then(module => module.default)} />
+            <AsyncRoute path='/m_distributeReviewers' getComponent={() => import('./app/m/distributeReviewers').then(module => module.default)} />
             <AsyncRoute path='/m_reviewPaper' getComponent={() => import('./app/m/reviewPaper').then(module => module.default)} />
             <AsyncRoute path='/m_viewProgress' getComponent={() => import('./app/m/viewProgress').then(module => module.default)} />
             <AsyncRoute path='/m_summary' getComponent={() => import('./app/m/summary').then(module => module.default)} />
