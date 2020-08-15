@@ -1,0 +1,60 @@
+.g-stu-defer {
+    $border-color: #d3d3d3;
+    $active-color: #f90006;
+
+    .ant-modal-body {
+        min-height: 200px;
+    }
+
+    .m-btn {
+        margin-top: 24px;
+    }
+
+    .m-tl-container {
+        width: 90%;
+        margin: 0 auto;
+
+        .m-timeline-item {
+            padding: 8px 16px 8px 16px;
+            position: relative;
+            color: #777;
+            border-left: 2px solid $border-color;
+
+            &:after {
+                content: '';
+                width: 16px;
+                height: 16px;
+                display: block;
+                top: 1em;
+                position: absolute;
+                left: -8px;
+                border-radius: 16px;
+                border: 2px solid $border-color;
+                background: white;
+            }
+
+            .u-title {
+                color: #444;
+                font-weight: bold;
+            }
+
+            .u-time {
+                color: #999;
+                float: right;
+            }
+
+            .u-content {
+                margin: 10px 0 0;
+            }
+        }
+
+        .z-active:after {
+            border: 3px solid $active-color;
+        }
+
+        .z-focus:after {
+            border: 3px solid $active-color;
+            background: $active-color;
+        }
+    }
+}

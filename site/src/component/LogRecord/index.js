@@ -18,6 +18,7 @@ import {
 import moment from 'moment'
 import './index.scss'
 import { computed, toJS } from 'mobx'
+import { DownloadOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 
 const { Title } = Typography;
@@ -183,8 +184,23 @@ class LogRecord extends Component {
         })
 
     }
+    downloadFile = () => {
+        let params = { file: this.selectTpInfo['f_guide_log'], id: this.selectTpInfo.sid, name: '指导日志' };
+        this.props.userStore.downloadFile(params)
+            .then(r => {
+                if (!r) {
+                    message.error('网络错误');
+                }
+            })
+    }
     render() {
         const { comments, submitting, value } = this.state;
+        // const STATUS = this.selectTpInfo.status === 9
+        // const SEL = this.selectTpInfo.sel !== 0 && this.selectTpInfo.sel !== 1
+        const STATUS = true
+        const SEL = true
+        const IN_PAPER_REPLY = STATUS && SEL && (comments.length > 4 || comments.length === 4)
+        // console.log(STATUS, SEL)
         return (
             <div className="g-stu-log">
                 <Modal
@@ -239,9 +255,12 @@ class LogRecord extends Component {
                                     />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button htmlType="submit" loading={submitting} onClick={this.handleSubmit} type="primary">
-                                        提交
+                                    <Space>
+                                        <Button htmlType="submit" loading={submitting} onClick={this.handleSubmit} type="primary">
+                                            提交
         </Button>
+                                        {IN_PAPER_REPLY && <Button onClick={this.downloadFile} icon={<DownloadOutlined />}>导 出</Button>}
+                                    </Space>
                                 </Form.Item>
                             </>
                         }

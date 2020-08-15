@@ -42,7 +42,9 @@ export default class Announcement extends Component {
                 endRow: this.props.pageSize - 1
             });
         }
-        this.getNoticeList();
+        if (!this.noticeList.data.length) {
+            this.getNoticeList();
+        }
     }
 
     componentWillUnmount() {

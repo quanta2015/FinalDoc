@@ -70,8 +70,7 @@ export var FILE_UPLOAD_TYPE =
       stage: '论文答辩',
       file: [{ name: '答辩材料', type: 'f_reply_source' },
       { name: '答辩记录', type: 'f_reply_log' },
-      { name: '答辩成绩表', type: 'f_reply_score' },
-      { name: '延缓申请表', type: 'f_reply_delay_apply' }]
+      { name: '答辩成绩表', type: 'f_reply_score' },]
    }]
 
 //系主任端查看论文进度表中，能下载的学生上传的文件
@@ -97,13 +96,6 @@ export var FILE_DOWNLOAD_TYPE =
       { name: '答辩记录', type: 'f_reply_log' },
       { name: '答辩成绩表', type: 'f_reply_score' }]
    }]
-
-//学生文件上传状态
-export var STU_FU_STATUS =
-   [{ name: '未完成', color: '' },
-   { name: '待审核', color: 'blue' },
-   { name: '已通过', color: 'green' }
-   ]
 
 //文件上传类型约束
 export var FILE_UPLOAD_FORMAT =
