@@ -31,20 +31,22 @@ export default class TopicPG extends Component {
         }
     }
 
-    handleSubmit = async () => {
+    handleSubmit = () => {
         const reason = this.reason.state.value || '';
         if(reason) {
             this.setState({
                 loading: true,
                 reason: reason
             })
-            await this.props.studentStore.insertDeferApl({uid: this.props.sid, reason: reason})
-            await this.props.studentStore.getDeferAppliProgs({ sid: this.props.sid })
-            message.success('您的申请已提交')
-            this.setState({
-                loading: false
+            this.props.studentStore.insertDeferApl({uid: this.props.sid, reason: reason, type: this.props.type})
+            .then(async r => {
+                await this.props.studentStore.getDeferAppliProgs({ sid: this.props.sid, type: this.props.type })
+                message.success('您的申请已提交')
+                this.setState({
+                    loading: false
+                })
+                this.props.afterSubmit();
             })
-            this.props.afterSubmit();
         } else {
             message.error('申请理由不能为空');
         }
@@ -58,7 +60,7 @@ export default class TopicPG extends Component {
                 visible={this.props.showDefer}
                 onCancel={this.props.onCancel}
                 title={<Title level={4}>延缓答辩申请</Title>}
-                width={720}
+                width={550}
                 footer={null}
                 destroyOnClose={true}
             >

@@ -22,6 +22,7 @@ export default class TopicPG extends Component {
             showDefer: false,    // 控制modal是否可见
             canDefer: false,     // 控制是否显示按钮
             showProcess: false,  // 控制modal显示输入框还是时间轴
+            type: null           // 延缓答辩类型
         }
     }
 
@@ -63,7 +64,8 @@ export default class TopicPG extends Component {
             this.props.studentStore.getOpenScore({ uid: this.usr.uid })
         }
         const canDeferFromTime = await this.props.studentStore.getShowDefer({ uid: this.usr.uid })
-        const canDeferFromAction = await this.props.studentStore.getDeferAppliProgs({ sid: this.usr.uid })
+        const canDeferFromAction = await this.props.studentStore.getDeferAppliProgs({ sid: this.usr.uid, type: canDeferFromTime[0].type })
+
         // 存在未结束的申请
         const showProgress = !!canDeferFromAction.length && !canDeferFromAction[0].pass
         // 不含已通过的申请
@@ -73,7 +75,8 @@ export default class TopicPG extends Component {
 
         this.setState({
             canDefer: canDefer,
-            showProcess: showProgress
+            showProcess: showProgress,
+            type: canDeferFromTime[0].type
         })
     }
 
@@ -112,6 +115,7 @@ export default class TopicPG extends Component {
     }
 
     onSubmitDefer = () => {
+        this.props.userStore.insertMessageToOne({ from: this.usr.uid, to: this.selectTpInfo.tid, context: "学生申请延缓答辩", type: 2 })
         this.setState({
             showProcess: true
         })
@@ -179,6 +183,7 @@ export default class TopicPG extends Component {
                         afterSubmit={this.onSubmitDefer}
                         onCancel={this.onCloseDefer}
                         sid={this.usr.uid}
+                        type={this.state.type}
                     />
                     <div className="m-topic-info">
                         {FILE_UPLOAD_TYPE.map((item, id) =>

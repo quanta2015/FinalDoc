@@ -96,7 +96,7 @@ export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplat
 //返回开题成绩
 export const API_STU_GET_OPSCORE = API_SERVER + '/student/getOpenScore'
 // 获取答辩信息
-export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
+export const API_STU_GET_REPLY_INFO = API_SERVER + '/student//getQuestionInfo'
 // 获取nav栏状态
 export const API_STU_GET_NAV_STAGE = API_SERVER + '/student/getStudentTopicStatus'
 // 提交延缓答辩申请

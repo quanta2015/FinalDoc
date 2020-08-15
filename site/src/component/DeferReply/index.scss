@@ -2,6 +2,10 @@
     $border-color: #d3d3d3;
     $active-color: #f90006;
 
+    .ant-modal-body {
+        min-height: 200px;
+    }
+
     .m-btn {
         margin-top: 24px;
     }
