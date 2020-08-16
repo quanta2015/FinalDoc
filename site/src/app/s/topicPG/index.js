@@ -69,7 +69,7 @@ export default class TopicPG extends Component {
         // 存在未结束的申请
         const showProgress = !!canDeferFromAction.length && !canDeferFromAction[0].pass
         // 不含已通过的申请
-        const unfinishDefer = !!canDeferFromAction.length && canDeferFromAction[0].pass !== 1
+        const unfinishDefer = !!canDeferFromAction.length && canDeferFromAction[0].pass < 1
         // 时间上可申请 且未成功申请
         const canDefer = canDeferFromTime[0].flag && (!canDeferFromAction.length || unfinishDefer)
 
