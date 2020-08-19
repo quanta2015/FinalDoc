@@ -36,9 +36,30 @@ let server = app.listen(9999, () => {
       //   r[i].file = r[i].file.replace("./", "C:/Users/Administrator/Desktop/短学期项目/");
       // }
         data = r;
-        // await rendPDF();
+        await rendPDF();
         // await sleep(7600000);
         console.log(r);
       
     })
   })
+
+  // 生成pdf
+  rendPDF = async () => {
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox'],
+      headless: true
+    })
+    const page = await browser.newPage();
+    for (let i = 0; i < data[1].length; i++) {
+      const element = data[1][i];
+      await page.goto('http://localhost:9999');
+      await sleep(2000);
+      console.log(element);
+      await page.pdf({
+        path: path.replace('./upload', '/root/upload'),
+      });
+      console.log(`printed ${i + 1} pages SUCCESS!!, now saving to DB`);
+    }
+    console.log(`print over! all ${i} pages`);
+    await browser.close();
+  }
