@@ -1,15 +1,44 @@
-.g-home {
-	display: flex;
-	flex-direction: column;
-	width: 1080px;
-
-	.m-list {
-		display: flex;
-		flex-direction: column;
+[data-component="t-auditFD"]{
+	overflow: auto;
+	height: 100%;
+  
+	.m-main-table{
+	  margin-top: 46px;
 	}
-
-}
-
-.t1{
-	color: white;
-}
+  
+	table,tbody.ant-table-body{
+	  display: flex;
+	  flex-direction: column;
+	}
+  
+	.ant-table-cell{
+	  width: 900px;
+	}
+  
+	.ant-table-row,
+	.ant-table-thead>tr{
+	  display: flex;
+	}
+  
+	.ant-table-row,
+	.ant-table-tbody>tr{
+	  width: 100%;
+	  text-align: center;
+	  line-height: 32px;
+	}
+  
+	.ant-table-thead>tr th:first-child,
+	.ant-table-tbody>tr td:first-child{
+	  flex: 3;
+	}
+  
+	.ant-table-thead>tr th:nth-child(2),
+	.ant-table-tbody>tr td:nth-child(2){
+	  flex: 8;
+	}
+  
+	.ant-table-thead>tr th:nth-child(3),
+	.ant-table-tbody>tr td:nth-child(3){
+	  flex: 5;
+	}
+  }

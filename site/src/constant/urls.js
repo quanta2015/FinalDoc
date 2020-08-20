@@ -172,6 +172,12 @@ export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM = API_SERVER + '/auditOp
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM = API_SERVER + '/auditOp/submitTeamForm';// 提交审核组审核表单
 export const API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER = API_SERVER + '/auditOp/isTeamLeader';// 判断是否为审核组组长
 
+//任课教师-结题审核
+export const API_SYS_TEACHER_AUDIT_FD_GET_TOPIC_LIST = API_SERVER + '/auditFd/getTopicList';// 获取结题审核选题列表
+export const API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION = API_SERVER + '/auditFd/getAuditPermission';// 判断是否为指导教师
+export const API_SYS_TEACHER_AUDIT_FD_SUBMIT_TUTOR_FORM = API_SERVER + '/auditFd/submitTutorForm';// 提交指导教师审核表单
+export const API_SYS_TEACHER_AUDIT_FD_SUBMIT_TEAM_FORM = API_SERVER + '/auditFd/submitTeamForm';// 提交评审人审核表单
+
 
 
 

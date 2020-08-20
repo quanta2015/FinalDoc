@@ -19,7 +19,7 @@ import style from './index.scss'
 
 @inject('teacherStore', 'userStore')
 @observer
-class OpActions extends BaseActions { 
+class FdActions extends BaseActions { 
 
     constructor(props) {
         super(props)
@@ -55,12 +55,13 @@ class OpActions extends BaseActions {
     handleAudit = (id) => {
         this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
         .then(() => {route("/t_formOP")});
+        route("/t_formFD");
     }
 
 	render(){
         const {confirmLoading, visible}=this.state;
         return(
-            <div data-component="t-ContentT-OpActions">
+            <div data-component="t-ContentT-FdActions">
                 <Tooltip title="开题审核">
                     <Button type="link" shape="circle" icon={<AuditOutlined />} onClick={this.handleAudit.bind(this, this.props.record.id)} />
                 </Tooltip>
@@ -70,7 +71,7 @@ class OpActions extends BaseActions {
                 </Tooltip>
 
                 <Modal
-                    className="t-ContentT-OpActions-Modal"
+                    className="t-ContentT-FdActions-Modal"
                     title={null}
                     visible={visible}
                     confirmLoading={confirmLoading}
@@ -98,4 +99,4 @@ class OpActions extends BaseActions {
     }
 }
 
-export default OpActions
+export default FdActions

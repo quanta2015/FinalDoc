@@ -172,8 +172,10 @@ export default class Home extends Component {
         });
     }
 
-    setScore(score,index){
-        document.querySelector("#score"+index).value = score;
+    setScore(form,score,index){
+        let name = "score"+index;
+        form.setFieldsValue({
+            [name]: score})
     }
 
 	render() {
@@ -224,11 +226,6 @@ export default class Home extends Component {
 
 		return (
 			<div className="g-content" data-component="t-formOP">
-
-                <div class="m-title">
-                    {this.selectedTopic}
-                </div>
-
                 <Steps
                 type="navigation"
                 current={current}
@@ -258,10 +255,10 @@ export default class Home extends Component {
                                             <InputNumber min={0} max={100} placeholder="分数"/>
                                         </Form.Item>
                                         <div class="u-select">
-                                            <div class="u-select-block" onClick={this.setScore.bind(this,95,index)}>优</div>
-                                            <div class="u-select-block" onClick={this.setScore.bind(this,85,index)}>良</div>
-                                            <div class="u-select-block" onClick={this.setScore.bind(this,75,index)}>中</div>
-                                            <div class="u-select-block" onClick={this.setScore.bind(this,65,index)}>差</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,form,95,index)}>优</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,form,85,index)}>良</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,form,75,index)}>中</div>
+                                            <div class="u-select-block" onClick={this.setScore.bind(this,form,65,index)}>差</div>
                                         </div>
                                     </div>}
                                 </div>
