@@ -8,45 +8,57 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="jquery.min.js"></script>
     <link rel="stylesheet" href="guidanceLog.css">
-    <!-- <script src="../public/jquery.min.js"></script>
-    <link rel="stylesheet" href="../public/guidanceLog.css"> -->
+    <!-- <script src="../public/jquery.min.js"></script> -->
+    <link rel="stylesheet" href="guidanceLog.css">
 </head>
+
 <body>
     <div class="title">杭州师范大学本科生毕业设计（论文）教师指导记录表</div>
     <!-- 基本资料 -->
     <table class="table1">
         <tr>
-            <th>学&emsp;&emsp;院</th><td id="college" colspan="2">杭州国际服务工程学院</td>
-            <th>专业班级</th><td colspan="2" id="class">计算机163</td>
+            <th>学&emsp;&emsp;院</th>
+            <td id="college" colspan="2">杭州国际服务工程学院</td>
+            <th>专业班级</th>
+            <td colspan="2" id="class"></td>
         </tr>
         <tr>
-            <th>学生姓名</th><td colspan="2" id="stuName"></td>
-            <th>学&emsp;&emsp;号</th><td colspan="2" id="stuID"></td>
+            <th>学生姓名</th>
+            <td colspan="2" id="stuName"></td>
+            <th>学&emsp;&emsp;号</th>
+            <td colspan="2" id="stuID"></td>
         </tr>
         <tr>
-            <th>指导老师</th><td colspan="2" id="teaName"></td>
-            <th>职&emsp;&emsp;称</th><td colspan="2" id="jobTitle"></td>
+            <th>指导老师</th>
+            <td colspan="2" id="teaName"></td>
+            <th>职&emsp;&emsp;称</th>
+            <td colspan="2" id="jobTitle"></td>
         </tr>
         <tr>
-            <th>论文题目</th><td id="topic" colspan="5"></td>
+            <th>论文题目</th>
+            <td id="topic" colspan="5"></td>
         </tr>
         <!-- 具体指导日志 -->
-        <tr id="logInfo">
-            <th colspan="4">指导内容摘要</th>
-            <th colspan="1" class="short">指导时间</th>
-            <th colspan="1" class="short">指导地点或指导方式</th>
-        </tr>
+
+        <div id="logInfo">
+            <tr id="logtitle">
+                <th colspan="4">指导内容摘要</th>
+                <th colspan="1" class="short">指导时间</th>
+                <th colspan="1" class="short">指导地点或指导方式</th>
+            </tr>
+        </div>
         <!-- 签名 -->
         <tr>
             <th class="sign" colspan="6">
                 <div class="teaSign" id="teaSign">指导教师签名：</div>
-                <div class="stuSign" id="stuSign">学生签名：王初选</div>
+                <div class="stuSign" id="stuSign">学生签名:</div>
             </th>
         </tr>
     </table>
@@ -54,23 +66,29 @@
         let data;
         $.get('/getGuidanceLog', res => {
             data = res.data;
+            baseInfo = res.baseInfo
+            console.log("===========指导日志界面============")
             console.log(data);
             /** 基本信息 */
-            $('#college').html(data[0].dep);
-            $('#class').html(data[0].cls);
-            $('#stuName').html(data[0].stuName);
-            $('#stuID').html(data[0].sid);
-            $('#teaName').html(data[0].teaName);
-            $('#jobTitle').html(data[0].job_title);
-            $('#topic').html(data[0].topic);
+            $('#college').html(baseInfo.dep);
+            $('#class').html(baseInfo.cls);
+            $('#stuName').html(baseInfo.stuName);
+            $('#stuID').html(baseInfo.sid);
+            $('#teaName').html(baseInfo.teaName);
+            $('#jobTitle').html(baseInfo.job_title);
+            $('#topic').html(baseInfo.topic);
             /** 指导日志内容 */
-            data[1].forEach(element => {
-                $('#logInfo').html += '<td>element["opinoin"]</td><td>element["time"]</td><td>element["way"]</td>';
+            data.forEach(element => {
+                console.log(element)
+                $('#logtitle').after(
+                    `<tr><th colspan="4">${element.opinion}</td> <th colspan="1" class="short">${element.time}</td> <th colspan="1" class="short">${element.way}</td></tr>`
+                    )
             });
             /** 签名 */
-            $('#teaSign').html('<img src="signs/${data[0].tid}.jpg">');
-            $('#stuSign').html(data[0].stuName);
+            $('#teaSign').after(`<img src="signs/${baseInfo.tid}.jpg">`);
+            $('#stuSign').after(` ${baseInfo.stuName}`);
         })
     </script>
 </body>
+
 </html>

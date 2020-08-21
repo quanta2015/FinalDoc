@@ -1,13 +1,5 @@
 const db = require('./db')
-const callProc = (sql, params, res, cb)=>{
-	db.procedureSQL(sql, JSON.stringify(params), (err, ret) => {
-		if (err) {
-			res.status(500).json({code: -1, msg: '提交请求失败，请联系管理员！', data: null})
-		} else {
-			cb(ret)
-		}
-	})
-}
+
 //多参数传出，传出数据冗余较大
 //Callbacknum = 希望获得的数据集数
 const callProc_N = (sql, params,Callbacknum, res, cb)=>{
@@ -49,9 +41,24 @@ const SUPER_easyAdd_N =(table,fieldList,params,res,cb)=>{
 		})
 	})
 }
+const callProc = (sql, params, res, cb)=>{
+	db.procedureSQL(sql, JSON.stringify(params), (err, ret) => {
+		if (err) {
+			res.status(500).json({code: -1, msg: '提交请求失败，请联系管理员！', data: null})
+		} else {
+			cb(ret)
+		}
+	})
+}
+
+const sleep= (time)=> {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 module.exports = {
 	callProc,
 	callProc_N,
 	easyAdd_N,
-	SUPER_easyAdd_N
+	SUPER_easyAdd_N,
+	sleep
 }
