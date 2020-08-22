@@ -85,10 +85,10 @@ export default class Message extends Component {
                     }
 
                     for (let i = 0; i < children.length; i++) {
-                        if (tmpWidth < parentWidth && tmpWidth + children[i].offsetWidth + 26 > parentWidth) {
+                        if (tmpWidth < parentWidth && tmpWidth + children[i].offsetWidth + 20 > parentWidth) {
                             index = i;
                         }
-                        tmpWidth += children[i].offsetWidth + 26;
+                        tmpWidth += children[i].offsetWidth + 20;
                     }
                     if (index !== 0) {
                         for (let i = index; i < children.length; i++) {
@@ -149,10 +149,10 @@ export default class Message extends Component {
                 } else {
                     wid = children[i].offsetWidth
                 }
-                if (tmpWidth < parentWidth && (tmpWidth + wid + 26 >= parentWidth)) {
+                if (tmpWidth < parentWidth && (tmpWidth + wid + 20 >= parentWidth)) {
                     index = i;
                 }
-                tmpWidth += wid + 26;
+                tmpWidth += wid + 20;
             }
             // 若一行可显示，则所有可显示
             if (index === 0) index = children.length;
