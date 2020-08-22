@@ -197,10 +197,8 @@ class LogRecord extends Component {
         const { comments, submitting, value } = this.state;
         // const STATUS = this.selectTpInfo.status === 9
         // const SEL = this.selectTpInfo.sel !== 0 && this.selectTpInfo.sel !== 1
-        const STATUS = true
-        const SEL = true
-        const IN_PAPER_REPLY = STATUS && SEL && (comments.length > 4 || comments.length === 4)
-        // console.log(STATUS, SEL)
+        // const IN_PAPER_REPLY = STATUS && SEL && (comments.length > 4 || comments.length === 4)
+        const IN_PAPER_REPLY = this.selectTpInfo['f_guide_log'] !== null
         return (
             <div className="g-stu-log">
                 <Modal
