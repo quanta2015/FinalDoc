@@ -34,7 +34,7 @@ export default class AutoAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getJudge({"ide":this.usr.uid});
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status":this.props.status});
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status":1});
         // if (this.distributeTopic.topic_info.length < this.state.num){
         //     this.state.num = this.distributeTopic.topic_info.length
         //     this.setState({

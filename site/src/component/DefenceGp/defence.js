@@ -155,7 +155,7 @@ export default class Defense extends Component {
         let member_x = []
         this.state.select_member.map((item) => member_x.push(item.split(" ")[0]))
 
-        let temp = { "ide": this.usr.uid, "leader_id": this.state.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": toJS(this.state.sug_topic_id) }
+        let temp = { "ide": this.usr.uid, "leader_id": this.state.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": toJS(this.state.sug_topic_id), "status": 1 }
         console.log(temp, "提交")
         let res = await this.props.manageStore.manualAllocateTopic_fgp(temp);
         if (res && res.code === 200) {

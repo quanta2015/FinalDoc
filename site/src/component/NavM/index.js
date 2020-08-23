@@ -105,7 +105,7 @@ class NavM extends BaseActions {
              
             {MENU_MAIN_M.map((item, i) =>
             {
-              if (this.reviewPaper.status_op === 0 && this.distributeReviewers.judge_fd === 0) 
+              if ( this.distributeReviewers.judge_fd === 0) 
               return (
               <div
                 className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}

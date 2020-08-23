@@ -73,14 +73,14 @@ export default class Home extends Component {
                             {(this.state.value === 1) &&
                                 <AutoAllocate 
                                 status={2}
-                                judge={this.distributeReviewers.status_fd}
+                                judge={0}
                                 title="评阅"
                                 tip="已进入终期答辩阶段，不能再分配评阅教师"/>
                             }
                             {(this.state.value === 2) &&
                                 <ManualAllocate 
                                 status={2}
-                                judge={this.distributeReviewers.status_fd}
+                                judge={0}
                                 title="评阅"
                                 tip="已进入终期答辩阶段，不能再分配评阅教师"/>
                             }
