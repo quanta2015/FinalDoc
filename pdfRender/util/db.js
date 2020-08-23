@@ -202,6 +202,7 @@ var  procSQL_MutiCB= async (sql, params, Callbacknum,cb)=>{
       console.log('SQL error', err )
       cb( err, ret )
     } else {
+      console.log(ret,typeof(ret))
       let newRet=[];
       ret.map((item,index)=>{
         if(index<Callbacknum)

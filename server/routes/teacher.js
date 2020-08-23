@@ -4,7 +4,7 @@
  * @Author: East Wind
  * @Date: 2020-07-09 10:05:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-10 18:44:59
+ * @LastEditTime: 2020-08-14 22:47:02
  */ 
 
 const url = require('url');
@@ -464,6 +464,9 @@ router.post('/getSel',async(req,res)=>{
         let data = false;
         if(r.length>0 &&r[0].sel != 0 && r[0].sel != 1){
             data = true;
+        }
+        if(r.length>0 &&r[0].sel==0 && r[0].status>8){
+            data=true;
         }
         res.status(200).json({code:200,data,message:"已获取是否到达第二阶段"})
     })
