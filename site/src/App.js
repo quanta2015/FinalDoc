@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-07-14 21:28:50
+ * @LastEditTime: 2020-08-23 20:20:57
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \FinalDoc\site\src\App.js
+ */
 import { Component } from 'preact';
 import { Router, route } from 'preact-router';
 import AsyncRoute from 'preact-async-route';
@@ -62,6 +70,7 @@ class App extends Component {
             <AsyncRoute path='/t_auditOP' getComponent={() => import('./app/t/auditOP').then(module => module.default)} />
             <AsyncRoute path='/t_auditFD' getComponent={() => import('./app/t/auditFD').then(module => module.default)} />
             <AsyncRoute path='/t_formOP' getComponent={ () => import('./app/t/formOP').then(module => module.default) }/>
+            <AsyncRoute path='/t_formFD' getComponent={ () => import('./app/t/formFD').then(module => module.default) }/>
 
 
             {/* 学生模块 */}

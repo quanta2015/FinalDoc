@@ -1,3 +1,4 @@
+import { inject, observer } from 'mobx-react';
 import { Form, Input, Button, Checkbox, DatePicker, Space, message } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import BaseActions from '../../BaseActions';
@@ -6,7 +7,10 @@ import style from './index.scss'
 
 const { RangePicker } = DatePicker;
 
+@inject('userStore')
+@observer
 export default class TaskForm extends BaseActions {
+
   onFinish = async val => {
 
     if(!val.schedule){
@@ -16,9 +20,11 @@ export default class TaskForm extends BaseActions {
     let x = await this.post(urls.API_TEACHER_SAVE_TASK,{data:val,pid:this.props.pid})
     if(x.code==200){
       message.success('提交成功')
+      this.props.userStore.insertMessageToOne({from:this.usr.id,to:id,context:"教师已发布任务书，等待审核",type:1})
     }else{
       message.error('提交错误，请检查网络')
     }
+    
     this.props.close();
     this.props.freshList();
 

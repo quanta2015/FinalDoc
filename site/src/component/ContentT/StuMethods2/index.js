@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-08-10 14:43:23
- * @LastEditTime: 2020-08-10 18:40:07
+ * @LastEditTime: 2020-08-23 17:47:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FinalDoc\site\src\component\ContentT\StuMethods2\index.js
@@ -106,12 +106,13 @@ export default class StuMethods extends BaseActions {
     let file_data = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
     let l = (file_data.data)[0];
     console.log(file_data);
-    let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran) && !file_data.data[1];
+    let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran) ;
     if (flag) {
       this.setState({ auditOp: true })
     }
     this.setState({ links: l })
-    if(file_data.data[1]){
+    console.log(file_data.data[1]);
+    if(!file_data.data[1]){
       this.setState({changeWWW:true})
     }else{
       this.setState({changeWWW:false})

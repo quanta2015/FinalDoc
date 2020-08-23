@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-08-16 22:57:41
+ * @LastEditTime: 2020-08-23 17:44:25
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \FinalDoc\site\src\component\ContentT\Review\index.js
+ */
 import './index.scss'
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
@@ -30,7 +38,7 @@ export default class Review extends BaseActions {
     if (!r) return;
     let data = { sid: id, topic_id: tid, val: 1 }
     r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT, data);
-    this.props.userStore.insertMessageToOne({from:this.usr.id,to:id,context:"教师已通过申请",type:1})
+    this.props.userStore.insertMessageToOne({from:this.usr.id,to:id,context:"教师已通过双选申请",type:1})
     this.props.freshList();
   }
 
@@ -44,7 +52,7 @@ export default class Review extends BaseActions {
     let r = confirm(`您确定要拒绝 ${name} 的申请么？`)
     if (!r) return;
     r = await this.post(urls.API_SYS_TEACHER_REVIEW_STUDENT, { sid: id, topic_id: tid, val: 0 });
-    this.props.userStore.insertMessageToOne({from:this.usr.id,to:id,context:"教师已拒绝申请",type:3})
+    this.props.userStore.insertMessageToOne({from:this.usr.id,to:id,context:"教师已拒绝双选申请",type:3})
     this.props.freshList();
   }
 
