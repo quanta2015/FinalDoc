@@ -49,7 +49,7 @@ export default class ManualAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getJudge({ "ide": this.usr.uid });
         await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
-        await this.props.manageStore.getTeaList({ "ide": this.usr.uid,"status":this.props.status });
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status": this.props.status });
         await this.props.manageStore.getAreasList();
         this.setState({
             teacher_info: toJS(this.distributeTopic.teacher_info),

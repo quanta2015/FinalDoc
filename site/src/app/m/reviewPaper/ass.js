@@ -189,6 +189,7 @@ export default class Ass extends Component {
         } else {
             message.error("未进入开题答辩阶段！请重试")
         }
+        await this.props.manageStore.getJudgeOpDef({ "ide": this.usr.uid });
         await this.props.manageStore.getStatusOpDef({ "ide": this.usr.uid });
 
     }

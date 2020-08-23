@@ -34,10 +34,7 @@ export default class Detail extends Component {
         return this.props.manageStore.distributeTopic;
     }
 
-    @computed
-    get distributeReviewers() {
-        return this.props.manageStore.distributeReviewers;
-    }
+
 
     @computed
     get usr() {
@@ -140,36 +137,7 @@ export default class Detail extends Component {
         });
     };
 
-    //进入终期答辩阶段
-    showConfirm = () => {
-        confirm({
-            title: <div style={{ fontSize: '20px' }}><br />是否确认进入终期答辩<br /><br /></div>,
-            icon: <ExclamationCircleOutlined style={{ fontSize: '28px', paddingTop: '30px', paddingLeft: '30px' }} />,
-            okText: '确认',
-            cancelText: '取消',
-            width: 500,
-
-            onOk: () => {
-                console.log('OK');
-                this.finalDefense()
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-        });
-    }
-
-    //进入终期答辩阶段
-    finalDefense = async () => {
-        let res = await this.props.manageStore.finalDefense({ "ide": this.usr.uid });
-        if (res && res.code === 200) {
-            message.success("已进入终期答辩阶段，请分配答辩小组！")
-        } else {
-            message.error("未进入终期答辩阶段！请重试")
-        }
-        await this.props.manageStore.getStatusFdDef({ "ide": this.usr.uid });
-
-    }
+  
 
     render() {
         let { filteredInfo } = this.state;
@@ -207,8 +175,8 @@ export default class Detail extends Component {
                     { text: '未通过', value: 0 },
                     { text: '通过', value: 1 },
                     { text: '待审核', value: 2 },
-                    { text: '待学生选题', value: 3 },
-                    { text: '有学生选择', value: 4 },
+                    { text: '通过', value: 3 },
+                    { text: '通过', value: 4 },
                 ],
 
                 filterMultiple: false,
@@ -232,10 +200,10 @@ export default class Detail extends Component {
                         tag = "未通过";
                         color = "red"
                     } else if (result === 3) {
-                        tag = "待学生选题";
-                        color = "blue"
+                        tag = "通过";
+                        color = "green"
                     } else if (result === 4) {
-                        tag = "有学生选择";
+                        tag = "通过";
                         color = "green"
                     }
                     // console.log(tag);
@@ -288,29 +256,6 @@ export default class Detail extends Component {
 
         return (
             <div className="g-detail">
-                {/* 所有课题审核通过，才可以一键发布课题 */}
-                <div className="release_btn">
-                    {
-
-                        (this.distributeReviewers.judge_fd === 0) &&
-                        <Button type="primary" onClick={this.showConfirm} disabled>进入终期答辩阶段</Button>
-                    }
-                    {
-
-                        (this.distributeReviewers.judge_fd===1) &&
-                        <Button type="primary" onClick={this.showConfirm}>进入终期答辩阶段</Button>
-                    }
-                    
-                    {
-
-                        (this.distributeReviewers.status_fd === 1) &&
-                        <Button type="primary" disabled>已进入终期答辩阶段</Button>
-                    }
-
-                   
-                     
-
-                </div>
                 <div className="detail_table">
                     <Table columns={columns} dataSource={this.distributeTopic.checklist_info} tableLayout='fixed'
                         onRow={(record) => {

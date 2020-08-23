@@ -50,7 +50,17 @@ export const API_MAN_POST_OGP_MANUALALLOCATETOPIC = API_SERVER + '/openGp/handle
 export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
 export const API_MAN_POST_OGP_DELETEGROUP = API_SERVER + '/openGp/deleteGroup'
-export const API_MAN_POST_OPEND_DEFENSE = API_SERVER + ''
+// export const API_MAN_POST_OPEND_DEFENSE = API_SERVER + ''
+
+//组织终期答辩
+// 组织开题答辩模块
+export const API_MAN_POST_FGP_TOPICLIST = API_SERVER + '/finalGp/topicList'
+export const API_MAN_POST_FGP_TEACHERLIST = API_SERVER + '/finalGp/teacherList'
+export const API_MAN_POST_FGP_AUTOALLOCATETOPIC = API_SERVER + '/finalGp/tenTopic'
+export const API_MAN_POST_FGP_MANUALALLOCATETOPIC = API_SERVER + '/finalGp/handleGroup'
+export const API_MAN_POST_FGP_GROUPLIST = API_SERVER + '/finalGp/groupList'
+export const API_MAN_POST_FGP_TDETAILLIST = API_SERVER + '/finalGp/topicDetailList'
+export const API_MAN_POST_FGP_DELETEGROUP = API_SERVER + '/finalGp/deleteGroup'
 
 //审核任务书、论文定稿等
 export const API_MAN_POST_RP_TASKLIST = API_SERVER + '/auditMg/taskList'

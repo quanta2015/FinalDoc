@@ -77,7 +77,7 @@ class App extends Component {
             <AsyncRoute path='/m_reviewPaper' getComponent={() => import('./app/m/reviewPaper').then(module => module.default)} />
             <AsyncRoute path='/m_viewProgress' getComponent={() => import('./app/m/viewProgress').then(module => module.default)} />
             <AsyncRoute path='/m_summary' getComponent={() => import('./app/m/summary').then(module => module.default)} />
-            {/* <AsyncRoute path='/m_organizeFinaldefence' getComponent={() => import('./app/m/organizeFinaldefence').then(module => module.default)} /> */}
+            <AsyncRoute path='/m_organizeFinaldefence' getComponent={() => import('./app/m/organizeFinaldefence').then(module => module.default)} />
                {/* 教务处模块 */}
           <AsyncRoute  exact path='/admin'  getComponent={ () => import('./app/admin').then(module => module.default) } />
           <AsyncRoute   path='/admin_ann' getComponent={ () => import('./app/admin/Ann&File').then(module => module.default) }/>

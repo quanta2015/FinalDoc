@@ -4,8 +4,8 @@ import { route } from 'preact-router';
 import { inject, observer } from 'mobx-react'
 import { computed, observable, toJS } from 'mobx'
 import Defense from '../../../component/DefenceGp/defence.js'
-// import DivideDetail from './dividedetail.js.js'
-// import "./style.scss";
+import DivideDetail from './dividedetail.js'
+import "./style.scss";
 
 const { TabPane } = Tabs;
 
@@ -53,7 +53,7 @@ export default class Home extends Component {
                             <Defense />
                         </TabPane>
                         <TabPane tab="查看分组详情" key="2">
-                            123
+                            <DivideDetail/>
                         </TabPane>
 
                     </Tabs>

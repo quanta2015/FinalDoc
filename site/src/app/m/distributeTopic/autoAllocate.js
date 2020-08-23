@@ -34,7 +34,7 @@ export default class AutoAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getJudge({"ide":this.usr.uid});
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getTeaList({"ide":this.usr.uid,"status":this.props.status});
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status":this.props.status});
         // if (this.distributeTopic.topic_info.length < this.state.num){
         //     this.state.num = this.distributeTopic.topic_info.length
         //     this.setState({
@@ -177,7 +177,10 @@ export default class AutoAllocate extends Component {
                         optionLabelProp="label"
                         allowClear
                     >
-                        {this.distributeTopic.teacher_info.map((item, i) =>
+                        
+                        {
+                           
+                        this.distributeTopic.teacher_info.map((item, i) =>
                             <Select.Option label={item.name} key={item.tid}>{item.value}</Select.Option>
                         )}
                     </Select>

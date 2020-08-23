@@ -49,6 +49,7 @@ export default class Home extends Component {
         await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
         await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
         await this.props.manageStore.getStatusFdDef({ "ide": this.usr.uid });
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status": 2 });
     }
     // 切换自动手动单选框
     onChange = e => {

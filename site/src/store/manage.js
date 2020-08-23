@@ -31,7 +31,7 @@ class manager extends BaseActions {
 
   @action
   // 参数，系主任id
-  // {"ide":"20130006"}
+  // {"ide":"20130006","status":1/2}
   async getTeaList(param) {
     const res = await this.post(urls.API_MAN_GET_TEALIST, param);
     let teaName = [];
@@ -41,14 +41,14 @@ class manager extends BaseActions {
         areas += item.split("|")[1] + " "
       })
       // 给领域排序
-      areas.sort(function (a, b) {
-        if (a < b) {
-          return -1;
-        } else if (a > b) {
-          return 1;
-        }
-        return 0;
-      })
+      // areas.sort(function (a, b) {
+      //   if (a < b) {
+      //     return -1;
+      //   } else if (a > b) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // })
       /* ******* */
       teaName.push({
         tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
@@ -86,6 +86,14 @@ class manager extends BaseActions {
         areas.push(item.split("|")[1])
         color.push(item.split("|")[2])
       })
+       // areas.sort(function (a, b) {
+      //   if (a < b) {
+      //     return -1;
+      //   } else if (a > b) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // })
       topicList.push({
         key: item.key, tid: item.tid, tName: item.name, topic: item.topic, content: item.content, type: item.type,
         areas: areas,
@@ -286,12 +294,7 @@ class manager extends BaseActions {
     })
   }
 
-  // 自动分配答辩课题
-  // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
-  // @action
-  // async autoAllocateTopic_ogp(param) {
-  //   return await this.post(urls.API_MAN_POST_OGP_AUTOALLOCATETOPIC, param)
-  // }
+  
 
   // 手动分配答辩课题
   // {"leader_id":"20170056","teacher_id":["20020070","20021092","20020782","20021105"],"topic_id":[3,4,5,6,7]}
@@ -357,10 +360,10 @@ class manager extends BaseActions {
   }
 
   //进入开题答辩阶段
-  @action
-  async openDefense(param) {
-    return await this.post(urls.API_MAN_POST_OPEND_DEFENSE, param);
-  }
+  // @action
+  // async openDefense(param) {
+  //   return await this.post(urls.API_MAN_POST_OPEND_DEFENSE, param);
+  // }
 
   @observable
   summary = {
@@ -678,6 +681,186 @@ class manager extends BaseActions {
     let res = await this.post(urls.API_MAN_POST_FM_STATUSFINALDEFENCE, param)
     this.distributeReviewers.status_fd = res.data[0].flag;
   }
+
+  // 分配答辩小组
+  @observable
+  finalDefenseGroup = {
+    // 教师列表
+    teacher_info: [],
+    // 未分配课题列表
+    topic_info: [],
+    // 延期课题列表
+    topicde_info: [],
+    //自动分配十个课题
+    sug_topic_id: [],
+    // 开题分组信息
+    group_list: [],
+    //置空
+    select_leader: undefined,
+    select_member: [],
+  }
+  // 自动显示十个答辩课题
+  // {"ide":"20130006","leader_id":"20140008","teacher_id":["20140022","20150046","20170067"],"number":5}
+  @action
+  async getSugTopicList_fgp(param) {
+    const res = await this.post(urls.API_MAN_POST_FGP_AUTOALLOCATETOPIC, param);
+    let group = [];
+    res.data.map((item, i) => {
+      group.push(
+        item.key,
+      )
+    })
+
+    runInAction(() => {
+      this.finalDefenseGroup.sug_topic_id = group;
+    })
+  }
+
+  @action
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTopicList_fgp(param) {
+    const res = await this.post(urls.API_MAN_POST_FGP_TOPICLIST, param);
+    let topic = []
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+    res.data.map((item) =>
+      topic.push({
+        key: item.key,
+        sName: item.sName,
+        topic: item.name + "-" + item.topic,
+        content: item.content,
+        tName: item.name,
+        classname: item.class,
+      })
+    )
+    runInAction(() => {
+      this.finalDefenseGroup.topic_info = topic;
+    })
+
+  }
+
+  @action
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTopicListDe_fgp(param) {
+    const res = await this.post(urls.API_MAN_POST_FGP_TOPICLIST, param);
+    let topic = []
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+    res.data.map((item) =>
+      topic.push({
+        key: item.key,
+        sName: item.sName,
+        topic: item.name + "-" + item.topic,
+        content: item.content,
+        tName: item.name,
+        classname: item.class,
+      })
+    )
+    runInAction(() => {
+      this.finalDefenseGroup.topicde_info = topic;
+    })
+
+  }
+
+  @action
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getTeacherList_fgp(param) {
+    const res = await this.post(urls.API_MAN_POST_FGP_TEACHERLIST, param);
+    let teacher = []
+    res.data.map((item) => {
+      let areas = ""
+      item.area_list.split(",").map((item) => {
+        areas += item.split("|")[1] + " "
+      })
+      teacher.push({
+        tid: item.uid + " " + item.maj + "-" + item.Tname + "-" + item.areas,
+        value: item.maj + "-" + item.Tname + "-" + areas,
+        name: item.Tname,
+      })
+    })
+    // 同一老师课题放一起，按未通过、通过、未审核排序
+    teacher.sort(function (a, b) {
+      if (a.value === b.value) {
+        return 0;
+      }
+      else if (a.value < b.value) {
+        return 1;
+      }
+      else {
+        return -1;
+      }
+    })
+    runInAction(() => {
+      this.finalDefenseGroup.teacher_info = teacher;
+    })
+  }
+
+ 
+  // 手动分配答辩课题
+  // {"leader_id":"20170056","teacher_id":["20020070","20021092","20020782","20021105"],"topic_id":[3,4,5,6,7]}
+  @action
+  async manualAllocateTopic_fgp(param) {
+    return await this.post(urls.API_MAN_POST_FGP_MANUALALLOCATETOPIC, param)
+  }
+
+  @action
+  // 开题答辩小组的信息
+  // 参数，系主任id
+  // {"ide":"20130006"}
+  async getGroupList_fgp(param) {
+    const res = await this.post(urls.API_MAN_POST_FGP_GROUPLIST, param);
+    res.data.sort(function (a, b) {
+      if (a.time > b.time) {
+        return 1;
+      } else if (a.time < b.time) {
+        return -1;
+      }
+      return 0;
+    })
+    let group = [];
+    res.data.map((item, i) => {
+      group.push({
+        id: i + 1,
+        gid: item.gid,
+        leader: item.leader,
+        members: item.names,
+        address: item.address,
+        time: item.time.slice(2, 10) + " " + item.time.slice(11, 16),
+      })
+    })
+
+
+    runInAction(() => {
+      this.finalDefenseGroup.group_list = group;
+    })
+  }
+
+  // 组内课题详情
+  // {"group_id":int}
+  @action
+  async topicDetailList_fgp(param) {
+    let res = await this.post(urls.API_MAN_POST_FGP_TDETAILLIST, param)
+    let temp = []
+    res.data.map((item, i) => {
+      temp.push({
+        topic: item.topic,
+        class: item.maj + item.cls,
+        sName: item.sName,
+        tName: item.tName,
+      })
+    })
+    return temp;
+  }
+
+  // 删除某个分组
+  // {"gid":int}
+  @action
+  async deleteGroup_fgp(param) {
+    return await this.post(urls.API_MAN_POST_FGP_DELETEGROUP, param)
+  }
+
+ 
 
 
 

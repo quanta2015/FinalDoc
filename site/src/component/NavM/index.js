@@ -5,7 +5,7 @@ import { route } from 'preact-router';
 import { Divider } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import './index.scss'
-import { MENU_MAIN_M, MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
+import { MENU_MAIN_M, MENU_MAIN_M_OGP,MENU_MAIN_M_FGP,MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
 import BaseActions from '../BaseActions'
 import * as urls from '../../constant/urls'
 
@@ -33,16 +33,35 @@ class NavM extends BaseActions {
     return this.props.userStore.usr;
   }
 
+  @computed
+  get distributeReviewers() {
+    return this.props.manageStore.distributeReviewers;
+  }
+
+  @computed
+  get reviewPaper() {
+    return this.props.manageStore.reviewPaper;
+  }
+
+
   async componentDidMount() {
+    await this.props.manageStore.getJudgeFdDef({ "ide": this.usr.uid });
+    await this.props.manageStore.getStatusOpDef({ "ide": this.usr.uid });
     let list = [];
     //post请求获取数据，看length是否为0.如果不为0，则显示该tab
     let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, { "uid": this.usr.uid })
-    console.log(x);
     if (x.data.length > 0) {
       list.push(MENU_MAIN_T_AUDIT[0])
     }
 
+    x = await this.post(urls.API_TEACHER_AUDIT_OP_IS_MEMBER, { uid: this.usr.uid });
+    if (x.flag) {
+      list.push(MENU_MAIN_T_AUDIT[1])
+    }
+
+
     this.setState({ checkList: list })
+     
 
     //获取当前系统状态信息，并且更新state
     //当前为写死的
@@ -61,8 +80,7 @@ class NavM extends BaseActions {
   }
 
   logout = () => {
-    window.localStorage.clear();
-    window.location.reload();
+    this.props.userStore.logout();
   }
 
   render() {
@@ -84,13 +102,43 @@ class NavM extends BaseActions {
           </div>
           <div className="g-menu">
             {/* 系主任功能 */}
+             
             {MENU_MAIN_M.map((item, i) =>
+            {
+              if (this.reviewPaper.status_op === 0 && this.distributeReviewers.judge_fd === 0) 
+              return (
               <div
                 className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
                 key={i}
                 onClick={this.doMenu.bind(this, item.path, i)}>
                 <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
               </div>
+              )}
+            )}
+            {/* {MENU_MAIN_M_OGP.map((item, i) => {
+              if (this.reviewPaper.status_op === 1 && this.distributeReviewers.judge_fd === 0) 
+                return (
+                  <div
+                    className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
+                    key={i}
+                    onClick={this.doMenu.bind(this, item.path, i)}>
+                    <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+                  </div>
+                )
+            }
+            )} */}
+            { MENU_MAIN_M_FGP.map((item, i) =>
+            {
+              if (this.distributeReviewers.judge_fd ===1)
+               return(
+              <div
+                className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
+                key={i}
+                onClick={this.doMenu.bind(this, item.path, i)}>
+                <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
+              </div>
+               )
+             }
             )}
             <Divider>指导教师</Divider>
             {MENU_MAIN_T.map((item, i) =>
