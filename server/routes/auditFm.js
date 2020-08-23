@@ -59,7 +59,7 @@ router.post('/nextFinDef', async(req, res) => {
  * @return: 
  */
 router.post('/statusFinDef', async(req, res) => {
-  let sql = `CALL MG_FM_PROC_OPDEF_STATUS(?)`;
+  let sql = `CALL MG_FM_PROC_FINDEF_STATUS(?)`;
 	let params = req.body;
 	callProc(sql, params, res, (r) => {
 		res.status(200).json({code: 200, data: r, msg: '最终答辩状态判断'})
