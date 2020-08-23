@@ -1,0 +1,117 @@
+[data-component="t-formFD"]{
+    overflow: auto;
+    height: 100%;
+
+    .m-footer-action{
+        margin-top: 16px;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    .m-block{
+        height: 170px;
+        display: flex;
+        margin-top: 30px;
+    }
+
+    .m-file-block{
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .u-content{
+        flex: 8;
+        height: 100%;
+        display: inline-block;
+        padding: 20px 10px ;
+        border: 1px solid #ccc;
+        &:after{
+            content:'';
+            visibility:hidden;
+            display:block;
+            clear:both;
+        }
+        position: relative;
+    }
+
+    .u-file-content{
+        height: 100%;
+        padding: 20px 10px 0 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        &:after{
+            content:'';
+            visibility:hidden;
+            display:block;
+            clear:both;
+        }
+        position: relative;
+    }
+
+    .u-content-title{
+        position: absolute;
+        top: -13px;
+        left: 20px;
+        background-color: rgb(84, 84, 84);
+        color: white;
+        font-weight: bold;
+        padding: 2px 5px;
+    }
+
+    .u-btn-prev{
+        margin-right: 15px;
+    }
+
+    .u-righter{
+        flex: 1;
+        display: inline-block;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .u-input-num-item{
+        margin-left: 10px;
+        margin-bottom: 0;
+    }
+
+    .u-select{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        margin-left: 10px;
+        width: 88px;
+        height: 68px;
+    }
+
+    .u-select-block{
+        width: 40px;
+        height: 30px;
+        background-color: red;
+        color: white;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    .u-select-block:hover{
+        cursor: pointer;
+    }
+
+    .u-intro h3{
+        font-weight: bold;
+    }
+
+    .u-reply-score{
+        margin: 0;
+    }
+    
+    .u-comment{
+        margin-top: 15px;
+    }
+
+    .m-footer-action-select{
+        margin-right: 10px;
+    }
+}

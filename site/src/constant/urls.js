@@ -103,10 +103,15 @@ export const API_STU_GET_TEMP_FILE = API_SERVER + '/student/getAllStudentTemplat
 //返回开题成绩
 export const API_STU_GET_OPSCORE = API_SERVER + '/student/getOpenScore'
 // 获取答辩信息
-export const API_STU_GET_REPLY_INFO = API_SERVER + '/student/getOpenQuestionInfo'
+export const API_STU_GET_REPLY_INFO = API_SERVER + '/student//getQuestionInfo'
 // 获取nav栏状态
 export const API_STU_GET_NAV_STAGE = API_SERVER + '/student/getStudentTopicStatus'
-
+// 提交延缓答辩申请
+export const API_STU_SUBMIT_DEFER = API_SERVER + '/student/insertDeferApplication'
+// 查询延缓答辩申请内容
+export const API_STU_GET_DEFER_PRG = API_SERVER + '/student/getDeferAppliStatus'
+// 判断当前延缓答辩申请入口是否开放
+export const API_STU_GET_DEFER_SHOW = API_SERVER + '/student/getIfCanDefAppli'
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';
@@ -171,6 +176,12 @@ export const API_SYS_TEACHER_AUDIT_OP_GET_AUDIT_PERMISSION = API_SERVER + '/audi
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM = API_SERVER + '/auditOp/submitTutorForm';// 提交指导教师审核表单
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM = API_SERVER + '/auditOp/submitTeamForm';// 提交审核组审核表单
 export const API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER = API_SERVER + '/auditOp/isTeamLeader';// 判断是否为审核组组长
+
+//任课教师-结题审核
+export const API_SYS_TEACHER_AUDIT_FD_GET_TOPIC_LIST = API_SERVER + '/auditFd/getTopicList';// 获取结题审核选题列表
+export const API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION = API_SERVER + '/auditFd/getAuditPermission';// 判断是否为指导教师
+export const API_SYS_TEACHER_AUDIT_FD_SUBMIT_TUTOR_FORM = API_SERVER + '/auditFd/submitTutorForm';// 提交指导教师审核表单
+export const API_SYS_TEACHER_AUDIT_FD_SUBMIT_TEAM_FORM = API_SERVER + '/auditFd/submitTeamForm';// 提交评审人审核表单
 
 
 

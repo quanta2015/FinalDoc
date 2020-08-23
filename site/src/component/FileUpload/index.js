@@ -160,7 +160,7 @@ class FileUpload extends Component {
                         data={() => { return { type: fileType.type, tid: tpInfo.tid, sid: tpInfo.sid } }}
                         beforeUpload={this.beforeUpload}
                         onChange={this.handleChange}
-                        disabled={this.props.disabled}
+                        disabled={this.props.disabled || false}
                     >
                         {(fileUrl && !loading) ? <CheckOutlined className="z-success"/> : uploadButton}
                     </Upload>

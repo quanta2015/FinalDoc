@@ -74,7 +74,7 @@ class Teacher extends BaseActions {
 
   //选中的待审核命题
   @observable  
-  selectedTopic = {}
+  selectedTopic = { id: 1, topic: 'A', content: "ABCD", type: "newbee"};
 
   @action
   async getTopicById(params) {
@@ -100,7 +100,6 @@ class Teacher extends BaseActions {
   @action
 	async AuditOp_getTopicList(params) {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_OP_GET_TOPIC_LIST, params);
-    console.log(result)
     if (result && result.code === 200) {
       runInAction(() => {
         this.auditOP_topicList = result.result
@@ -185,6 +184,65 @@ class Teacher extends BaseActions {
       runInAction(() => {
         this.auditOP_isTeamLeader = result.flag
       })
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  // 结题
+
+  //结题命题列表
+  @observable  
+  auditFD_topicList = [
+    { id: 1, topic: 'A', content: "ABCD", type: "newbee"},
+    { id: 2, topic: 'B', content: "ABCD", type: "newbee"},
+  ]
+
+  //获取数据
+  @action
+	async AuditFd_getTopicList(params) {
+    let result = await this.post(urls.API_SYS_TEACHER_AUDIT_FD_GET_TOPIC_LIST, params);
+    if (result && result.code === 200) {
+      runInAction(() => {
+        this.auditTP_topicList = result.data
+      })
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  @observable
+  auditFD_isTutor = false
+
+  @action
+  async AuditFd_getAuditPermission(params) {
+    let result = await this.post(urls.API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION, params);
+    if (result && result.code === 200) {
+      runInAction(() => {
+        this.auditFD_isTutor = result.result.flag
+      })
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  async AuditFd_submitTutorForm(params){
+    let result = await this.post (urls.API_SYS_TEACHER_AUDIT_FD_SUBMIT_TUTOR_FORM, params)
+    if (result && result.code === 200) {
+      message.success("表单提交成功")
+    } else {
+      message.error("网络错误")
+    }
+    return result;
+  }
+
+  async AuditFd_submitTeamForm(params){
+    let result = await this.post (urls.API_SYS_TEACHER_AUDIT_FD_SUBMIT_TEAM_FORM, params)
+    if (result && result.code === 200) {
+      message.success("表单提交成功")
     } else {
       message.error("网络错误")
     }
