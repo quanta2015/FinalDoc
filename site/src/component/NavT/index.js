@@ -35,10 +35,14 @@ class NavT extends BaseActions {
     }
 
     x = await this.post(urls.API_TEACHER_AUDIT_OP_IS_MEMBER,{uid:this.usr.uid});
-    if(x.flag){
+    if(x.flag[0]){
       list.push(MENU_MAIN_T_AUDIT[1])
     }
     
+    if(x.flag[1]){
+      list.push(MENU_MAIN_T_AUDIT[2])
+    }
+
     
     this.setState({ checkList: list })
   }
