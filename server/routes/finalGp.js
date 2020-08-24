@@ -68,7 +68,7 @@ router.post('/teacherList', async(req, res) => {
    * @return: 
    */  
   router.post('/topicDetailList', async(req, res) => {
-    let sql = `CALL MG_G_PROC_GROUP_DETAIL(?)`;
+    let sql = `CALL MG_FG_PROC_GROUP_DETAIL(?)`;
       let params = req.body;
       callProc(sql, params, res, (r) => {
           res.status(200).json({code: 200, data: r, msg: '取组内课题详情'})
@@ -108,13 +108,13 @@ router.post('/handleGroup', async(req, res) => {
     if(req.body.status == 1) {
       let sql = `CALL MG_FG_PROC_HANDLE_GROUP_N(?)`;
       callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组-正常'})
+        res.status(200).json({code: 200, data: r, msg: '最终答辩手动分组-正常'})
       });
     }
     if(req.body.status == 2) {
       let sql = `CALL MG_FG_PROC_HANDLE_GROUP_D(?)`;
       callProc(sql, params, res, (r) => {
-        res.status(200).json({code: 200, data: r, msg: '开题答辩手动分组-延缓'})
+        res.status(200).json({code: 200, data: r, msg: '最终答辩手动分组-延缓'})
       });
     }
   });
@@ -145,7 +145,7 @@ router.post('/randGroup', async(req, res) => {
                 teacher_len:teacher_len,
                 topic_len:topic_len};
     callProc(sql, params, res, (r) => {
-      res.status(200).json({code: 200, data:r, msg: '开题答辩自动分组'})
+      res.status(200).json({code: 200, data:r, msg: '最终答辩自动分组'})
     });
 });
   
@@ -174,13 +174,13 @@ router.post('/tenTopic', async(req, res) => {
   if(req.body.status == 1) {
     let sql = `CALL MG_FG_PROC_TEN_TOPIC(?)`;
     callProc(sql, params, res, (r) => {
-      res.status(200).json({code: 200, data:r, msg: '开题答辩自动十个课题'})
+      res.status(200).json({code: 200, data:r, msg: '最终答辩自动十个课题'})
     });
   }
   if(req.body.status == 2) {
     let sql = `CALL MG_FG_PROC_TEN_TOPIC_DE(?)`;
     callProc(sql, params, res, (r) => {
-      res.status(200).json({code: 200, data:r, msg: '开题答辩自动十个课题--延缓'})
+      res.status(200).json({code: 200, data:r, msg: '最终答辩自动十个课题--延缓'})
     });
   }
 });
