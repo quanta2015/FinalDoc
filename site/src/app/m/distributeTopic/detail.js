@@ -40,7 +40,7 @@ export default class Detail extends Component {
 	}
 
 	async componentDidMount() {
-		await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
+		await this.props.manageStore.getCheckList({ "ide": this.usr.uid, "status": this.props.status });
 		await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
 		await this.props.manageStore.getJudge({ "ide": this.usr.uid });
 
@@ -157,7 +157,7 @@ export default class Detail extends Component {
 			message.info("发布成功！")
 
 			await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-			await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+			await this.props.manageStore.getCheckList({ "ide": this.usr.uid, "status": this.props.status })
 			await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
 			await this.props.manageStore.getJudge({ "ide": this.usr.uid })
 

@@ -46,7 +46,7 @@ class NavM extends BaseActions {
 
   async componentDidMount() {
     await this.props.manageStore.getJudgeFdDef({ "ide": this.usr.uid });
-    await this.props.manageStore.getStatusOpDef({ "ide": this.usr.uid });
+    await this.props.manageStore.getStatusFdDef({ "ide": this.usr.uid });
     let list = [];
     //post请求获取数据，看length是否为0.如果不为0，则显示该tab
     let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, { "uid": this.usr.uid })
@@ -105,7 +105,7 @@ class NavM extends BaseActions {
              
             {MENU_MAIN_M.map((item, i) =>
             {
-              if ( this.distributeReviewers.judge_fd === 0) 
+              if (this.distributeReviewers.status_fd !== 1) 
               return (
               <div
                 className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
@@ -115,21 +115,10 @@ class NavM extends BaseActions {
               </div>
               )}
             )}
-            {/* {MENU_MAIN_M_OGP.map((item, i) => {
-              if (this.reviewPaper.status_op === 1 && this.distributeReviewers.judge_fd === 0) 
-                return (
-                  <div
-                    className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}
-                    key={i}
-                    onClick={this.doMenu.bind(this, item.path, i)}>
-                    <img src={item.icon} /><span className="m-menu-span">{item.title}</span>
-                  </div>
-                )
-            }
-            )} */}
+           
             { MENU_MAIN_M_FGP.map((item, i) =>
             {
-              if (this.distributeReviewers.judge_fd ===1)
+              if (this.distributeReviewers.status_fd ===1)
                return(
               <div
                 className={(this.state.cur == i) ? 'm-menu-item active' : 'm-menu-item'}

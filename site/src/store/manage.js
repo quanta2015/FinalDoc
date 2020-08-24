@@ -86,14 +86,22 @@ class manager extends BaseActions {
         areas.push(item.split("|")[1])
         color.push(item.split("|")[2])
       })
-       // areas.sort(function (a, b) {
-      //   if (a < b) {
-      //     return -1;
-      //   } else if (a > b) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // })
+       areas.sort(function (a, b) {
+        if (a < b) {
+          return -1;
+        } else if (a > b) {
+          return 1;
+        }
+        return 0;
+      })
+      color.sort(function (a, b) {
+        if (a < b) {
+          return -1;
+        } else if (a > b) {
+          return 1;
+        }
+        return 0;
+      })
       topicList.push({
         key: item.key, tid: item.tid, tName: item.name, topic: item.topic, content: item.content, type: item.type,
         areas: areas,
