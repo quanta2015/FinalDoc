@@ -86,7 +86,8 @@ export default class Home extends Component {
                             }
                         </TabPane>
                         <TabPane tab="评阅详情" key="2">
-                            <Detail />
+                            <Detail 
+                            status={2}  />
                         </TabPane>
                     </Tabs>
                 </div>
