@@ -1,0 +1,23 @@
+.g-dt {
+
+    .m-choose {
+        margin-bottom: 35px;
+        display: flex;
+    }
+
+    // 单选框
+    .ant-radio-group {
+        line-height: 32px;
+    }
+
+    .ant-radio-wrapper span {
+        font-size: 16px;
+    }
+
+
+}
+
+// 描述性表格，表头宽度 (Modal内)
+.ant-descriptions-item-label{
+    width: 120px;
+}

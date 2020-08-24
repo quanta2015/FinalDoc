@@ -18,16 +18,7 @@ export default class Student extends Component {
     currentPage: 1,
     total: 1,
     visible: false,
-    selectItem: null,
-    topNoticeList: [{
-      ann_title: '2021届毕业设计（论文）时间安排和具体工作要求aaaa',
-      ann_content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      time: '2020-07-14'
-    }, {
-      ann_title: '2021届毕业设计（论文）时间安排和具体工作要求',
-      ann_content: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-      time: '2020-07-15'
-    }]
+    selectItem: null
   }
 
   @computed
@@ -70,6 +61,8 @@ export default class Student extends Component {
   render() {
     const { selectItem } = this.state;
     const FILE_STAGE = ['开题中期', '论文定稿', '论文答辩'];
+    // 答辩场次
+    const GTD_ROUND = { 10: '开题答辩', 11: '开题延缓', 20: '最终一辩', 21: '一辩延缓', 30: '最终二辩' }
     return (
       <div className="g-s">
         <Message />
@@ -78,21 +71,18 @@ export default class Student extends Component {
           <div className="m-card">
             <span className="u-title">答辩信息</span>
             {
-              this.replyList.length ?
+              !!this.replyList.length && this.replyList[0].time ?
               this.replyList.map((item, i) =>
                 <div className="m-apply">
-                  {
-                    item.time && 
-                    <div className="m-date">
-                      <div className="u-ymd">
-                        <div className="u-d">{item.time.slice(0, 10).slice(item.time.slice(0, 10).lastIndexOf('-') + 1)}</div>
-                        <div className="u-ym">{item.time.slice(0, 10).slice(0, item.time.slice(0, 10).lastIndexOf('-'))}</div>
-                      </div>
-                      <div className="u-week">{item.week}</div>
+                  <div className="m-date">
+                    <div className="u-ymd">
+                      <div className="u-d">{item.time.slice(0, 10).slice(item.time.slice(0, 10).lastIndexOf('-') + 1)}</div>
+                      <div className="u-ym">{item.time.slice(0, 10).slice(0, item.time.slice(0, 10).lastIndexOf('-'))}</div>
                     </div>
-                  }
+                    <div className="u-week">{item.week}</div>
+                  </div>
                   <div className="m-detail">
-                    <div className="u-name">开题答辩</div>
+                    <div className="u-name">{GTD_ROUND[item.gtd_round]}</div>
                     {item.time && <p>时间：{item.time}</p>}
                     <p>地点：{item.gtd_cls}</p>
                     <p>序号：{item.order}</p>

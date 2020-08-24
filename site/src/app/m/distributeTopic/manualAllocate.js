@@ -49,7 +49,7 @@ export default class ManualAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getJudge({ "ide": this.usr.uid });
         await this.props.manageStore.getTopicList({ "ide": this.usr.uid });
-        await this.props.manageStore.getTeaList({ "ide": this.usr.uid });
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status": this.props.status });
         await this.props.manageStore.getAreasList();
         this.setState({
             teacher_info: toJS(this.distributeTopic.teacher_info),
@@ -62,7 +62,7 @@ export default class ManualAllocate extends Component {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         if (this.state.tea_name === "" || this.state.tea_name === undefined) {
             selectedRowKeys = []
-            message.info("请先选择审核教师！")
+            message.info("请先选择"+this.props.title+"教师！")
         }
         this.setState({ selectedRowKeys });
     };
@@ -209,7 +209,7 @@ export default class ManualAllocate extends Component {
                 */
                 // 如果未审核课题数量为0，说明已将课题全部分配，审核课题老师已确定
                 if (this.distributeTopic.topic_info.length === 0) {
-                    const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题审核已分配", "type": 0 })
+                    const res = await this.props.userStore.insertMessageToMany({ "from": this.usr.uid, "to": "audTea", "context": "课题"+this.props.title+"已分配", "type": 0 })
                     if (res.code === 200) {
                         console.log("站内信发送成功")
                     } else {
@@ -305,15 +305,15 @@ export default class ManualAllocate extends Component {
             <div className="g-manual">
                 <div className="m-top">
                     <div class="check_teacher">
-                        <div class="title">审核教师</div>
-                        {(this.distributeTopic.judge_info.flag === 0) &&
+                        <div class="title">{this.props.title}教师</div>
+                        {(this.props.judge === 0) &&
                             <Select
                                 value={this.state.tea_name}
                                 allowClear
                                 showSearch
                                 defaultActiveFirstOption={false}
                                 style={{ width: 400 }}
-                                placeholder="请选择审核教师"
+                                placeholder={"请选择"+this.props.title+"教师"}
                                 optionFilterProp="children"
                                 onChange={this.selectOnlyTea}
                                 filterOption={(input, option) =>
@@ -325,11 +325,11 @@ export default class ManualAllocate extends Component {
                                 )}
                             </Select>
                         }
-                        {(this.distributeTopic.judge_info.flag === 1) &&
+                        {(this.props.judge === 1) &&
                             <Select
                                 disabled
                                 style={{ width: 400 }}
-                                placeholder="已发布课题，不能再分配审核"
+                                placeholder={this.props.tip}
                             >
                             </Select>
                         }

@@ -50,7 +50,17 @@ export const API_MAN_POST_OGP_MANUALALLOCATETOPIC = API_SERVER + '/openGp/handle
 export const API_MAN_POST_OGP_GROUPLIST = API_SERVER + '/openGp/groupList'
 export const API_MAN_POST_OGP_TDETAILLIST = API_SERVER + '/openGp/topicDetailList'
 export const API_MAN_POST_OGP_DELETEGROUP = API_SERVER + '/openGp/deleteGroup'
-export const API_MAN_POST_OPEND_DEFENSE = API_SERVER + ''
+// export const API_MAN_POST_OPEND_DEFENSE = API_SERVER + ''
+
+//组织终期答辩
+// 组织开题答辩模块
+export const API_MAN_POST_FGP_TOPICLIST = API_SERVER + '/finalGp/topicList'
+export const API_MAN_POST_FGP_TEACHERLIST = API_SERVER + '/finalGp/teacherList'
+export const API_MAN_POST_FGP_AUTOALLOCATETOPIC = API_SERVER + '/finalGp/tenTopic'
+export const API_MAN_POST_FGP_MANUALALLOCATETOPIC = API_SERVER + '/finalGp/handleGroup'
+export const API_MAN_POST_FGP_GROUPLIST = API_SERVER + '/finalGp/groupList'
+export const API_MAN_POST_FGP_TDETAILLIST = API_SERVER + '/finalGp/topicDetailList'
+export const API_MAN_POST_FGP_DELETEGROUP = API_SERVER + '/finalGp/deleteGroup'
 
 //审核任务书、论文定稿等
 export const API_MAN_POST_RP_TASKLIST = API_SERVER + '/auditMg/taskList'
@@ -67,6 +77,11 @@ export const API_MAN_POST_VIEWPROGRESS = API_SERVER + '/auditMg/viewProgress'
 export const API_MAN_POST_VIEWTEACOUNT = API_SERVER + '/auditMg/viewTeaCount'
 // 查看某位学生上传的文件
 export const API_MAN_POST_VIEWFILES = API_SERVER + '/auditMg/viewFiles'
+
+//一键进入最终答辩阶段
+export const API_MAN_POST_FM_JUDEGFINALDEFENCE = API_SERVER + '/auditFm/judgeFinDef'
+export const API_MAN_POST_FM_NEXTFINALDEFENCE = API_SERVER + '/auditFm/nextFinDef '
+export const API_MAN_POST_FM_STATUSFINALDEFENCE = API_SERVER + '/auditFm/statusFinDef'
 
 
 
@@ -171,6 +186,12 @@ export const API_SYS_TEACHER_AUDIT_OP_GET_AUDIT_PERMISSION = API_SERVER + '/audi
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TUTOR_FORM = API_SERVER + '/auditOp/submitTutorForm';// 提交指导教师审核表单
 export const API_SYS_TEACHER_AUDIT_OP_SUBMIT_TEAM_FORM = API_SERVER + '/auditOp/submitTeamForm';// 提交审核组审核表单
 export const API_SYS_TEACHER_AUDIT_OP_IS_TEAM_LEADER = API_SERVER + '/auditOp/isTeamLeader';// 判断是否为审核组组长
+
+//任课教师-结题审核
+export const API_SYS_TEACHER_AUDIT_FD_GET_TOPIC_LIST = API_SERVER + '/auditFd/getTopicList';// 获取结题审核选题列表
+export const API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION = API_SERVER + '/auditFd/getAuditPermission';// 判断是否为指导教师
+export const API_SYS_TEACHER_AUDIT_FD_SUBMIT_TUTOR_FORM = API_SERVER + '/auditFd/submitTutorForm';// 提交指导教师审核表单
+export const API_SYS_TEACHER_AUDIT_FD_SUBMIT_TEAM_FORM = API_SERVER + '/auditFd/submitTeamForm';// 提交评审人审核表单
 
 
 

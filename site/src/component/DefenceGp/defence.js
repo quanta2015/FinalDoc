@@ -22,9 +22,10 @@ export default class Defense extends Component {
     }
 
     @computed
-    get openDefenseGroup() {
-        return this.props.manageStore.openDefenseGroup;
+    get finalDefenseGroup() {
+        return this.props.manageStore.finalDefenseGroup;
     }
+
 
     @computed
     get usr() {
@@ -32,8 +33,9 @@ export default class Defense extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-        await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
+        await this.props.manageStore.getTeacherList_fgp({ "ide": this.usr.uid, "status": 1 });
+        await this.props.manageStore.getTopicList_fgp({ "ide": this.usr.uid,"status":1 });
+         
     }
     addSelectTeacher = async (value) => {
         console.log(`selected ${value}`);
@@ -53,19 +55,20 @@ export default class Defense extends Component {
             this.state.select_member.map((item) => member_x.push(item.split(" ")[0]))
             member_x.push(value.split(" ")[0])
 
-            let temp = { "ide": this.usr.uid, "teacher_id": member_x }
+            let temp = { "ide": this.usr.uid, "teacher_id": member_x,"status":1 }
             // console.log(temp, "hello")
-            await this.props.manageStore.getSugTopicList_ogp(temp);
+            await this.props.manageStore.getSugTopicList_fgp(temp);
             this.setState({
-                sug_topic_id: this.openDefenseGroup.sug_topic_id
+                sug_topic_id: this.finalDefenseGroup.sug_topic_id
             })
             //console.log(this.state.sug_topic_id.length,"leng")
-            if (this.openDefenseGroup.sug_topic_id.length > 0) {
+            if (this.finalDefenseGroup.sug_topic_id.length > 0) {
                 message.info("已自动选择课题，可手动修改")
             }
-            else if (this.openDefenseGroup.sug_topic_id.length === 0) {
+            else if (this.finalDefenseGroup.sug_topic_id.length === 0) {
                 message.info("未找到可分配课题，可手动添加")
             }
+           
         }
 
     }
@@ -100,17 +103,17 @@ export default class Defense extends Component {
             value.map((item) => member_x.push(item.split(" ")[0]))
             member_x.push(this.state.select_leader.split(" ")[0])
 
-            let temp = { "ide": this.usr.uid, "teacher_id": member_x }
+            let temp = { "ide": this.usr.uid, "teacher_id": member_x ,"status":1}
             // console.log(temp, "hello")
-            await this.props.manageStore.getSugTopicList_ogp(temp);
+            await this.props.manageStore.getSugTopicList_fgp(temp);
             this.setState({
-                sug_topic_id: this.openDefenseGroup.sug_topic_id
+                sug_topic_id: this.finalDefenseGroup.sug_topic_id
             })
 
-            if (this.openDefenseGroup.sug_topic_id.length > 0) {
+            if (this.finalDefenseGroup.sug_topic_id.length > 0) {
                 message.info("已自动选择课题，可手动修改")
             }
-            else if (this.openDefenseGroup.sug_topic_id.length === 0) {
+            else if (this.finalDefenseGroup.sug_topic_id.length === 0) {
                 message.info("未找到非本组教师课题，可手动添加")
             }
 
@@ -154,7 +157,7 @@ export default class Defense extends Component {
 
         let temp = { "ide": this.usr.uid, "leader_id": this.state.select_leader.split(" ")[0], "teacher_id": member_x, "topic_id": toJS(this.state.sug_topic_id) }
         console.log(temp, "提交")
-        let res = await this.props.manageStore.manualAllocateTopic_ogp(temp);
+        let res = await this.props.manageStore.manualAllocateTopic_fgp(temp);
         if (res && res.code === 200) {
             if (res.data[0].err === 0) {
                 message.success("成功添加答辩小组！")
@@ -162,9 +165,9 @@ export default class Defense extends Component {
                 message.error("添加答辩小组失败！请重试")
             }
 
-            await this.props.manageStore.getTopicList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getTeacherList_ogp({ "ide": this.usr.uid });
-            await this.props.manageStore.getGroupList_ogp({ "ide": this.usr.uid });
+            await this.props.manageStore.getTopicList_fgp({ "ide": this.usr.uid, "status": 1 });
+            await this.props.manageStore.getTeacherList_fgp({ "ide": this.usr.uid });
+            await this.props.manageStore.getGroupList_fgp({ "ide": this.usr.uid });
         } else {
             message.error("添加答辩小组失败！请重试")
         }
@@ -195,14 +198,14 @@ export default class Defense extends Component {
 
         let temp = { "ide": this.usr.uid, "leader_id": this.state.select_leader.split(" ")[0], "teacher_id": member_x }
         // console.log(temp)
-        await this.props.manageStore.getSugTopicList_ogp();
+        //await this.props.manageStore.getSugTopicList_fgp();
     }
 
 
     render() {
 
         this.state.new_arr = [];
-        for (let i of this.openDefenseGroup.teacher_info) {
+        for (let i of this.finalDefenseGroup.teacher_info) {
             if (this.state.select_member.indexOf(i.tid) == -1) {
                 this.state.new_arr.push(i);
             }
@@ -249,14 +252,14 @@ export default class Defense extends Component {
                                 optionLabelProp="label"
                                 allowClear
                             >
-                                {this.openDefenseGroup.teacher_info.map((item, i) =>
+                                {this.finalDefenseGroup.teacher_info.map((item, i) =>
                                     (item.tid !== this.state.select_leader) && <Select.Option label={item.name}
                                         key={item.tid}>{item.value}</Select.Option>
                                 )}
                             </Select>
                         </div>
                     </div>
-                    <div class="info">待分配课题{this.openDefenseGroup.topic_info.length}篇，已选择{this.state.sug_topic_id.length}篇</div>
+                    <div class="info">待分配课题{this.finalDefenseGroup.topic_info.length}篇，已选择{this.state.sug_topic_id.length}篇</div>
                     <div class="m-group">
                         {/* <div class="title">请选择参加该组答辩的学生：</div> */}
                         <div class="m-select">
@@ -269,13 +272,13 @@ export default class Defense extends Component {
                                     style={{ width: 530 }}
                                     placeholder="请选择课题"
                                     defaultActiveFirstOption={false}
-                                    // defaultValue={this.openDefenseGroup.sug_topic_id}
+                                    // defaultValue={this.finalDefenseGroup.sug_topic_id}
                                     value={this.state.sug_topic_id}
                                     onChange={this.handleChangeTopic}
                                     optionLabelProp="label"
                                     allowClear
                                 >
-                                    {this.openDefenseGroup.topic_info.map((item, i) =>
+                                    {this.finalDefenseGroup.topic_info.map((item, i) =>
                                         <Select.Option label={item.topic}
                                             key={item.key}>{item.topic}</Select.Option>
                                     )}
