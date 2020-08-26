@@ -62,6 +62,9 @@
         padding-left: 1px;
         padding-right: 21px;
     }
+    .ant-table-tbody > tr > td {
+        border-bottom: 1px solid transparent;
+    }
 }
 .g-stu-tb-after {
     table,
