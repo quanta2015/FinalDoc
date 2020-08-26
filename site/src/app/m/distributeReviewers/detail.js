@@ -42,7 +42,7 @@ export default class Detail extends Component {
     }
 
     async componentDidMount() {
-        await this.props.manageStore.getCheckList({ "ide": this.usr.uid });
+        await this.props.manageStore.getCheckList({ "ide": this.usr.uid,"status":this.props.status });
         await this.props.manageStore.getAuditCount({ "ide": this.usr.uid });
         await this.props.manageStore.getJudge({ "ide": this.usr.uid });
         await this.props.manageStore.getJudgeFdDef({ "ide": this.usr.uid });
