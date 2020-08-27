@@ -124,6 +124,7 @@ class User extends BaseActions {
       })
       return (r.data[1].length + r.data[0].length)
     } else {
+      return 0
       // message.error("网络错误")
     }
   }

@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { Pagination, Modal, Button, message, Empty } from 'antd';
+import { Pagination, Modal, Button, message, Empty, Skeleton } from 'antd';
 import { computed, toJS } from 'mobx';
 import "./index.scss"
 
@@ -19,6 +19,7 @@ export default class Announcement extends Component {
             visible: false,
             selectItem: null,
             pageSize: PAGE_SIZE,
+            loading: true
         }
     }
 
@@ -36,7 +37,7 @@ export default class Announcement extends Component {
         if (noticeWrapper) {
             noticeWrapper.style.height = `${this.props.height ? this.props.height : 340}px`;
         }
-        if (this.props.pageSize) {
+        if (this._isMounted && this.props.pageSize) {
             this.setState({ 
                 pageSize: this.props.pageSize,
                 endRow: this.props.pageSize - 1
@@ -44,6 +45,10 @@ export default class Announcement extends Component {
         }
         if (!this.noticeList.data.length) {
             this.getNoticeList();
+        } else if (this._isMounted){
+            this.setState({
+                loading: false
+            })
         }
     }
 
@@ -54,9 +59,15 @@ export default class Announcement extends Component {
     getNoticeList = () => {
         this.props.userStore.getNoticeList()
             .then(length => {
-                if (length && this._isMounted) {
+                // 两个不能合并 否则当无公告信息发布时 始终显示loading
+                if (!!length && this._isMounted) {
                     this.setState({
                         total: length
+                    })
+                }
+                if (this._isMounted) {
+                    this.setState({
+                        loading: false
                     })
                 }
             })
@@ -109,36 +120,38 @@ export default class Announcement extends Component {
         return (
             <div className="g-notice">
                 <div className="m-not-wp">
-                    {
-                        this.noticeList.data.length ?
-                        <>
-                            <ul className="m-not-list">
-                                {this.noticeList.data.length && this.noticeList.data.map((item, i) => 
-                                    <>
-                                        {i >= startRow && i <= endRow &&
-                                        <li>
-                                            <div className="m-not-item">
-                                                <span className="u-not-date">{item.time}</span>
-                                                <span className={i <= this.noticeList.index ? "m-status z-unread" : "m-status"}>●</span>
-                                                <span
-                                                    className={i <= this.noticeList.index ? "u-not-title" : 'u-not-title z-read'}
-                                                    title={item.ann_title}
-                                                    onClick={() => this.viewNotice(item)}
-                                                >
-                                                    {item.ann_title}
-                                                </span>
-                                            </div>
-                                        </li>}
-                                    </>
-                                )}
-                            </ul>
-                            <Pagination className="m-page" current={currentPage} onChange={this.onChange} pageSize={pageSize} total={total} />
-                        </>:
-                        <Empty
-                            className="z-empty"
-                            description={<span>暂未发布</span>}
-                        />
-                    }
+                    <Skeleton loading={this.state.loading}>
+                        {
+                            this.noticeList.data.length ?
+                            <>
+                                <ul className="m-not-list">
+                                    {this.noticeList.data.length && this.noticeList.data.map((item, i) => 
+                                        <>
+                                            {i >= startRow && i <= endRow &&
+                                            <li>
+                                                <div className="m-not-item">
+                                                    <span className="u-not-date">{item.time}</span>
+                                                    <span className={i <= this.noticeList.index ? "m-status z-unread" : "m-status"}>●</span>
+                                                    <span
+                                                        className={i <= this.noticeList.index ? "u-not-title" : 'u-not-title z-read'}
+                                                        title={item.ann_title}
+                                                        onClick={() => this.viewNotice(item)}
+                                                    >
+                                                        {item.ann_title}
+                                                    </span>
+                                                </div>
+                                            </li>}
+                                        </>
+                                    )}
+                                </ul>
+                                <Pagination className="m-page" current={currentPage} onChange={this.onChange} pageSize={pageSize} total={total} />
+                            </>:
+                            <Empty
+                                className="z-empty"
+                                description={<span>暂未发布</span>}
+                            />
+                        }
+                    </Skeleton>
                 </div>
                 {selectItem &&
                     <Modal

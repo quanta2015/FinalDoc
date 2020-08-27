@@ -69,9 +69,13 @@ export default class Message extends Component {
         return toJS(this.props.userStore.msgList);
     }
 
+    //判断该组件是否已挂载 需要更新 state
+    _isMounted = false;
+
     componentDidMount() {
+        this._isMounted = true;
         this.props.userStore.getAllMessages({ uid: this.usr.uid }).then(r => {
-            if (r && r.length) {
+            if (this._isMounted && r && r.length) {
                 this.setState({
                     msg: this.msgList
                 }, () => {
@@ -120,6 +124,7 @@ export default class Message extends Component {
         this.setState = (state, callback) => {
             return;
         };
+        this._isMounted = false;
     }
     // 点击后，重新计算所有子元素宽度 若超过上级宽度则隐藏
     handleClose = (item, id) => {
@@ -128,55 +133,56 @@ export default class Message extends Component {
             msg.splice(msg.indexOf(item), 1)
         }
         this.props.userStore.readMessages({ id: item.id + '' }) //已读后删除
-        this.setState({
-            msg: msg
-        }, () => {
-            var parent = document.querySelector('.g-msg');
-            var children = parent.children;
-            var index = 0;
-            var tmpWidth = 0;
-            var parentWidth = parent.offsetWidth;
+        if (this._isMounted) {
+            this.setState({
+                msg: msg
+            }, () => {
+                var parent = document.querySelector('.g-msg');
+                var children = parent.children;
+                var index = 0;
+                var tmpWidth = 0;
+                var parentWidth = parent.offsetWidth;
 
-            for (let i = 0; i < children.length; i++) {
-                var wid = 0;
+                for (let i = 0; i < children.length; i++) {
+                    var wid = 0;
 
-                if (children[i].offsetWidth === 0) {
-                    children[i].style.display = ''
-                    children[i].style.visibility = 'hidden'
-                    wid = children[i].offsetWidth
-                    children[i].style.display = 'none'
-                    children[i].style.visibility = ''
-                } else {
-                    wid = children[i].offsetWidth
-                }
-                if (tmpWidth < parentWidth && (tmpWidth + wid + 20 >= parentWidth)) {
-                    index = i;
-                }
-                tmpWidth += wid + 20;
-            }
-            // 若一行可显示，则所有可显示
-            if (index === 0) index = children.length;
-            // 显示可完整显示的消息
-            for (let i = 0; i < index; i++) {
-                if (children[i]) children[i].style.display = '';
-            }
-
-            this.setState(
-                {
-                    totalWidth: tmpWidth
-                },
-                () => {
-                    const { totalWidth } = this.state;
-                    if (totalWidth < parentWidth) {
-                        parent.classList.remove('has-overflow');
+                    if (children[i].offsetWidth === 0) {
+                        children[i].style.display = ''
+                        children[i].style.visibility = 'hidden'
+                        wid = children[i].offsetWidth
+                        children[i].style.display = 'none'
+                        children[i].style.visibility = ''
+                    } else {
+                        wid = children[i].offsetWidth
                     }
-                    if (children.length === 0) {
-                        parent.classList.remove('z-notempty')
+                    if (tmpWidth < parentWidth && (tmpWidth + wid + 20 >= parentWidth)) {
+                        index = i;
                     }
+                    tmpWidth += wid + 20;
                 }
-            );
-        })
+                // 若一行可显示，则所有可显示
+                if (index === 0) index = children.length;
+                // 显示可完整显示的消息
+                for (let i = 0; i < index; i++) {
+                    if (children[i]) children[i].style.display = '';
+                }
 
+                this.setState(
+                    {
+                        totalWidth: tmpWidth
+                    },
+                    () => {
+                        const { totalWidth } = this.state;
+                        if (totalWidth < parentWidth) {
+                            parent.classList.remove('has-overflow');
+                        }
+                        if (children.length === 0) {
+                            parent.classList.remove('z-notempty')
+                        }
+                    }
+                );
+            })
+        }
     };
 
     render() {
@@ -193,7 +199,6 @@ export default class Message extends Component {
                     />
                 ))}
             </div>
-
         );
     }
 }
