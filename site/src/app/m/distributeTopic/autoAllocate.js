@@ -34,7 +34,7 @@ export default class AutoAllocate extends Component {
     async componentDidMount() {
         await this.props.manageStore.getJudge({"ide":this.usr.uid});
         await this.props.manageStore.getTopicList({"ide":this.usr.uid});
-        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status":this.props.status});
+        await this.props.manageStore.getTeaList({ "ide": this.usr.uid, "status":1});
         // if (this.distributeTopic.topic_info.length < this.state.num){
         //     this.state.num = this.distributeTopic.topic_info.length
         //     this.setState({
@@ -72,7 +72,7 @@ export default class AutoAllocate extends Component {
             tea_id.push(item.split(" ")[0])
         )
 
-        let param = {"ide":this.usr.uid,"number":this.state.num,"teacher_id":tea_id}
+        let param = {"ide":this.usr.uid,"number":this.state.num,"teacher_id":tea_id,"status":this.props.status}
         // console.log(param)
         let res = await this.props.manageStore.autoAllocateTopic(param);
         console.log(res)
@@ -92,7 +92,7 @@ export default class AutoAllocate extends Component {
                 message.info("分配成功！")
             }
             await this.props.manageStore.getTopicList({"ide":this.usr.uid})
-            await this.props.manageStore.getCheckList({"ide":this.usr.uid})
+            await this.props.manageStore.getCheckList({ "ide": this.usr.uid, "status": this.props.status})
             await this.props.manageStore.getAuditCount({"ide":this.usr.uid})
 
             // 状态通知

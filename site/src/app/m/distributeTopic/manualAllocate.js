@@ -190,7 +190,7 @@ export default class ManualAllocate extends Component {
             message.info("还未选择课题！")
             return;
         }
-        let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys }
+        let temp = { "teacher_id": this.state.tea_id, "topic_id": this.state.selectedRowKeys, "status":this.props.status}
         console.log(temp)
         let res = await this.props.manageStore.allocateTopic(temp);
         console.log(res)
@@ -198,7 +198,7 @@ export default class ManualAllocate extends Component {
             if (res.data[0].err === 0) {
                 message.success("分配成功！")
                 await this.props.manageStore.getTopicList({ "ide": this.usr.uid })
-                await this.props.manageStore.getCheckList({ "ide": this.usr.uid })
+                await this.props.manageStore.getCheckList({ "ide": this.usr.uid ,"status":this.props.status})
                 await this.props.manageStore.getAuditCount({ "ide": this.usr.uid })
 
                 // 状态通知

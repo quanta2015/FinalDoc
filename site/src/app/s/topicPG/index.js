@@ -2,7 +2,7 @@ import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
 import { computed, toJS } from 'mobx';
 import { route } from 'preact-router';
-import { Button, message, Tooltip } from 'antd'
+import { Button, message, Tooltip, Skeleton } from 'antd'
 import { PlusOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import FileUpload from '../../../component/FileUpload';
 import { FILE_UPLOAD_TYPE } from '../../../constant/data'
@@ -22,7 +22,8 @@ export default class TopicPG extends Component {
             showDefer: false,    // 控制modal是否可见
             canDefer: false,     // 控制是否显示按钮
             showProcess: false,  // 控制modal显示输入框还是时间轴
-            type: null           // 延缓答辩类型
+            type: null,          // 延缓答辩类型
+            loading: true        // 时间轴加载
         }
     }
 
@@ -51,18 +52,35 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.currState);
     }
 
+    //判断该组件是否已挂载 需要更新 state
+    _isMounted = false;
+
     async componentDidMount() {
+        this._isMounted = true;
         if (!this.usr.uid) {
             route('/')
         }
         if (!this.selectTpInfo) {
             route('/s_selectTL')
         }
-        if (this.usr.uid) {
-            this.props.studentStore.getAllStates({ uid: this.usr.uid })
-            this.props.studentStore.getCurrentState({ uid: this.usr.uid })
-            this.props.studentStore.getOpenScore({ uid: this.usr.uid })
+        // 导航切换
+        if (!!this.timeList.length && this._isMounted) {
+            this.setState({
+                loading: false
+            })
         }
+        // 首次加载
+        if (this.usr.uid && !this.timeList.length) {
+            this.props.studentStore.getOpenScore({ uid: this.usr.uid })
+            await this.props.studentStore.getCurrentState({ uid: this.usr.uid })
+            const r = await this.props.studentStore.getAllStates({ uid: this.usr.uid })
+            if (r && this._isMounted) {
+                this.setState({
+                    loading: false
+                })
+            }
+        }
+        // 延缓答辩
         const canDeferFromTime = await this.props.studentStore.getShowDefer({ uid: this.usr.uid })
         const canDeferFromAction = await this.props.studentStore.getDeferAppliProgs({ sid: this.usr.uid, type: canDeferFromTime[0].type })
 
@@ -73,11 +91,17 @@ export default class TopicPG extends Component {
         // 时间上可申请 且未成功申请
         const canDefer = canDeferFromTime[0].flag && (!canDeferFromAction.length || unfinishDefer)
 
-        this.setState({
-            canDefer: canDefer,
-            showProcess: showProgress,
-            type: canDeferFromTime[0].type
-        })
+        if (this._isMounted) {
+            this.setState({
+                canDefer: canDefer,
+                showProcess: showProgress,
+                type: canDeferFromTime[0].type
+            })
+        }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     downloadFile = (item) => {
@@ -135,35 +159,32 @@ export default class TopicPG extends Component {
                     <h2 className="u-topic">{this.selectTpInfo.topic}</h2>
                     <div className="u-name">{this.selectTpInfo.name}</div>
                 </div>
-                {this.timeList && this.timeList.length !== 0 && this.currState[0] &&
-                    < div className="m-cont">
-                        <h2 className="u-title">
-                            论文进度
+                <div className="m-cont">
+                    <h2 className="u-title">
+                        论文进度
                         <Tooltip placement="right" title={text}>
-                                <QuestionCircleOutlined style={{ fontSize: 16, color: '#999', paddingLeft: 5 }} />
-                            </Tooltip>
-                        </h2>
-                        <div>
-                            <ul className="m-time-line">
-                                {
-                                    this.currState[0] &&
-                                    this.timeList.map((item) =>
-                                        <li className={item.time <= this.currState[0].time ? this.currState[0].time === item.time ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
-                                            <div>
-                                                <h3>{item.time}</h3>
-                                                {
-                                                    ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
-                                                        <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
-                                                        <p>{item.title}</p>
-                                                }
-                                            </div>
-                                        </li>
-                                    )
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                }
+                            <QuestionCircleOutlined style={{ fontSize: 16, color: '#999', paddingLeft: 5 }} />
+                        </Tooltip>
+                    </h2>
+                    <Skeleton loading={this.state.loading} active title={false}>
+                        <ul className="m-time-line">
+                            {
+                                this.timeList.map((item) =>
+                                    <li className={!!this.currState.length && item.time <= this.currState[0].time ? this.currState[0].time === item.time ? "u-time-stamp z-focus" : "u-time-stamp z-active" : "u-time-stamp"}>
+                                        <div>
+                                            {item.time && item.time !== '0000-00-00' && <h3>{item.time}</h3>}
+                                            {
+                                                ((item.title === '任务书' && status >= TASK_FINISH && f_task) || (item.title === '成绩审定' && status >= GRADE_FINISH && f_score_check)) ?
+                                                    <p className="u-link-file" onClick={() => this.downloadFile(item)}>{item.title}</p> :
+                                                    <p>{item.title}</p>
+                                            }
+                                        </div>
+                                    </li>
+                                )
+                            }
+                        </ul>
+                    </Skeleton>
+                </div>
                 <div className="m-cont">
                     <div className="m-title-wp">
                         <h2 className="u-title">材料递交</h2>

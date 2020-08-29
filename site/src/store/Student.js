@@ -300,6 +300,7 @@ class Student extends BaseActions {
         } else {
             message.error('网络错误')
         }
+        return r
     }
 
     @action
@@ -324,6 +325,7 @@ class Student extends BaseActions {
         } else {
             message.error('网络错误')
         }
+        return r
     }
 
     @action

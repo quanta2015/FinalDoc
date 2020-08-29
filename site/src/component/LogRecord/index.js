@@ -212,7 +212,7 @@ class LogRecord extends Component {
                 >
                     <Space align="baseline">
                         <p>指导日期</p>
-                        <DatePicker onChange={this.handleDateChange} defaultValue={moment(this.state.date, 'YYYY-MM-DD')} value={moment(this.state.date, 'YYYY-MM-DD')} />
+                        <DatePicker onChange={this.handleDateChange} defaultValue={moment(this.state.date, 'YYYY-MM-DD')} />
                         <p type="text" className="m-pos">指导地点/方式</p>
                         <Select
                             className="m-pos"
