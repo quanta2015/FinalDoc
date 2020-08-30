@@ -74,7 +74,7 @@ export default class Home extends BaseActions {
   getTopicList = async () => {
     await this.setState({checkBlockState: 0});
     let tdata = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    //console.log(tdata);
+    console.log(tdata);
     tdata = tdata.data.map(filter);
     tdata.sort(sorter);
     this.setState({ toplist: tdata });

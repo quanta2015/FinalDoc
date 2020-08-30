@@ -221,7 +221,8 @@ class Teacher extends BaseActions {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION, params);
     if (result && result.code === 200) {
       runInAction(() => {
-        this.auditFD_isTutor = result.result.flag
+        console.log(result);
+        this.auditFD_isTutor = result.flag;
       })
     } else {
       message.error("网络错误")

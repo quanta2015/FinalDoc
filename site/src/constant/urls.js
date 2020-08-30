@@ -134,7 +134,7 @@ export const API_SYS_GET_STU_BY_LIKEID = API_SERVER + '/teacher/getStuInfoByLike
 //通过topicID查询完整信息
 export const API_SYS_GET_FUUL_TOPIC_BY_ID = API_SERVER + '/teacher/getTopicFullInfo';
 //通过教师id获取topic内容
-export const API_SYS_GET_TOPIC_BY_TEACHER_ID = API_SERVER + '/teacher/getTidgetTopic'; 
+export const API_SYS_GET_TOPIC_BY_TEACHER_ID = API_SERVER+ '/teacher/getTidgetTopic'; 
 //通过topicID删除topic
 export const API_USR_DELETE_TOPIC_BY_ID = API_SERVER + '/teacher/delOneTopicWithID';
 //获取area列表
