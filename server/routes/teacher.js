@@ -4,7 +4,7 @@
  * @Author: East Wind
  * @Date: 2020-07-09 10:05:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-30 16:01:44
+ * @LastEditTime: 2020-08-31 00:26:36
  */ 
 
 const url = require('url');
@@ -97,6 +97,7 @@ router.post('/getTidgetTopic', async(req, res) => {
     let params = req.body;
     callProc(sql, params, res, (r) => {
         // 课题状态
+        console.log(r);
         for (let index = 0; index < r.length; index++) {
             switch (r[index].status) {
                 case 9:// 最终论文审核 系主任通过
@@ -462,10 +463,11 @@ router.post('/getSel',async(req,res)=>{
     let sql = "CALL PROC_T_IF_STATE_TWO(?)";
     callProc(sql,req.body,res,r=>{
         let data = false;
+        console.log(r);
         if(r.length>0 &&r[0].sel != 0 && r[0].sel != 1){
             data = true;
         }
-        if(r.length>0 &&r[0].sel==0 && r[0].status>8){
+        if(r.length>0 && r[0].status>8){
             data=true;
         }
         res.status(200).json({code:200,data,message:"已获取是否到达第二阶段"})
