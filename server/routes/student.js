@@ -326,7 +326,7 @@ router.post("/getStudentTopicStatus", async(req, res) => {
             } else {
                 // 下一阶段，status逻辑未完成
                 results.stageId = 2;
-                results.currId = 0;
+                results.currId = 2;
             }
         } else {
             console.log("你个糟老头子坏得很，居然不是我的课题！");
@@ -503,7 +503,7 @@ router.post('/getIfCanDefAppli', async(req, res) => {
             if (r[0]['status'] >= 6 && r[0]['status'] < 8) {
                 // 开题答辩延期
                 result = [{ 'flag': true, 'type': 1 }];
-            } else if (r[0]['status'] >= 9 && r[0]['status'] < 10) {
+            } else if (r[0]['status'] > 20) {
                 // 论文答辩延期
                 // 等topic表status备注，暂时瞎写
                 result = [{ 'flag': true, 'type': 2 }];
