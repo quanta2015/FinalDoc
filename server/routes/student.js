@@ -503,7 +503,7 @@ router.post('/getIfCanDefAppli', async(req, res) => {
             if (r[0]['status'] >= 6 && r[0]['status'] < 8) {
                 // 开题答辩延期
                 result = [{ 'flag': true, 'type': 1 }];
-            } else if (r[0]['status'] >= 9 && r[0]['status'] < 10) {
+            } else if (r[0]['status'] > 20) {
                 // 论文答辩延期
                 // 等topic表status备注，暂时瞎写
                 result = [{ 'flag': true, 'type': 2 }];
