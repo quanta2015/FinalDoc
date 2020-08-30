@@ -195,8 +195,6 @@ class Teacher extends BaseActions {
   //结题命题列表
   @observable  
   auditFD_topicList = [
-    { id: 1, topic: 'A', content: "ABCD", type: "newbee"},
-    { id: 2, topic: 'B', content: "ABCD", type: "newbee"},
   ]
 
   //获取数据
@@ -205,7 +203,7 @@ class Teacher extends BaseActions {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_FD_GET_TOPIC_LIST, params);
     if (result && result.code === 200) {
       runInAction(() => {
-        this.auditTP_topicList = result.data
+        this.auditFD_topicList = result.data
       })
     } else {
       message.error("网络错误")
@@ -221,7 +219,6 @@ class Teacher extends BaseActions {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION, params);
     if (result && result.code === 200) {
       runInAction(() => {
-        console.log(result);
         this.auditFD_isTutor = result.flag;
       })
     } else {

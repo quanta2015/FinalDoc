@@ -48,7 +48,7 @@ export default class Home extends Component {
 		if (!this.usr.id) {
 			route('/')
 		}
-		this.props.teacherStore.AuditFd_getTopicList( {"uid": this.usr.uid} )
+		this.props.teacherStore.AuditFd_getTopicList( {"userId": this.usr.uid} )
 		this.props.teacherStore.getAllTopic().then(()=>{
 			this.setState({
 				topicTypes:this.props.teacherStore.topicTypes
