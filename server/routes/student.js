@@ -326,7 +326,7 @@ router.post("/getStudentTopicStatus", async(req, res) => {
             } else {
                 // 下一阶段，status逻辑未完成
                 results.stageId = 2;
-                results.currId = 0;
+                results.currId = 2;
             }
         } else {
             console.log("你个糟老头子坏得很，居然不是我的课题！");
