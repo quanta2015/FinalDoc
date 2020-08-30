@@ -168,6 +168,8 @@ export const API_TEACHER_AUDIT_OP_IS_MEMBER = API_SERVER + `/auditOp/isTeamMembe
 export const API_TEACHER_GET_TIME_LINE = API_SERVER + '/teacher/getTimeLine'
 //获取是否为第二阶段
 export const API_TEACHER_GET_SEL = API_SERVER + '/teacher/getSel'
+//获取是否需要审核（1,3阶段）
+export const API_TEACHER_GET_IF_AUDIT = API_SERVER + '/teacher/getIfAudit'
 //通过推迟
 export const API_TEACHER_PASS_DE = API_SERVER + '/teacher/passDelay';
 //拒绝推迟

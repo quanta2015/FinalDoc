@@ -29,19 +29,20 @@ class NavT extends BaseActions {
   async componentDidMount() {
     let list = [];
     //post请求获取数据，看length是否为0.如果不为0，则显示该tab
-    let x = await this.post(urls.API_SYS_TEACHER_AUDIT_TP_GET_TOPIC_LIST, { "uid": this.usr.uid })
-    if (x.data.length > 0) {
+    let x = await this.post(urls.API_TEACHER_GET_IF_AUDIT, { "uid": this.usr.uid })
+    console.log(x);
+    if (x.flag == 1) {
       list.push(MENU_MAIN_T_AUDIT[0])
+    } else if (x.flag==2){
+      list.push(MENU_MAIN_T_AUDIT[2])
     }
 
     x = await this.post(urls.API_TEACHER_AUDIT_OP_IS_MEMBER,{uid:this.usr.uid});
-    if(x.flag[0]){
+    if(x.flag){
       list.push(MENU_MAIN_T_AUDIT[1])
     }
     
-    if(x.flag[1]){
-      list.push(MENU_MAIN_T_AUDIT[2])
-    }
+    
 
     
     this.setState({ checkList: list })
