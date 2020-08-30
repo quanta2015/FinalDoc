@@ -37,17 +37,21 @@ export default class Announcement extends Component {
         if (noticeWrapper) {
             noticeWrapper.style.height = `${this.props.height ? this.props.height : 340}px`;
         }
+        // 传参限定每页显示的通知数量
         if (this._isMounted && this.props.pageSize) {
             this.setState({ 
                 pageSize: this.props.pageSize,
                 endRow: this.props.pageSize - 1
             });
         }
+        // 首次加载
         if (!this.noticeList.data.length) {
             this.getNoticeList();
         } else if (this._isMounted){
+            // 切换导航
             this.setState({
-                loading: false
+                loading: false,
+                total: this.noticeList.data.length
             })
         }
     }
