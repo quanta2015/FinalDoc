@@ -4,7 +4,7 @@
  * @Author: East Wind
  * @Date: 2020-07-09 10:05:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-14 22:47:02
+ * @LastEditTime: 2020-08-30 16:01:44
  */ 
 
 const url = require('url');
@@ -469,6 +469,16 @@ router.post('/getSel',async(req,res)=>{
             data=true;
         }
         res.status(200).json({code:200,data,message:"已获取是否到达第二阶段"})
+    })
+})
+
+/**
+ * uid
+ */
+router.post('/getIfAudit',async(req,res)=>{
+    let sql = 'call PROC_T_IF_AUDIT(?)';
+    callProc(sql,req.body,res,r=>{
+        res.status(200).json(r[0]);    
     })
 })
 

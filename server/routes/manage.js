@@ -23,13 +23,13 @@ const callProc = require('../util').callProc;
 router.post('/teacherList', async(req, res) => {
   let params = req.body;
 
-  if(req.body.status == 1){   //审核
+  if(req.body.status === 1){   //审核
     let sql = `CALL MG_M_PROC_TEA_LIST(?)`;
     callProc(sql, params, res, (r) => {
       res.status(200).json({code: 200, data: r, msg: '取教师列表'})
     });
   }
-  if(req.body.status == 2){    //评阅
+  if(req.body.status === 2){    //评阅
     let sql = `CALL MG_FM_PROC_TEA_LIST(?)`;
     callProc(sql, params, res, (r) => {
         res.status(200).json({code: 200, data: r, msg: '取副教授及以上教师列表'})
@@ -61,22 +61,32 @@ router.post('/topicList', async(req, res) => {
  * @return: 
  */
 router.post('/checkList', async(req, res) => {
-  let sql = `CALL MG_M_PROC_CHECK_LIST(?)`;
-	let params = req.body;
-	callProc(sql, params, res, (r) => {
-    r.forEach(element => {
-      if (element.sel!=-1 && !element.result && element.sugg===null){
-        element.result=2; //待审核
-      }else{
-        if(element.sel===-1 && element.stuId===null){
-          element.result=3; //没有选定学生时--待选
-        }if(element.sel===-1 && element.stuId!=null){
-          element.result=4; //学生选定成功--已选
+  if(req.body.status === 1){
+    let sql = `CALL MG_M_PROC_CHECK_LIST(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+      r.forEach(element => {
+        if (element.sel!=-1 && !element.result && element.sugg===null){
+          element.result=2; //待审核
+        }else{
+          if(element.sel===-1 && element.stuId===null){
+            element.result=3; //没有选定学生时--待选
+          }if(element.sel===-1 && element.stuId!=null){
+            element.result=4; //学生选定成功--已选
+          }
         }
-      }
+      });
+      res.status(200).json({code: 200, data: r, msg: '取审核列表信息'})
     });
-		res.status(200).json({code: 200, data: r, msg: '取审核列表信息'})
-	});
+  }
+  if(req.body.status === 2){
+    let sql = `CALL MG_FM_PROC_CHECK_LIST(?)`;
+    let params = req.body;
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data: r, msg: '取评阅列表信息'})
+    });
+
+  }
 });
 
 
@@ -94,7 +104,12 @@ router.post('/randAllocate',async(req,res) => {
   let resultArr=[];
   for(let i=0;i<req.body.teacher_id.length;i++){
     let params = {ide:_ide,sum:count,teacher_id:req.body.teacher_id[i]};
-    message = await db.Query(`CALL MG_M_PROC_RAND_CHECK(?)`,[JSON.stringify(params)])
+    if(req.body.status === 1){
+      message = await db.Query(`CALL MG_M_PROC_RAND_CHECK(?)`,[JSON.stringify(params)])
+    }
+    if(req.body.status === 2){
+      message = await db.Query(`CALL MG_FM_PROC_RAND_CHECK(?)`,[JSON.stringify(params)])
+    }
     // let result = JSON.stringify(message[0][0])
     let result = (message[0][0])
     resultArr.push(result);
@@ -119,13 +134,24 @@ router.post('/checkAllocate', async(req, res) => {
   }
   topic_char = topic_char.substring(0, topic_char.length - 1);
 
-  let sql = `CALL MG_M_PROC_HANDLE_CHECK(?)`;
-  let params = {teacher_id:req.body.teacher_id,
-                topic_id:topic_char,
-                topic_len:topic_len};
-  callProc(sql, params, res, (r) => {
-    res.status(200).json({code: 200, data: r, msg: '手动课题审核分配'})
-  });
+  if (req.body.status === 1) {
+    let sql = `CALL MG_M_PROC_HANDLE_CHECK(?)`;
+    let params = {teacher_id:req.body.teacher_id,
+                  topic_id:topic_char,
+                  topic_len:topic_len};
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data: r, msg: '手动课题审核分配'})
+    });
+  }
+  if(req.body.status === 2){
+    let sql = `CALL MG_FM_PROC_HANDLE_CHECK(?)`;
+    let params = {teacher_id:req.body.teacher_id,
+                  topic_id:topic_char,
+                  topic_len:topic_len};
+    callProc(sql, params, res, (r) => {
+      res.status(200).json({code: 200, data: r, msg: '手动课题审核分配'})
+    });
+  }
 });
 
 /**
