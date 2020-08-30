@@ -46,7 +46,7 @@ export var MENU_MAIN_T =
 export var MENU_MAIN_T_AUDIT = [
    { title: '初期命题审核', path: '/t_auditTP', icon: cp },
    { title: '中期开题审核', path: '/t_auditOP', icon: audit },
-   { title: '终期论文审核', path: '/t_auditFD', icon: audit }
+   { title: '终期论文评阅', path: '/t_auditFD', icon: audit }
 ]
 
 export var MENU_MAIN_S = [

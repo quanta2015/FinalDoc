@@ -53,8 +53,6 @@ class FdActions extends BaseActions {
 	};
 
     handleAudit = (id) => {
-        this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": id })
-        .then(() => {route("/t_formOP")});
         route("/t_formFD");
     }
 
@@ -62,7 +60,7 @@ class FdActions extends BaseActions {
         const {confirmLoading, visible}=this.state;
         return(
             <div data-component="t-ContentT-FdActions">
-                <Tooltip title="开题审核">
+                <Tooltip title="评阅">
                     <Button type="link" shape="circle" icon={<AuditOutlined />} onClick={this.handleAudit.bind(this, this.props.record.id)} />
                 </Tooltip>
 

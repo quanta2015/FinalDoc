@@ -105,13 +105,13 @@ export default class StuMethods extends BaseActions {
     //获取学生文件列表
     let file_data = await this.post(urls.API_TEACHER_GET_FILE_BY_TOPIC, { pid: this.props.pid })
     let l = (file_data.data)[0];
-    console.log(file_data);
+    //console.log(file_data);
     let flag = (!!l.f_open) && (!!l.f_docs) && (!!l.f_tran) ;
     if (flag) {
       this.setState({ auditOp: true })
     }
     this.setState({ links: l })
-    console.log(file_data.data[1]);
+    //console.log(file_data.data[1]);
     if(!file_data.data[1]){
       this.setState({changeWWW:true})
     }else{
