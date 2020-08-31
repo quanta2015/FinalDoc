@@ -15,7 +15,7 @@ class NavT extends BaseActions {
   constructor(props) {
     super(props)
     this.state = {
-      cur: 0,
+      cur: -1,
       checkList: [],
     }
   }
@@ -70,7 +70,7 @@ class NavT extends BaseActions {
       <div data-component="navt">
         <div className="g-nav" >
           <div className="g-menu">
-            <div className="g-home-title" onClick={() => { route('/t') }}>
+            <div className="g-home-title" onClick={() => {this.setState({cur:-1}); route('/t') }}>
               毕业设计命题系统
             </div>
             <div className="g-st">
