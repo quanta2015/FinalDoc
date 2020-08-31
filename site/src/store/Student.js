@@ -44,6 +44,10 @@ class Student extends BaseActions {
     // 延缓答辩申请进度
     derApplication = {}
 
+    @observable
+    //终期导师评分与终期评阅评分
+    fdScore = []
+
     @action
     initStuStore() {
         runInAction(() => {
@@ -57,6 +61,7 @@ class Student extends BaseActions {
             this.insLog = [];
             this.replyList = [];
             this.derApplication = {};
+            this.fdScore = [];
         })
     }
 
@@ -366,7 +371,7 @@ class Student extends BaseActions {
         return await this.post(urls.API_STU_GET_NAV_STAGE, params);
     }
 
-    @action 
+    @action
     async insertDeferApl(params) {
         return await this.post(urls.API_STU_SUBMIT_DEFER, params)
     }
@@ -390,6 +395,19 @@ class Student extends BaseActions {
         })
         return r.data
     }
+
+    @action
+    async getFinalScores(params) {
+        const r = await this.post(urls.API_STU_GET_FDSCORE, params)
+        if (r && r.code === 200) {
+            runInAction(() => {
+                this.fdScore = r.data
+            })
+        } else {
+            message.error('网络错误')
+        }
+    }
+
 }
 
 export default new Student()

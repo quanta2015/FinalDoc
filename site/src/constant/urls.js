@@ -122,6 +122,8 @@ export const API_STU_SUBMIT_DEFER = API_SERVER + '/student/insertDeferApplicatio
 export const API_STU_GET_DEFER_PRG = API_SERVER + '/student/getDeferAppliStatus'
 // 判断当前延缓答辩申请入口是否开放
 export const API_STU_GET_DEFER_SHOW = API_SERVER + '/student/getIfCanDefAppli'
+// 获取终期导师评分与终期评阅评分
+export const API_STU_GET_FDSCORE = API_SERVER + '/student/getFinalScores'
 
 // 获取选择了自己的学生的列表
 export const API_SYS_GET_CHECKED_STULIST = API_SERVER + '/teacher/getCheckedStuList';
