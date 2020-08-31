@@ -52,6 +52,11 @@ export default class TopicPG extends Component {
         return toJS(this.props.studentStore.currState);
     }
 
+    @computed
+    get fdScore() {
+        return toJS(this.props.studentStore.fdScore)
+    }
+
     //判断该组件是否已挂载 需要更新 state
     _isMounted = false;
 
@@ -72,6 +77,7 @@ export default class TopicPG extends Component {
         // 首次加载
         if (this.usr.uid && !this.timeList.length) {
             this.props.studentStore.getOpenScore({ uid: this.usr.uid })
+            this.props.studentStore.getFinalScores({ uid: this.usr.uid })
             await this.props.studentStore.getCurrentState({ uid: this.usr.uid })
             const r = await this.props.studentStore.getAllStates({ uid: this.usr.uid })
             if (r && this._isMounted) {
@@ -224,7 +230,7 @@ export default class TopicPG extends Component {
                                 </div>
                                 {
                                     this.opScore.length > 0 && id === 0 &&
-                                    < div className="m-op-score">
+                                    < div className="m-score">
                                         <div className="m-nm-lst">
                                             <div className="u-nm-itm">
                                                 <span>指导老师评分</span>
@@ -242,6 +248,35 @@ export default class TopicPG extends Component {
                                                 {this.opScore[0].g_reply_score ?
                                                     <span className="score">
                                                         {this.opScore[0].g_reply_score}
+                                                    </span> :
+                                                    <span className="z-none">
+                                                        尚未录入
+                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                {
+                                    this.fdScore[0] && (!!this.fdScore[0].tsa || !!this.fdScore[0].psa) && id === 1 &&
+                                    < div className="m-score">
+                                        <div className="m-nm-lst">
+                                            <div className="u-nm-itm">
+                                                <span>终期导师评分</span>
+                                                {this.fdScore[0].tsa ?
+                                                    <span className="score">
+                                                        {this.fdScore[0].tsa}
+                                                    </span> :
+                                                    <span className="z-none">
+                                                        尚未录入
+                                    </span>
+                                                }
+                                            </div>
+                                            <div className="u-nm-itm">
+                                                <span>终期评阅评分</span>
+                                                {this.fdScore[0].psa ?
+                                                    <span className="score">
+                                                        {this.fdScore[0].psa}
                                                     </span> :
                                                     <span className="z-none">
                                                         尚未录入
