@@ -1,7 +1,7 @@
 /*
  * @Author: lzr
  * @Date: 2020-08-13 14:44:36
- * @LastEditTime: 2020-08-14 22:30:45
+ * @LastEditTime: 2020-08-30 22:17:49
  * @LastEditors: Please set LastEditors
  * @Description: 第三阶段教师端
  * @FilePath: \FinalDoc\server\routes\auditFd.js
@@ -12,7 +12,7 @@ const callProc = require('../util').callProc;
 const query = require('../util/db').Query;
 
 router.post('/getTopicList',async(req,res)=>{
-  let sql = `CALL PROC_CAL_UNCHECKED_TASK(?)`;
+  let sql = `CALL PROC_T_FD_TOPIC(?)`;
     let params = req.body;
     params.uid = params.userId;
     callProc(sql, params, res, (r) => {
