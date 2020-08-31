@@ -516,4 +516,16 @@ router.post('/getIfCanDefAppli', async(req, res) => {
     })
 })
 
+// 获取终期导师评分与终期评阅评分
+// params: { uid: str}
+router.post('/getFinalScores', async(req, res) => {
+    let sql = `CALL PROC_GET_FINAL_SCORES(?)`;
+    let params = req.body;
+    console.log(params);
+    callProc(sql, params, res, (r) => {
+        console.log(r);
+        res.status(200).json({ code: 200, data: r, msg: '成功获取终期导师评分与终期评阅评分' });
+    })
+})
+
 module.exports = router;
