@@ -55,10 +55,15 @@ class Check extends BaseActions {
   }
 
   async componentDidMount() {
-    let x = await this.post(urls.API_MAN_POST_JUDGETOPIC, { ide: this.usr.uid })
-    if (x.data[0].flag == 1) {
-      this.setState({ judgeTopic: false })
-    }
+    this.setState({judgeTopic:this.props.judgeTopic},async()=>{
+      if(this.state.judgeTopic){
+        let x = await this.post(urls.API_MAN_POST_JUDGETOPIC, { ide: this.usr.uid })
+        if (x.data[0].flag == 1) {
+          this.setState({ judgeTopic: false })
+        }
+      }
+    })
+    
 
 
   }

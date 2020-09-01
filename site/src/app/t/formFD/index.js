@@ -126,10 +126,6 @@ export default class Home extends Component {
         return toJS(this.props.teacherStore.auditFD_isTutor);
     }
 
-    componentDidMount(){
-        console.log(this.props.teacherStore.auditFD_checkedTopic)
-    }
-
     //提交表单
     handleFormSubmit(form){
         let comment = form.getFieldValue("comment");
@@ -141,7 +137,6 @@ export default class Home extends Component {
                     form.getFieldValue("score5")
                 ];
         let pass = form.getFieldValue("pass");
-        console.log(score);
 
         let flag = 0;
         if(comment === undefined || comment === "")
@@ -159,7 +154,6 @@ export default class Home extends Component {
             message.error("表单未完善");
         else{
             let post_data = {"topicId":this.props.teacherStore.auditFD_checkedTopic,"comment":comment,"score":score,"pass":pass};
-            console.log(post_data);
             if(this.isTutor)
                 this.props.teacherStore.AuditFd_submitTutorForm(post_data)
                 .then(()=>{route("/t_manage")});
@@ -219,8 +213,8 @@ export default class Home extends Component {
                         提交
                     </Button>
 
-                    <Form.Item name="score5" rules={[{ required: true, message: '请输入成绩' }]}>
-                        <InputNumber min={0} max={100} placeholder="分数" className="u-mainsocre"/>
+                    <Form.Item   className="u-mainscore" name="score5" rules={[{ required: true, message: '请输入成绩' }]}>
+                        <InputNumber min={0} max={100} placeholder="分数"/>
                     </Form.Item>
                     成绩：
                     

@@ -55,7 +55,7 @@ export default class Home extends BaseActions {
     pbChanged: false,
     judgeTopic: true,
     //默认是checkblock1，如果有双选成功的则变成2
-    checkBlockState: 0
+    checkBlockState: 0,
   }
 
   componentWillMount(){
@@ -74,10 +74,10 @@ export default class Home extends BaseActions {
   getTopicList = async () => {
     await this.setState({checkBlockState: 0});
     let tdata = await this.post(urls.API_SYS_GET_TOPIC_BY_TEACHER_ID, { tea_id: this.usr.uid })
-    //console.log(tdata);
     tdata = tdata.data.map(filter);
     tdata.sort(sorter);
     this.setState({ toplist: tdata });
+    //console.log(tdata);
     //获取申请列表
     let data = await this.post(urls.API_SYS_GET_TOPIC_CHECK_STUDNET, { tea_id: this.usr.uid })
     data = data.data;
@@ -87,6 +87,9 @@ export default class Home extends BaseActions {
     let x = await this.post(urls.API_TEACHER_GET_SEL,{tid:this.usr.uid});
     let sel = x.data;
     if(tdata.length==0){sel = false;}
+    if(sel){
+      this.setState({judgeTopic:false})
+    }
     if(sel){
       tdata.forEach(x=>!x.sid?sel=false:1)
     }
@@ -143,6 +146,7 @@ export default class Home extends BaseActions {
             pbChanged={this.state.pbChanged}
             justOpenDrawer={this.justOpenDrawer}
             showAllTopic={this.showTopics}
+            judgeTopic={this.state.judgeTopic}
           />
         }
         {

@@ -30,7 +30,6 @@ class NavT extends BaseActions {
     let list = [];
     //post请求获取数据，看length是否为0.如果不为0，则显示该tab
     let x = await this.post(urls.API_TEACHER_GET_IF_AUDIT, { "uid": this.usr.uid })
-    //console.log(x);
     if (x.flag == 1) {
       list.push(MENU_MAIN_T_AUDIT[0])
     } else if (x.flag==2){
@@ -41,10 +40,7 @@ class NavT extends BaseActions {
     if(x.flag){
       list.push(MENU_MAIN_T_AUDIT[1])
     }
-    
-    
 
-    
     this.setState({ checkList: list })
   }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-08-10 14:43:23
- * @LastEditTime: 2020-08-23 17:47:28
+ * @LastEditTime: 2020-09-01 12:15:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FinalDoc\site\src\component\ContentT\StuMethods2\index.js
@@ -83,7 +83,9 @@ export default class StuMethods extends BaseActions {
     links: [],
     modal_visiable: false,
     auditOp: false,
+    auditFd:false,
     changeWWW:false,
+    changeFd:false,
     stude:null,
     stude_modal:false
   }
@@ -121,6 +123,15 @@ export default class StuMethods extends BaseActions {
       this.setState({stude:file_data.data[2]})
     }else{
       this.setState({stude:null})
+    }
+    flag = (!!l.f_paper)&&(!!l.f_design_opus)&&(!!l.f_manual)&&(!!l.f_check)
+    if (flag) {
+      this.setState({ auditFd: true })
+    }
+    if(!file_data.data[3]){
+      this.setState({changeFd:true})
+    }else{
+      this.setState({changeFd:false})
     }
   }
 
@@ -208,7 +219,7 @@ export default class StuMethods extends BaseActions {
                             </div>
                             <p>
                               填写任务书
-                                </p>
+                            </p>
                           </div>
                         </div>
                       </>
@@ -232,7 +243,7 @@ export default class StuMethods extends BaseActions {
                       this.state.auditOp &&
                       <div className="m-file-down-load" onClick={() => { this.props.teacherStore.getTopicById({ "userId": this.usr.uid, "id": this.props.pid }).then(() => { route('/t_formOP') }) }}>
                         <Tooltip placement="top" title={"您的学生已交齐第一阶段文件"}>
-                          <div className="m-f-down-inner">
+                          <div className={this.state.changeWWW?"m-f-down-inner":"m-f-down-inner m-f-down-inner-active"}>
                             <div className="m-f-down-pic">
                               <CheckCircleOutlined />
                             </div>
@@ -264,6 +275,29 @@ export default class StuMethods extends BaseActions {
                             </div>
                             <p>
                               延迟答辩
+                            </p>
+                          </div>
+                        </Tooltip>
+                      </div>
+                    }
+                    {
+                      this.state.auditFd &&
+                      <div className="m-file-down-load" onClick={() => { this.props.teacherStore.auditFD_checkedTopic=this.props.pid;this.props.teacherStore.auditFD_isTutor=true;route('/t_formFD')}}>
+                        <Tooltip placement="top" title={"进行成绩评审"}>
+                          <div className={this.state.changeFd?"m-f-down-inner":"m-f-down-inner m-f-down-inner-active"}>
+                            <div className="m-f-down-pic">
+                              <CheckCircleOutlined />
+                            </div>
+                            <p>
+                              {
+                                this.state.changeFd&&
+                                <>评阅打分</>
+                              }
+                              {
+                                !this.state.changeFd&&
+                                <>修改打分</>
+                              }
+                              
                             </p>
                           </div>
                         </Tooltip>
