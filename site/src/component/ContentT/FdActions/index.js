@@ -53,6 +53,7 @@ class FdActions extends BaseActions {
 	};
 
     handleAudit = (id) => {
+        this.props.teacherStore.auditFD_checkedTopic = id;
         route("/t_formFD");
     }
 

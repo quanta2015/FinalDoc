@@ -214,6 +214,9 @@ class Teacher extends BaseActions {
   @observable
   auditFD_isTutor = false
 
+  @observable
+  auditFD_checkedTopic = 0;
+
   @action
   async AuditFd_getAuditPermission(params) {
     let result = await this.post(urls.API_SYS_TEACHER_AUDIT_FD_GET_AUDIT_PERMISSION, params);
