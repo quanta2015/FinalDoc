@@ -9,12 +9,12 @@ const sleep = utils.sleep;
 const app = express();
 
 // 任务书
-let taskData = [];
+let taskData = ["init"];
 let taskTemp_i = 0;
 // 指导书
 let guideDate;
 let guideBaseInfo;
-let guideSumNum = 0;
+let guideSumNum = 1;
 let guideTemp_i = 0;
 
 
@@ -57,7 +57,7 @@ app.get('/getStat', (req, res) => {
 app.get('/getGuidanceLog', (req, res) => {
   let sql = "call PROC_CAL_GUIDE_WITH_FOUR_SUBSCRIBE()";
   callN(sql, null, 2, res, (r) => {
-    console.log("获取第", guideTemp_i + 1, "份任务书信息")
+    console.log("获取第", guideTemp_i + 1, "份指导日志信息")
 
     guideBaseInfo = r[0][guideTemp_i]
     guideDate = r[0][guideTemp_i]
@@ -124,6 +124,7 @@ rendPDF = async () => {
     headless: true
   });
   const page = await browser.newPage();
+  console.log("测试所有数据",)
   for (let j = 0; j < taskData.length; j++) {
     console.log("\nnow printing ... ");
     let path = taskData[j].file.replace(".json", ".pdf");
