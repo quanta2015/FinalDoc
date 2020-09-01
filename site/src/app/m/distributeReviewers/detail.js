@@ -144,7 +144,7 @@ export default class Detail extends Component {
         filteredInfo = filteredInfo || {}
         const columns = [
             {
-                title: '审核教师',
+                title: '评阅教师',
                 dataIndex: 'checkTeacher',
                 key: 'checkTeacher',
                 ...this.getColumnSearchProps('checkTeacher'),
@@ -167,14 +167,14 @@ export default class Detail extends Component {
 
 
             {
-                title: '审核状态',
+                title: '评阅状态',
                 key: 'result',
                 dataIndex: 'result',
 
                 filters: [
                     { text: '未通过', value: 0 },
                     { text: '通过', value: 1 },
-                    { text: '待审核', value: 2 },
+                    { text: '待评阅', value: 2 },
                     { text: '通过', value: 3 },
                     { text: '通过', value: 4 },
                 ],
@@ -189,16 +189,17 @@ export default class Detail extends Component {
                     let color = "";
                     let tag = "";
                     if (result === 2) {
-                        tag = "待审核";
-                        color = "blue"
+                        tag = "未通过";
+                        color = "red"
                     }
                     else if (result === 1) {
                         tag = "通过";
                         color = "green";
                     }
                     else if (result === 0) {
-                        tag = "未通过";
-                        color = "red"
+                        tag = "待审核";
+                        color = "blue"
+                       
                     } else if (result === 3) {
                         tag = "通过";
                         color = "green"
@@ -293,8 +294,8 @@ export default class Detail extends Component {
                         <div class="m-cont">
                             <div class="dtl"><span class="expln">审核状态:</span>
                                 {(this.state.own.result === 1) && <Tag color={"green"} >通过</Tag>}
-                                {(this.state.own.result === 0) && <Tag color={"red"} >未通过</Tag>}
-                                {(this.state.own.result === 2) && <Tag color={"blue"} >待审核</Tag>}
+                                {(this.state.own.result === 2) && <Tag color={"red"} >未通过</Tag>}
+                                {(this.state.own.result === 0) && <Tag color={"blue"} >待评阅</Tag>}
                                 {(this.state.own.result === 3) && <Tag color={"blue"} >待学生选择</Tag>}
                                 {(this.state.own.result === 4) && <Tag color={"green"} >有学生选择</Tag>}
                             </div>
