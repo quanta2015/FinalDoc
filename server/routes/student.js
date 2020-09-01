@@ -498,7 +498,6 @@ router.post('/getDeferAppliStatus', async(req, res) => {
 
 // 判断当前能否进行延缓申请
 // params: { uid: str }
-// 等一个数据库调整
 router.post('/getIfCanDefAppli', async(req, res) => {
     let sql = `CALL PROC_GET_CAN_DEF_APPLI(?)`;
     let params = req.body;
@@ -514,9 +513,8 @@ router.post('/getIfCanDefAppli', async(req, res) => {
             if (r[0]['status'] >= 6 && r[0]['status'] < 8) {
                 // 开题答辩延期
                 result = [{ 'flag': true, 'type': 1 }];
-            } else if (r[0]['status'] > 20) {
+            } else if (r[0]['status'] == 8 && r[0]['pid'] != null) {
                 // 论文答辩延期
-                // 等topic表status备注，暂时瞎写
                 result = [{ 'flag': true, 'type': 2 }];
             } else {
                 // 什么延期都不是
