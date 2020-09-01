@@ -4,7 +4,7 @@
  * @Author: East Wind
  * @Date: 2020-07-09 10:05:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-08-31 00:26:36
+ * @LastEditTime: 2020-09-01 12:17:17
  */ 
 
 const url = require('url');
@@ -316,7 +316,7 @@ router.get('/getAllPassedTopic', async(req, res) => {
             element.area = area;
             result.push(element);
         }
-        console.log(result);
+        //console.log(result);
         res.status(200).json({code: 200, data: result, msg: '所有通过审核的课题信息已返回'});
     })
 })
@@ -335,11 +335,18 @@ router.post('/getAllTopicFiles', async(req, res) => {
     let sql2 = `call PROC_OP_CAN_SUBMIT(?)`;
     let can_submit = await myCall(sql2,{topicId:params.pid,role:0});
     data.push(can_submit[0].flag==1);
+
     sql2 = `call PROC_T_GET_DE(?)`;
     can_submit = await myCall(sql2,{pid:params.pid});
     if(can_submit.length!=0){
         data.push(can_submit[0])
+    }else{
+        data.push(false);
     }
+
+    sql2 = 'call PROC_FD_CAN_SUBMIT(?)';
+    can_submit = await myCall(sql2,{topicId:params.pid,role:0})
+    data.push(can_submit[0].flag==1);
     res.status(200).json({code: 200, data, msg: '所有课题的文件已返回'});
 })
 
@@ -385,9 +392,9 @@ router.post('/uploadSign', async(req, res) => {
     params.filePath = path;
     delete params.file;
     callProc(sql, params, res, (r) => {
-        console.log(params)
+        //console.log(params)
         res.status(200).json({code: 200, data: r, msg: '签名文件已上传'});
-        console.log(r);
+        //console.log(r);
     })
 })
 
@@ -403,7 +410,7 @@ router.post('/saveTask',async(req,res)=>{
     data = JSON.stringify(data)
 
     let path = `./upload/task_${pid}_${moment(new Date()).format('YYYYMMDDhhmmss')}.json`
-    console.log(path);
+    //console.log(path);
     fs.writeFile(path,data,err=>{
         if(err){
             return;
@@ -440,7 +447,7 @@ router.post('/getTask',async(req,res)=>{
 
 router.post('/canPublish',async(req,res)=>{
     let data = req.body
-    console.log(data);
+    //console.log(data);
     let sql = 'CALL PROC_CHECK_CAN_PUBLISH(?)';
     callProc(sql,data,res,r=>{
         res.status(200).json({code:200,r,message:'已获取是否能发布新课题'})
@@ -463,7 +470,7 @@ router.post('/getSel',async(req,res)=>{
     let sql = "CALL PROC_T_IF_STATE_TWO(?)";
     callProc(sql,req.body,res,r=>{
         let data = false;
-        console.log(r);
+        //console.log(r);
         if(r.length>0 &&r[0].sel != 0 && r[0].sel != 1){
             data = true;
         }
