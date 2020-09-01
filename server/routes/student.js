@@ -302,7 +302,7 @@ router.post("/getStudentTopicStatus", async(req, res) => {
                     default:
                         break;
                 }
-            } else if (r[0]['status'] < 9) {
+            } else if (r[0]['status'] < 8) {
                 results.stageId = 1;
                 switch (r[0]['status']) {
                     case 4:
@@ -317,16 +317,27 @@ router.post("/getStudentTopicStatus", async(req, res) => {
                     case 7:
                         results.currId = 2;
                         break;
-                    case 8:
-                        results.currId = 3;
-                        break;
                     default:
                         break;
                 }
             } else {
                 // 下一阶段，status逻辑未完成
-                results.stageId = 2;
-                results.currId = 2;
+                if (r[0]['status'] == 8) {
+                    if (r[0]['pid'] == null) {
+                        results.stageId = 1;
+                        results.currId = 3;
+                    } else {
+                        results.stageId = 2;
+                        if (r[0]['round'] == 2) {
+                            results.currId = 1;
+                        } else {
+                            results.currId = 0;
+                        }
+                    }
+                } else {
+                    results.stageId = 2;
+                    results.currId = 2;
+                }
             }
         } else {
             console.log("你个糟老头子坏得很，居然不是我的课题！");
