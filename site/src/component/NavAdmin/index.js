@@ -1,12 +1,8 @@
-import { Component } from "preact";
 import { inject, observer } from "mobx-react";
-import { computed, toJS } from "mobx";
+import { computed } from "mobx";
 import { route } from "preact-router";
-import { Modal } from "antd";
-import UploadImage from "../ImgUpload";
-import { BankOutlined, CaretRightOutlined } from "@ant-design/icons";
+import { BankOutlined } from "@ant-design/icons";
 import BaseActions from "../BaseActions";
-import { Divider } from "antd";
 
 import "./index.scss";
 // import more from './more.svg'

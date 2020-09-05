@@ -1,9 +1,7 @@
-import { Component } from 'preact';
 import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
+import { computed } from 'mobx';
 import { route } from 'preact-router';
 import { Divider } from 'antd';
-import { CaretRightOutlined } from '@ant-design/icons';
 import './index.scss'
 import { MENU_MAIN_M, MENU_MAIN_M_OGP,MENU_MAIN_M_FGP,MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
 import BaseActions from '../BaseActions'

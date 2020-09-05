@@ -6,6 +6,7 @@
   "scripts": {
     "build": "preact build",
     "npb": "preact build --no-prerender",
+    "npab": "preact build --no-prerender --analyze",
     "serve": "sirv build --cors --single",
     "dev": "preact watch",
     "lint": "eslint src"
