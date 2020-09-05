@@ -1,12 +1,10 @@
-import { Component } from 'preact';
 import { route } from 'preact-router';
 import './index.scss'
 import { MENU_MAIN_T, MENU_MAIN_T_AUDIT } from '../../constant/data'
 import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
+import { computed } from 'mobx';
 import BaseActions from '../BaseActions'
 import * as urls from '../../constant/urls'
-import { message } from 'antd';
 
 
 @inject('userStore','teacherStore')
