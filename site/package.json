@@ -37,7 +37,7 @@
     "jwt-decode": "^2.2.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "preact": "^10.1.0",
     "preact-async-route": "^2.2.1",
     "preact-render-to-string": "^5.1.2",
